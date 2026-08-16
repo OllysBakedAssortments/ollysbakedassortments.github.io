@@ -1475,7 +1475,7 @@ section{
   position: relative;
   z-index: 2;
 
-  max-width: 760px;
+  max-width: 820px;
 
   margin: 0 auto;
 }
@@ -1510,18 +1510,35 @@ section{
   font-size: 1.05rem;
 }
 
+
+/* =========================================================
+   BERTHA PRICE ROW
+   $2 CARD | BERTHA | $3 CARD
+   ========================================================= */
+
 .bertha-prices{
   display: grid;
 
-  grid-template-columns: repeat(2, minmax(0, 220px));
+  grid-template-columns:
+    minmax(190px, 220px)
+    175px
+    minmax(190px, 220px);
+
+  align-items: center;
   justify-content: center;
 
-  gap: 20px;
+  gap: 12px;
 
-  margin: 0 auto 30px;
+  margin: 0 auto 34px;
 }
 
+
+/* Price cards */
+
 .bertha-price{
+  position: relative;
+  z-index: 2;
+
   padding: 20px 24px;
 
   background: var(--cream);
@@ -1556,6 +1573,45 @@ section{
   line-height: 1;
 }
 
+
+/* =========================================================
+   BERTHA ARTWORK BETWEEN PRICE CARDS
+   ========================================================= */
+
+.bertha-price-mascot{
+  position: relative;
+  z-index: 3;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  height: 145px;
+
+  pointer-events: none;
+}
+
+.bertha-price-mascot img{
+  display: block;
+
+  width: 185px;
+  max-width: none;
+  height: auto;
+
+  object-fit: contain;
+
+  filter: drop-shadow(
+    0 8px 7px rgba(35, 12, 2, .28)
+  );
+
+  transform: translateY(9px);
+}
+
+
+/* =========================================================
+   BERTHA NOTE
+   ========================================================= */
+
 .bertha-note{
   max-width: 660px;
 
@@ -1563,6 +1619,11 @@ section{
 
   color: var(--off-white);
 }
+
+
+/* =========================================================
+   BERTHA BUTTONS
+   ========================================================= */
 
 .bertha-thanks .hero-actions{
   display: flex;
@@ -1576,6 +1637,11 @@ section{
 .bertha-thanks .btn-gold{
   box-shadow: 4px 4px 0 var(--brown-dark);
 }
+
+
+/* =========================================================
+   DECORATIVE SPOTS
+   ========================================================= */
 
 .bertha-spot-one{
   width: 150px;
@@ -1597,17 +1663,99 @@ section{
   opacity: .5;
 }
 
-@media (max-width: 650px){
+
+/* =========================================================
+   BERTHA — TABLET
+   ========================================================= */
+
+@media (max-width: 760px){
 
   .bertha-thanks-card{
-    padding: 48px 24px;
+    padding: 52px 28px;
   }
 
   .bertha-prices{
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      minmax(150px, 1fr)
+      135px
+      minmax(150px, 1fr);
 
-    max-width: 280px;
+    gap: 8px;
   }
+
+  .bertha-price{
+    padding: 18px 14px;
+  }
+
+  .bertha-price-mascot{
+    height: 125px;
+  }
+
+  .bertha-price-mascot img{
+    width: 150px;
+  }
+
+}
+
+
+/* =========================================================
+   BERTHA — MOBILE
+   Price cards stay beside each other.
+   Bertha moves underneath them.
+   ========================================================= */
+
+@media (max-width: 560px){
+
+  .bertha-thanks-card{
+    padding: 48px 20px;
+  }
+
+  .bertha-prices{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    width: 100%;
+    max-width: 380px;
+
+    margin-bottom: 30px;
+  }
+
+  .bertha-price{
+    padding: 18px 10px;
+  }
+
+  .bertha-price-label{
+    font-size: .66rem;
+  }
+
+  .bertha-price strong{
+    font-size: 2.35rem;
+  }
+
+
+  /* Put Bertha underneath both price cards */
+
+  .bertha-price-mascot{
+    grid-column: 1 / -1;
+
+    width: 100%;
+    height: auto;
+
+    margin-top: 6px;
+  }
+
+  .bertha-price-mascot img{
+    width: 155px;
+    max-width: 55vw;
+
+    margin: 0 auto;
+
+    transform: none;
+  }
+
+
+  /* Stack CTA buttons */
 
   .bertha-thanks .hero-actions{
     flex-direction: column;
