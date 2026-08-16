@@ -51,10 +51,13 @@ document.addEventListener('DOMContentLoaded', function () {
       dotsContainer.appendChild(dot);
     });
 
-    var dots = Array.from(dotsContainer.querySelectorAll('.carousel-dot'));
+    var dots = Array.from(
+      dotsContainer.querySelectorAll('.carousel-dot')
+    );
 
     function updateCarousel() {
-      track.style.transform = 'translateX(-' + (currentIndex * 100) + '%)';
+      track.style.transform =
+        'translateX(-' + (currentIndex * 100) + '%)';
 
       dots.forEach(function (dot, index) {
         dot.classList.toggle('active', index === currentIndex);
@@ -62,17 +65,19 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     prevButton.addEventListener('click', function () {
-      currentIndex = currentIndex === 0
-        ? slides.length - 1
-        : currentIndex - 1;
+      currentIndex =
+        currentIndex === 0
+          ? slides.length - 1
+          : currentIndex - 1;
 
       updateCarousel();
     });
 
     nextButton.addEventListener('click', function () {
-      currentIndex = currentIndex === slides.length - 1
-        ? 0
-        : currentIndex + 1;
+      currentIndex =
+        currentIndex === slides.length - 1
+          ? 0
+          : currentIndex + 1;
 
       updateCarousel();
     });
