@@ -1513,6 +1513,19 @@ section {
   opacity: .5;
 }
 
+/* =========================================================
+   BERTHA → NEXT SECTION SPACING
+   ========================================================= */
+
+/* Tighten space below Bertha */
+.bertha-thanks {
+  padding-bottom: 10px;
+}
+
+/* Tighten space above the section immediately after Bertha */
+.bertha-thanks + section {
+  padding-top: 10px;
+}
 
 /* =========================================================
    25. FOOTER
@@ -1892,6 +1905,15 @@ section {
     padding: 38px 22px;
   }
 
+   /* Bertha → next section mobile spacing */
+
+.bertha-thanks {
+  padding-bottom: 8px;
+}
+
+.bertha-thanks + section {
+  padding-top: 8px;
+}
 
   /* =======================================================
      BERTHA MOBILE
