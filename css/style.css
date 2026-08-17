@@ -620,7 +620,7 @@ section {
 .card .icon {
   display: block;
 
-  margin-bottom: 10px;
+  margin-bottom: ;
 
   font-size: 2.1rem;
 }
@@ -815,7 +815,7 @@ section {
 
   z-index: 4;
 
-  padding: 5px 10px;
+  padding: 5px ;
 
   background: var(--cream);
   color: var(--brown);
@@ -864,7 +864,7 @@ section {
 
   box-shadow: 8px 8px 0 var(--gold);
 
-  transform: translateY(-10px);
+  transform: translateY(-);
 }
 
 .tier.tier--feature h3,
@@ -921,13 +921,13 @@ section {
 .event-date {
   min-width: 84px;
 
-  padding: 10px 14px;
+  padding:  14px;
 
   background: var(--pink);
   color: var(--brown-dark);
 
   border: 2px solid var(--brown);
-  border-radius: 10px;
+  border-radius: ;
 
   font-family: var(--font-tag);
   font-weight: 700;
@@ -960,7 +960,7 @@ section {
   display: inline-block;
 
   margin-bottom: 6px;
-  padding: 3px 10px;
+  padding: 3px ;
 
   background: var(--gold-soft);
   color: var(--brown-dark);
@@ -1519,12 +1519,12 @@ section {
 
 /* Tighten space below Bertha */
 .bertha-thanks {
-  padding-bottom: 10px;
+  padding-bottom: 22px;
 }
 
 /* Tighten space above the section immediately after Bertha */
 .bertha-thanks + section {
-  padding-top: 10px;
+  padding-top: 22px;
 }
 
 /* =========================================================
