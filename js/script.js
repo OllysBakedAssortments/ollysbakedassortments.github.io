@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var currentIndex = 0;
 
     // Time between automatic slides
-    var autoplayDelay = 5000;
+    var autoplayDelay = 3000;
 
     var autoplayTimer = null;
 
