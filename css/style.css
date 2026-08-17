@@ -247,16 +247,17 @@ h3 {
 .logo .logo-mark {
   display: block;
 
-  width: 46px;
-  height: 46px;
-  min-width: 46px;
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
 
-  flex: 0 0 46px;
+  flex: 0 0 58px;
 
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 
-  border-radius: 50%;
+   /* Don't crop the giraffe into a circle */
+  border-radius: 0;
 }
 
 .nav-toggle {
@@ -2537,22 +2538,24 @@ section {
 
   /* Header */
 
-  .nav-wrap {
-    padding: 14px 16px;
-  }
+.nav-wrap {
+  padding: 14px 16px;
+}
 
-  .logo {
-  gap: 8px;
+.logo {
+  gap: 9px;
   font-size: 1.2rem;
 }
 
 .logo .logo-mark {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  flex-basis: 40px;
-}
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
 
+  flex: 0 0 48px;
+
+  object-fit: contain;
+}
 
   /* General grid */
 
