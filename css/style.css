@@ -1774,6 +1774,58 @@ section {
   box-shadow: 4px 4px 0 var(--brown-dark);
 }
 
+/* Bertha secondary links */
+
+.bertha-extra-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+.bertha-extra-links a {
+  color: var(--gold);
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    color .15s ease,
+    transform .15s ease;
+}
+
+/* Primary location link */
+
+.bertha-extra-links a:first-child {
+  color: var(--gold);
+   
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+/* Secondary pricing link */
+
+.bertha-extra-links a:last-child {
+  color: var(--gold-soft);
+  font-size: .95rem;
+}
+
+.bertha-extra-links a:hover {
+  color: var(--pink);
+
+  transform: translateY(-1px);
+}
+
+.bertha-extra-links a:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 4px;
+
+  border-radius: 4px;
+}
 
 /* Bertha decorative spots */
 
