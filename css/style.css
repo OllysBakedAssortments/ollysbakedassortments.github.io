@@ -1583,10 +1583,10 @@ section{
   z-index: 3;
 
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
 
-  height: 145px;
+  height: 165px;
 
   pointer-events: none;
 }
@@ -1604,7 +1604,7 @@ section{
     0 8px 7px rgba(35, 12, 2, .28)
   );
 
-  transform: translateY(9px);
+  transform: translateY(35px);
 }
 
 
