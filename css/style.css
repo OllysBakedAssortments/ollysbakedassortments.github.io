@@ -899,6 +899,262 @@ section {
   margin-top: auto;
 }
 
+/* =========================================================
+   13B. HOMEPAGE GIRAFFE PACK CARDS
+   Full-card photography with cream text fade
+   ========================================================= */
+
+.pack-section {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+
+
+/* Pack grid */
+
+.pack-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 26px;
+}
+
+
+/* Individual pack card */
+
+.pack-card {
+  position: relative;
+
+  display: block;
+
+  min-height: 500px;
+
+  padding: 0;
+
+  overflow: hidden;
+  isolation: isolate;
+
+  background: var(--cream);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-lg);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+
+/* Full-card pack image */
+
+.pack-card-bg {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: -2;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  transition: transform .35s ease;
+}
+
+
+/* Cream fade over bottom of photo */
+
+.pack-card::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: -1;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 250, 240, 0) 25%,
+      rgba(255, 250, 240, .03) 38%,
+      rgba(255, 250, 240, .20) 48%,
+      rgba(255, 250, 240, .62) 60%,
+      rgba(255, 250, 240, .92) 72%,
+      rgba(255, 250, 240, .98) 82%,
+      var(--cream) 100%
+    );
+}
+
+
+/* Text area */
+
+.pack-card-overlay {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: 2;
+
+  padding: 32px 28px 28px;
+
+  color: var(--brown-dark);
+}
+
+
+/* Cookie quantity */
+
+.pack-count {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: var(--brown-dark);
+
+  font-family: var(--font-tag);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+
+/* Pack name */
+
+.pack-card-overlay h3 {
+  margin: 0 0 8px;
+
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+
+/* Price */
+
+.pack-price {
+  display: block;
+
+  margin: 4px 0 10px;
+
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+
+/* Explore Pack link */
+
+.pack-cta {
+  display: inline-block;
+
+  margin-top: 4px;
+
+  color: var(--brown-dark);
+
+  font-family: var(--font-body);
+  font-size: .95rem;
+  font-weight: 800;
+
+  transition: transform .15s ease;
+}
+
+
+/* Hover effects */
+
+.pack-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow: 7px 7px 0 var(--pink);
+}
+
+.pack-card:hover .pack-card-bg {
+  transform: scale(1.04);
+}
+
+.pack-card:hover .pack-cta {
+  transform: translateX(4px);
+}
+
+
+/* Keyboard accessibility */
+
+.pack-card:focus-visible {
+  outline: 4px solid var(--gold);
+  outline-offset: 4px;
+}
+
+
+/* =========================================================
+   GIRAFFE PACK CARDS — TABLET
+   ========================================================= */
+
+@media (max-width: 860px) {
+
+  .pack-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pack-card {
+    min-height: 470px;
+  }
+
+}
+
+
+/* =========================================================
+   GIRAFFE PACK CARDS — MOBILE
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+  .pack-section {
+    padding-top: 54px;
+    padding-bottom: 54px;
+  }
+
+  .pack-grid {
+    grid-template-columns: 1fr;
+
+    gap: 24px;
+
+    max-width: 500px;
+
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .pack-card {
+    min-height: 440px;
+  }
+
+  .pack-card-overlay {
+    padding: 28px 22px 22px;
+  }
+
+  .pack-card-overlay h3 {
+    font-size: 1.5rem;
+  }
+
+  .pack-price {
+    font-size: 2.4rem;
+  }
+
+}
 
 /* =========================================================
    14. EVENTS
