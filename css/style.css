@@ -867,7 +867,14 @@ section {
   text-align: center;
 }
 
-transform: translateY(-8px);
+.tier.tier--feature {
+  background: var(--brown);
+  color: var(--off-white);
+
+  box-shadow: 8px 8px 0 var(--gold);
+
+  transform: translateY(-8px);
+}
 
 .tier.tier--feature h3,
 .tier.tier--feature .tier-price {
