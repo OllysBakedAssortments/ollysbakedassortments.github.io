@@ -1,16 +1,21 @@
 /* =========================================================
-   Olly's Baked Assortments — Site Stylesheet
-   Fonts: Fraunces (display) / Karla (body) / Space Mono (tags)
+   OLLY'S BAKED ASSORTMENTS
+   Main Site Stylesheet
+
+   Fonts:
+   - Fraunces: display / headings
+   - Karla: body
+   - Space Mono: labels / tags
    ========================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap');
 
 
 /* =========================================================
-   ROOT / BRAND VARIABLES
+   1. BRAND VARIABLES
    ========================================================= */
 
-:root{
+:root {
   --brown: #7A2F00;
   --brown-dark: #55210a;
 
@@ -36,20 +41,20 @@
 
 
 /* =========================================================
-   RESET / BASE
+   2. RESET / BASE
    ========================================================= */
 
 *,
 *::before,
-*::after{
+*::after {
   box-sizing: border-box;
 }
 
-html{
+html {
   scroll-behavior: smooth;
 }
 
-body{
+body {
   margin: 0;
 
   background: var(--off-white);
@@ -62,54 +67,54 @@ body{
   -webkit-font-smoothing: antialiased;
 }
 
-img{
-  max-width: 100%;
+img {
   display: block;
+  max-width: 100%;
 }
 
-a{
+a {
   color: inherit;
   text-decoration: none;
 }
 
-ul{
+ul {
   margin: 0;
   padding: 0;
+
   list-style: none;
+}
+
+p {
+  margin: 0 0 1em;
 }
 
 h1,
 h2,
 h3,
-h4{
+h4 {
   margin: 0 0 .5em;
 
   color: var(--brown);
 
   font-family: var(--font-display);
   font-weight: 600;
-
   line-height: 1.15;
 }
 
-h1{
+h1 {
   font-size: clamp(2.4rem, 5vw, 4rem);
   font-weight: 700;
 }
 
-h2{
+h2 {
   font-size: clamp(1.9rem, 3.4vw, 2.6rem);
 }
 
-h3{
+h3 {
   font-size: 1.3rem;
 }
 
-p{
-  margin: 0 0 1em;
-}
-
-.container{
+.container {
   width: 100%;
   max-width: var(--container);
 
@@ -117,13 +122,16 @@ p{
   padding: 0 24px;
 }
 
-:focus-visible{
+:focus-visible {
   outline: 3px solid var(--gold);
   outline-offset: 3px;
 }
 
-@media (prefers-reduced-motion: reduce){
-  *{
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
@@ -132,10 +140,10 @@ p{
 
 
 /* =========================================================
-   BUTTONS
+   3. BUTTONS
    ========================================================= */
 
-.btn{
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -148,8 +156,8 @@ p{
   border-radius: 999px;
 
   font-family: var(--font-body);
-  font-weight: 800;
   font-size: .95rem;
+  font-weight: 800;
   letter-spacing: .02em;
 
   cursor: pointer;
@@ -160,50 +168,49 @@ p{
     background .15s ease;
 }
 
-.btn:hover{
+.btn:hover {
   transform: translateY(-2px);
 }
 
-.btn-primary{
+.btn-primary {
   background: var(--pink);
   color: var(--brown-dark);
 
   box-shadow: 4px 4px 0 var(--brown);
 }
 
-.btn-primary:hover{
+.btn-primary:hover {
   box-shadow: 6px 6px 0 var(--brown);
 }
 
-.btn-secondary{
+.btn-secondary {
   background: transparent;
+  color: var(--off-white);
 
   border-color: var(--off-white);
-
-  color: var(--off-white);
 }
 
-.btn-secondary:hover{
-  background: rgba(247,247,247,.12);
+.btn-secondary:hover {
+  background: rgba(247, 247, 247, .12);
 }
 
-.btn-gold{
+.btn-gold {
   background: var(--gold);
   color: var(--brown-dark);
 
   box-shadow: 4px 4px 0 var(--brown);
 }
 
-.btn-gold:hover{
+.btn-gold:hover {
   box-shadow: 6px 6px 0 var(--brown);
 }
 
 
 /* =========================================================
-   HEADER / NAVIGATION
+   4. HEADER / NAVIGATION
    ========================================================= */
 
-.site-header{
+.site-header {
   position: sticky;
   top: 0;
   z-index: 50;
@@ -213,7 +220,7 @@ p{
   border-bottom: 3px solid var(--brown);
 }
 
-.nav-wrap{
+.nav-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -224,7 +231,7 @@ p{
   padding: 16px 24px;
 }
 
-.logo{
+.logo {
   display: flex;
   align-items: baseline;
 
@@ -233,16 +240,17 @@ p{
   color: var(--brown);
 
   font-family: var(--font-display);
-  font-weight: 700;
   font-size: 1.4rem;
+  font-weight: 700;
 }
 
-.logo .logo-mark{
+.logo .logo-mark {
   color: var(--pink);
+
   font-size: 1.6rem;
 }
 
-.nav-toggle{
+.nav-toggle {
   display: none;
 
   padding: 8px 10px;
@@ -255,7 +263,7 @@ p{
   cursor: pointer;
 }
 
-.nav-toggle span{
+.nav-toggle span {
   display: block;
 
   width: 22px;
@@ -266,7 +274,7 @@ p{
   background: var(--brown);
 }
 
-.main-nav ul{
+.main-nav ul {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -274,18 +282,18 @@ p{
   gap: 28px;
 }
 
-.main-nav a{
+.main-nav a {
   position: relative;
 
   padding: 4px 2px;
 
   color: var(--brown-dark);
 
-  font-weight: 700;
   font-size: .95rem;
+  font-weight: 700;
 }
 
-.main-nav a::after{
+.main-nav a::after {
   content: "";
 
   position: absolute;
@@ -304,15 +312,15 @@ p{
 }
 
 .main-nav a:hover::after,
-.main-nav a[aria-current="page"]::after{
+.main-nav a[aria-current="page"]::after {
   right: 0;
 }
 
-.main-nav a[aria-current="page"]{
+.main-nav a[aria-current="page"] {
   color: var(--brown);
 }
 
-.main-nav .nav-order a{
+.main-nav .nav-order a {
   padding: 9px 20px;
 
   background: var(--brown);
@@ -323,68 +331,26 @@ p{
   font-weight: 800;
 }
 
-.main-nav .nav-order a::after{
+.main-nav .nav-order a::after {
   display: none;
 }
 
-.main-nav .nav-order a:hover{
+.main-nav .nav-order a:hover {
   background: var(--brown-dark);
-}
-
-@media (max-width: 860px){
-
-  .nav-toggle{
-    display: block;
-  }
-
-  .main-nav{
-    display: none;
-
-    position: absolute;
-
-    top: 100%;
-    left: 0;
-    right: 0;
-
-    padding: 12px 24px 24px;
-
-    background: var(--off-white);
-
-    border-bottom: 3px solid var(--brown);
-  }
-
-  .main-nav.open{
-    display: block;
-  }
-
-  .main-nav ul{
-    flex-direction: column;
-    align-items: flex-start;
-
-    gap: 18px;
-  }
-
-  .main-nav .nav-order{
-    width: 100%;
-  }
-
-  .main-nav .nav-order a{
-    display: block;
-    text-align: center;
-  }
 }
 
 
 /* =========================================================
-   GIRAFFE SPOT DECORATION
+   5. GIRAFFE SPOT DECORATION
    ========================================================= */
 
-.spot-field{
+.spot-field {
   position: relative;
+
   overflow: hidden;
 }
 
-.spot{
+.spot {
   position: absolute;
 
   border-radius:
@@ -394,15 +360,15 @@ p{
   opacity: .85;
 }
 
-.spot--pink{
+.spot--pink {
   background: var(--pink);
 }
 
-.spot--gold{
+.spot--gold {
   background: var(--gold);
 }
 
-.spot--outline{
+.spot--outline {
   background: transparent;
 
   border: 3px solid var(--gold);
@@ -412,10 +378,10 @@ p{
 
 
 /* =========================================================
-   COOKIE TRAIL
+   6. COOKIE TRAIL
    ========================================================= */
 
-.trail{
+.trail {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -428,7 +394,7 @@ p{
   padding: 8px 0;
 }
 
-.trail span{
+.trail span {
   width: 9px;
   height: 9px;
 
@@ -441,7 +407,7 @@ p{
   opacity: .35;
 }
 
-.trail span:nth-child(3n){
+.trail span:nth-child(3n) {
   width: 11px;
   height: 11px;
 
@@ -450,12 +416,13 @@ p{
   opacity: .8;
 }
 
-.trail span:nth-child(4n){
+.trail span:nth-child(4n) {
   background: var(--gold);
+
   opacity: .9;
 }
 
-.trail-icon{
+.trail-icon {
   width: 22px;
   height: 22px;
 
@@ -466,10 +433,10 @@ p{
 
 
 /* =========================================================
-   HOMEPAGE HERO
+   7. HOMEPAGE HERO
    ========================================================= */
 
-.hero{
+.hero {
   position: relative;
 
   padding: 90px 0 100px;
@@ -478,7 +445,7 @@ p{
   color: var(--off-white);
 }
 
-.hero .container{
+.hero .container {
   position: relative;
   z-index: 2;
 
@@ -487,7 +454,7 @@ p{
   text-align: center;
 }
 
-.hero .eyebrow{
+.hero .eyebrow {
   display: inline-block;
 
   margin-bottom: 18px;
@@ -496,30 +463,29 @@ p{
 
   font-family: var(--font-tag);
   font-size: .8rem;
-
-  text-transform: uppercase;
   letter-spacing: .14em;
+  text-transform: uppercase;
 }
 
-.hero h1{
+.hero h1 {
   margin-bottom: .35em;
 
   color: var(--off-white);
 }
 
-.hero-headline{
+.hero-headline {
   white-space: nowrap;
 
   font-size: clamp(1.7rem, 6.2vw, 4rem);
 }
 
-.hero h1 em{
+.hero h1 em {
   color: var(--pink);
 
   font-style: italic;
 }
 
-.hero p.lead{
+.hero p.lead {
   max-width: 520px;
 
   margin: 0 auto 34px;
@@ -529,7 +495,7 @@ p{
   font-size: 1.15rem;
 }
 
-.hero .hero-actions{
+.hero .hero-actions {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -539,10 +505,10 @@ p{
 
 
 /* =========================================================
-   PAGE HERO
+   8. PAGE HERO
    ========================================================= */
 
-.page-hero{
+.page-hero {
   position: relative;
 
   padding: 64px 0 76px;
@@ -551,14 +517,14 @@ p{
   color: var(--off-white);
 }
 
-.page-hero .container{
+.page-hero .container {
   position: relative;
   z-index: 2;
 
   max-width: 700px;
 }
 
-.page-hero .eyebrow{
+.page-hero .eyebrow {
   display: inline-block;
 
   margin-bottom: 14px;
@@ -567,16 +533,15 @@ p{
 
   font-family: var(--font-tag);
   font-size: .8rem;
-
-  text-transform: uppercase;
   letter-spacing: .14em;
+  text-transform: uppercase;
 }
 
-.page-hero h1{
+.page-hero h1 {
   color: var(--off-white);
 }
 
-.page-hero p{
+.page-hero p {
   max-width: 520px;
 
   color: var(--gold-soft);
@@ -584,14 +549,14 @@ p{
 
 
 /* =========================================================
-   SECTIONS
+   9. GENERAL SECTIONS
    ========================================================= */
 
-section{
+section {
   padding: 72px 0;
 }
 
-.section-head{
+.section-head {
   max-width: 620px;
 
   margin: 0 auto 44px;
@@ -599,26 +564,26 @@ section{
   text-align: center;
 }
 
-.section-head p{
+.section-head p {
   color: var(--brown-dark);
 
   font-size: 1.05rem;
 }
 
-.bg-cream{
+.bg-cream {
   background: var(--cream);
 }
 
-.bg-pink-soft{
+.bg-pink-soft {
   background: var(--pink-soft);
 }
 
 
 /* =========================================================
-   GENERAL GRID
+   10. GENERAL GRID
    ========================================================= */
 
-.grid{
+.grid {
   display: grid;
 
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -626,28 +591,12 @@ section{
   gap: 26px;
 }
 
-@media (max-width: 860px){
-
-  .grid{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-}
-
-@media (max-width: 560px){
-
-  .grid{
-    grid-template-columns: 1fr;
-  }
-
-}
-
 
 /* =========================================================
-   GENERAL CARDS
+   11. GENERAL CARDS
    ========================================================= */
 
-.card{
+.card {
   position: relative;
 
   padding: 26px;
@@ -662,13 +611,13 @@ section{
     box-shadow .15s ease;
 }
 
-.card:hover{
+.card:hover {
   transform: translateY(-4px);
 
   box-shadow: 6px 6px 0 var(--pink);
 }
 
-.card .icon{
+.card .icon {
   display: block;
 
   margin-bottom: 10px;
@@ -678,11 +627,11 @@ section{
 
 
 /* =========================================================
-   COOKIE CARDS
+   12. COOKIE CARDS
    Full-card photography with cream text fade
    ========================================================= */
 
-.cookie-card{
+.cookie-card {
   position: relative;
 
   min-height: 500px;
@@ -703,12 +652,14 @@ section{
 }
 
 
-/* Full-card image */
+/* Cookie image */
 
-.cookie-card-bg{
+.cookie-card-bg {
   position: absolute;
 
   inset: 0;
+
+  z-index: -2;
 
   width: 100%;
   height: 100%;
@@ -716,15 +667,13 @@ section{
   object-fit: cover;
   object-position: center;
 
-  z-index: -2;
-
   transition: transform .35s ease;
 }
 
 
-/* Gradient over image */
+/* Cream fade over lower portion */
 
-.cookie-card::after{
+.cookie-card::after {
   content: "";
 
   position: absolute;
@@ -738,13 +687,12 @@ section{
   background:
     linear-gradient(
       to bottom,
-
-      rgba(255,250,240,0) 25%,
-      rgba(255,250,240,.03) 38%,
-      rgba(255,250,240,.20) 48%,
-      rgba(255,250,240,.62) 60%,
-      rgba(255,250,240,.92) 72%,
-      rgba(255,250,240,.98) 82%,
+      rgba(255, 250, 240, 0) 25%,
+      rgba(255, 250, 240, .03) 38%,
+      rgba(255, 250, 240, .20) 48%,
+      rgba(255, 250, 240, .62) 60%,
+      rgba(255, 250, 240, .92) 72%,
+      rgba(255, 250, 240, .98) 82%,
       var(--cream) 100%
     );
 }
@@ -752,7 +700,7 @@ section{
 
 /* Cookie text */
 
-.cookie-card-overlay{
+.cookie-card-overlay {
   position: absolute;
 
   left: 0;
@@ -766,7 +714,7 @@ section{
   color: var(--brown-dark);
 }
 
-.cookie-card-overlay h3{
+.cookie-card-overlay h3 {
   margin: 0 0 8px;
   padding-right: 60px;
 
@@ -775,25 +723,20 @@ section{
   font-family: var(--font-display);
   font-size: 1.55rem;
   font-weight: 600;
-
   line-height: 1.15;
 }
 
-.cookie-card-overlay p{
+.cookie-card-overlay p {
   margin: 0 0 12px;
 
   color: var(--brown-dark);
 
   font-family: var(--font-body);
   font-size: .96rem;
-
   line-height: 1.55;
 }
 
-
-/* View Cookie link */
-
-.cookie-card-cta{
+.cookie-card-cta {
   display: inline-block;
 
   color: var(--brown-dark);
@@ -806,9 +749,9 @@ section{
 }
 
 
-/* Price tag */
+/* Cookie price tag */
 
-.cookie-card .price-tag{
+.cookie-card .price-tag {
   position: absolute;
 
   top: 18px;
@@ -836,28 +779,25 @@ section{
 
 /* Cookie card interaction */
 
-.cookie-card-link{
+.cookie-card-link {
   display: block;
 }
 
-.cookie-card-link:hover{
+.cookie-card-link:hover {
   transform: translateY(-4px);
 
   box-shadow: 7px 7px 0 var(--pink);
 }
 
-.cookie-card-link:hover .cookie-card-bg{
+.cookie-card-link:hover .cookie-card-bg {
   transform: scale(1.04);
 }
 
-.cookie-card-link:hover .cookie-card-cta{
+.cookie-card-link:hover .cookie-card-cta {
   transform: translateX(4px);
 }
 
-
-/* Keyboard focus */
-
-.cookie-card-link:focus-visible{
+.cookie-card-link:focus-visible {
   outline: 4px solid var(--gold);
   outline-offset: 4px;
 }
@@ -865,7 +805,7 @@ section{
 
 /* Safari Snacks / dog treats */
 
-.cookie-card.dog::before{
+.cookie-card.dog::before {
   content: "🐾 for pups";
 
   position: absolute;
@@ -889,53 +829,11 @@ section{
 }
 
 
-/* Cookie cards — tablet */
-
-@media (max-width: 860px){
-
-  .cookie-card{
-    min-height: 470px;
-  }
-
-}
-
-
-/* Cookie cards — mobile */
-
-@media (max-width: 560px){
-
-  .cookie-card{
-    min-height: 440px;
-  }
-
-  .cookie-card-overlay{
-    padding: 28px 22px 22px;
-  }
-
-  .cookie-card-overlay h3{
-    padding-right: 50px;
-
-    font-size: 1.4rem;
-  }
-
-  .cookie-card .price-tag{
-    top: 14px;
-    right: 14px;
-  }
-
-  .cookie-card.dog::before{
-    top: 14px;
-    left: 14px;
-  }
-
-}
-
-
 /* =========================================================
-   GIFT BOX TIERS
+   13. GIFT BOX TIERS
    ========================================================= */
 
-.tier-grid{
+.tier-grid {
   display: grid;
 
   grid-template-columns: repeat(3, 1fr);
@@ -944,7 +842,7 @@ section{
   gap: 26px;
 }
 
-.tier{
+.tier {
   display: flex;
   flex-direction: column;
 
@@ -960,35 +858,34 @@ section{
   text-align: center;
 }
 
-.tier.tier--feature{
+.tier.tier--feature {
   background: var(--brown);
   color: var(--off-white);
 
-  transform: translateY(-10px);
-
   box-shadow: 8px 8px 0 var(--gold);
+
+  transform: translateY(-10px);
 }
 
 .tier.tier--feature h3,
-.tier.tier--feature .tier-price{
+.tier.tier--feature .tier-price {
   color: var(--off-white);
 }
 
-.tier.tier--feature p{
+.tier.tier--feature p {
   color: var(--gold-soft);
 }
 
-.tier-count{
+.tier-count {
   font-family: var(--font-tag);
   font-size: .85rem;
-
   letter-spacing: .06em;
   text-transform: uppercase;
 
   opacity: .75;
 }
 
-.tier-price{
+.tier-price {
   color: var(--brown);
 
   font-family: var(--font-display);
@@ -996,26 +893,18 @@ section{
   font-weight: 700;
 }
 
-.tier .btn{
+.tier .btn {
   align-self: center;
 
   margin-top: auto;
 }
 
-@media (max-width: 860px){
-
-  .tier-grid{
-    grid-template-columns: 1fr;
-  }
-
-}
-
 
 /* =========================================================
-   EVENTS
+   14. EVENTS
    ========================================================= */
 
-.event-card{
+.event-card {
   display: flex;
   align-items: flex-start;
 
@@ -1029,7 +918,7 @@ section{
   border-radius: var(--radius-md);
 }
 
-.event-date{
+.event-date {
   min-width: 84px;
 
   padding: 10px 14px;
@@ -1042,34 +931,32 @@ section{
 
   font-family: var(--font-tag);
   font-weight: 700;
-
   line-height: 1.1;
   text-align: center;
 }
 
-.event-date .month{
+.event-date .month {
   display: block;
 
   font-size: .7rem;
-
-  text-transform: uppercase;
   letter-spacing: .08em;
+  text-transform: uppercase;
 }
 
-.event-date .day{
+.event-date .day {
   display: block;
 
   font-size: 1.4rem;
 }
 
-.event-list{
+.event-list {
   display: flex;
   flex-direction: column;
 
   gap: 20px;
 }
 
-.pill{
+.pill {
   display: inline-block;
 
   margin-bottom: 6px;
@@ -1083,27 +970,26 @@ section{
 
   font-family: var(--font-tag);
   font-size: .72rem;
-
-  text-transform: uppercase;
   letter-spacing: .06em;
+  text-transform: uppercase;
 }
 
 
 /* =========================================================
-   FAQ
+   15. FAQ
    ========================================================= */
 
-.faq-item{
+.faq-item {
   padding: 20px 4px;
 
   border-bottom: 2px solid var(--brown);
 }
 
-.faq-item:first-child{
+.faq-item:first-child {
   border-top: 2px solid var(--brown);
 }
 
-.faq-item summary{
+.faq-item summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1119,11 +1005,11 @@ section{
   cursor: pointer;
 }
 
-.faq-item summary::-webkit-details-marker{
+.faq-item summary::-webkit-details-marker {
   display: none;
 }
 
-.faq-item summary::after{
+.faq-item summary::after {
   content: "+";
 
   flex-shrink: 0;
@@ -1137,11 +1023,11 @@ section{
   transition: transform .2s ease;
 }
 
-.faq-item[open] summary::after{
+.faq-item[open] summary::after {
   transform: rotate(45deg);
 }
 
-.faq-item p{
+.faq-item p {
   max-width: 680px;
 
   margin-top: 12px;
@@ -1151,20 +1037,19 @@ section{
 
 
 /* =========================================================
-   ABOUT
+   16. ABOUT
    ========================================================= */
 
-.about-wrap{
+.about-wrap {
   display: grid;
 
   grid-template-columns: 1.1fr .9fr;
-
   align-items: center;
 
   gap: 56px;
 }
 
-.giraffe-portrait{
+.giraffe-portrait {
   position: relative;
 
   display: flex;
@@ -1181,24 +1066,16 @@ section{
   border-radius: var(--radius-lg);
 }
 
-.giraffe-portrait span{
+.giraffe-portrait span {
   font-size: 5rem;
-}
-
-@media (max-width: 820px){
-
-  .about-wrap{
-    grid-template-columns: 1fr;
-  }
-
 }
 
 
 /* =========================================================
-   ORDER PAGE
+   17. ORDER PAGE
    ========================================================= */
 
-.order-panel{
+.order-panel {
   position: relative;
 
   max-width: 720px;
@@ -1216,15 +1093,15 @@ section{
   text-align: center;
 }
 
-.order-panel h2{
+.order-panel h2 {
   color: var(--off-white);
 }
 
-.order-panel p{
+.order-panel p {
   color: var(--gold-soft);
 }
 
-.order-steps{
+.order-steps {
   display: grid;
 
   grid-template-columns: repeat(3, 1fr);
@@ -1236,16 +1113,16 @@ section{
   text-align: left;
 }
 
-.order-steps li{
+.order-steps li {
   padding: 20px;
 
-  background: rgba(247,247,247,.08);
+  background: rgba(247, 247, 247, .08);
 
-  border: 1px solid rgba(247,247,247,.25);
+  border: 1px solid rgba(247, 247, 247, .25);
   border-radius: var(--radius-md);
 }
 
-.order-steps .step-num{
+.order-steps .step-num {
   display: block;
 
   margin-bottom: 8px;
@@ -1256,20 +1133,12 @@ section{
   font-weight: 700;
 }
 
-@media (max-width: 700px){
-
-  .order-steps{
-    grid-template-columns: 1fr;
-  }
-
-}
-
 
 /* =========================================================
-   NOTE BOX
+   18. NOTE BOX
    ========================================================= */
 
-.note-box{
+.note-box {
   max-width: 720px;
 
   margin: 28px auto 0;
@@ -1286,10 +1155,10 @@ section{
 
 
 /* =========================================================
-   CTA BAND
+   19. CTA BAND
    ========================================================= */
 
-.cta-band{
+.cta-band {
   position: relative;
 
   padding: 48px;
@@ -1303,17 +1172,17 @@ section{
   text-align: center;
 }
 
-.cta-band h2{
+.cta-band h2 {
   margin-bottom: 8px;
 
   color: var(--brown-dark);
 }
 
-.cta-band p{
+.cta-band p {
   color: var(--brown-dark);
 }
 
-.cta-band .hero-actions{
+.cta-band .hero-actions {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -1325,14 +1194,14 @@ section{
 
 
 /* =========================================================
-   HOMEPAGE IMAGE CAROUSEL
+   20. HOMEPAGE IMAGE CAROUSEL
    ========================================================= */
 
-.home-carousel{
+.home-carousel {
   padding: 2rem 1rem 0;
 }
 
-.carousel-shell{
+.carousel-shell {
   position: relative;
 
   max-width: 1100px;
@@ -1340,23 +1209,23 @@ section{
   margin: 0 auto;
 }
 
-.carousel-viewport{
+.carousel-viewport {
   overflow: hidden;
 
   border-radius: var(--radius-lg);
 }
 
-.carousel-track{
+.carousel-track {
   display: flex;
 
   transition: transform .45s ease;
 }
 
-.carousel-slide{
+.carousel-slide {
   min-width: 100%;
 }
 
-.carousel-slide img{
+.carousel-slide img {
   display: block;
 
   width: 100%;
@@ -1365,7 +1234,7 @@ section{
   object-fit: cover;
 }
 
-.carousel-btn{
+.carousel-btn {
   position: absolute;
 
   top: 50%;
@@ -1375,7 +1244,7 @@ section{
   width: 48px;
   height: 48px;
 
-  background: rgba(0,0,0,.45);
+  background: rgba(0, 0, 0, .45);
   color: white;
 
   border: 2px solid white;
@@ -1389,15 +1258,15 @@ section{
   transform: translateY(-50%);
 }
 
-.carousel-prev{
+.carousel-prev {
   left: 18px;
 }
 
-.carousel-next{
+.carousel-next {
   right: 18px;
 }
 
-.carousel-dots{
+.carousel-dots {
   display: flex;
   justify-content: center;
 
@@ -1406,7 +1275,7 @@ section{
   margin-top: 14px;
 }
 
-.carousel-dot{
+.carousel-dot {
   width: 10px;
   height: 10px;
 
@@ -1420,46 +1289,25 @@ section{
   cursor: pointer;
 }
 
-.carousel-dot.active{
+.carousel-dot.active {
   background: var(--brown);
 
   transform: scale(1.35);
 }
 
-@media (max-width: 700px){
-
-  .carousel-slide img{
-    height: 360px;
-  }
-
-  .carousel-btn{
-    width: 42px;
-    height: 42px;
-  }
-
-  .carousel-prev{
-    left: 10px;
-  }
-
-  .carousel-next{
-    right: 10px;
-  }
-
-}
-
 
 /* =========================================================
-   BERTHA'S NEIGHBORHOOD THANK-YOU
+   21. BERTHA'S NEIGHBORHOOD THANK-YOU
    ========================================================= */
 
-.bertha-thanks{
+.bertha-thanks {
   background: var(--off-white);
 }
 
-.bertha-thanks-card{
+.bertha-thanks-card {
   position: relative;
 
-  padding: 64px 48px;
+  padding: 58px 48px;
 
   overflow: hidden;
 
@@ -1471,39 +1319,39 @@ section{
   text-align: center;
 }
 
-.bertha-thanks-content{
+.bertha-thanks-content {
   position: relative;
   z-index: 2;
 
-  max-width: 820px;
+  width: 100%;
+  max-width: 940px;
 
   margin: 0 auto;
 }
 
-.bertha-thanks .eyebrow{
+.bertha-thanks .eyebrow {
   display: inline-block;
 
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 
   color: var(--gold);
 
   font-family: var(--font-tag);
   font-size: .8rem;
-
-  text-transform: uppercase;
   letter-spacing: .14em;
+  text-transform: uppercase;
 }
 
-.bertha-thanks h2{
+.bertha-thanks h2 {
   margin-bottom: 18px;
 
   color: var(--off-white);
 }
 
-.bertha-lead{
-  max-width: 680px;
+.bertha-lead {
+  max-width: 760px;
 
-  margin: 0 auto 32px;
+  margin: 0 auto 28px;
 
   color: var(--gold-soft);
 
@@ -1512,7 +1360,9 @@ section{
 
 
 /* =========================================================
-   BERTHA PRICE ROW
+   22. BERTHA PRICE DISPLAY
+
+   Desktop:
    $2 CARD | BERTHA | $3 CARD
    ========================================================= */
 
@@ -1520,16 +1370,18 @@ section{
   display: grid;
 
   grid-template-columns:
-    minmax(190px, 220px)
-    190px
-    minmax(190px, 220px);
+    minmax(240px, 285px)
+    minmax(220px, 260px)
+    minmax(240px, 285px);
 
   align-items: center;
   justify-content: center;
 
-  gap: 16px;
+  gap: 26px;
 
-  margin: 20px auto 42px;
+  width: 100%;
+
+  margin: 28px auto 36px;
 }
 
 
@@ -1539,7 +1391,9 @@ section{
   position: relative;
   z-index: 2;
 
-  padding: 20px 24px;
+  width: 100%;
+
+  padding: 28px 24px;
 
   background: var(--cream);
   color: var(--brown-dark);
@@ -1547,19 +1401,20 @@ section{
   border: 2px solid var(--gold);
   border-radius: var(--radius-md);
 
-  box-shadow: 5px 5px 0 var(--pink);
+  box-shadow: 6px 6px 0 var(--pink);
+
+  text-align: center;
 }
 
 .bertha-price-label {
   display: block;
 
-  margin-bottom: 7px;
+  margin-bottom: 9px;
 
   font-family: var(--font-tag);
-  font-size: .75rem;
-
+  font-size: .82rem;
+  letter-spacing: .06em;
   text-transform: uppercase;
-  letter-spacing: .05em;
 }
 
 .bertha-price strong {
@@ -1568,15 +1423,12 @@ section{
   color: var(--brown);
 
   font-family: var(--font-display);
-  font-size: 2.7rem;
-
+  font-size: 3.25rem;
   line-height: 1;
 }
 
 
-/* =========================================================
-   BERTHA ARTWORK
-   ========================================================= */
+/* Bertha artwork */
 
 .bertha-price-mascot {
   position: relative;
@@ -1586,7 +1438,10 @@ section{
   align-items: center;
   justify-content: center;
 
-  padding-top: 35px;
+  width: 100%;
+
+  padding: 0;
+  margin: 0;
 
   pointer-events: none;
 }
@@ -1594,34 +1449,33 @@ section{
 .bertha-price-mascot img {
   display: block;
 
-  width: 190px;
-  max-width: none;
+  width: 250px;
+  max-width: 100%;
   height: auto;
+
+  margin: 0 auto;
 
   object-fit: contain;
 
   filter: drop-shadow(
-    0 8px 7px rgba(35, 12, 2, .28)
+    0 9px 8px rgba(35, 12, 2, .28)
   );
 }
+
+
 /* =========================================================
-   BERTHA NOTE
+   23. BERTHA NOTE + BUTTONS
    ========================================================= */
 
-.bertha-note{
-  max-width: 660px;
+.bertha-note {
+  max-width: 720px;
 
-  margin: 0 auto 30px;
+  margin: 0 auto 28px;
 
   color: var(--off-white);
 }
 
-
-/* =========================================================
-   BERTHA BUTTONS
-   ========================================================= */
-
-.bertha-thanks .hero-actions{
+.bertha-thanks .hero-actions {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -1630,16 +1484,16 @@ section{
 }
 
 .bertha-thanks .btn-primary,
-.bertha-thanks .btn-gold{
+.bertha-thanks .btn-gold {
   box-shadow: 4px 4px 0 var(--brown-dark);
 }
 
 
 /* =========================================================
-   DECORATIVE SPOTS
+   24. BERTHA DECORATIVE SPOTS
    ========================================================= */
 
-.bertha-spot-one{
+.bertha-spot-one {
   width: 150px;
   height: 150px;
 
@@ -1649,7 +1503,7 @@ section{
   opacity: .45;
 }
 
-.bertha-spot-two{
+.bertha-spot-two {
   width: 105px;
   height: 105px;
 
@@ -1661,116 +1515,10 @@ section{
 
 
 /* =========================================================
-   BERTHA — TABLET
+   25. FOOTER
    ========================================================= */
 
-@media (max-width: 760px) {
-
-  .bertha-thanks-card {
-    padding: 52px 28px;
-  }
-
-  .bertha-prices {
-    grid-template-columns:
-      minmax(150px, 1fr)
-      135px
-      minmax(150px, 1fr);
-
-    gap: 8px;
-  }
-
-  .bertha-price {
-    padding: 18px 14px;
-  }
-
-  .bertha-price-mascot {
-    height: 195px;
-    padding-top: 30px;
-  }
-
-  .bertha-price-mascot img {
-    width: 150px;
-    transform: none;
-  }
-}
-
-
-/* =========================================================
-   BERTHA — MOBILE
-   Price cards stay beside each other.
-   Bertha moves underneath them.
-   ========================================================= */
-
-@media (max-width: 560px){
-
-  .bertha-thanks-card{
-    padding: 48px 20px;
-  }
-
-  .bertha-prices{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    gap: 12px;
-
-    width: 100%;
-    max-width: 380px;
-
-    margin-bottom: 30px;
-  }
-
-  .bertha-price{
-    padding: 18px 10px;
-  }
-
-  .bertha-price-label{
-    font-size: .66rem;
-  }
-
-  .bertha-price strong{
-    font-size: 2.35rem;
-  }
-
-
-  /* Put Bertha underneath both price cards */
-
-  .bertha-price-mascot{
-    grid-column: 1 / -1;
-
-    width: 100%;
-    height: auto;
-
-    margin-top: 6px;
-  }
-
-  .bertha-price-mascot img{
-    width: 155px;
-    max-width: 55vw;
-
-    margin: 0 auto;
-
-    transform: none;
-  }
-
-
-  /* Stack CTA buttons */
-
-  .bertha-thanks .hero-actions{
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .bertha-thanks .hero-actions .btn{
-    justify-content: center;
-  }
-
-}
-
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
-
-.site-footer{
+.site-footer {
   margin-top: 40px;
   padding: 56px 0 28px;
 
@@ -1778,7 +1526,7 @@ section{
   color: var(--off-white);
 }
 
-.footer-grid{
+.footer-grid {
   display: grid;
 
   grid-template-columns: 1.3fr 1fr 1fr;
@@ -1787,10 +1535,10 @@ section{
 
   padding-bottom: 34px;
 
-  border-bottom: 1px solid rgba(247,247,247,.2);
+  border-bottom: 1px solid rgba(247, 247, 247, .2);
 }
 
-.footer-grid h4{
+.footer-grid h4 {
   margin-bottom: 14px;
 
   color: var(--gold);
@@ -1800,7 +1548,7 @@ section{
 }
 
 .footer-grid p,
-.footer-grid a{
+.footer-grid a {
   color: var(--off-white);
 
   font-size: .95rem;
@@ -1808,14 +1556,14 @@ section{
   opacity: .85;
 }
 
-.footer-grid ul{
+.footer-grid ul {
   display: flex;
   flex-direction: column;
 
   gap: 10px;
 }
 
-.footer-logo{
+.footer-logo {
   display: block;
 
   margin-bottom: 8px;
@@ -1826,7 +1574,7 @@ section{
   font-size: 1.5rem;
 }
 
-.footer-tagline{
+.footer-tagline {
   color: var(--pink);
 
   font-style: italic;
@@ -1834,7 +1582,7 @@ section{
   opacity: 1;
 }
 
-.social-row{
+.social-row {
   display: flex;
 
   gap: 14px;
@@ -1842,7 +1590,7 @@ section{
   margin-top: 16px;
 }
 
-.social-row a{
+.social-row a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1850,7 +1598,7 @@ section{
   width: 38px;
   height: 38px;
 
-  border: 1px solid rgba(247,247,247,.35);
+  border: 1px solid rgba(247, 247, 247, .35);
   border-radius: 50%;
 
   transition:
@@ -1858,20 +1606,20 @@ section{
     border-color .15s ease;
 }
 
-.social-row a:hover{
+.social-row a:hover {
   background: var(--pink);
 
   border-color: var(--pink);
 }
 
-.social-row svg{
+.social-row svg {
   width: 18px;
   height: 18px;
 
   fill: var(--off-white);
 }
 
-.footer-bottom{
+.footer-bottom {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -1885,33 +1633,414 @@ section{
   opacity: .65;
 }
 
-@media (max-width: 700px){
-
-  .footer-grid{
-    grid-template-columns: 1fr;
-
-    gap: 30px;
-  }
-
-}
-
 
 /* =========================================================
-   UTILITIES
+   26. UTILITIES
    ========================================================= */
 
-.text-center{
+.text-center {
   text-align: center;
 }
 
-.mt-lg{
+.mt-lg {
   margin-top: 48px;
 }
 
-.small-print{
+.small-print {
   color: var(--brown-dark);
 
   font-size: .85rem;
 
   opacity: .75;
+}
+
+
+/* =========================================================
+   27. RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 860px) {
+
+  /* Navigation */
+
+  .nav-toggle {
+    display: block;
+  }
+
+  .main-nav {
+    display: none;
+
+    position: absolute;
+
+    top: 100%;
+    left: 0;
+    right: 0;
+
+    padding: 12px 24px 24px;
+
+    background: var(--off-white);
+
+    border-bottom: 3px solid var(--brown);
+  }
+
+  .main-nav.open {
+    display: block;
+  }
+
+  .main-nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 18px;
+  }
+
+  .main-nav .nav-order {
+    width: 100%;
+  }
+
+  .main-nav .nav-order a {
+    display: block;
+
+    text-align: center;
+  }
+
+
+  /* General grid */
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+
+  /* Cookie cards */
+
+  .cookie-card {
+    min-height: 470px;
+  }
+
+
+  /* Gift tiers */
+
+  .tier-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  /* About */
+
+  .about-wrap {
+    grid-template-columns: 1fr;
+  }
+
+
+  /* Bertha */
+
+  .bertha-thanks-card {
+    padding: 52px 30px;
+  }
+
+  .bertha-thanks-content {
+    max-width: 760px;
+  }
+
+  .bertha-prices {
+    grid-template-columns:
+      minmax(175px, 220px)
+      minmax(165px, 195px)
+      minmax(175px, 220px);
+
+    gap: 14px;
+
+    margin-top: 26px;
+  }
+
+  .bertha-price {
+    padding: 22px 14px;
+  }
+
+  .bertha-price-label {
+    font-size: .72rem;
+  }
+
+  .bertha-price strong {
+    font-size: 2.8rem;
+  }
+
+  .bertha-price-mascot img {
+    width: 190px;
+  }
+}
+
+
+/* =========================================================
+   28. RESPONSIVE — SMALL TABLET
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  /* Order page */
+
+  .order-steps {
+    grid-template-columns: 1fr;
+  }
+
+
+  /* Carousel */
+
+  .carousel-slide img {
+    height: 360px;
+  }
+
+  .carousel-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  .carousel-prev {
+    left: 10px;
+  }
+
+  .carousel-next {
+    right: 10px;
+  }
+
+
+  /* Footer */
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+
+    gap: 30px;
+  }
+}
+
+
+/* =========================================================
+   29. RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+  /* Global */
+
+  body {
+    font-size: 16px;
+  }
+
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  section {
+    padding: 54px 0;
+  }
+
+
+  /* Header */
+
+  .nav-wrap {
+    padding: 14px 16px;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+  }
+
+  .logo .logo-mark {
+    font-size: 1.4rem;
+  }
+
+
+  /* General grid */
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  /* Cookie cards */
+
+  .cookie-card {
+    min-height: 440px;
+  }
+
+  .cookie-card-overlay {
+    padding: 28px 22px 22px;
+  }
+
+  .cookie-card-overlay h3 {
+    padding-right: 50px;
+
+    font-size: 1.4rem;
+  }
+
+  .cookie-card .price-tag {
+    top: 14px;
+    right: 14px;
+  }
+
+  .cookie-card.dog::before {
+    top: 14px;
+    left: 14px;
+  }
+
+
+  /* CTA band */
+
+  .cta-band {
+    padding: 38px 22px;
+  }
+
+
+  /* =======================================================
+     BERTHA MOBILE
+
+     CLASSIC $2
+        ↓
+      BERTHA
+        ↓
+     SPECIALTY $3
+     ======================================================= */
+
+  .bertha-thanks-card {
+    padding: 42px 18px;
+
+    border-radius: 22px;
+  }
+
+  .bertha-thanks-content {
+    width: 100%;
+    max-width: none;
+  }
+
+  .bertha-thanks .eyebrow {
+    margin-bottom: 12px;
+
+    font-size: .72rem;
+  }
+
+  .bertha-thanks h2 {
+    margin-bottom: 18px;
+  }
+
+  .bertha-lead {
+    max-width: 100%;
+
+    margin-bottom: 26px;
+
+    font-size: 1rem;
+  }
+
+
+  /* Stack price cards and Bertha */
+
+  .bertha-prices {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 24px;
+
+    width: 100%;
+    max-width: none;
+
+    margin: 24px auto 34px;
+  }
+
+
+  /* Mobile price cards */
+
+  .bertha-price {
+    width: min(320px, 94%);
+
+    padding: 26px 18px;
+
+    flex: none;
+  }
+
+  .bertha-price-label {
+    margin-bottom: 8px;
+
+    font-size: .76rem;
+  }
+
+  .bertha-price strong {
+    font-size: 3.2rem;
+  }
+
+
+  /* Mobile Bertha */
+
+  .bertha-price-mascot {
+    width: 235px;
+    max-width: 76vw;
+
+    padding: 0;
+    margin: 2px 0;
+
+    flex: none;
+  }
+
+  .bertha-price-mascot img {
+    width: 235px;
+    max-width: 100%;
+    height: auto;
+
+    margin: 0 auto;
+
+    transform: none;
+  }
+
+
+  /* Text beneath prices */
+
+  .bertha-note {
+    max-width: 100%;
+
+    margin: 0 auto 28px;
+
+    font-size: 1rem;
+  }
+
+
+  /* Stack Bertha buttons */
+
+  .bertha-thanks .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 14px;
+  }
+
+  .bertha-thanks .hero-actions .btn {
+    width: 100%;
+
+    justify-content: center;
+  }
+}
+
+
+/* =========================================================
+   30. RESPONSIVE — VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .bertha-thanks-card {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .bertha-price {
+    width: 96%;
+  }
+
+  .bertha-price-mascot {
+    width: 210px;
+  }
+
+  .bertha-price-mascot img {
+    width: 210px;
+  }
 }
