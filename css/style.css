@@ -232,9 +232,8 @@ h3 {
 }
 
 .logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-
   gap: 10px;
 
   color: var(--brown);
@@ -242,17 +241,20 @@ h3 {
   font-family: var(--font-display);
   font-size: 1.4rem;
   font-weight: 700;
+  line-height: 1;
 }
 
 .logo .logo-mark {
   display: block;
 
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
 
-  flex-shrink: 0;
+  flex: 0 0 46px;
 
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center;
 
   border-radius: 50%;
 }
@@ -865,14 +867,7 @@ section {
   text-align: center;
 }
 
-.tier.tier--feature {
-  background: var(--brown);
-  color: var(--off-white);
-
-  box-shadow: 8px 8px 0 var(--gold);
-
-  transform: translateY(-);
-}
+transform: translateY(-8px);
 
 .tier.tier--feature h3,
 .tier.tier--feature .tier-price {
@@ -2541,13 +2536,14 @@ section {
 
   .logo {
   gap: 8px;
-
   font-size: 1.2rem;
 }
 
 .logo .logo-mark {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  flex-basis: 40px;
 }
 
 
