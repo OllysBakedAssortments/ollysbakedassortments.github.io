@@ -1516,26 +1516,26 @@ section{
    $2 CARD | BERTHA | $3 CARD
    ========================================================= */
 
-.bertha-prices{
+.bertha-prices {
   display: grid;
 
   grid-template-columns:
     minmax(190px, 220px)
-    175px
+    190px
     minmax(190px, 220px);
 
   align-items: center;
   justify-content: center;
 
-  gap: 12px;
+  gap: 16px;
 
-  margin: 0 auto 34px;
+  margin: 20px auto 42px;
 }
 
 
 /* Price cards */
 
-.bertha-price{
+.bertha-price {
   position: relative;
   z-index: 2;
 
@@ -1550,7 +1550,7 @@ section{
   box-shadow: 5px 5px 0 var(--pink);
 }
 
-.bertha-price-label{
+.bertha-price-label {
   display: block;
 
   margin-bottom: 7px;
@@ -1562,7 +1562,7 @@ section{
   letter-spacing: .05em;
 }
 
-.bertha-price strong{
+.bertha-price strong {
   display: block;
 
   color: var(--brown);
@@ -1575,7 +1575,7 @@ section{
 
 
 /* =========================================================
-   BERTHA ARTWORK BETWEEN PRICE CARDS
+   BERTHA ARTWORK
    ========================================================= */
 
 .bertha-price-mascot {
@@ -1583,10 +1583,8 @@ section{
   z-index: 3;
 
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-
-  height: 235px;
 
   padding-top: 35px;
 
@@ -1596,7 +1594,7 @@ section{
 .bertha-price-mascot img {
   display: block;
 
-  width: 185px;
+  width: 190px;
   max-width: none;
   height: auto;
 
@@ -1605,11 +1603,7 @@ section{
   filter: drop-shadow(
     0 8px 7px rgba(35, 12, 2, .28)
   );
-
-  /* Don't position Bertha with transform */
-  transform: none;
 }
-
 /* =========================================================
    BERTHA NOTE
    ========================================================= */
