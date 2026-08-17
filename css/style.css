@@ -1578,20 +1578,22 @@ section{
    BERTHA ARTWORK BETWEEN PRICE CARDS
    ========================================================= */
 
-.bertha-price-mascot{
+.bertha-price-mascot {
   position: relative;
   z-index: 3;
 
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 
-  height: 165px;
+  height: 235px;
+
+  padding-top: 35px;
 
   pointer-events: none;
 }
 
-.bertha-price-mascot img{
+.bertha-price-mascot img {
   display: block;
 
   width: 185px;
@@ -1604,9 +1606,9 @@ section{
     0 8px 7px rgba(35, 12, 2, .28)
   );
 
-  transform: translateY(35px);
+  /* Don't position Bertha with transform */
+  transform: none;
 }
-
 
 /* =========================================================
    BERTHA NOTE
@@ -1668,13 +1670,13 @@ section{
    BERTHA — TABLET
    ========================================================= */
 
-@media (max-width: 760px){
+@media (max-width: 760px) {
 
-  .bertha-thanks-card{
+  .bertha-thanks-card {
     padding: 52px 28px;
   }
 
-  .bertha-prices{
+  .bertha-prices {
     grid-template-columns:
       minmax(150px, 1fr)
       135px
@@ -1683,18 +1685,19 @@ section{
     gap: 8px;
   }
 
-  .bertha-price{
+  .bertha-price {
     padding: 18px 14px;
   }
 
-  .bertha-price-mascot{
-    height: 125px;
+  .bertha-price-mascot {
+    height: 195px;
+    padding-top: 30px;
   }
 
-  .bertha-price-mascot img{
+  .bertha-price-mascot img {
     width: 150px;
+    transform: none;
   }
-
 }
 
 
