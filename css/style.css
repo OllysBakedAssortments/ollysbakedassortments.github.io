@@ -233,9 +233,9 @@ h3 {
 
 .logo {
   display: flex;
-  align-items: baseline;
+  align-items: center;
 
-  gap: 8px;
+  gap: 10px;
 
   color: var(--brown);
 
@@ -245,9 +245,16 @@ h3 {
 }
 
 .logo .logo-mark {
-  color: var(--pink);
+  display: block;
 
-  font-size: 1.6rem;
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  object-fit: contain;
+
+  border-radius: 50%;
 }
 
 .nav-toggle {
@@ -620,7 +627,7 @@ section {
 .card .icon {
   display: block;
 
-  margin-bottom: ;
+  margin-bottom: 12px;
 
   font-size: 2.1rem;
 }
@@ -815,7 +822,7 @@ section {
 
   z-index: 4;
 
-  padding: 5px ;
+  padding: 5px 10px;
 
   background: var(--cream);
   color: var(--brown);
@@ -1057,7 +1064,7 @@ section {
 }
 
 
-/* Explore Pack link */
+/* Order Pack link */
 
 .pack-cta {
   display: inline-block;
@@ -1090,7 +1097,9 @@ section {
   transform: translateX(4px);
 }
 
-
+.pack-card {
+  cursor: pointer;
+}
 /* Keyboard accessibility */
 
 .pack-card:focus-visible {
@@ -1177,13 +1186,13 @@ section {
 .event-date {
   min-width: 84px;
 
-  padding:  14px;
+  padding: 14px;
 
   background: var(--pink);
   color: var(--brown-dark);
 
   border: 2px solid var(--brown);
-  border-radius: ;
+  border-radius: var(--radius-md);
 
   font-family: var(--font-tag);
   font-weight: 700;
@@ -1216,7 +1225,7 @@ section {
   display: inline-block;
 
   margin-bottom: 6px;
-  padding: 3px ;
+  padding: 3px 9px;
 
   background: var(--gold-soft);
   color: var(--brown-dark);
@@ -2206,7 +2215,7 @@ section {
    ========================================================= */
 
 .site-footer {
-  margin-top: 40px;
+  margin-top: 0;
   padding: 56px 0 28px;
 
   background: var(--brown-dark);
@@ -2531,12 +2540,15 @@ section {
   }
 
   .logo {
-    font-size: 1.2rem;
-  }
+  gap: 8px;
 
-  .logo .logo-mark {
-    font-size: 1.4rem;
-  }
+  font-size: 1.2rem;
+}
+
+.logo .logo-mark {
+  width: 36px;
+  height: 36px;
+}
 
 
   /* General grid */
