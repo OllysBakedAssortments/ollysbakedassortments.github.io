@@ -1449,10 +1449,6 @@ section {
 
 .carousel-slide {
   min-width: 100%;
-}
-
-.carousel-slide {
-  min-width: 100%;
   aspect-ratio: 1 / 1;
 }
 
