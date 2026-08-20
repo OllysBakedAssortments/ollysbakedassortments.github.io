@@ -602,6 +602,8 @@ h3 {
 
 /* Homepage brand / ordering banner */
 
+/* Homepage brand / ordering banner */
+
 .hero-brand-banner {
   display: block;
 
@@ -612,8 +614,8 @@ h3 {
 
   overflow: hidden;
 
-  border: 2px solid var(--gold);
-  border-radius: 20px;
+  border: 5px solid var(--off-white);
+  border-radius: 24px;
 
   box-shadow: 6px 6px 0 var(--brown-dark);
 
@@ -639,7 +641,6 @@ h3 {
   outline: 4px solid var(--gold);
   outline-offset: 4px;
 }
-
 
 /* =========================================================
    7. GENERAL SECTIONS / LAYOUT
@@ -2678,7 +2679,7 @@ section {
 .hero-brand-banner {
   margin: 22px auto 26px;
 
-  border-radius: 14px;
+  border-radius: 18px;
 
   box-shadow: 4px 4px 0 var(--brown-dark);
 }
