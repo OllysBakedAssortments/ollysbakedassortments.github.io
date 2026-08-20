@@ -3266,26 +3266,24 @@ section {
   }
 
   .reviews-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
 
-  /*
-   The featured review spans the full second row,
-   preventing an awkward empty grid cell.
-  */
-
+  .review-card,
   .review-card-featured {
-    grid-column: span 2;
-
+    grid-column: auto;
+    width: 100%;
+    min-height: 0;
     transform: none;
   }
 
+  .review-card:hover,
   .review-card-featured:hover {
     transform: translateY(-4px);
   }
 
 }
-
 
 /* =========================================================
    REVIEWS — MOBILE
