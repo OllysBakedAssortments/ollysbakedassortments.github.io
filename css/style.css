@@ -2797,6 +2797,647 @@ section {
   color: var(--pink);
 }
 
+/* =========================================================
+   22. CUSTOMER REVIEWS — HOMEPAGE
+   ========================================================= */
+
+.home-reviews {
+  position: relative;
+
+  padding: 72px 0;
+
+  background: var(--off-white);
+}
+
+
+/* ---------------------------------------------------------
+   Main review panel
+   --------------------------------------------------------- */
+
+.reviews-shell {
+  position: relative;
+
+  padding: 58px 48px;
+
+  overflow: hidden;
+
+  background: var(--cream);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-lg);
+
+  box-shadow: 8px 8px 0 var(--pink);
+}
+
+
+/* Make actual content sit above decorative spots */
+
+.reviews-shell > *:not(.reviews-spot) {
+  position: relative;
+  z-index: 2;
+}
+
+
+/* ---------------------------------------------------------
+   Decorative OBA spots
+   --------------------------------------------------------- */
+
+.reviews-spot {
+  position: absolute;
+  z-index: 0;
+
+  border-radius:
+    62% 38% 55% 45% /
+    45% 60% 40% 55%;
+
+  pointer-events: none;
+}
+
+.reviews-spot-pink {
+  width: 165px;
+  height: 165px;
+
+  top: -65px;
+  left: -35px;
+
+  background: var(--pink);
+
+  opacity: .72;
+}
+
+.reviews-spot-gold {
+  width: 125px;
+  height: 125px;
+
+  right: -30px;
+  bottom: -45px;
+
+  background: var(--gold);
+
+  opacity: .72;
+}
+
+
+/* ---------------------------------------------------------
+   Review heading
+   --------------------------------------------------------- */
+
+.reviews-heading {
+  max-width: 720px;
+
+  margin-bottom: 38px;
+}
+
+.reviews-heading .eyebrow {
+  display: inline-block;
+
+  margin-bottom: 12px;
+
+  color: var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.reviews-heading h2 {
+  margin-bottom: 18px;
+
+  color: var(--brown);
+
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.reviews-heading h2 em {
+  color: var(--pink);
+
+  font-style: italic;
+}
+
+
+/* ---------------------------------------------------------
+   Rating summary
+   --------------------------------------------------------- */
+
+.reviews-summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 12px 18px;
+
+  max-width: 620px;
+
+  margin: 0 auto;
+}
+
+.reviews-summary-stars {
+  color: var(--gold);
+
+  font-size: 1.45rem;
+  line-height: 1;
+  letter-spacing: .06em;
+
+  /* Keeps yellow stars readable on cream */
+  text-shadow:
+    1px 0 var(--brown),
+    -1px 0 var(--brown),
+    0 1px var(--brown),
+    0 -1px var(--brown);
+}
+
+.reviews-summary p {
+  margin: 0;
+
+  color: var(--brown-dark);
+
+  font-size: .98rem;
+  line-height: 1.45;
+}
+
+.reviews-summary strong {
+  color: var(--brown);
+
+  font-weight: 800;
+}
+
+
+/* ---------------------------------------------------------
+   Review grid
+   --------------------------------------------------------- */
+
+.reviews-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  align-items: stretch;
+
+  gap: 24px;
+
+  width: 100%;
+}
+
+
+/* ---------------------------------------------------------
+   Individual review cards
+   --------------------------------------------------------- */
+
+.review-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  min-height: 330px;
+
+  padding: 28px 26px;
+
+  background: var(--off-white);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-md);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow: 6px 6px 0 var(--pink);
+}
+
+
+/* Featured middle review */
+
+.review-card-featured {
+  background: var(--brown);
+  color: var(--off-white);
+
+  border-color: var(--brown);
+
+  box-shadow: 6px 6px 0 var(--gold);
+
+  transform: translateY(-6px);
+}
+
+.review-card-featured:hover {
+  transform: translateY(-10px);
+
+  box-shadow: 8px 8px 0 var(--gold);
+}
+
+
+/* ---------------------------------------------------------
+   Review stars
+   --------------------------------------------------------- */
+
+.review-stars {
+  margin-bottom: 15px;
+
+  color: var(--gold);
+
+  font-size: 1.2rem;
+  line-height: 1;
+  letter-spacing: .05em;
+}
+
+
+/* ---------------------------------------------------------
+   Cookie-specific review label
+   --------------------------------------------------------- */
+
+.review-cookie {
+  display: inline-flex;
+  align-items: center;
+
+  align-self: flex-start;
+
+  max-width: 100%;
+
+  margin-bottom: 15px;
+  padding: 5px 10px;
+
+  background: var(--pink-soft);
+  color: var(--brown-dark);
+
+  border: 1px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.review-card-featured .review-cookie {
+  background: var(--pink);
+  color: var(--brown-dark);
+
+  border-color: var(--off-white);
+}
+
+
+/* ---------------------------------------------------------
+   Review quote
+   --------------------------------------------------------- */
+
+.review-card blockquote {
+  position: relative;
+
+  flex: 1 1 auto;
+
+  margin: 0 0 24px;
+  padding: 0;
+
+  color: var(--brown-dark);
+
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.55;
+}
+
+.review-card-featured blockquote {
+  color: var(--off-white);
+}
+
+
+/* Decorative quotation mark */
+
+.review-card blockquote::before {
+  content: "“";
+
+  position: absolute;
+
+  top: -20px;
+  left: -8px;
+  z-index: 0;
+
+  color: var(--pink);
+
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+
+  opacity: .18;
+
+  pointer-events: none;
+}
+
+.review-card-featured blockquote::before {
+  color: var(--gold);
+
+  opacity: .2;
+}
+
+
+/* ---------------------------------------------------------
+   Reviewer / source footer
+   --------------------------------------------------------- */
+
+.review-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  margin-top: auto;
+  padding-top: 18px;
+
+  border-top: 1px solid rgba(122, 47, 0, .18);
+}
+
+.review-card-featured .review-footer {
+  border-top-color: rgba(247, 247, 247, .25);
+}
+
+.review-footer > div {
+  min-width: 0;
+}
+
+.review-footer strong {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: var(--brown);
+
+  font-size: .96rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.review-card-featured .review-footer strong {
+  color: var(--off-white);
+}
+
+.review-footer > div > span {
+  display: block;
+
+  color: var(--brown-dark);
+
+  font-size: .78rem;
+  line-height: 1.3;
+
+  opacity: .75;
+}
+
+.review-card-featured .review-footer > div > span {
+  color: var(--gold-soft);
+
+  opacity: .85;
+}
+
+
+/* Source badge */
+
+.review-source {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  padding: 5px 9px;
+
+  background: var(--gold-soft);
+  color: var(--brown-dark);
+
+  border: 1px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.review-card-featured .review-source {
+  background: var(--gold);
+  color: var(--brown-dark);
+
+  border-color: var(--off-white);
+}
+
+
+/* ---------------------------------------------------------
+   Review CTAs
+   --------------------------------------------------------- */
+
+.reviews-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 16px;
+
+  margin-top: 38px;
+}
+
+.reviews-actions .btn {
+  min-width: 210px;
+}
+
+
+/* =========================================================
+   REVIEWS — TABLET
+   ========================================================= */
+
+@media (max-width: 860px) {
+
+  .reviews-shell {
+    padding: 50px 30px;
+  }
+
+  .reviews-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /*
+   The featured review spans the full second row,
+   preventing an awkward empty grid cell.
+  */
+
+  .review-card-featured {
+    grid-column: span 2;
+
+    transform: none;
+  }
+
+  .review-card-featured:hover {
+    transform: translateY(-4px);
+  }
+
+}
+
+
+/* =========================================================
+   REVIEWS — MOBILE
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+  .home-reviews {
+    padding: 54px 0;
+  }
+
+  .reviews-shell {
+    padding: 42px 18px;
+
+    border-radius: 22px;
+
+    box-shadow: 5px 5px 0 var(--pink);
+  }
+
+  .reviews-heading {
+    margin-bottom: 30px;
+  }
+
+  .reviews-heading .eyebrow {
+    font-size: .7rem;
+  }
+
+  .reviews-heading h2 {
+    font-size: clamp(1.9rem, 9vw, 2.5rem);
+  }
+
+  .reviews-summary {
+    flex-direction: column;
+
+    gap: 9px;
+  }
+
+  .reviews-summary-stars {
+    font-size: 1.35rem;
+  }
+
+  .reviews-summary p {
+    max-width: 290px;
+
+    font-size: .92rem;
+  }
+
+
+  /* Review cards */
+
+  .reviews-grid {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  .review-card,
+  .review-card-featured {
+    grid-column: auto;
+
+    min-height: 0;
+
+    padding: 26px 22px;
+
+    transform: none;
+  }
+
+  .review-card:hover,
+  .review-card-featured:hover {
+    transform: none;
+  }
+
+  .review-card blockquote {
+    font-size: 1.02rem;
+  }
+
+
+  /* Review footer */
+
+  .review-footer {
+    align-items: center;
+  }
+
+
+  /* Buttons stack on phone */
+
+  .reviews-actions {
+    flex-direction: column;
+
+    width: 100%;
+
+    gap: 13px;
+
+    margin-top: 30px;
+  }
+
+  .reviews-actions .btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+
+  /* Decorative spots become smaller */
+
+  .reviews-spot-pink {
+    width: 115px;
+    height: 115px;
+
+    top: -45px;
+    left: -35px;
+  }
+
+  .reviews-spot-gold {
+    width: 90px;
+    height: 90px;
+
+    right: -25px;
+    bottom: -30px;
+  }
+
+}
+
+
+/* =========================================================
+   REVIEWS — VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .reviews-shell {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .review-card,
+  .review-card-featured {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .review-footer {
+    gap: 8px;
+  }
+
+  .review-source {
+    padding-left: 7px;
+    padding-right: 7px;
+
+    font-size: .58rem;
+  }
+
+}
 
 /* =========================================================
    22. FOOTER
