@@ -6,37 +6,6 @@
    - Fraunces: display / headings
    - Karla: body
    - Space Mono: labels / tags
-
-   Structure
-   1.  Google Fonts
-   2.  Brand Variables
-   3.  Reset / Base
-   4.  Buttons
-   5.  Header / Navigation
-   6.  Decorative Elements
-   7.  Heroes
-   8.  General Sections / Layout
-   9.  General Cards
-   10. Cookie Cards
-   11. Homepage Giraffe Pack Cards
-   12. Gift Box Tiers
-   13. Events
-   14. FAQ
-   15. About
-   16. Order Page
-   17. Notes / CTA
-   18. Homepage Carousel
-   19. Bertha Section
-   20. Pricing & Ordering
-   21. Flavors / Menu Page
-   22. Footer
-   23. Utilities
-   24. Responsive — 900px
-   25. Responsive — 860px
-   26. Responsive — 700px
-   27. Responsive — 650px
-   28. Responsive — 560px
-   29. Responsive — 380px
    ========================================================= */
 
 
@@ -73,6 +42,9 @@
   --radius-md: 16px;
 
   --container: 1120px;
+
+  /* Catalog sizing */
+  --catalog-card-width: 340px;
 }
 
 
@@ -212,9 +184,6 @@ h3 {
   transform: translateY(-2px);
 }
 
-
-/* Pink button */
-
 .btn-primary {
   background: var(--pink);
   color: var(--brown-dark);
@@ -226,9 +195,6 @@ h3 {
   box-shadow: 6px 6px 0 var(--brown);
 }
 
-
-/* Outline button */
-
 .btn-secondary {
   background: transparent;
   color: var(--off-white);
@@ -239,9 +205,6 @@ h3 {
 .btn-secondary:hover {
   background: rgba(247, 247, 247, .12);
 }
-
-
-/* Gold button */
 
 .btn-gold {
   background: var(--gold);
@@ -282,9 +245,6 @@ h3 {
   gap: 26px;
 }
 
-
-/* Brand */
-
 .logo {
   display: inline-flex;
   align-items: center;
@@ -319,9 +279,6 @@ h3 {
   object-fit: contain;
   object-position: center;
 }
-
-
-/* Desktop navigation */
 
 .main-nav {
   margin-left: auto;
@@ -381,9 +338,6 @@ h3 {
   color: var(--brown);
 }
 
-
-/* Order button */
-
 .main-nav .nav-order a {
   padding: 9px 16px;
 
@@ -402,9 +356,6 @@ h3 {
 .main-nav .nav-order a:hover {
   background: var(--brown-dark);
 }
-
-
-/* Mobile menu button */
 
 .nav-toggle {
   display: none;
@@ -468,9 +419,6 @@ h3 {
   opacity: .6;
 }
 
-
-/* Cookie trail */
-
 .trail {
   display: flex;
   align-items: center;
@@ -525,10 +473,6 @@ h3 {
 /* =========================================================
    7. HEROES
    ========================================================= */
-
-/* ---------------------------------------------------------
-   Homepage hero
-   --------------------------------------------------------- */
 
 .hero {
   position: relative;
@@ -602,9 +546,7 @@ h3 {
 }
 
 
-/* ---------------------------------------------------------
-   General interior page hero
-   --------------------------------------------------------- */
+/* General page hero */
 
 .page-hero {
   position: relative;
@@ -664,9 +606,7 @@ h3 {
 }
 
 
-/* ---------------------------------------------------------
-   Homepage brand / ordering banner
-   --------------------------------------------------------- */
+/* Homepage banner */
 
 .hero-brand-banner {
   display: block;
@@ -887,9 +827,6 @@ section {
   transition: transform .15s ease;
 }
 
-
-/* Price tag */
-
 .cookie-card .price-tag {
   position: absolute;
 
@@ -918,9 +855,6 @@ section {
   background: var(--pink);
 }
 
-
-/* Clickable cookie cards */
-
 .cookie-card-link {
   display: block;
 }
@@ -943,9 +877,6 @@ section {
   outline: 4px solid var(--gold);
   outline-offset: 4px;
 }
-
-
-/* Dog treat badge */
 
 .cookie-card.dog::before {
   content: "🐾 for pups";
@@ -1472,9 +1403,6 @@ section {
   color: var(--brown-dark);
 }
 
-
-/* CTA band */
-
 .cta-band {
   position: relative;
 
@@ -1680,9 +1608,6 @@ section {
   font-size: 1.05rem;
 }
 
-
-/* Bertha prices */
-
 .bertha-prices {
   display: grid;
 
@@ -1741,9 +1666,6 @@ section {
   line-height: 1;
 }
 
-
-/* Bertha artwork */
-
 .bertha-price-mascot {
   position: relative;
   z-index: 3;
@@ -1773,9 +1695,6 @@ section {
     drop-shadow(0 9px 8px rgba(35, 12, 2, .28));
 }
 
-
-/* Bertha note */
-
 .bertha-note {
   max-width: 720px;
 
@@ -1783,9 +1702,6 @@ section {
 
   color: var(--off-white);
 }
-
-
-/* Bertha primary CTAs */
 
 .bertha-thanks .hero-actions {
   display: grid;
@@ -1814,9 +1730,6 @@ section {
 .bertha-thanks .btn-gold {
   box-shadow: 4px 4px 0 var(--brown-dark);
 }
-
-
-/* Bertha secondary links */
 
 .bertha-extra-links {
   display: grid;
@@ -1878,9 +1791,6 @@ section {
   border-radius: 6px;
 }
 
-
-/* Bertha decorative spots */
-
 .bertha-spot-one {
   width: 150px;
   height: 150px;
@@ -1903,7 +1813,7 @@ section {
 
 
 /* =========================================================
-   20. PRICING & ORDERING PAGE
+   20. PRICING & ORDERING
    ========================================================= */
 
 .pricing-section-kicker {
@@ -1919,9 +1829,6 @@ section {
   letter-spacing: .1em;
   text-transform: uppercase;
 }
-
-
-/* Pricing route cards */
 
 .pricing-route-grid {
   display: grid;
@@ -1984,9 +1891,6 @@ section {
   font-weight: 700;
 }
 
-
-/* Pricing feature */
-
 .pricing-feature {
   max-width: 900px;
 
@@ -2041,9 +1945,6 @@ section {
 
   gap: 16px;
 }
-
-
-/* Pricing pair */
 
 .pricing-pair {
   display: grid;
@@ -2106,9 +2007,6 @@ section {
   opacity: .75;
 }
 
-
-/* Pricing callout */
-
 .pricing-callout {
   max-width: 760px;
 
@@ -2136,9 +2034,6 @@ section {
   font-size: .9rem;
   text-align: center;
 }
-
-
-/* Custom price formula */
 
 .custom-price-formula {
   display: grid;
@@ -2194,9 +2089,6 @@ section {
   font-weight: 700;
 }
 
-
-/* Premium ingredients */
-
 .premium-ingredients {
   max-width: 820px;
 
@@ -2227,9 +2119,6 @@ section {
   font-family: var(--font-tag);
   font-size: .76rem;
 }
-
-
-/* Pricing example */
 
 .pricing-example {
   max-width: 620px;
@@ -2273,9 +2162,6 @@ section {
   font-size: 1.15rem;
 }
 
-
-/* Delivery */
-
 .pricing-delivery-card {
   padding: 52px;
 
@@ -2312,9 +2198,6 @@ section {
 .pricing-delivery-card p {
   color: var(--gold-soft);
 }
-
-
-/* Why pricing works */
 
 .pricing-why-grid {
   display: grid;
@@ -2361,7 +2244,7 @@ section {
    ========================================================= */
 
 /* ---------------------------------------------------------
-   Flavors hero
+   Flavor page hero
    --------------------------------------------------------- */
 
 .flavor-page-hero {
@@ -2391,9 +2274,7 @@ section {
 }
 
 
-/* ---------------------------------------------------------
-   Meet the Cookies title
-   --------------------------------------------------------- */
+/* Meet the Cookies */
 
 .flavor-hero-title {
   margin-left: auto;
@@ -2415,9 +2296,7 @@ section {
 }
 
 
-/* ---------------------------------------------------------
-   Flavor collection hero banner
-   --------------------------------------------------------- */
+/* Flavor collection banner */
 
 .flavor-hero-banner {
   display: block;
@@ -2441,11 +2320,6 @@ section {
   width: 100%;
   height: auto;
 }
-
-
-/* ---------------------------------------------------------
-   Flavors hero buttons
-   --------------------------------------------------------- */
 
 .flavor-page-hero .hero-actions {
   display: flex;
@@ -2475,11 +2349,12 @@ section {
 .weekly-flavors .section-head {
   position: relative;
   z-index: 2;
+
+  margin-bottom: 26px;
 }
 
-/* ---------------------------------------------------------
-   Weekly Cookie Drop Banner
-   --------------------------------------------------------- */
+
+/* Weekly drop banner */
 
 .weekly-drop-banner {
   display: block;
@@ -2503,13 +2378,6 @@ section {
   object-fit: contain;
 }
 
-
-/* Keep rotation heading + banner visually connected */
-
-.weekly-flavors .section-head {
-  margin-bottom: 26px;
-}
-
 .weekly-flavors .weekly-drop-banner + p,
 .weekly-drop-description {
   max-width: 760px;
@@ -2522,6 +2390,7 @@ section {
   line-height: 1.6;
   text-align: center;
 }
+
 
 /* ---------------------------------------------------------
    Full flavor collection
@@ -2536,10 +2405,27 @@ section {
   z-index: 2;
 }
 
-.flavor-catalog-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
 
+/* =========================================================
+   IMPORTANT:
+   FIXED CATALOG GRID
+
+   Cards are prevented from becoming giant on wide/tablet
+   layouts. Each column tops out at 340px.
+   ========================================================= */
+
+.flavor-catalog-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, var(--catalog-card-width)));
+
+  justify-content: center;
   align-items: stretch;
+
+  gap: 26px;
+
+  width: 100%;
 }
 
 
@@ -2553,6 +2439,7 @@ section {
   display: flex;
   flex-direction: column;
 
+  width: 100%;
   min-width: 0;
   min-height: 500px;
 
@@ -2576,15 +2463,9 @@ section {
   box-shadow: 7px 7px 0 var(--pink);
 }
 
-
-/* Specialty card */
-
 .flavor-catalog-card-specialty {
   background: var(--pink-soft);
 }
-
-
-/* Safari Snacks */
 
 .flavor-catalog-card-dog {
   background: var(--gold-soft);
@@ -2611,6 +2492,8 @@ section {
 }
 
 .flavor-catalog-image > img {
+  display: block;
+
   width: 100%;
   height: 100%;
 
@@ -2625,11 +2508,7 @@ section {
 }
 
 
-/* ---------------------------------------------------------
-   Image placeholder
-
-   Used for cookies that do not yet have a photo.
-   --------------------------------------------------------- */
+/* Image placeholder */
 
 .flavor-image-placeholder {
   position: relative;
@@ -2721,11 +2600,6 @@ section {
   pointer-events: none;
 }
 
-
-/* ---------------------------------------------------------
-   Cookie category label
-   --------------------------------------------------------- */
-
 .flavor-status {
   display: inline-flex;
   align-items: center;
@@ -2753,17 +2627,9 @@ section {
   text-transform: uppercase;
 }
 
-
-/* Specialty status */
-
 .flavor-status-specialty {
   background: var(--pink);
 }
-
-
-/* ---------------------------------------------------------
-   Catalog price badges
-   --------------------------------------------------------- */
 
 .catalog-price {
   display: inline-flex;
@@ -2813,9 +2679,6 @@ section {
   padding: 27px 28px 28px;
 }
 
-
-/* Cookie names */
-
 .flavor-catalog-body h3 {
   margin: 0 0 10px;
 
@@ -2826,9 +2689,6 @@ section {
   font-weight: 600;
   line-height: 1.15;
 }
-
-
-/* Descriptions */
 
 .flavor-catalog-body > p {
   flex-grow: 1;
@@ -2842,9 +2702,7 @@ section {
 }
 
 
-/* ---------------------------------------------------------
-   Individual cookie links
-   --------------------------------------------------------- */
+/* Cookie links */
 
 .flavor-catalog-link {
   display: inline-flex;
@@ -2881,9 +2739,7 @@ section {
 }
 
 
-/* ---------------------------------------------------------
-   Specialty CTA
-   --------------------------------------------------------- */
+/* Specialty CTA */
 
 .flavor-collection + .bg-cream .cta-band .eyebrow,
 .flavor-pack-cta .eyebrow {
@@ -2901,9 +2757,7 @@ section {
 }
 
 
-/* ---------------------------------------------------------
-   Giraffe Pack CTA
-   --------------------------------------------------------- */
+/* Giraffe Pack CTA */
 
 .flavor-pack-cta {
   background: var(--off-white);
@@ -3013,9 +2867,6 @@ section {
   opacity: 1;
 }
 
-
-/* Social icons */
-
 .social-row {
   display: flex;
 
@@ -3053,9 +2904,6 @@ section {
 
   fill: var(--off-white);
 }
-
-
-/* Footer bottom */
 
 .footer-bottom {
   display: flex;
@@ -3269,15 +3117,23 @@ section {
   }
 
 
-  /* Flavor catalog */
+  /* =======================================================
+     FLAVOR CATALOG — TABLET
+
+     Two centered cards, but they are capped at the same
+     controlled catalog width instead of stretching.
+     ======================================================= */
 
   .flavor-catalog-grid {
     grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+      repeat(2, minmax(0, var(--catalog-card-width)));
+
+    justify-content: center;
   }
 
   .flavor-catalog-card {
-    min-height: 480px;
+    width: 100%;
+    min-height: 500px;
   }
 
 }
@@ -3352,7 +3208,6 @@ section {
 
 /* =========================================================
    28. RESPONSIVE — MOBILE
-   560px
    ========================================================= */
 
 @media (max-width: 560px) {
@@ -3370,9 +3225,8 @@ section {
     padding: 54px 0;
   }
 
-     /* -------------------------------------------------------
-     Weekly Cookie Drop Banner
-     ------------------------------------------------------- */
+
+  /* Weekly Cookie Drop Banner */
 
   .weekly-drop-banner {
     width: 100%;
@@ -3399,9 +3253,8 @@ section {
     font-size: .98rem;
   }
 
-  /* -------------------------------------------------------
-     Header
-     ------------------------------------------------------- */
+
+  /* Header */
 
   .nav-wrap {
     padding: 14px 16px;
@@ -3436,9 +3289,7 @@ section {
   }
 
 
-  /* -------------------------------------------------------
-     Homepage hero
-     ------------------------------------------------------- */
+  /* Homepage hero */
 
   .hero {
     padding: 54px 0 58px;
@@ -3454,9 +3305,7 @@ section {
   }
 
 
-  /* -------------------------------------------------------
-     General page hero
-     ------------------------------------------------------- */
+  /* General page hero */
 
   .page-hero {
     padding: 54px 0 58px;
@@ -3473,18 +3322,14 @@ section {
   }
 
 
-  /* -------------------------------------------------------
-     General grid
-     ------------------------------------------------------- */
+  /* General grid */
 
   .grid {
     grid-template-columns: 1fr;
   }
 
 
-  /* -------------------------------------------------------
-     Cookie cards
-     ------------------------------------------------------- */
+  /* Cookie cards */
 
   .cookie-card {
     min-height: 440px;
@@ -3511,9 +3356,7 @@ section {
   }
 
 
-  /* -------------------------------------------------------
-     Giraffe Packs
-     ------------------------------------------------------- */
+  /* Giraffe Packs */
 
   .pack-section {
     padding-top: 54px;
@@ -3548,18 +3391,14 @@ section {
   }
 
 
-  /* -------------------------------------------------------
-     CTA bands
-     ------------------------------------------------------- */
+  /* CTA */
 
   .cta-band {
     padding: 38px 22px;
   }
 
 
-  /* -------------------------------------------------------
-     Bertha
-     ------------------------------------------------------- */
+  /* Bertha */
 
   .bertha-thanks {
     padding-bottom: 8px;
@@ -3598,9 +3437,6 @@ section {
     font-size: 1rem;
   }
 
-
-  /* Bertha prices */
-
   .bertha-prices {
     display: flex;
     flex-direction: column;
@@ -3632,9 +3468,6 @@ section {
     font-size: 3.2rem;
   }
 
-
-  /* Bertha artwork */
-
   .bertha-price-mascot {
     width: 235px;
     max-width: 76vw;
@@ -3655,9 +3488,6 @@ section {
     transform: none;
   }
 
-
-  /* Bertha note */
-
   .bertha-note {
     max-width: 100%;
 
@@ -3665,9 +3495,6 @@ section {
 
     font-size: 1rem;
   }
-
-
-  /* Bertha primary CTAs */
 
   .bertha-thanks .hero-actions {
     grid-template-columns: 1fr;
@@ -3686,9 +3513,6 @@ section {
 
     justify-content: center;
   }
-
-
-  /* Bertha secondary links */
 
   .bertha-extra-links {
     grid-template-columns: 1fr;
@@ -3710,9 +3534,7 @@ section {
   }
 
 
-  /* -------------------------------------------------------
-     Flavor page hero
-     ------------------------------------------------------- */
+  /* Flavor page hero */
 
   .flavor-page-hero .container {
     max-width: 100%;
@@ -3742,15 +3564,22 @@ section {
   }
 
 
-  /* -------------------------------------------------------
-     Flavor catalog
-     ------------------------------------------------------- */
+  /* =======================================================
+     FLAVOR CATALOG — MOBILE
+
+     One centered card.
+     Maximum width remains 340px.
+     ======================================================= */
 
   .flavor-catalog-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      minmax(0, var(--catalog-card-width));
+
+    justify-content: center;
 
     gap: 22px;
 
+    width: 100%;
     max-width: 500px;
 
     margin-left: auto;
@@ -3758,6 +3587,7 @@ section {
   }
 
   .flavor-catalog-card {
+    width: 100%;
     min-height: 0;
   }
 
@@ -3802,7 +3632,7 @@ section {
   }
 
   .flavor-catalog-body {
-    padding: 24px 22px 24px;
+    padding: 24px 22px;
   }
 
   .flavor-catalog-body h3 {
@@ -3822,7 +3652,6 @@ section {
 
 /* =========================================================
    29. RESPONSIVE — VERY SMALL PHONES
-   380px
    ========================================================= */
 
 @media (max-width: 380px) {
@@ -3874,6 +3703,12 @@ section {
 
 
   /* Flavor catalog */
+
+  .flavor-catalog-grid {
+    grid-template-columns: minmax(0, 1fr);
+
+    width: 100%;
+  }
 
   .flavor-catalog-body {
     padding-left: 18px;
