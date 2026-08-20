@@ -9,7 +9,7 @@
 
   <meta
     name="description"
-    content="Explore the OBA Cookies flavor collection in La Mesa, CA. See what's baking now, discover classic favorites, rotating specialty cookies, and order fresh handmade cookies for pickup."
+    content="Explore the OBA Cookies flavor collection in La Mesa, CA. Discover classic favorites, rotating flavors, specialty cookies, and fresh handmade cookies available for pickup."
   >
 
   <link
@@ -28,7 +28,7 @@
 
   <meta
     property="og:description"
-    content="Meet the OBA Cookies flavor collection — handmade classics, rotating specialties, and fresh cookies baked in La Mesa, CA."
+    content="Meet the OBA Cookies flavor collection — handmade classics, rotating flavors, specialty creations, and fresh cookies baked in La Mesa, CA."
   >
 
   <meta
@@ -54,7 +54,7 @@
 
   <meta
     name="twitter:description"
-    content="Meet the OBA Cookies flavor collection — handmade classics, rotating specialties, and fresh cookies baked in La Mesa, CA."
+    content="Meet the OBA Cookies flavor collection — handmade classics, rotating flavors, specialty creations, and fresh cookies baked in La Mesa, CA."
   >
 
   <meta
@@ -101,6 +101,105 @@
     rel="stylesheet"
     href="/css/style.css"
   >
+
+  <!-- =========================================================
+       FLAVOR PAGE STYLES
+       These can remain here for now.
+       Later, they can be moved into /css/style.css.
+  ========================================================== -->
+  <style>
+
+    /* ---------------------------------------------------------
+       Catalog card header: type on left, price on right
+    --------------------------------------------------------- */
+    .flavor-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .flavor-card-top .flavor-status {
+      margin: 0;
+    }
+
+    /* ---------------------------------------------------------
+       Catalog pricing badges
+    --------------------------------------------------------- */
+    .catalog-price {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      min-width: 58px;
+      height: 42px;
+      padding: 0 14px;
+
+      border: 2px solid var(--brown);
+      border-radius: 999px;
+
+      background: var(--gold);
+      color: var(--brown-dark);
+
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    /* $5 premium / specialty price */
+    .catalog-price-premium {
+      background: var(--pink);
+    }
+
+    /* ---------------------------------------------------------
+       Make catalog cards work cleanly with different amounts
+       of description text.
+    --------------------------------------------------------- */
+    .flavor-catalog-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .flavor-catalog-card > p {
+      flex-grow: 1;
+    }
+
+    .flavor-catalog-link {
+      margin-top: auto;
+    }
+
+    /* ---------------------------------------------------------
+       Safari Snacks treatment
+    --------------------------------------------------------- */
+    .flavor-catalog-card-dog {
+      position: relative;
+    }
+
+    /* ---------------------------------------------------------
+       Mobile
+    --------------------------------------------------------- */
+    @media (max-width: 480px) {
+
+      .flavor-card-top {
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .flavor-card-top .flavor-status {
+        font-size: 0.72rem;
+      }
+
+      .catalog-price {
+        min-width: 52px;
+        height: 38px;
+        padding: 0 12px;
+      }
+
+    }
+
+  </style>
+
 </head>
 
 
@@ -246,9 +345,9 @@
         </h1>
 
         <p>
-          From OBA classics to rotating specialties, meet the cookies
-          that make the walk worth it. Our flavor lineup changes every
-          two weeks, so some favorites may be taking a break while
+          From OBA classics to rotating flavors and specialty creations,
+          meet the cookies that make the walk worth it. Our lineup changes
+          every two weeks, so some favorites may be taking a break while
           others are fresh out of the oven.
         </p>
 
@@ -318,7 +417,7 @@
             <img
               class="cookie-card-bg"
               src="/images/twilight-marble.jpg"
-              alt="Twilight Marble Oreo cookie from OBA Cookies"
+              alt="Twilight Marble cookies and cream cookie from OBA Cookies"
             >
 
             <span class="price-tag">
@@ -332,9 +431,9 @@
               </h3>
 
               <p>
-                A chocolate delight packed with Oreo pieces,
-                white chocolate chips, and finished with a
-                sweet vanilla drizzle.
+                A rich, soft-baked chocolate cookie loaded with crushed
+                Oreos, creamy white chocolate chips, and chunks of
+                Hershey's Cookies 'n' Creme.
               </p>
 
               <span class="cookie-card-cta">
@@ -369,8 +468,8 @@
               </h3>
 
               <p>
-                Rich brown butter chocolate chip cookie with
-                soft centers, crisp edges, and melty chocolate chunks.
+                Rich brown butter chocolate chip cookie with soft centers,
+                crisp edges, and a pool of melty chocolate chunks.
               </p>
 
               <span class="cookie-card-cta">
@@ -391,7 +490,7 @@
             <img
               class="cookie-card-bg"
               src="/images/the-marble-cookie.jpg"
-              alt="Cookies and Cream Marble Cookie from OBA Cookies"
+              alt="The Marble Cookie from OBA Cookies"
             >
 
             <span class="price-tag">
@@ -406,8 +505,8 @@
 
               <p>
                 A Cookies &amp; Cream dream packed with Oreo pieces,
-                white chocolate chips, and finished with a sweet
-                vanilla drizzle.
+                white chocolate chips, Hershey's Cookies 'n' Creme,
+                and finished with a sweet vanilla drizzle.
               </p>
 
               <span class="cookie-card-cta">
@@ -442,8 +541,9 @@
               </h3>
 
               <p>
-                A rich chocolate creation from OBA's rotating
-                cookie lineup.
+                A rich, fudgy chocolate cookie topped with colorful
+                candy-coated chocolate pieces, inspired by the
+                nostalgic cosmic brownie.
               </p>
 
               <span class="cookie-card-cta">
@@ -478,9 +578,10 @@
               </h3>
 
               <p>
-                Brown butter cookie packed with chocolate,
-                stuffed with a gooey s'mores center, baked on
-                graham cracker, and topped with toasted marshmallow.
+                A brown butter cookie loaded with chocolate and
+                marshmallow, stuffed with a gooey s'mores center,
+                baked on a graham cracker, and finished with
+                toasted marshmallow.
               </p>
 
               <span class="cookie-card-cta">
@@ -515,10 +616,9 @@
               </h3>
 
               <p>
-                Brown butter peanut butter cookie packed with
-                Reese's and chocolate, stuffed with s'mores,
-                baked on graham cracker, and topped with toasted
-                marshmallow.
+                Brown butter peanut butter cookie with Reese's,
+                peanut butter chips, and milk chocolate, stuffed
+                with s'mores and topped with toasted marshmallow.
               </p>
 
               <span class="cookie-card-cta">
@@ -566,8 +666,9 @@
           <br><br>
 
           Not every cookie in the OBA collection is available during
-          every drop. Returning favorites and specialty creations
-          rotate throughout the year.
+          every drop. Classics, returning favorites, rotating flavors,
+          and specialty creations move through the lineup throughout
+          the year.
 
           <a
             href="https://www.hotplate.com/ollysbakedassortments"
@@ -604,9 +705,9 @@
           </h2>
 
           <p>
-            Some are classics. Some are specialty creations.
-            Some take a break before making their return.
-            Meet the cookies that have been part of the OBA lineup.
+            From dependable classics to rotating favorites, specialty
+            creations, and even something for our furry friends,
+            explore the cookies that have been part of the OBA lineup.
           </p>
 
         </div>
@@ -614,20 +715,34 @@
 
         <div class="grid flavor-catalog-grid">
 
-          <!-- Brown Butter Bliss -->
+
+          <!-- =================================================
+               1. BROWN BUTTER BLISS
+          ================================================== -->
           <article class="flavor-catalog-card">
 
-            <span class="flavor-status">
-              Classic Favorite
-            </span>
+            <div class="flavor-card-top">
+
+              <span class="flavor-status">
+                Classic Favorite
+              </span>
+
+              <span
+                class="catalog-price"
+                aria-label="Price: 4 dollars"
+              >
+                $4
+              </span>
+
+            </div>
 
             <h3>
               Brown Butter Bliss
             </h3>
 
             <p>
-              Rich brown butter chocolate chip cookie with soft
-              centers, crisp edges, and melty chocolate chunks.
+              Rich brown butter chocolate chip cookie with soft centers,
+              crisp edges, and a pool of melty chocolate chunks.
             </p>
 
             <a
@@ -640,146 +755,25 @@
           </article>
 
 
-          <!-- Twilight Marble -->
+          <!-- =================================================
+               2. MIDNIGHT MOCHA
+          ================================================== -->
           <article class="flavor-catalog-card">
 
-            <span class="flavor-status">
-              Rotating Flavor
-            </span>
+            <div class="flavor-card-top">
 
-            <h3>
-              Twilight Marble
-            </h3>
+              <span class="flavor-status">
+                Classic
+              </span>
 
-            <p>
-              A chocolate delight packed with Oreo pieces,
-              white chocolate chips, and finished with a
-              sweet vanilla drizzle.
-            </p>
+              <span
+                class="catalog-price"
+                aria-label="Price: 4 dollars"
+              >
+                $4
+              </span>
 
-            <a
-              href="/flavors/twilight-marble.html"
-              class="flavor-catalog-link"
-            >
-              Meet This Cookie →
-            </a>
-
-          </article>
-
-
-          <!-- The Marble Cookie -->
-          <article class="flavor-catalog-card">
-
-            <span class="flavor-status">
-              Rotating Flavor
-            </span>
-
-            <h3>
-              The Marble Cookie
-            </h3>
-
-            <p>
-              A Cookies &amp; Cream dream packed with Oreo pieces,
-              white chocolate chips, and finished with a sweet
-              vanilla drizzle.
-            </p>
-
-            <a
-              href="/flavors/the-marble-cookie.html"
-              class="flavor-catalog-link"
-            >
-              Meet This Cookie →
-            </a>
-
-          </article>
-
-
-          <!-- Chocolate Cosmo -->
-          <article class="flavor-catalog-card">
-
-            <span class="flavor-status">
-              Rotating Flavor
-            </span>
-
-            <h3>
-              Chocolate Cosmo
-            </h3>
-
-            <p>
-              A rich chocolate creation from OBA's rotating
-              cookie lineup.
-            </p>
-
-            <a
-              href="/flavors/chocolate-cosmo.html"
-              class="flavor-catalog-link"
-            >
-              Meet This Cookie →
-            </a>
-
-          </article>
-
-
-          <!-- Campfire Crunch -->
-          <article class="flavor-catalog-card flavor-catalog-card-specialty">
-
-            <span class="flavor-status flavor-status-specialty">
-              Specialty
-            </span>
-
-            <h3>
-              Campfire Crunch
-            </h3>
-
-            <p>
-              Brown butter cookie packed with chocolate, stuffed
-              with a gooey s'mores center, baked on graham cracker,
-              and topped with toasted marshmallow.
-            </p>
-
-            <a
-              href="/flavors/campfire-crunch.html"
-              class="flavor-catalog-link"
-            >
-              Meet This Cookie →
-            </a>
-
-          </article>
-
-
-          <!-- Peanut Campfire Crunch -->
-          <article class="flavor-catalog-card flavor-catalog-card-specialty">
-
-            <span class="flavor-status flavor-status-specialty">
-              Specialty
-            </span>
-
-            <h3>
-              Peanut Campfire Crunch
-            </h3>
-
-            <p>
-              Brown butter peanut butter cookie packed with Reese's
-              and chocolate, stuffed with s'mores, baked on graham
-              cracker, and topped with toasted marshmallow.
-            </p>
-
-            <a
-              href="/flavors/peanut-campfire-crunch.html"
-              class="flavor-catalog-link"
-            >
-              Meet This Cookie →
-            </a>
-
-          </article>
-
-
-          <!-- Midnight Mocha -->
-          <article class="flavor-catalog-card">
-
-            <span class="flavor-status">
-              Returning Flavor
-            </span>
+            </div>
 
             <h3>
               Midnight Mocha
@@ -788,18 +782,31 @@
             <p>
               A fudgy double chocolate brownie cookie loaded with
               dark chocolate chunks, milk chocolate chips, and a
-              hint of espresso.
+              hint of espresso for a deep, rich chocolate flavor.
             </p>
 
           </article>
 
 
-          <!-- Biscoff Lava Crunch -->
-          <article class="flavor-catalog-card flavor-catalog-card-specialty">
+          <!-- =================================================
+               3. BISCOFF LAVA CRUNCH
+          ================================================== -->
+          <article class="flavor-catalog-card">
 
-            <span class="flavor-status flavor-status-specialty">
-              Specialty
-            </span>
+            <div class="flavor-card-top">
+
+              <span class="flavor-status">
+                Fan Favorite
+              </span>
+
+              <span
+                class="catalog-price"
+                aria-label="Price: 4 dollars"
+              >
+                $4
+              </span>
+
+            </div>
 
             <h3>
               Biscoff Lava Crunch
@@ -814,12 +821,25 @@
           </article>
 
 
-          <!-- Plain Jane -->
+          <!-- =================================================
+               4. PLAIN JANE
+          ================================================== -->
           <article class="flavor-catalog-card">
 
-            <span class="flavor-status">
-              Classic
-            </span>
+            <div class="flavor-card-top">
+
+              <span class="flavor-status">
+                Classic
+              </span>
+
+              <span
+                class="catalog-price"
+                aria-label="Price: 4 dollars"
+              >
+                $4
+              </span>
+
+            </div>
 
             <h3>
               Plain Jane
@@ -834,23 +854,506 @@
           </article>
 
 
-          <!-- Safari Snacks -->
+          <!-- =================================================
+               5. THE MARBLE COOKIE
+          ================================================== -->
+          <article class="flavor-catalog-card">
+
+            <div class="flavor-card-top">
+
+              <span class="flavor-status">
+                Rotating Flavor
+              </span>
+
+              <span
+                class="catalog-price"
+                aria-label="Price: 4 dollars"
+              >
+                $4
+              </span>
+
+            </div>
+
+            <h3>
+              The Marble Cookie
+            </h3>
+
+            <p>
+              A Cookies &amp; Cream dream packed with Oreo pieces,
+              white chocolate chips, Hershey's Cookies 'n' Creme,
+              and finished with a sweet vanilla drizzle.
+            </p>
+
+            <a
+              href="/flavors/the-marble-cookie.html"
+              class="flavor-catalog-link"
+            >
+              Meet This Cookie →
+            </a>
+
+          </article>
+
+
+          <!-- =================================================
+               6. SAFARI SNACKS
+          ================================================== -->
           <article class="flavor-catalog-card flavor-catalog-card-dog">
 
-            <span class="flavor-status">
-              Furry Friends Treat
-            </span>
+            <div class="flavor-card-top">
+
+              <span class="flavor-status">
+                Furry Friends Treat
+              </span>
+
+              <span
+                class="catalog-price"
+                aria-label="Price: 4 dollars"
+              >
+                $4
+              </span>
+
+            </div>
 
             <h3>
               Safari Snacks
             </h3>
 
             <p>
-              Peanut butter and banana treats made for man's best
-              friend — baked especially for the good boys and girls.
+              Peanut butter, banana cookie made for man's best friend!
+              Our Furry Friends Treats, baked just for the good boys
+              and girls.
+              <br><br>
+              <strong>2 cookies in each package.</strong>
             </p>
 
           </article>
+
+
+          <!-- =================================================
+               7. TWILIGHT MARBLE
+          ================================================== -->
+          <article class="flavor-catalog-card">
+
+            <div class="flavor-card-top">
+
+              <span class="flavor-status">
+                Rotating Flavor
+              </span>
+
+              <span
+                class="catalog-price"
+                aria-label="Price: 4 dollars"
+              >
+                $4
+              </span>
+
+            </div>
+
+            <h3>
+              Twilight Marble
+            </h3>
+
+            <p>
+              A rich, soft-baked chocolate cookie loaded with crushed
+              Oreos, creamy white chocolate chips, and chunks of
+              Hershey's Cookies 'n' Creme. Fudgy, gooey, and packed
+              with cookies &amp; cream goodness in every bite.
+            </p>
+
+            <a
+              href="/flavors/twilight-marble.html"
+              class="flavor-catalog-link"
+            >
+              Meet This Cookie →
+            </a>
+
+          </article>
+
+
+          <!-- =================================================
+               8. CHOCOLATE COSMO
+          ================================================== -->
+          <article class="flavor-catalog-card">
+
+            <div class="flavor-card-top">
+
+              <span class="flavor-status">
+                Rotating Flavor
+              </span>
+
+              <span
+                class="catalog-price"
+                aria-label="Price: 4 dollars"
+              >
+                $4
+              </span>
+
+            </div>
+
+            <h3>
+              Chocolate Cosmo
+            </h3>
+
+            <p>
+              A rich, fudgy chocolate cookie topped with colorful
+              candy-coated chocolate pieces, inspired by the nostalgic
+              cosmic brownie. Soft, decadent, and out of this world.
+            </p>
+
+            <a
+              href="/flavors/chocolate-cosmo.html"
+              class="flavor-catalog-link"
+            >
+              Meet This Cookie →
+            </a>
+
+          </article>
+
+
+          <!-- =================================================
+               9. CAMPFIRE CRUNCH
+          ================================================== -->
+          <article class="flavor-catalog-card flavor-catalog-card-specialty">
+
+            <div class="flavor-card-top">
+
+              <span class="flavor-status flavor-status-specialty">
+                Specialty
+              </span>
+
+              <span
+                class="catalog-price catalog-price-premium"
+                aria-label="Price: 5 dollars"
+              >
+                $5
+              </span>
+
+            </div>
+
+            <h3>
+              Campfire Crunch
+            </h3>
+
+            <p>
+              A buttery brown butter cookie loaded with milk chocolate,
+              chocolate chips, and marshmallow bits, stuffed with a gooey
+              s'mores center, baked on a graham cracker, and finished
+              with toasted marshmallow — the ultimate campfire treat.
+            </p>
+
+            <a
+              href="/flavors/campfire-crunch.html"
+              class="flavor-catalog-link"
+            >
+              Meet This Cookie →
+            </a>
+
+          </article>
+
+
+          <!-- =================================================
+               10. PEANUT CAMPFIRE CRUNCH
+          ================================================== -->
+          <article class="flavor-catalog-card flavor-catalog-card-specialty">
+
+            <div class="flavor-card-top">
+
+              <span class="flavor-status flavor-status-specialty">
+                Specialty
+              </span>
+
+              <span
+                class="catalog-price catalog-price-premium"
+                aria-label="Price: 5 dollars"
+              >
+                $5
+              </span>
+
+            </div>
+
+            <h3>
+              Peanut Campfire Crunch
+            </h3>
+
+            <p>
+              Brown butter peanut butter cookie with Reese's and peanut
+              butter chips and milk chocolate, stuffed with gooey s'mores
+              spread, baked on a graham cracker, and topped with toasted
+              marshmallow.
+            </p>
+
+            <a
+              href="/flavors/peanut-campfire-crunch.html"
+              class="flavor-catalog-link"
+            >
+              Meet This Cookie →
+            </a>
+
+          </article>
+
+
+          <!-- =================================================
+               11. RED VELVET DREAM
+          ================================================== -->
+          <article class="flavor-catalog-card">
+
+            <div class="flavor-card-top">
+
+              <span class="flavor-status">
+                Rotating Flavor
+              </span>
+
+              <span
+                class="catalog-price"
+                aria-label="Price: 4 dollars"
+              >
+                $4
+              </span>
+
+            </div>
+
+            <h3>
+              Red Velvet Dream
+            </h3>
+
+            <p>
+              A rich red velvet cookie loaded with creamy white
+              chocolate chips. Soft, thick, and bakery-style in
+              every bite.
+            </p>
+
+          </article>
+
+
+          <!-- =================================================
+               12. LOADED MONSTER
+          ================================================== -->
+          <article class="flavor-catalog-card">
+
+            <div class="flavor-card-top">
+
+              <span class="flavor-status">
+                Rotating Flavor
+              </span>
+
+              <span
+                class="catalog-price"
+                aria-label="Price: 4 dollars"
+              >
+                $4
+              </span>
+
+            </div>
+
+            <h3>
+              Loaded Monster
+            </h3>
+
+            <p>
+              A thick oatmeal cookie loaded with chocolate chips,
+              peanut butter chips, M&amp;M, crunchy pretzels, and
+              buttery toffee bits. Sweet, salty, chewy, and packed
+              with something delicious in every bite.
+            </p>
+
+          </article>
+
+
+          <!-- =================================================
+               13. STARS & SPRINKLES
+          ================================================== -->
+          <article class="flavor-catalog-card">
+
+            <div class="flavor-card-top">
+
+              <span class="flavor-status">
+                Rotating Flavor
+              </span>
+
+              <span
+                class="catalog-price"
+                aria-label="Price: 4 dollars"
+              >
+                $4
+              </span>
+
+            </div>
+
+            <h3>
+              Stars &amp; Sprinkles
+            </h3>
+
+            <p>
+              A thick, soft vanilla sugar cookie topped with fluffy
+              vanilla frosting and finished with festive red, white
+              &amp; blue sprinkles. A sweet Fourth of July classic
+              that's soft, buttery, and loaded with holiday charm.
+            </p>
+
+          </article>
+
+
+          <!-- =================================================
+               14. MAPLE BACON GOODNESS
+          ================================================== -->
+          <article class="flavor-catalog-card flavor-catalog-card-specialty">
+
+            <div class="flavor-card-top">
+
+              <span class="flavor-status flavor-status-specialty">
+                Specialty
+              </span>
+
+              <span
+                class="catalog-price catalog-price-premium"
+                aria-label="Price: 5 dollars"
+              >
+                $5
+              </span>
+
+            </div>
+
+            <h3>
+              Maple Bacon Goodness
+            </h3>
+
+            <p>
+              Sweet maple bacon cookie topped with crispy bacon
+              and maple glaze.
+            </p>
+
+          </article>
+
+
+          <!-- =================================================
+               15. PB CLASSIC
+          ================================================== -->
+          <article class="flavor-catalog-card">
+
+            <div class="flavor-card-top">
+
+              <span class="flavor-status">
+                Classic
+              </span>
+
+              <span
+                class="catalog-price"
+                aria-label="Price: 4 dollars"
+              >
+                $4
+              </span>
+
+            </div>
+
+            <h3>
+              PB Classic
+            </h3>
+
+            <p>
+              Soft and chewy peanut butter cookie with the perfect
+              balance of sweet, salty, and nutty goodness.
+            </p>
+
+          </article>
+
+
+          <!-- =================================================
+               16. BIRTHDAY BASH
+          ================================================== -->
+          <article class="flavor-catalog-card">
+
+            <div class="flavor-card-top">
+
+              <span class="flavor-status">
+                Rotating Flavor
+              </span>
+
+              <span
+                class="catalog-price"
+                aria-label="Price: 4 dollars"
+              >
+                $4
+              </span>
+
+            </div>
+
+            <h3>
+              Birthday Bash
+            </h3>
+
+            <p>
+              A celebration in every bite! This soft vanilla cookie
+              is loaded with white chips and rainbow sprinkles.
+            </p>
+
+          </article>
+
+
+          <!-- =================================================
+               17. BERRY BLISS CHEESECAKE
+          ================================================== -->
+          <article class="flavor-catalog-card">
+
+            <div class="flavor-card-top">
+
+              <span class="flavor-status">
+                Rotating Flavor
+              </span>
+
+              <span
+                class="catalog-price"
+                aria-label="Price: 4 dollars"
+              >
+                $4
+              </span>
+
+            </div>
+
+            <h3>
+              Berry Bliss Cheesecake
+            </h3>
+
+            <p>
+              A soft cookie swirled with sweet berry compote and
+              loaded with a cheesecake center with creamy cream
+              cheese chips.
+            </p>
+
+          </article>
+
+
+          <!-- =================================================
+               18. CHERRY FLOAT SANDWICH COOKIE
+          ================================================== -->
+          <article class="flavor-catalog-card flavor-catalog-card-specialty">
+
+            <div class="flavor-card-top">
+
+              <span class="flavor-status flavor-status-specialty">
+                Specialty
+              </span>
+
+              <span
+                class="catalog-price catalog-price-premium"
+                aria-label="Price: 5 dollars"
+              >
+                $5
+              </span>
+
+            </div>
+
+            <h3>
+              Cherry Float Sandwich Cookie
+            </h3>
+
+            <p>
+              Soft root beer cookies sandwiched around a creamy
+              root beer float frosting and a sweet cherry cheesecake
+              center for the ultimate soda-shop-inspired treat.
+            </p>
+
+          </article>
+
 
         </div>
 
@@ -1139,7 +1642,6 @@
             </li>
 
             <li>
-
               <a
                 href="https://www.google.com/maps/search/?api=1&query=Olly%27s%20Baked%20Assortments%2C%205842%20Dugan%20Ave%2C%20La%20Mesa%2C%20CA%2091942"
                 target="_blank"
@@ -1147,7 +1649,6 @@
               >
                 📍 Find OBA Cookies ↗
               </a>
-
             </li>
 
             <li>
