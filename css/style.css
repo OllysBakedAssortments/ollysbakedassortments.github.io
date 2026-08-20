@@ -850,6 +850,11 @@ section {
   transform: rotate(4deg);
 }
 
+/* Specialty $5 cookie price badge */
+.cookie-card .price-tag.price-tag-premium {
+  background: var(--pink);
+}
+
 .cookie-card-link {
   display: block;
 }
