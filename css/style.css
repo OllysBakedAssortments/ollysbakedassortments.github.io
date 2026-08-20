@@ -1430,7 +1430,7 @@ section {
 .carousel-shell {
   position: relative;
 
-  width: min(100%, 400px);
+  width: min(100%, 500px);
 
   margin: 0 auto;
 }
