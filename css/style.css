@@ -573,13 +573,6 @@ h3 {
   font-size: clamp(1.7rem, 6.2vw, 4rem);
 }
 
-
-/* Homepage:
-   Cookies Worth The Walk
-   Pink = Worth The
-   Gold = Walk
-*/
-
 .hero h1 em {
   color: var(--pink);
 
@@ -2400,10 +2393,6 @@ section {
 
 /* ---------------------------------------------------------
    Meet the Cookies title
-
-   "Meet"     = white
-   "the"      = pink + italic
-   "Cookies"  = gold + italic
    --------------------------------------------------------- */
 
 .flavor-hero-title {
@@ -2503,8 +2492,15 @@ section {
 }
 
 .flavor-catalog-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
   align-items: stretch;
 }
+
+
+/* ---------------------------------------------------------
+   Catalog cards
+   --------------------------------------------------------- */
 
 .flavor-catalog-card {
   position: relative;
@@ -2512,9 +2508,12 @@ section {
   display: flex;
   flex-direction: column;
 
-  min-height: 300px;
+  min-width: 0;
+  min-height: 500px;
 
-  padding: 30px 28px;
+  padding: 0;
+
+  overflow: hidden;
 
   background: var(--cream);
 
@@ -2533,22 +2532,148 @@ section {
 }
 
 
+/* Specialty card */
+
+.flavor-catalog-card-specialty {
+  background: var(--pink-soft);
+}
+
+
+/* Safari Snacks */
+
+.flavor-catalog-card-dog {
+  background: var(--gold-soft);
+}
+
+
 /* ---------------------------------------------------------
-   Catalog card top row
+   Catalog image
+   --------------------------------------------------------- */
+
+.flavor-catalog-image {
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 16 / 10;
+
+  flex-shrink: 0;
+
+  overflow: hidden;
+
+  background: var(--cream);
+
+  border-bottom: 2px solid var(--brown);
+}
+
+.flavor-catalog-image > img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  transition: transform .3s ease;
+}
+
+.flavor-catalog-card:hover .flavor-catalog-image > img {
+  transform: scale(1.035);
+}
+
+
+/* ---------------------------------------------------------
+   Image placeholder
+
+   Used for cookies that do not yet have a photo.
+   --------------------------------------------------------- */
+
+.flavor-image-placeholder {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  width: 100%;
+  height: 100%;
+  min-height: 205px;
+
+  padding: 30px;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 12% 18%,
+      rgba(255, 153, 216, .8) 0 8%,
+      transparent 8.5%
+    ),
+    radial-gradient(
+      circle at 88% 82%,
+      rgba(255, 210, 31, .9) 0 10%,
+      transparent 10.5%
+    ),
+    radial-gradient(
+      circle at 88% 12%,
+      rgba(122, 47, 0, .08) 0 6%,
+      transparent 6.5%
+    ),
+    var(--cream);
+
+  color: var(--brown);
+
+  text-align: center;
+}
+
+.flavor-placeholder-logo {
+  display: block;
+
+  width: 88px;
+  height: 88px;
+
+  object-fit: contain;
+
+  opacity: .95;
+}
+
+.flavor-placeholder-text {
+  position: relative;
+  z-index: 2;
+
+  color: var(--brown-dark);
+
+  font-family: var(--font-tag);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+
+/* ---------------------------------------------------------
+   Card badges
    --------------------------------------------------------- */
 
 .flavor-card-top {
+  position: absolute;
+
+  top: 18px;
+  left: 18px;
+  right: 18px;
+  z-index: 5;
+
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 
-  gap: 16px;
+  gap: 14px;
 
-  margin-bottom: 24px;
-}
-
-.flavor-card-top .flavor-status {
   margin: 0;
+
+  pointer-events: none;
 }
 
 
@@ -2559,11 +2684,12 @@ section {
 .flavor-status {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
 
-  align-self: flex-start;
+  max-width: calc(100% - 74px);
 
-  margin-bottom: 18px;
-  padding: 5px 10px;
+  margin: 0;
+  padding: 6px 11px;
 
   background: var(--gold-soft);
   color: var(--brown-dark);
@@ -2571,32 +2697,22 @@ section {
   border: 1px solid var(--brown);
   border-radius: 999px;
 
+  box-shadow: 0 2px 8px rgba(85, 33, 10, .08);
+
   font-family: var(--font-tag);
-  font-size: .68rem;
+  font-size: .66rem;
   font-weight: 700;
   letter-spacing: .05em;
   line-height: 1.2;
+  text-align: center;
   text-transform: uppercase;
 }
 
 
-/* Specialty */
+/* Specialty status */
 
 .flavor-status-specialty {
   background: var(--pink);
-}
-
-.flavor-catalog-card-specialty {
-  background: var(--pink-soft);
-}
-
-
-/* Safari Snacks */
-
-.flavor-catalog-card-dog {
-  position: relative;
-
-  background: var(--gold-soft);
 }
 
 
@@ -2609,12 +2725,12 @@ section {
   align-items: center;
   justify-content: center;
 
-  flex-shrink: 0;
+  flex: 0 0 auto;
 
   min-width: 58px;
   height: 42px;
 
-  padding: 0 14px;
+  padding: 0 13px;
 
   background: var(--gold);
   color: var(--brown-dark);
@@ -2622,10 +2738,14 @@ section {
   border: 2px solid var(--brown);
   border-radius: 999px;
 
+  box-shadow: 2px 2px 0 var(--brown);
+
   font-family: var(--font-tag);
   font-size: .9rem;
   font-weight: 700;
   line-height: 1;
+
+  transform: rotate(3deg);
 }
 
 .catalog-price-premium {
@@ -2634,26 +2754,41 @@ section {
 
 
 /* ---------------------------------------------------------
-   Catalog cookie names
+   Catalog card body
    --------------------------------------------------------- */
 
-.flavor-catalog-card h3 {
-  margin-bottom: 10px;
+.flavor-catalog-body {
+  display: flex;
+  flex-direction: column;
 
-  color: var(--brown);
+  flex: 1 1 auto;
 
-  font-size: 1.45rem;
+  min-width: 0;
+
+  padding: 27px 28px 28px;
 }
 
 
-/* ---------------------------------------------------------
-   Catalog descriptions
-   --------------------------------------------------------- */
+/* Cookie names */
 
-.flavor-catalog-card > p {
+.flavor-catalog-body h3 {
+  margin: 0 0 10px;
+
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+
+/* Descriptions */
+
+.flavor-catalog-body > p {
   flex-grow: 1;
 
-  margin-bottom: 20px;
+  margin: 0 0 20px;
 
   color: var(--brown-dark);
 
@@ -2667,9 +2802,12 @@ section {
    --------------------------------------------------------- */
 
 .flavor-catalog-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
 
   align-self: flex-start;
+
+  width: fit-content;
 
   margin-top: auto;
 
@@ -2677,6 +2815,7 @@ section {
 
   font-size: .94rem;
   font-weight: 800;
+  line-height: 1.3;
 
   transition:
     color .15s ease,
@@ -3087,8 +3226,13 @@ section {
 
   /* Flavor catalog */
 
+  .flavor-catalog-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
   .flavor-catalog-card {
-    min-height: 280px;
+    min-height: 480px;
   }
 
 }
@@ -3525,37 +3669,75 @@ section {
   }
 
 
-  /* Flavor catalog */
+  /* -------------------------------------------------------
+     Flavor catalog
+     ------------------------------------------------------- */
 
   .flavor-catalog-grid {
+    grid-template-columns: 1fr;
+
     gap: 22px;
+
+    max-width: 500px;
+
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .flavor-catalog-card {
     min-height: 0;
+  }
 
-    padding: 26px 22px;
+  .flavor-catalog-image {
+    aspect-ratio: 16 / 10;
+  }
+
+  .flavor-image-placeholder {
+    min-height: 190px;
+
+    padding: 24px;
+  }
+
+  .flavor-placeholder-logo {
+    width: 72px;
+    height: 72px;
   }
 
   .flavor-card-top {
-    gap: 10px;
+    top: 14px;
+    left: 14px;
+    right: 14px;
 
-    margin-bottom: 20px;
+    gap: 10px;
   }
 
   .flavor-card-top .flavor-status {
-    font-size: .72rem;
+    max-width: calc(100% - 66px);
+
+    padding: 5px 9px;
+
+    font-size: .62rem;
   }
 
   .catalog-price {
     min-width: 52px;
     height: 38px;
 
-    padding: 0 12px;
+    padding: 0 11px;
+
+    font-size: .82rem;
   }
 
-  .flavor-catalog-card h3 {
-    font-size: 1.35rem;
+  .flavor-catalog-body {
+    padding: 24px 22px 24px;
+  }
+
+  .flavor-catalog-body h3 {
+    font-size: 1.4rem;
+  }
+
+  .flavor-catalog-body > p {
+    font-size: .95rem;
   }
 
   .flavor-pack-cta .cta-band {
@@ -3615,6 +3797,30 @@ section {
 
   .flavor-hero-title {
     font-size: 2.25rem;
+  }
+
+
+  /* Flavor catalog */
+
+  .flavor-catalog-body {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .flavor-card-top {
+    left: 12px;
+    right: 12px;
+  }
+
+  .flavor-status {
+    font-size: .58rem;
+  }
+
+  .catalog-price {
+    min-width: 48px;
+    height: 36px;
+
+    padding: 0 9px;
   }
 
 }
