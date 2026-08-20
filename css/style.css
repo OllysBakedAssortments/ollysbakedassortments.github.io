@@ -3257,6 +3257,7 @@ section {
 
 /* =========================================================
    REVIEWS — TABLET
+   One card per row, but cards retain a controlled width
    ========================================================= */
 
 @media (max-width: 860px) {
@@ -3267,14 +3268,19 @@ section {
 
   .reviews-grid {
     grid-template-columns: 1fr;
+
+    justify-items: center;
+
     gap: 24px;
   }
 
   .review-card,
   .review-card-featured {
     grid-column: auto;
-    width: 100%;
+
+    width: min(100%, 500px);
     min-height: 0;
+
     transform: none;
   }
 
@@ -3340,16 +3346,17 @@ section {
     gap: 20px;
   }
 
-  .review-card,
-  .review-card-featured {
-    grid-column: auto;
+.review-card,
+.review-card-featured {
+  grid-column: auto;
 
-    min-height: 0;
+  width: 100%;
+  min-height: 0;
 
-    padding: 26px 22px;
+  padding: 26px 22px;
 
-    transform: none;
-  }
+  transform: none;
+}
 
   .review-card:hover,
   .review-card-featured:hover {
