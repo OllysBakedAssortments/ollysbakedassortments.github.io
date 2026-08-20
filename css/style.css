@@ -499,7 +499,7 @@ h3 {
 .hero {
   position: relative;
 
-  padding: 90px 0 100px;
+  padding: 72px 0 78px;
 
   background: var(--brown);
   color: var(--off-white);
@@ -598,6 +598,46 @@ h3 {
   max-width: 520px;
 
   color: var(--gold-soft);
+}
+
+/* Homepage brand / ordering banner */
+
+.hero-brand-banner {
+  display: block;
+
+  width: 100%;
+  max-width: 760px;
+
+  margin: 28px auto 30px;
+
+  overflow: hidden;
+
+  border: 2px solid var(--gold);
+  border-radius: 20px;
+
+  box-shadow: 6px 6px 0 var(--brown-dark);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+.hero-brand-banner img {
+  display: block;
+
+  width: 100%;
+  height: auto;
+}
+
+.hero-brand-banner:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 8px 8px 0 var(--brown-dark);
+}
+
+.hero-brand-banner:focus-visible {
+  outline: 4px solid var(--gold);
+  outline-offset: 4px;
 }
 
 
@@ -2629,6 +2669,20 @@ section {
   }
 
 
+/* Homepage hero */
+
+.hero {
+  padding: 54px 0 58px;
+}
+
+.hero-brand-banner {
+  margin: 22px auto 26px;
+
+  border-radius: 14px;
+
+  box-shadow: 4px 4px 0 var(--brown-dark);
+}
+   
   /* General grid */
 
   .grid {
