@@ -2477,6 +2477,51 @@ section {
   z-index: 2;
 }
 
+/* ---------------------------------------------------------
+   Weekly Cookie Drop Banner
+   --------------------------------------------------------- */
+
+.weekly-drop-banner {
+  display: block;
+
+  width: 100%;
+  max-width: 850px;
+
+  margin: 26px auto 32px;
+
+  overflow: hidden;
+
+  border-radius: 24px;
+}
+
+.weekly-drop-banner img {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  object-fit: contain;
+}
+
+
+/* Keep rotation heading + banner visually connected */
+
+.weekly-flavors .section-head {
+  margin-bottom: 26px;
+}
+
+.weekly-flavors .weekly-drop-banner + p,
+.weekly-drop-description {
+  max-width: 760px;
+
+  margin: 0 auto 44px;
+
+  color: var(--brown-dark);
+
+  font-size: 1.05rem;
+  line-height: 1.6;
+  text-align: center;
+}
 
 /* ---------------------------------------------------------
    Full flavor collection
@@ -3325,6 +3370,34 @@ section {
     padding: 54px 0;
   }
 
+     /* -------------------------------------------------------
+     Weekly Cookie Drop Banner
+     ------------------------------------------------------- */
+
+  .weekly-drop-banner {
+    width: 100%;
+
+    margin: 20px auto 24px;
+
+    border-radius: 16px;
+  }
+
+  .weekly-drop-banner img {
+    width: 100%;
+    height: auto;
+
+    object-fit: contain;
+  }
+
+  .weekly-flavors .section-head {
+    margin-bottom: 20px;
+  }
+
+  .weekly-drop-description {
+    margin-bottom: 34px;
+
+    font-size: .98rem;
+  }
 
   /* -------------------------------------------------------
      Header
