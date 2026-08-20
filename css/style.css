@@ -543,6 +543,10 @@ h3 {
   font-style: italic;
 }
 
+.hero h1 em .walk-yellow {
+  color: var(--gold);
+}
+
 .hero p.lead {
   max-width: 520px;
 
