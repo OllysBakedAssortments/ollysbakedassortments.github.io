@@ -104,19 +104,21 @@
 
   <!-- =========================================================
        FLAVOR PAGE STYLES
-       These can remain here for now.
-       Later, they can be moved into /css/style.css.
+       Page-specific styles can remain here for now.
   ========================================================== -->
   <style>
 
     /* ---------------------------------------------------------
        Catalog card header: type on left, price on right
     --------------------------------------------------------- */
+
     .flavor-card-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       gap: 16px;
+
       margin-bottom: 24px;
     }
 
@@ -124,38 +126,42 @@
       margin: 0;
     }
 
+
     /* ---------------------------------------------------------
        Catalog pricing badges
     --------------------------------------------------------- */
+
     .catalog-price {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+
       flex-shrink: 0;
 
       min-width: 58px;
       height: 42px;
-      padding: 0 14px;
 
-      border: 2px solid var(--brown);
-      border-radius: 999px;
+      padding: 0 14px;
 
       background: var(--gold);
       color: var(--brown-dark);
+
+      border: 2px solid var(--brown);
+      border-radius: 999px;
 
       font-weight: 800;
       line-height: 1;
     }
 
-    /* $5 premium / specialty price */
     .catalog-price-premium {
       background: var(--pink);
     }
 
+
     /* ---------------------------------------------------------
-       Make catalog cards work cleanly with different amounts
-       of description text.
+       Catalog cards
     --------------------------------------------------------- */
+
     .flavor-catalog-card {
       display: flex;
       flex-direction: column;
@@ -169,16 +175,15 @@
       margin-top: auto;
     }
 
-    /* ---------------------------------------------------------
-       Safari Snacks treatment
-    --------------------------------------------------------- */
     .flavor-catalog-card-dog {
       position: relative;
     }
 
+
     /* ---------------------------------------------------------
        Mobile
     --------------------------------------------------------- */
+
     @media (max-width: 480px) {
 
       .flavor-card-top {
@@ -193,6 +198,7 @@
       .catalog-price {
         min-width: 52px;
         height: 38px;
+
         padding: 0 12px;
       }
 
@@ -208,6 +214,7 @@
   <!-- =========================================================
        HEADER
   ========================================================== -->
+
   <header class="site-header">
 
     <div class="nav-wrap">
@@ -313,24 +320,32 @@
 
   <main>
 
+
     <!-- =======================================================
          FLAVORS HERO
     ======================================================== -->
-    <section class="page-hero spot-field">
 
+    <section class="page-hero flavor-page-hero spot-field">
+
+      <!-- Decorative pink spot -->
       <div
         class="spot spot--pink"
         style="width:130px;height:130px;top:-30px;right:8%;"
+        aria-hidden="true"
       ></div>
 
+      <!-- Decorative gold spot -->
       <div
         class="spot spot--gold"
         style="width:85px;height:85px;bottom:12%;left:8%;opacity:.55;"
+        aria-hidden="true"
       ></div>
 
+      <!-- Decorative outlined spot -->
       <div
         class="spot spot--outline"
         style="width:190px;height:190px;top:22%;left:-70px;"
+        aria-hidden="true"
       ></div>
 
 
@@ -340,9 +355,11 @@
           The OBA Flavor Collection
         </span>
 
-        <h1>
-          Meet the Cookies
+
+        <h1 class="flavor-hero-title">
+          Meet <em>the <span class="cookies-yellow">Cookies</span></em>
         </h1>
+
 
         <p>
           From OBA classics to rotating flavors and specialty creations,
@@ -351,7 +368,8 @@
           others are fresh out of the oven.
         </p>
 
-                <!-- Flavor Collection Banner -->
+
+        <!-- Flavor Collection Banner -->
         <div class="flavor-hero-banner">
 
           <img
@@ -360,7 +378,8 @@
           >
 
         </div>
-        
+
+
         <div class="hero-actions">
 
           <a
@@ -386,9 +405,11 @@
     </section>
 
 
+
     <!-- =======================================================
          BAKING RIGHT NOW
     ======================================================== -->
+
     <section
       class="weekly-flavors"
       id="baking-now"
@@ -416,6 +437,7 @@
 
 
         <div class="grid">
+
 
           <!-- Twilight Marble -->
           <a
@@ -659,9 +681,11 @@
     </section>
 
 
+
     <!-- =======================================================
          ROTATION NOTICE
     ======================================================== -->
+
     <section class="bg-cream">
 
       <div class="container">
@@ -696,9 +720,11 @@
     </section>
 
 
+
     <!-- =======================================================
          FULL OBA FLAVOR COLLECTION
     ======================================================== -->
+
     <section class="flavor-collection">
 
       <div class="container">
@@ -728,6 +754,7 @@
           <!-- =================================================
                1. BROWN BUTTER BLISS
           ================================================== -->
+
           <article class="flavor-catalog-card">
 
             <div class="flavor-card-top">
@@ -767,6 +794,7 @@
           <!-- =================================================
                2. MIDNIGHT MOCHA
           ================================================== -->
+
           <article class="flavor-catalog-card">
 
             <div class="flavor-card-top">
@@ -800,6 +828,7 @@
           <!-- =================================================
                3. BISCOFF LAVA CRUNCH
           ================================================== -->
+
           <article class="flavor-catalog-card">
 
             <div class="flavor-card-top">
@@ -833,6 +862,7 @@
           <!-- =================================================
                4. PLAIN JANE
           ================================================== -->
+
           <article class="flavor-catalog-card">
 
             <div class="flavor-card-top">
@@ -866,6 +896,7 @@
           <!-- =================================================
                5. THE MARBLE COOKIE
           ================================================== -->
+
           <article class="flavor-catalog-card">
 
             <div class="flavor-card-top">
@@ -906,6 +937,7 @@
           <!-- =================================================
                6. SAFARI SNACKS
           ================================================== -->
+
           <article class="flavor-catalog-card flavor-catalog-card-dog">
 
             <div class="flavor-card-top">
@@ -941,6 +973,7 @@
           <!-- =================================================
                7. TWILIGHT MARBLE
           ================================================== -->
+
           <article class="flavor-catalog-card">
 
             <div class="flavor-card-top">
@@ -982,6 +1015,7 @@
           <!-- =================================================
                8. CHOCOLATE COSMO
           ================================================== -->
+
           <article class="flavor-catalog-card">
 
             <div class="flavor-card-top">
@@ -1022,6 +1056,7 @@
           <!-- =================================================
                9. CAMPFIRE CRUNCH
           ================================================== -->
+
           <article class="flavor-catalog-card flavor-catalog-card-specialty">
 
             <div class="flavor-card-top">
@@ -1063,6 +1098,7 @@
           <!-- =================================================
                10. PEANUT CAMPFIRE CRUNCH
           ================================================== -->
+
           <article class="flavor-catalog-card flavor-catalog-card-specialty">
 
             <div class="flavor-card-top">
@@ -1104,6 +1140,7 @@
           <!-- =================================================
                11. RED VELVET DREAM
           ================================================== -->
+
           <article class="flavor-catalog-card">
 
             <div class="flavor-card-top">
@@ -1137,6 +1174,7 @@
           <!-- =================================================
                12. LOADED MONSTER
           ================================================== -->
+
           <article class="flavor-catalog-card">
 
             <div class="flavor-card-top">
@@ -1171,6 +1209,7 @@
           <!-- =================================================
                13. STARS & SPRINKLES
           ================================================== -->
+
           <article class="flavor-catalog-card">
 
             <div class="flavor-card-top">
@@ -1205,6 +1244,7 @@
           <!-- =================================================
                14. MAPLE BACON GOODNESS
           ================================================== -->
+
           <article class="flavor-catalog-card flavor-catalog-card-specialty">
 
             <div class="flavor-card-top">
@@ -1237,6 +1277,7 @@
           <!-- =================================================
                15. PB CLASSIC
           ================================================== -->
+
           <article class="flavor-catalog-card">
 
             <div class="flavor-card-top">
@@ -1269,6 +1310,7 @@
           <!-- =================================================
                16. BIRTHDAY BASH
           ================================================== -->
+
           <article class="flavor-catalog-card">
 
             <div class="flavor-card-top">
@@ -1301,6 +1343,7 @@
           <!-- =================================================
                17. BERRY BLISS CHEESECAKE
           ================================================== -->
+
           <article class="flavor-catalog-card">
 
             <div class="flavor-card-top">
@@ -1334,6 +1377,7 @@
           <!-- =================================================
                18. CHERRY FLOAT SANDWICH COOKIE
           ================================================== -->
+
           <article class="flavor-catalog-card flavor-catalog-card-specialty">
 
             <div class="flavor-card-top">
@@ -1371,9 +1415,11 @@
     </section>
 
 
+
     <!-- =======================================================
          SPECIALTY COOKIES CTA
     ======================================================== -->
+
     <section class="bg-cream">
 
       <div class="container">
@@ -1383,6 +1429,7 @@
           <div
             class="spot spot--pink"
             style="width:110px;height:110px;top:-25px;right:7%;opacity:.55;"
+            aria-hidden="true"
           ></div>
 
           <span class="eyebrow">
@@ -1418,9 +1465,11 @@
     </section>
 
 
+
     <!-- =======================================================
          DECORATIVE TRAIL
     ======================================================== -->
+
     <div
       class="trail"
       aria-hidden="true"
@@ -1437,9 +1486,11 @@
     </div>
 
 
+
     <!-- =======================================================
          GIRAFFE PACK CTA
     ======================================================== -->
+
     <section class="flavor-pack-cta">
 
       <div class="container">
@@ -1449,6 +1500,7 @@
           <div
             class="spot spot--gold"
             style="width:120px;height:120px;bottom:-30px;left:7%;opacity:.5;"
+            aria-hidden="true"
           ></div>
 
           <span class="eyebrow">
@@ -1507,17 +1559,21 @@
 
     </section>
 
+
   </main>
+
 
 
   <!-- =========================================================
        FOOTER
   ========================================================== -->
+
   <footer class="site-footer">
 
     <div class="container">
 
       <div class="footer-grid">
+
 
         <!-- BRAND -->
         <div class="footer-brand">
