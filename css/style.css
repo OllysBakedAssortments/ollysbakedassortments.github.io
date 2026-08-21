@@ -5355,3 +5355,208 @@ section {
   }
 
 }
+
+/* =========================================================
+   32. BERTHA COLLAPSIBLE DROPDOWN
+   ========================================================= */
+
+.bertha-dropdown {
+  width: 100%;
+
+  overflow: hidden;
+
+  background: var(--brown);
+
+  border-radius: var(--radius-lg);
+
+  box-shadow:
+    8px 8px 0 var(--pink),
+    0 18px 40px rgba(85, 33, 10, .10);
+}
+
+
+/* ---------------------------------------------------------
+   Dropdown header
+   --------------------------------------------------------- */
+
+.bertha-dropdown-summary {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 22px;
+
+  width: 100%;
+
+  padding: 30px 40px;
+
+  color: var(--off-white);
+
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 3vw, 2.15rem);
+  font-weight: 600;
+  line-height: 1.15;
+  text-align: center;
+
+  list-style: none;
+
+  cursor: pointer;
+
+  transition: background .18s ease;
+}
+
+
+/* Remove native browser arrow */
+
+.bertha-dropdown-summary::-webkit-details-marker {
+  display: none;
+}
+
+.bertha-dropdown-summary::marker {
+  content: "";
+}
+
+
+/* Custom plus */
+
+.bertha-dropdown-summary::after {
+  content: "+";
+
+  flex: 0 0 auto;
+
+  color: var(--gold);
+
+  font-family: var(--font-body);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1;
+
+  transition: transform .2s ease;
+}
+
+
+/* Hover */
+
+.bertha-dropdown-summary:hover {
+  background: rgba(255, 255, 255, .06);
+}
+
+
+/* Keyboard focus */
+
+.bertha-dropdown-summary:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: -7px;
+}
+
+
+/* ---------------------------------------------------------
+   Open state
+   --------------------------------------------------------- */
+
+.bertha-dropdown[open] > .bertha-dropdown-summary {
+  border-bottom: 1px solid rgba(247, 247, 247, .18);
+}
+
+
+/* Rotate + into × */
+
+.bertha-dropdown[open] > .bertha-dropdown-summary::after {
+  transform: rotate(45deg);
+}
+
+
+/* ---------------------------------------------------------
+   Existing Bertha card inside dropdown
+   --------------------------------------------------------- */
+
+/*
+   The outer <details> now provides the card shape,
+   so remove the duplicate radius from the inner card.
+*/
+
+.bertha-dropdown .bertha-thanks-card {
+  margin: 0;
+
+  border-radius: 0;
+
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 860px) {
+
+  .bertha-dropdown-summary {
+    padding: 28px 30px;
+
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+  .bertha-dropdown {
+    border-radius: 22px;
+
+    box-shadow:
+      5px 5px 0 var(--pink),
+      0 14px 28px rgba(85, 33, 10, .10);
+  }
+
+
+  .bertha-dropdown-summary {
+    justify-content: space-between;
+
+    gap: 16px;
+
+    padding: 23px 20px;
+
+    font-size: 1.4rem;
+    text-align: left;
+  }
+
+
+  .bertha-dropdown-summary::after {
+    font-size: 1.75rem;
+  }
+
+
+  .bertha-dropdown .bertha-thanks-card {
+    border-radius: 0;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .bertha-dropdown-summary {
+    padding: 21px 17px;
+
+    gap: 12px;
+
+    font-size: 1.28rem;
+  }
+
+
+  .bertha-dropdown-summary::after {
+    font-size: 1.6rem;
+  }
+
+}
