@@ -3043,19 +3043,6 @@ section {
   transform: translateY(-6px);
 }
 
-/* Featured middle review */
-
-.review-card-featured {
-  background: var(--brown);
-  color: var(--off-white);
-
-  border-color: var(--brown);
-
-  box-shadow: 6px 6px 0 var(--gold);
-
-  transform: translateY(-6px);
-}
-
 .review-card-featured:visited {
   color: var(--off-white);
 }
