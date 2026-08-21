@@ -3043,12 +3043,26 @@ section {
   transform: translateY(-6px);
 }
 
-.review-card-featured:vistied {
-color: var(--off-white);
+/* Featured middle review */
+
+.review-card-featured {
+  background: var(--brown);
+  color: var(--off-white);
+
+  border-color: var(--brown);
+
+  box-shadow: 6px 6px 0 var(--gold);
+
+  transform: translateY(-6px);
+}
+
+.review-card-featured:visited {
+  color: var(--off-white);
+}
 
 .review-card-featured:hover {
   color: var(--off-white);
-   
+
   transform: translateY(-10px);
 
   box-shadow: 8px 8px 0 var(--gold);
