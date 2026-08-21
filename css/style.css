@@ -1,0 +1,5793 @@
+/* =========================================================
+   OLLY'S BAKED ASSORTMENTS
+   Main Site Stylesheet
+
+   Fonts
+   - Fraunces: display / headings
+   - Karla: body
+   - Space Mono: labels / tags
+   ========================================================= */
+
+
+/* =========================================================
+   1. GOOGLE FONTS
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap');
+
+
+/* =========================================================
+   2. BRAND VARIABLES
+   ========================================================= */
+
+:root {
+  --brown: #7A2F00;
+  --brown-dark: #55210a;
+
+  --pink: #FF99D8;
+  --pink-soft: #ffe0f2;
+
+  --gold: #FFD21F;
+  --gold-soft: #fff3c2;
+
+  --off-white: #F7F7F7;
+  --cream: #fffaf0;
+  --black: #070606;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Karla', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-tag: 'Space Mono', monospace;
+
+  --radius-lg: 28px;
+  --radius-md: 16px;
+
+  --container: 1120px;
+
+  --catalog-card-width: 340px;
+}
+
+
+/* =========================================================
+   3. RESET / BASE
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+
+  background: var(--off-white);
+  color: var(--black);
+
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0 0 .5em;
+
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+h1 {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+}
+
+h3 {
+  font-size: 1.3rem;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* =========================================================
+   4. BUTTONS
+   ========================================================= */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 14px 28px;
+
+  border: 2px solid transparent;
+  border-radius: 999px;
+
+  font-family: var(--font-body);
+  font-size: .95rem;
+  font-weight: 800;
+  letter-spacing: .02em;
+
+  cursor: pointer;
+
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease,
+    background .15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: var(--pink);
+  color: var(--brown-dark);
+
+  box-shadow: 4px 4px 0 var(--brown);
+}
+
+.btn-primary:hover {
+  box-shadow: 6px 6px 0 var(--brown);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--off-white);
+
+  border-color: var(--off-white);
+}
+
+.btn-secondary:hover {
+  background: rgba(247, 247, 247, .12);
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: var(--brown-dark);
+
+  box-shadow: 4px 4px 0 var(--brown);
+}
+
+.btn-gold:hover {
+  box-shadow: 6px 6px 0 var(--brown);
+}
+
+
+/* =========================================================
+   5. HEADER / NAVIGATION
+   ========================================================= */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  background: var(--off-white);
+
+  border-bottom: 3px solid var(--brown);
+}
+
+.nav-wrap {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  max-width: var(--container);
+
+  margin: 0 auto;
+  padding: 14px 24px;
+
+  gap: 26px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 10px;
+
+  flex: 0 0 auto;
+
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.logo > span {
+  display: block;
+  width: 150px;
+}
+
+.logo .logo-mark {
+  display: block;
+
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+
+  flex: 0 0 52px;
+
+  object-fit: contain;
+  object-position: center;
+}
+
+.main-nav {
+  margin-left: auto;
+}
+
+.main-nav ul {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+
+  gap: 19px;
+}
+
+.main-nav li {
+  flex: 0 0 auto;
+}
+
+.main-nav a {
+  position: relative;
+
+  display: inline-block;
+
+  padding: 4px 1px;
+
+  color: var(--brown-dark);
+
+  font-size: .82rem;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.main-nav a::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 100%;
+  bottom: -3px;
+
+  height: 3px;
+
+  background: var(--gold);
+
+  border-radius: 2px;
+
+  transition: right .18s ease;
+}
+
+.main-nav a:hover::after,
+.main-nav a[aria-current="page"]::after {
+  right: 0;
+}
+
+.main-nav a[aria-current="page"] {
+  color: var(--brown);
+}
+
+.main-nav .nav-order a {
+  padding: 9px 16px;
+
+  background: var(--brown);
+  color: var(--off-white);
+
+  border-radius: 999px;
+
+  font-weight: 800;
+}
+
+.main-nav .nav-order a::after {
+  display: none;
+}
+
+.main-nav .nav-order a:hover {
+  background: var(--brown-dark);
+}
+
+.nav-toggle {
+  display: none;
+
+  margin-left: auto;
+  padding: 8px 10px;
+
+  background: none;
+
+  border: 2px solid var(--brown);
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+.nav-toggle span {
+  display: block;
+
+  width: 22px;
+  height: 2px;
+
+  margin: 4px 0;
+
+  background: var(--brown);
+}
+
+
+/* =========================================================
+   6. DECORATIVE ELEMENTS
+   ========================================================= */
+
+.spot-field {
+  position: relative;
+  overflow: hidden;
+}
+
+.spot {
+  position: absolute;
+
+  border-radius:
+    62% 38% 55% 45% /
+    45% 60% 40% 55%;
+
+  opacity: .85;
+}
+
+.spot--pink {
+  background: var(--pink);
+}
+
+.spot--gold {
+  background: var(--gold);
+}
+
+.spot--outline {
+  background: transparent;
+
+  border: 3px solid var(--gold);
+
+  opacity: .6;
+}
+
+.trail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+
+  max-width: 500px;
+
+  margin: 0 auto;
+  padding: 8px 0;
+}
+
+.trail span {
+  width: 9px;
+  height: 9px;
+
+  background: var(--brown);
+
+  border-radius:
+    62% 38% 55% 45% /
+    45% 60% 40% 55%;
+
+  opacity: .35;
+}
+
+.trail span:nth-child(3n) {
+  width: 11px;
+  height: 11px;
+
+  background: var(--pink);
+
+  opacity: .8;
+}
+
+.trail span:nth-child(4n) {
+  background: var(--gold);
+
+  opacity: .9;
+}
+
+.trail-icon {
+  width: 22px;
+  height: 22px;
+
+  flex-shrink: 0;
+
+  opacity: .9;
+}
+
+
+/* =========================================================
+   7. HEROES
+   ========================================================= */
+
+.hero {
+  position: relative;
+
+  padding: 72px 0 78px;
+
+  background: var(--brown);
+  color: var(--off-white);
+}
+
+.hero .container {
+  position: relative;
+  z-index: 2;
+
+  max-width: 760px;
+
+  text-align: center;
+}
+
+.hero .eyebrow {
+  display: inline-block;
+
+  margin-bottom: 18px;
+
+  color: var(--gold);
+
+  font-family: var(--font-tag);
+  font-size: .8rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin-bottom: .35em;
+
+  color: var(--off-white);
+}
+
+.hero-headline {
+  white-space: nowrap;
+
+  font-size: clamp(1.7rem, 6.2vw, 4rem);
+}
+
+.hero h1 em {
+  color: var(--pink);
+  font-style: italic;
+}
+
+.hero h1 em .walk-yellow {
+  color: var(--gold);
+}
+
+.hero p.lead {
+  max-width: 520px;
+
+  margin: 0 auto 34px;
+
+  color: var(--gold-soft);
+
+  font-size: 1.15rem;
+}
+
+.hero .hero-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 16px;
+}
+
+
+/* General page hero */
+
+.page-hero {
+  position: relative;
+
+  padding: 64px 0 76px;
+
+  background: var(--brown);
+  color: var(--off-white);
+}
+
+.page-hero .container {
+  position: relative;
+  z-index: 2;
+
+  max-width: 860px;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  text-align: center;
+}
+
+.page-hero .eyebrow {
+  display: inline-block;
+
+  margin-bottom: 14px;
+
+  color: var(--gold);
+
+  font-family: var(--font-tag);
+  font-size: .8rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.page-hero h1 {
+  color: var(--off-white);
+}
+
+.page-hero p {
+  max-width: 700px;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  color: var(--gold-soft);
+}
+
+.page-hero .hero-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 16px;
+
+  margin-top: 28px;
+}
+
+
+/* Homepage banner */
+
+.hero-brand-banner {
+  display: block;
+
+  width: 100%;
+  max-width: 760px;
+
+  margin: 28px auto 30px;
+
+  overflow: hidden;
+
+  border: 5px solid var(--off-white);
+  border-radius: 24px;
+
+  box-shadow: 6px 6px 0 var(--brown-dark);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+.hero-brand-banner img {
+  display: block;
+
+  width: 100%;
+  height: auto;
+}
+
+.hero-brand-banner:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 8px 8px 0 var(--brown-dark);
+}
+
+.hero-brand-banner:focus-visible {
+  outline: 4px solid var(--gold);
+  outline-offset: 4px;
+}
+
+
+/* =========================================================
+   8. GENERAL SECTIONS / LAYOUT
+   ========================================================= */
+
+section {
+  padding: 72px 0;
+}
+
+.section-head {
+  max-width: 620px;
+
+  margin: 0 auto 44px;
+
+  text-align: center;
+}
+
+.section-head p {
+  color: var(--brown-dark);
+
+  font-size: 1.05rem;
+}
+
+.bg-cream {
+  background: var(--cream);
+}
+
+.bg-pink-soft {
+  background: var(--pink-soft);
+}
+
+.grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 26px;
+}
+
+
+/* =========================================================
+   9. GENERAL CARDS
+   ========================================================= */
+
+.card {
+  position: relative;
+
+  padding: 26px;
+
+  background: var(--off-white);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-md);
+
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+
+  box-shadow: 6px 6px 0 var(--pink);
+}
+
+.card .icon {
+  display: block;
+
+  margin-bottom: 12px;
+
+  font-size: 2.1rem;
+}
+
+
+/* =========================================================
+   10. COOKIE CARDS
+   ========================================================= */
+
+.cookie-card {
+  position: relative;
+
+  min-height: 500px;
+
+  padding: 0;
+
+  overflow: hidden;
+  isolation: isolate;
+
+  background: var(--cream);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-lg);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.cookie-card-bg {
+  position: absolute;
+
+  inset: 0;
+  z-index: -2;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  transition: transform .35s ease;
+}
+
+.cookie-card::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+  z-index: -1;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 250, 240, 0) 25%,
+      rgba(255, 250, 240, .03) 38%,
+      rgba(255, 250, 240, .20) 48%,
+      rgba(255, 250, 240, .62) 60%,
+      rgba(255, 250, 240, .92) 72%,
+      rgba(255, 250, 240, .98) 82%,
+      var(--cream) 100%
+    );
+}
+
+.cookie-card-overlay {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+
+  padding: 32px 28px 28px;
+
+  color: var(--brown-dark);
+}
+
+.cookie-card-overlay h3 {
+  margin: 0 0 8px;
+  padding-right: 60px;
+
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.cookie-card-overlay p {
+  margin: 0 0 12px;
+
+  color: var(--brown-dark);
+
+  font-size: .96rem;
+  line-height: 1.55;
+}
+
+.cookie-card-cta {
+  display: inline-block;
+
+  color: var(--brown-dark);
+
+  font-size: .95rem;
+  font-weight: 800;
+
+  transition: transform .15s ease;
+}
+
+.cookie-card .price-tag {
+  position: absolute;
+
+  top: 18px;
+  right: 18px;
+  z-index: 4;
+
+  padding: 7px 13px;
+
+  background: var(--gold);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: 999px;
+
+  box-shadow: 2px 2px 0 var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .9rem;
+  font-weight: 700;
+
+  transform: rotate(4deg);
+}
+
+.cookie-card .price-tag.price-tag-premium {
+  background: var(--pink);
+}
+
+.cookie-card-link {
+  display: block;
+}
+
+.cookie-card-link:hover {
+  transform: translateY(-4px);
+
+  box-shadow: 7px 7px 0 var(--pink);
+}
+
+.cookie-card-link:hover .cookie-card-bg {
+  transform: scale(1.04);
+}
+
+.cookie-card-link:hover .cookie-card-cta {
+  transform: translateX(4px);
+}
+
+.cookie-card-link:focus-visible {
+  outline: 4px solid var(--gold);
+  outline-offset: 4px;
+}
+
+.cookie-card.dog::before {
+  content: "🐾 for pups";
+
+  position: absolute;
+
+  top: 18px;
+  left: 18px;
+  z-index: 4;
+
+  padding: 5px 10px;
+
+  background: var(--cream);
+  color: var(--brown);
+
+  border: 2px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   11. HOMEPAGE GIRAFFE PACK CARDS
+   ========================================================= */
+
+.pack-section {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+
+.pack-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 26px;
+}
+
+.pack-card {
+  position: relative;
+
+  display: block;
+
+  min-height: 500px;
+
+  padding: 0;
+
+  overflow: hidden;
+  isolation: isolate;
+
+  background: var(--cream);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-lg);
+
+  cursor: pointer;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.pack-card-bg {
+  position: absolute;
+
+  inset: 0;
+  z-index: -2;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  transition: transform .35s ease;
+}
+
+.pack-card::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+  z-index: -1;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 250, 240, 0) 25%,
+      rgba(255, 250, 240, .03) 38%,
+      rgba(255, 250, 240, .20) 48%,
+      rgba(255, 250, 240, .62) 60%,
+      rgba(255, 250, 240, .92) 72%,
+      rgba(255, 250, 240, .98) 82%,
+      var(--cream) 100%
+    );
+}
+
+.pack-card-overlay {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+
+  padding: 32px 28px 28px;
+
+  color: var(--brown-dark);
+}
+
+.pack-count {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: var(--brown-dark);
+
+  font-family: var(--font-tag);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.pack-card-overlay h3 {
+  margin: 0 0 8px;
+
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.pack-price {
+  display: block;
+
+  margin: 4px 0 10px;
+
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.pack-cta {
+  display: inline-block;
+
+  margin-top: 4px;
+
+  color: var(--brown-dark);
+
+  font-size: .95rem;
+  font-weight: 800;
+
+  transition: transform .15s ease;
+}
+
+.pack-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow: 7px 7px 0 var(--pink);
+}
+
+.pack-card:hover .pack-card-bg {
+  transform: scale(1.04);
+}
+
+.pack-card:hover .pack-cta {
+  transform: translateX(4px);
+}
+
+.pack-card:focus-visible {
+  outline: 4px solid var(--gold);
+  outline-offset: 4px;
+}
+
+
+/* =========================================================
+   12. GIFT BOX TIERS
+   ========================================================= */
+
+.tier-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+  align-items: stretch;
+
+  gap: 26px;
+}
+
+.tier {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+
+  padding: 32px 26px;
+
+  background: var(--off-white);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-lg);
+
+  text-align: center;
+}
+
+.tier.tier--feature {
+  background: var(--brown);
+  color: var(--off-white);
+
+  box-shadow: 8px 8px 0 var(--gold);
+
+  transform: translateY(-8px);
+}
+
+.tier.tier--feature h3,
+.tier.tier--feature .tier-price {
+  color: var(--off-white);
+}
+
+.tier.tier--feature p {
+  color: var(--gold-soft);
+}
+
+.tier-count {
+  font-family: var(--font-tag);
+  font-size: .85rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+
+  opacity: .75;
+}
+
+.tier-price {
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+
+.tier .btn {
+  align-self: center;
+
+  margin-top: auto;
+}
+
+
+/* =========================================================
+   13. EVENTS
+   ========================================================= */
+
+.event-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+.event-card {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 20px;
+
+  padding: 22px 24px;
+
+  background: var(--off-white);
+
+  border: 2px dashed var(--brown);
+  border-radius: var(--radius-md);
+}
+
+.event-date {
+  min-width: 84px;
+
+  padding: 14px;
+
+  background: var(--pink);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-md);
+
+  font-family: var(--font-tag);
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.event-date .month {
+  display: block;
+
+  font-size: .7rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.event-date .day {
+  display: block;
+
+  font-size: 1.4rem;
+}
+
+.pill {
+  display: inline-block;
+
+  margin-bottom: 6px;
+  padding: 3px 9px;
+
+  background: var(--gold-soft);
+  color: var(--brown-dark);
+
+  border: 1px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .72rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   14. FAQ
+   ========================================================= */
+
+.faq-item {
+  padding: 20px 4px;
+
+  border-bottom: 2px solid var(--brown);
+}
+
+.faq-item:first-child {
+  border-top: 2px solid var(--brown);
+}
+
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+
+  list-style: none;
+
+  cursor: pointer;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+
+  flex-shrink: 0;
+
+  margin-left: 16px;
+
+  color: var(--pink);
+
+  font-size: 1.6rem;
+
+  transition: transform .2s ease;
+}
+
+.faq-item[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.faq-item p {
+  max-width: 680px;
+
+  margin-top: 12px;
+
+  color: var(--brown-dark);
+}
+
+
+/* =========================================================
+   15. ABOUT
+   ========================================================= */
+
+.about-wrap {
+  display: grid;
+
+  grid-template-columns: 1.1fr .9fr;
+  align-items: center;
+
+  gap: 56px;
+}
+
+.giraffe-portrait {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  aspect-ratio: 4 / 5;
+
+  overflow: hidden;
+
+  background: var(--cream);
+
+  border: 3px solid var(--brown);
+  border-radius: var(--radius-lg);
+}
+
+.giraffe-portrait span {
+  font-size: 5rem;
+}
+
+
+/* =========================================================
+   16. ORDER PAGE
+   ========================================================= */
+
+.order-panel {
+  position: relative;
+
+  max-width: 720px;
+
+  margin: 0 auto;
+  padding: 48px;
+
+  overflow: hidden;
+
+  background: var(--brown);
+  color: var(--off-white);
+
+  border-radius: var(--radius-lg);
+
+  text-align: center;
+}
+
+.order-panel h2 {
+  color: var(--off-white);
+}
+
+.order-panel p {
+  color: var(--gold-soft);
+}
+
+.order-steps {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 22px;
+
+  margin: 40px 0;
+
+  text-align: left;
+}
+
+.order-steps li {
+  padding: 20px;
+
+  background: rgba(247, 247, 247, .08);
+
+  border: 1px solid rgba(247, 247, 247, .25);
+  border-radius: var(--radius-md);
+}
+
+.order-steps .step-num {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--gold);
+
+  font-family: var(--font-tag);
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   17. NOTES / CTA
+   ========================================================= */
+
+.note-box {
+  max-width: 720px;
+
+  margin: 28px auto 0;
+  padding: 18px 22px;
+
+  background: var(--gold-soft);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-md);
+
+  font-size: .95rem;
+}
+
+.note-box a {
+  color: var(--brown);
+
+  font-weight: 800;
+
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.note-box a:hover {
+  color: var(--brown-dark);
+}
+
+.cta-band {
+  position: relative;
+
+  padding: 48px;
+
+  overflow: hidden;
+
+  background: var(--pink);
+
+  border-radius: var(--radius-lg);
+
+  text-align: center;
+}
+
+.cta-band h2 {
+  margin-bottom: 8px;
+
+  color: var(--brown-dark);
+}
+
+.cta-band p {
+  color: var(--brown-dark);
+}
+
+.cta-band .hero-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 16px;
+
+  margin-top: 22px;
+}
+
+
+/* =========================================================
+   18. HOMEPAGE IMAGE CAROUSEL
+   ========================================================= */
+
+.home-carousel {
+  padding: 2rem 1rem 0;
+}
+
+.carousel-shell {
+  position: relative;
+
+  width: min(100%, 550px);
+
+  margin: 0 auto;
+}
+
+.carousel-viewport {
+  overflow: hidden;
+
+  border-radius: var(--radius-lg);
+}
+
+.carousel-track {
+  display: flex;
+
+  transition: transform .45s ease;
+}
+
+.carousel-slide {
+  min-width: 100%;
+
+  aspect-ratio: 1 / 1;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+.carousel-btn {
+  position: absolute;
+
+  top: 50%;
+  z-index: 2;
+
+  width: 48px;
+  height: 48px;
+
+  background: rgba(0, 0, 0, .45);
+  color: #fff;
+
+  border: 2px solid #fff;
+  border-radius: 50%;
+
+  font-size: 2rem;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transform: translateY(-50%);
+}
+
+.carousel-prev {
+  left: 18px;
+}
+
+.carousel-next {
+  right: 18px;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-top: 14px;
+}
+
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+
+  padding: 0;
+
+  background: #c8b6aa;
+
+  border: 0;
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+.carousel-dot.active {
+  background: var(--brown);
+
+  transform: scale(1.35);
+}
+
+
+/* =========================================================
+   19. BERTHA SECTION
+   ========================================================= */
+
+.bertha-thanks {
+  padding-bottom: 22px;
+
+  background: var(--off-white);
+}
+
+.bertha-thanks + section {
+  padding-top: 22px;
+}
+
+.bertha-thanks-card {
+  position: relative;
+
+  padding: 58px 48px;
+
+  overflow: hidden;
+
+  background: var(--brown);
+  color: var(--off-white);
+
+  border-radius: var(--radius-lg);
+
+  text-align: center;
+}
+
+.bertha-thanks-content {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  max-width: 940px;
+
+  margin: 0 auto;
+}
+
+.bertha-thanks .eyebrow {
+  display: inline-block;
+
+  margin-bottom: 14px;
+
+  color: var(--gold);
+
+  font-family: var(--font-tag);
+  font-size: .8rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.bertha-thanks h2 {
+  margin-bottom: 18px;
+
+  color: var(--off-white);
+}
+
+.bertha-lead {
+  max-width: 760px;
+
+  margin: 0 auto 28px;
+
+  color: var(--gold-soft);
+
+  font-size: 1.05rem;
+}
+
+.bertha-prices {
+  display: grid;
+
+  grid-template-columns:
+    minmax(240px, 285px)
+    minmax(220px, 260px)
+    minmax(240px, 285px);
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 26px;
+
+  width: 100%;
+
+  margin: 28px auto 36px;
+}
+
+.bertha-price {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+
+  padding: 28px 24px;
+
+  background: var(--cream);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--gold);
+  border-radius: var(--radius-md);
+
+  box-shadow: 6px 6px 0 var(--pink);
+
+  text-align: center;
+}
+
+.bertha-price-label {
+  display: block;
+
+  margin-bottom: 9px;
+
+  font-family: var(--font-tag);
+  font-size: .82rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.bertha-price strong {
+  display: block;
+
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: 3.25rem;
+  line-height: 1;
+}
+
+.bertha-price-mascot {
+  position: relative;
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  padding: 0;
+  margin: 0;
+
+  pointer-events: none;
+}
+
+.bertha-price-mascot img {
+  width: 250px;
+  max-width: 100%;
+  height: auto;
+
+  margin: 0 auto;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 9px 8px rgba(35, 12, 2, .28));
+}
+
+.bertha-note {
+  max-width: 720px;
+
+  margin: 0 auto 28px;
+
+  color: var(--off-white);
+}
+
+.bertha-thanks .hero-actions {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+
+  width: min(100%, 720px);
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.bertha-thanks .hero-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  text-align: center;
+}
+
+.bertha-thanks .btn-primary,
+.bertha-thanks .btn-gold {
+  box-shadow: 4px 4px 0 var(--brown-dark);
+}
+
+.bertha-extra-links {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+
+  gap: 16px;
+
+  width: min(100%, 720px);
+
+  margin: 18px auto 0;
+}
+
+.bertha-extra-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 42px;
+
+  padding: 6px 12px;
+
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.25;
+  text-align: center;
+
+  transition:
+    color .15s ease,
+    transform .15s ease;
+}
+
+.bertha-extra-links a:first-child {
+  color: var(--gold);
+}
+
+.bertha-extra-links a:first-child:hover {
+  color: var(--pink);
+
+  transform: translateY(-2px);
+}
+
+.bertha-extra-links a:last-child {
+  color: var(--pink);
+}
+
+.bertha-extra-links a:last-child:hover {
+  color: var(--gold);
+
+  transform: translateY(-2px);
+}
+
+.bertha-extra-links a:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 4px;
+
+  border-radius: 6px;
+}
+
+.bertha-spot-one {
+  width: 150px;
+  height: 150px;
+
+  top: -45px;
+  left: 4%;
+
+  opacity: .45;
+}
+
+.bertha-spot-two {
+  width: 105px;
+  height: 105px;
+
+  right: 6%;
+  bottom: -25px;
+
+  opacity: .5;
+}
+
+
+/* =========================================================
+   20. PRICING & ORDERING
+   ========================================================= */
+
+.pricing-section-kicker {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.pricing-route-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 26px;
+}
+
+.pricing-route-card {
+  position: relative;
+
+  padding: 34px 28px 28px;
+
+  background: var(--cream);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-lg);
+}
+
+.pricing-route-card--bertha {
+  background: var(--brown);
+  color: var(--off-white);
+
+  box-shadow: 7px 7px 0 var(--gold);
+}
+
+.pricing-route-card--bertha h3 {
+  color: var(--off-white);
+}
+
+.pricing-route-card--bertha .pricing-route-price {
+  color: var(--gold);
+}
+
+.pricing-route-tag {
+  display: inline-block;
+
+  margin-bottom: 14px;
+  padding: 5px 10px;
+
+  background: var(--pink);
+  color: var(--brown-dark);
+
+  border: 1px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.pricing-route-price {
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.pricing-feature {
+  max-width: 900px;
+
+  margin: 0 auto;
+  padding: 54px;
+
+  border-radius: var(--radius-lg);
+
+  text-align: center;
+}
+
+.pricing-feature--bertha {
+  background: var(--brown);
+  color: var(--off-white);
+}
+
+.pricing-feature--bertha h2 {
+  color: var(--off-white);
+}
+
+.pricing-feature--bertha .eyebrow {
+  display: inline-block;
+
+  margin-bottom: 12px;
+
+  color: var(--gold);
+
+  font-family: var(--font-tag);
+  font-size: .78rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.pricing-feature-lead {
+  max-width: 680px;
+
+  margin: 0 auto 18px;
+
+  color: var(--gold-soft);
+}
+
+.pricing-feature-note {
+  max-width: 640px;
+
+  margin: 28px auto;
+}
+
+.pricing-feature .hero-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 16px;
+}
+
+.pricing-pair {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 240px));
+
+  justify-content: center;
+
+  gap: 22px;
+
+  margin: 32px 0;
+}
+
+.pricing-pair--wide {
+  grid-template-columns:
+    repeat(2, minmax(0, 300px));
+}
+
+.pricing-mini-card {
+  padding: 22px 26px;
+
+  background: var(--cream);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--gold);
+  border-radius: var(--radius-md);
+
+  box-shadow: 5px 5px 0 var(--pink);
+
+  text-align: center;
+}
+
+.pricing-mini-card span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-family: var(--font-tag);
+  font-size: .78rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.pricing-mini-card strong {
+  display: block;
+
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.pricing-mini-card small {
+  display: block;
+
+  margin-top: 10px;
+
+  opacity: .75;
+}
+
+.pricing-callout {
+  max-width: 760px;
+
+  margin: 38px auto 0;
+  padding: 22px 26px;
+
+  background: var(--gold-soft);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-md);
+}
+
+.pricing-callout p:last-child {
+  margin-bottom: 0;
+}
+
+.pricing-pack-note {
+  max-width: 650px;
+
+  margin: 40px auto 0;
+
+  color: var(--brown-dark);
+
+  font-size: .9rem;
+  text-align: center;
+}
+
+.custom-price-formula {
+  display: grid;
+
+  grid-template-columns:
+    1fr auto 1fr auto 1fr;
+
+  align-items: center;
+
+  gap: 18px;
+
+  margin: 48px 0;
+}
+
+.custom-price-piece {
+  min-height: 220px;
+
+  padding: 28px 24px;
+
+  background: var(--cream);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-md);
+
+  text-align: center;
+}
+
+.custom-price-piece > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  margin-bottom: 14px;
+
+  background: var(--pink);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: 50%;
+
+  font-family: var(--font-tag);
+  font-weight: 700;
+}
+
+.custom-price-symbol {
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+
+.premium-ingredients {
+  max-width: 820px;
+
+  margin: 0 auto 48px;
+
+  text-align: center;
+}
+
+.ingredient-pills {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin: 22px 0;
+}
+
+.ingredient-pills span {
+  padding: 7px 13px;
+
+  background: var(--pink-soft);
+  color: var(--brown-dark);
+
+  border: 1px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .76rem;
+}
+
+.pricing-example {
+  max-width: 620px;
+
+  margin: 0 auto;
+  padding: 34px;
+
+  background: var(--brown);
+  color: var(--off-white);
+
+  border-radius: var(--radius-lg);
+}
+
+.pricing-example h3 {
+  color: var(--off-white);
+}
+
+.pricing-example .pricing-section-kicker {
+  color: var(--gold);
+}
+
+.pricing-example-row {
+  display: flex;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 12px 0;
+
+  border-bottom:
+    1px solid rgba(247, 247, 247, .22);
+}
+
+.pricing-example-total {
+  margin-top: 6px;
+
+  color: var(--gold);
+
+  border-bottom: 0;
+
+  font-size: 1.15rem;
+}
+
+.pricing-delivery-card {
+  padding: 52px;
+
+  background: var(--brown);
+  color: var(--off-white);
+
+  border-radius: var(--radius-lg);
+}
+
+.pricing-delivery-content {
+  position: relative;
+  z-index: 2;
+
+  max-width: 680px;
+}
+
+.pricing-delivery-card h2 {
+  color: var(--off-white);
+}
+
+.pricing-delivery-card .eyebrow {
+  display: inline-block;
+
+  margin-bottom: 12px;
+
+  color: var(--gold);
+
+  font-family: var(--font-tag);
+  font-size: .78rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.pricing-delivery-card p {
+  color: var(--gold-soft);
+}
+
+.pricing-why-grid {
+  display: grid;
+
+  grid-template-columns: repeat(5, 1fr);
+
+  gap: 18px;
+}
+
+.pricing-why-item {
+  padding: 24px 18px;
+
+  background: var(--off-white);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-md);
+
+  text-align: center;
+}
+
+.pricing-why-item > span {
+  display: block;
+
+  margin-bottom: 10px;
+
+  font-size: 2rem;
+}
+
+.pricing-why-item h3 {
+  margin-bottom: 8px;
+}
+
+.pricing-why-item p {
+  margin: 0;
+
+  color: var(--brown-dark);
+
+  font-size: .9rem;
+}
+/* =========================================================
+   21. FLAVORS / MENU PAGE
+   ========================================================= */
+
+.flavor-hero-banner {
+  display: block;
+
+  width: min(100%, 760px);
+
+  margin: 28px auto 0;
+
+  overflow: hidden;
+
+  border: 5px solid var(--off-white);
+  border-radius: 24px;
+
+  box-shadow: 6px 6px 0 var(--brown-dark);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+.flavor-hero-banner img {
+  display: block;
+
+  width: 100%;
+  height: auto;
+}
+
+.flavor-hero-banner:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 8px 8px 0 var(--brown-dark);
+}
+
+.flavor-hero-banner:focus-visible {
+  outline: 4px solid var(--gold);
+  outline-offset: 4px;
+}
+
+
+/* ---------------------------------------------------------
+   Flavor catalog controls
+   --------------------------------------------------------- */
+
+.catalog-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  gap: 18px;
+
+  margin-bottom: 34px;
+  padding: 20px 22px;
+
+  background: var(--cream);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-md);
+}
+
+.catalog-toolbar-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 10px;
+}
+
+.catalog-toolbar-label {
+  color: var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.catalog-select {
+  min-height: 42px;
+
+  padding: 8px 38px 8px 14px;
+
+  background: var(--off-white);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-body);
+  font-size: .9rem;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.catalog-select:hover {
+  background: var(--gold-soft);
+}
+
+.catalog-select:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+
+/* ---------------------------------------------------------
+   Filter buttons
+   --------------------------------------------------------- */
+
+.catalog-filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 9px;
+}
+
+.catalog-filter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 38px;
+
+  padding: 7px 13px;
+
+  background: var(--off-white);
+  color: var(--brown-dark);
+
+  border: 1px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    background .15s ease,
+    color .15s ease,
+    transform .15s ease;
+}
+
+.catalog-filter:hover {
+  background: var(--pink-soft);
+
+  transform: translateY(-1px);
+}
+
+.catalog-filter.active,
+.catalog-filter[aria-pressed="true"] {
+  background: var(--brown);
+  color: var(--off-white);
+}
+
+
+/* ---------------------------------------------------------
+   Catalog count
+   --------------------------------------------------------- */
+
+.catalog-count {
+  margin: 0 0 22px;
+
+  color: var(--brown-dark);
+
+  font-family: var(--font-tag);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+
+/* ---------------------------------------------------------
+   Flavor catalog grid
+   --------------------------------------------------------- */
+
+.flavor-catalog-grid,
+.catalog-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(
+        min(100%, var(--catalog-card-width)),
+        var(--catalog-card-width)
+      )
+    );
+
+  justify-content: center;
+
+  gap: 28px;
+}
+
+
+/* ---------------------------------------------------------
+   Catalog cookie cards
+   --------------------------------------------------------- */
+
+.catalog-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  max-width: var(--catalog-card-width);
+  min-height: 500px;
+
+  overflow: hidden;
+
+  background: var(--cream);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-lg);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+.catalog-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow: 7px 7px 0 var(--pink);
+}
+
+.catalog-card-image {
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 1 / 1;
+
+  overflow: hidden;
+
+  background: var(--pink-soft);
+}
+
+.catalog-card-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: transform .3s ease;
+}
+
+.catalog-card:hover .catalog-card-image img {
+  transform: scale(1.035);
+}
+
+.catalog-card-image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+
+  padding: 30px;
+
+  color: var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.catalog-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+
+  padding: 24px 24px 22px;
+}
+
+.catalog-card-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin-bottom: 13px;
+}
+
+.catalog-card-tag {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 4px 8px;
+
+  background: var(--pink-soft);
+  color: var(--brown-dark);
+
+  border: 1px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.catalog-card-tag--specialty {
+  background: var(--gold);
+}
+
+.catalog-card-tag--rotation {
+  background: var(--gold-soft);
+}
+
+.catalog-card-tag--classic {
+  background: var(--pink-soft);
+}
+
+.catalog-card h3 {
+  margin-bottom: 9px;
+
+  color: var(--brown);
+
+  font-size: 1.4rem;
+}
+
+.catalog-card-description {
+  flex: 1 1 auto;
+
+  margin-bottom: 18px;
+
+  color: var(--brown-dark);
+
+  font-size: .93rem;
+  line-height: 1.5;
+}
+
+.catalog-card-meta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  margin-top: auto;
+  padding-top: 16px;
+
+  border-top: 1px solid rgba(122, 47, 0, .2);
+}
+
+.catalog-card-price {
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.catalog-card-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  gap: 2px;
+
+  color: var(--brown-dark);
+
+  font-size: .75rem;
+}
+
+.catalog-card-stars {
+  color: var(--gold);
+
+  font-size: .9rem;
+  letter-spacing: .02em;
+}
+
+.catalog-card-link {
+  display: inline-flex;
+  align-items: center;
+
+  margin-top: 18px;
+
+  color: var(--brown);
+
+  font-size: .9rem;
+  font-weight: 800;
+}
+
+.catalog-card-link:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+
+/* ---------------------------------------------------------
+   Entire catalog card clickable
+   --------------------------------------------------------- */
+
+a.catalog-card {
+  color: var(--brown-dark);
+
+  text-decoration: none;
+}
+
+a.catalog-card:visited {
+  color: var(--brown-dark);
+}
+
+a.catalog-card:hover {
+  color: var(--brown-dark);
+
+  text-decoration: none;
+}
+
+a.catalog-card:focus-visible {
+  outline: 4px solid var(--gold);
+  outline-offset: 4px;
+}
+
+
+/* ---------------------------------------------------------
+   Catalog price tag
+   --------------------------------------------------------- */
+
+.catalog-price-tag {
+  position: absolute;
+
+  top: 16px;
+  right: 16px;
+  z-index: 4;
+
+  padding: 6px 11px;
+
+  background: var(--gold);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: 999px;
+
+  box-shadow: 2px 2px 0 var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .78rem;
+  font-weight: 700;
+
+  transform: rotate(3deg);
+}
+
+.catalog-price-tag--specialty {
+  background: var(--pink);
+}
+
+
+/* ---------------------------------------------------------
+   Empty catalog result
+   --------------------------------------------------------- */
+
+.catalog-empty {
+  grid-column: 1 / -1;
+
+  max-width: 650px;
+
+  margin: 0 auto;
+  padding: 32px;
+
+  background: var(--gold-soft);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-md);
+
+  text-align: center;
+}
+
+.catalog-empty[hidden] {
+  display: none;
+}
+
+
+/* =========================================================
+   22. CUSTOMER REVIEWS — HOMEPAGE
+   VERTICAL CLICKABLE CAROUSEL
+   ========================================================= */
+
+.home-reviews {
+  position: relative;
+
+  padding: 72px 0;
+
+  background: var(--off-white);
+}
+
+
+/* ---------------------------------------------------------
+   Main review shell
+   --------------------------------------------------------- */
+
+.reviews-shell {
+  position: relative;
+
+  padding: 58px 48px 52px;
+
+  overflow: hidden;
+
+  background: var(--cream);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-lg);
+
+  box-shadow: 8px 8px 0 var(--pink);
+}
+
+.reviews-shell > *:not(.reviews-spot) {
+  position: relative;
+  z-index: 2;
+}
+
+
+/* ---------------------------------------------------------
+   Decorative review spots
+   --------------------------------------------------------- */
+
+.reviews-spot {
+  position: absolute;
+  z-index: 0;
+
+  border-radius:
+    62% 38% 55% 45% /
+    45% 60% 40% 55%;
+
+  pointer-events: none;
+}
+
+.reviews-spot-pink {
+  width: 165px;
+  height: 165px;
+
+  top: -65px;
+  left: -35px;
+
+  background: var(--pink);
+
+  opacity: .7;
+}
+
+.reviews-spot-gold {
+  width: 125px;
+  height: 125px;
+
+  right: -30px;
+  bottom: -45px;
+
+  background: var(--gold);
+
+  opacity: .7;
+}
+
+
+/* ---------------------------------------------------------
+   Reviews heading
+   --------------------------------------------------------- */
+
+.reviews-heading {
+  max-width: 760px;
+
+  margin: 0 auto 36px;
+
+  text-align: center;
+}
+
+.reviews-heading .eyebrow {
+  display: inline-block;
+
+  margin-bottom: 12px;
+
+  color: var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.reviews-heading h2 {
+  margin-bottom: 16px;
+
+  color: var(--brown);
+
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.reviews-heading h2 em {
+  color: var(--pink);
+
+  font-style: italic;
+}
+
+
+/* ---------------------------------------------------------
+   Review rating summary
+   --------------------------------------------------------- */
+
+.reviews-summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 12px 18px;
+
+  max-width: 620px;
+
+  margin: 0 auto;
+}
+
+.reviews-summary-stars {
+  flex: 0 0 auto;
+
+  color: var(--gold);
+
+  font-size: 1.45rem;
+  line-height: 1;
+  letter-spacing: .06em;
+
+  text-shadow:
+    1px 0 var(--brown),
+    -1px 0 var(--brown),
+    0 1px var(--brown),
+    0 -1px var(--brown);
+}
+
+.reviews-summary p {
+  margin: 0;
+
+  color: var(--brown-dark);
+
+  font-size: .98rem;
+  line-height: 1.45;
+}
+
+.reviews-summary strong {
+  color: var(--brown);
+
+  font-weight: 800;
+}
+
+
+/* ---------------------------------------------------------
+   Vertical carousel wrapper
+   --------------------------------------------------------- */
+
+.reviews-carousel {
+  position: relative;
+
+  width: min(100%, 760px);
+
+  margin: 42px auto 0;
+
+  padding: 22px 0;
+}
+
+
+/* ---------------------------------------------------------
+   Carousel viewport
+   --------------------------------------------------------- */
+
+.reviews-carousel-viewport {
+  position: relative;
+
+  width: 100%;
+
+  overflow: hidden;
+
+  border-radius: var(--radius-lg);
+}
+
+.reviews-carousel-viewport:focus-visible {
+  outline: 4px solid var(--gold);
+  outline-offset: 4px;
+}
+
+
+/* ---------------------------------------------------------
+   Vertical moving track
+   --------------------------------------------------------- */
+
+.reviews-carousel-track {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+
+  transition:
+    transform .48s cubic-bezier(.22, .61, .36, 1);
+
+  will-change: transform;
+}
+
+
+/* ---------------------------------------------------------
+   Individual review slide
+   --------------------------------------------------------- */
+
+.reviews-carousel-slide {
+  flex: 0 0 auto;
+
+  width: 100%;
+
+  padding: 4px 8px 10px;
+}
+
+
+/* ---------------------------------------------------------
+   Homepage review card
+   --------------------------------------------------------- */
+
+.reviews-carousel .review-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 310px;
+
+  padding: 34px 34px 30px;
+
+  overflow: hidden;
+
+  background: var(--off-white);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-lg);
+
+  box-shadow: 5px 5px 0 var(--pink);
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    background .18s ease;
+}
+
+.reviews-carousel .review-card:visited {
+  color: var(--brown-dark);
+}
+
+.reviews-carousel .review-card:hover {
+  color: var(--brown-dark);
+
+  text-decoration: none;
+
+  transform: translateY(-3px);
+
+  box-shadow: 8px 8px 0 var(--pink);
+}
+
+.reviews-carousel .review-card:focus-visible {
+  outline: 4px solid var(--gold);
+  outline-offset: 4px;
+}
+
+
+/* ---------------------------------------------------------
+   Featured review card
+   --------------------------------------------------------- */
+
+.reviews-carousel .review-card-featured {
+  background: var(--brown);
+  color: var(--off-white);
+
+  border-color: var(--brown);
+
+  box-shadow: 6px 6px 0 var(--gold);
+}
+
+.reviews-carousel .review-card-featured:visited {
+  color: var(--off-white);
+}
+
+.reviews-carousel .review-card-featured:hover {
+  color: var(--off-white);
+
+  box-shadow: 9px 9px 0 var(--gold);
+}
+
+
+/* ---------------------------------------------------------
+   Review stars
+   --------------------------------------------------------- */
+
+.reviews-carousel .review-stars {
+  position: relative;
+  z-index: 2;
+
+  margin-bottom: 16px;
+
+  color: var(--gold);
+
+  font-size: 1.25rem;
+  line-height: 1;
+  letter-spacing: .05em;
+}
+
+
+/* ---------------------------------------------------------
+   Cookie mentioned badge
+   --------------------------------------------------------- */
+
+.reviews-carousel .review-cookie {
+  position: relative;
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+
+  align-self: flex-start;
+
+  max-width: 100%;
+
+  margin-bottom: 17px;
+  padding: 6px 11px;
+
+  background: var(--pink-soft);
+  color: var(--brown-dark);
+
+  border: 1px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.reviews-carousel .review-card-featured .review-cookie {
+  background: var(--pink);
+  color: var(--brown-dark);
+
+  border-color: var(--off-white);
+}
+
+
+/* ---------------------------------------------------------
+   Review quote
+   --------------------------------------------------------- */
+
+.reviews-carousel .review-card blockquote {
+  position: relative;
+  z-index: 2;
+
+  flex: 1 1 auto;
+
+  max-width: 650px;
+
+  margin: 0 0 26px;
+  padding: 0;
+
+  color: var(--brown-dark);
+
+  font-family: var(--font-display);
+  font-size: 1.13rem;
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.reviews-carousel .review-card-featured blockquote {
+  color: var(--off-white);
+}
+
+.reviews-carousel .review-card blockquote::before {
+  content: "“";
+
+  position: absolute;
+
+  top: -24px;
+  left: -11px;
+  z-index: -1;
+
+  color: var(--pink);
+
+  font-family: var(--font-display);
+  font-size: 5rem;
+  font-weight: 700;
+  line-height: 1;
+
+  opacity: .15;
+
+  pointer-events: none;
+}
+
+.reviews-carousel .review-card-featured blockquote::before {
+  color: var(--gold);
+
+  opacity: .18;
+}
+
+
+/* ---------------------------------------------------------
+   Review footer
+   --------------------------------------------------------- */
+
+.reviews-carousel .review-footer {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  margin-top: auto;
+  padding-top: 19px;
+
+  border-top: 1px solid rgba(122, 47, 0, .18);
+}
+
+.reviews-carousel .review-card-featured .review-footer {
+  border-top-color: rgba(247, 247, 247, .25);
+}
+
+.reviews-carousel .review-footer > div {
+  min-width: 0;
+}
+
+.reviews-carousel .review-footer strong {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: var(--brown);
+
+  font-size: .98rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.reviews-carousel .review-card-featured .review-footer strong {
+  color: var(--off-white);
+}
+
+.reviews-carousel .review-footer > div > span {
+  display: block;
+
+  color: var(--brown-dark);
+
+  font-size: .79rem;
+  line-height: 1.35;
+
+  opacity: .75;
+}
+
+.reviews-carousel .review-card-featured .review-footer > div > span {
+  color: var(--gold-soft);
+
+  opacity: .88;
+}
+
+
+/* ---------------------------------------------------------
+   Review source
+   --------------------------------------------------------- */
+
+.reviews-carousel .review-source {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  padding: 6px 10px;
+
+  background: var(--gold-soft);
+  color: var(--brown-dark);
+
+  border: 1px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.reviews-carousel .review-card-featured .review-source {
+  background: var(--gold);
+  color: var(--brown-dark);
+
+  border-color: var(--off-white);
+}
+
+
+/* ---------------------------------------------------------
+   Vertical carousel arrows
+   --------------------------------------------------------- */
+
+.reviews-carousel-btn {
+  position: absolute;
+
+  left: 50%;
+  z-index: 5;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  padding: 0;
+
+  background: var(--brown);
+  color: var(--off-white);
+
+  border: 2px solid var(--cream);
+  border-radius: 50%;
+
+  box-shadow: 3px 3px 0 var(--pink);
+
+  font-family: var(--font-body);
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transform: translateX(-50%);
+
+  transition:
+    transform .15s ease,
+    background .15s ease,
+    box-shadow .15s ease;
+}
+
+.reviews-carousel-btn:hover {
+  background: var(--brown-dark);
+
+  box-shadow: 4px 4px 0 var(--gold);
+}
+
+.reviews-carousel-btn:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.reviews-carousel-prev {
+  top: 0;
+}
+
+.reviews-carousel-next {
+  bottom: 0;
+}
+
+.reviews-carousel-prev:hover {
+  transform: translate(-50%, -2px);
+}
+
+.reviews-carousel-next:hover {
+  transform: translate(-50%, 2px);
+}
+
+
+/* ---------------------------------------------------------
+   Carousel position dots
+   --------------------------------------------------------- */
+
+.reviews-carousel-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  max-width: 420px;
+
+  margin: 28px auto 0;
+}
+
+.reviews-carousel-dot {
+  width: 10px;
+  height: 10px;
+
+  padding: 0;
+
+  background: #c8b6aa;
+
+  border: 0;
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  transition:
+    transform .15s ease,
+    background .15s ease;
+}
+
+.reviews-carousel-dot:hover {
+  background: var(--pink);
+
+  transform: scale(1.2);
+}
+
+.reviews-carousel-dot.active,
+.reviews-carousel-dot[aria-current="true"] {
+  background: var(--brown);
+
+  transform: scale(1.4);
+}
+
+.reviews-carousel-dot:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+
+/* ---------------------------------------------------------
+   Review actions
+   --------------------------------------------------------- */
+
+.reviews-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 16px;
+
+  margin-top: 34px;
+}
+
+.reviews-actions .btn {
+  min-width: 210px;
+}
+
+
+/* ---------------------------------------------------------
+   Optional review counter
+   --------------------------------------------------------- */
+
+.reviews-carousel-counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  margin-top: 15px;
+
+  color: var(--brown-dark);
+
+  font-family: var(--font-tag);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+}
+
+
+/* =========================================================
+   23. FULL REVIEWS PAGE
+   ========================================================= */
+
+.reviews-page {
+  background: var(--off-white);
+}
+
+
+/* ---------------------------------------------------------
+   Reviews page introduction
+   --------------------------------------------------------- */
+
+.reviews-page-intro {
+  max-width: 760px;
+
+  margin: 0 auto 42px;
+
+  text-align: center;
+}
+
+.reviews-page-intro p {
+  color: var(--brown-dark);
+
+  font-size: 1.05rem;
+}
+
+
+/* ---------------------------------------------------------
+   Reviews summary panel
+   --------------------------------------------------------- */
+
+.reviews-page-summary {
+  display: grid;
+
+  grid-template-columns: auto 1fr;
+  align-items: center;
+
+  gap: 28px;
+
+  max-width: 760px;
+
+  margin: 0 auto 50px;
+  padding: 28px 32px;
+
+  background: var(--brown);
+  color: var(--off-white);
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: 7px 7px 0 var(--gold);
+}
+
+.reviews-page-score {
+  min-width: 150px;
+
+  padding-right: 28px;
+
+  border-right: 1px solid rgba(247, 247, 247, .25);
+
+  text-align: center;
+}
+
+.reviews-page-score strong {
+  display: block;
+
+  color: var(--off-white);
+
+  font-family: var(--font-display);
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.reviews-page-score .review-stars {
+  margin: 8px 0;
+
+  color: var(--gold);
+
+  font-size: 1.15rem;
+  letter-spacing: .04em;
+}
+
+.reviews-page-score span {
+  display: block;
+
+  color: var(--gold-soft);
+
+  font-size: .8rem;
+}
+
+.reviews-page-summary-copy p {
+  margin: 0;
+
+  color: var(--gold-soft);
+}
+
+
+/* ---------------------------------------------------------
+   Reviews page toolbar
+   --------------------------------------------------------- */
+
+.reviews-page-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  gap: 16px;
+
+  margin-bottom: 32px;
+  padding: 18px 20px;
+
+  background: var(--cream);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-md);
+}
+
+.reviews-page-toolbar-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 10px;
+}
+
+.reviews-page-toolbar label,
+.reviews-page-toolbar-label {
+  color: var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.reviews-page-select {
+  min-height: 40px;
+
+  padding: 7px 36px 7px 13px;
+
+  background: var(--off-white);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-body);
+  font-size: .88rem;
+  font-weight: 700;
+}
+
+
+/* ---------------------------------------------------------
+   Full reviews grid
+   --------------------------------------------------------- */
+
+.reviews-page-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  align-items: stretch;
+
+  gap: 26px;
+}
+
+
+/* ---------------------------------------------------------
+   Full review page cards
+   --------------------------------------------------------- */
+
+.reviews-page-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  min-height: 100%;
+
+  padding: 28px 26px 24px;
+
+  overflow: hidden;
+
+  background: var(--cream);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-lg);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+.reviews-page-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 6px 6px 0 var(--pink);
+}
+
+.reviews-page-card--featured {
+  background: var(--brown);
+  color: var(--off-white);
+
+  box-shadow: 6px 6px 0 var(--gold);
+}
+
+.reviews-page-card--featured:hover {
+  box-shadow: 8px 8px 0 var(--gold);
+}
+
+.reviews-page-card .review-stars {
+  margin-bottom: 14px;
+
+  color: var(--gold);
+
+  font-size: 1.12rem;
+  letter-spacing: .04em;
+}
+
+.reviews-page-card .review-cookie {
+  display: inline-flex;
+  align-self: flex-start;
+
+  margin-bottom: 16px;
+  padding: 5px 9px;
+
+  background: var(--pink-soft);
+  color: var(--brown-dark);
+
+  border: 1px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .61rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
+.reviews-page-card--featured .review-cookie {
+  background: var(--pink);
+
+  border-color: var(--off-white);
+}
+
+.reviews-page-card blockquote {
+  flex: 1 1 auto;
+
+  margin: 0 0 24px;
+
+  color: var(--brown-dark);
+
+  font-family: var(--font-display);
+  font-size: 1.03rem;
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.55;
+}
+
+.reviews-page-card--featured blockquote {
+  color: var(--off-white);
+}
+
+.reviews-page-card .review-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-top: auto;
+  padding-top: 17px;
+
+  border-top: 1px solid rgba(122, 47, 0, .18);
+}
+
+.reviews-page-card--featured .review-footer {
+  border-top-color: rgba(247, 247, 247, .25);
+}
+
+.reviews-page-card .review-footer strong {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: var(--brown);
+
+  font-size: .93rem;
+  font-weight: 800;
+}
+
+.reviews-page-card--featured .review-footer strong {
+  color: var(--off-white);
+}
+
+.reviews-page-card .review-footer > div > span {
+  display: block;
+
+  color: var(--brown-dark);
+
+  font-size: .75rem;
+
+  opacity: .72;
+}
+
+.reviews-page-card--featured .review-footer > div > span {
+  color: var(--gold-soft);
+
+  opacity: .9;
+}
+
+.reviews-page-card .review-source {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  padding: 5px 9px;
+
+  background: var(--gold-soft);
+  color: var(--brown-dark);
+
+  border: 1px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
+.reviews-page-card--featured .review-source {
+  background: var(--gold);
+
+  border-color: var(--off-white);
+}
+
+
+/* ---------------------------------------------------------
+   Rating-only review cards
+   --------------------------------------------------------- */
+
+.reviews-page-card--rating-only {
+  justify-content: center;
+
+  min-height: 240px;
+
+  text-align: center;
+}
+
+.reviews-page-card--rating-only .review-stars {
+  margin-bottom: 18px;
+
+  font-size: 1.4rem;
+}
+
+.reviews-page-card--rating-only .review-footer {
+  width: 100%;
+}
+
+
+/* ---------------------------------------------------------
+   Reviews page note
+   --------------------------------------------------------- */
+
+.reviews-page-note {
+  max-width: 760px;
+
+  margin: 42px auto 0;
+  padding: 20px 24px;
+
+  background: var(--gold-soft);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-md);
+
+  text-align: center;
+}
+
+.reviews-page-note p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ---------------------------------------------------------
+   Reviews CTA
+   --------------------------------------------------------- */
+
+.reviews-page-cta {
+  margin-top: 52px;
+  padding: 48px 40px;
+
+  background: var(--pink);
+
+  border-radius: var(--radius-lg);
+
+  text-align: center;
+}
+
+.reviews-page-cta h2 {
+  color: var(--brown-dark);
+}
+
+.reviews-page-cta p {
+  max-width: 620px;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  color: var(--brown-dark);
+}
+
+.reviews-page-cta .hero-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 16px;
+
+  margin-top: 22px;
+}
+
+
+/* =========================================================
+   HOMEPAGE REVIEWS — TABLET
+   ========================================================= */
+
+@media (max-width: 860px) {
+
+  .reviews-shell {
+    padding: 50px 30px;
+  }
+
+  .reviews-heading {
+    max-width: 650px;
+  }
+
+  .reviews-carousel {
+    width: min(100%, 620px);
+  }
+
+  .reviews-carousel .review-card {
+    min-height: 300px;
+
+    padding: 32px 30px 28px;
+  }
+
+}
+
+
+/* =========================================================
+   HOMEPAGE REVIEWS — MOBILE
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+  .home-reviews {
+    padding: 54px 0;
+  }
+
+  .reviews-shell {
+    padding: 42px 18px 38px;
+
+    border-radius: 22px;
+
+    box-shadow: 5px 5px 0 var(--pink);
+  }
+
+  .reviews-heading {
+    margin-bottom: 28px;
+  }
+
+  .reviews-heading .eyebrow {
+    font-size: .7rem;
+  }
+
+  .reviews-heading h2 {
+    font-size: clamp(1.9rem, 9vw, 2.5rem);
+  }
+
+  .reviews-summary {
+    flex-direction: column;
+
+    gap: 9px;
+
+    text-align: center;
+  }
+
+  .reviews-summary-stars {
+    font-size: 1.35rem;
+  }
+
+  .reviews-summary p {
+    max-width: 290px;
+
+    font-size: .92rem;
+
+    text-align: center;
+  }
+
+  .reviews-carousel {
+    width: 100%;
+
+    margin-top: 36px;
+    padding: 20px 0;
+  }
+
+  .reviews-carousel-viewport {
+    border-radius: 20px;
+  }
+
+  .reviews-carousel-slide {
+    padding:
+      4px
+      4px
+      9px;
+  }
+
+  .reviews-carousel .review-card,
+  .reviews-carousel .review-card-featured {
+    width: 100%;
+    min-height: 0;
+
+    padding: 28px 22px 24px;
+
+    border-radius: 20px;
+
+    transform: none;
+  }
+
+  .reviews-carousel .review-card:hover,
+  .reviews-carousel .review-card-featured:hover {
+    transform: none;
+  }
+
+  .reviews-carousel .review-card blockquote {
+    margin-bottom: 22px;
+
+    font-size: 1.02rem;
+    line-height: 1.58;
+  }
+
+  .reviews-carousel .review-footer {
+    align-items: center;
+
+    gap: 10px;
+  }
+
+  .reviews-carousel .review-footer strong {
+    font-size: .94rem;
+  }
+
+  .reviews-carousel .review-source {
+    padding: 5px 8px;
+
+    font-size: .58rem;
+  }
+
+  .reviews-carousel-btn {
+    width: 42px;
+    height: 42px;
+
+    font-size: 1.3rem;
+  }
+
+  .reviews-carousel-dots {
+    gap: 9px;
+
+    margin-top: 27px;
+  }
+
+  .reviews-carousel-dot {
+    width: 9px;
+    height: 9px;
+  }
+
+  .reviews-actions {
+    flex-direction: column;
+
+    width: 100%;
+
+    gap: 13px;
+
+    margin-top: 28px;
+  }
+
+  .reviews-actions .btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .reviews-spot-pink {
+    width: 115px;
+    height: 115px;
+
+    top: -45px;
+    left: -35px;
+  }
+
+  .reviews-spot-gold {
+    width: 90px;
+    height: 90px;
+
+    right: -25px;
+    bottom: -30px;
+  }
+
+}
+
+
+/* =========================================================
+   HOMEPAGE REVIEWS — VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .reviews-shell {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .reviews-carousel .review-card,
+  .reviews-carousel .review-card-featured {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .reviews-carousel .review-footer {
+    gap: 8px;
+  }
+
+  .reviews-carousel .review-source {
+    padding-left: 7px;
+    padding-right: 7px;
+
+    font-size: .56rem;
+  }
+
+  .reviews-carousel .review-cookie {
+    max-width: 90%;
+
+    font-size: .6rem;
+  }
+
+}
+
+
+/* =========================================================
+   FULL REVIEWS PAGE — TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .reviews-page-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================================
+   FULL REVIEWS PAGE — MOBILE
+   ========================================================= */
+
+@media (max-width: 620px) {
+
+  .reviews-page-summary {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+
+    padding: 26px 22px;
+
+    text-align: center;
+  }
+
+  .reviews-page-score {
+    min-width: 0;
+
+    padding-right: 0;
+    padding-bottom: 20px;
+
+    border-right: 0;
+    border-bottom: 1px solid rgba(247, 247, 247, .25);
+  }
+
+  .reviews-page-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .reviews-page-toolbar-group {
+    justify-content: space-between;
+
+    width: 100%;
+  }
+
+  .reviews-page-select {
+    flex: 1 1 auto;
+
+    max-width: 220px;
+  }
+
+  .reviews-page-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reviews-page-card {
+    padding: 26px 22px 23px;
+  }
+
+  .reviews-page-cta {
+    padding: 40px 22px;
+  }
+
+  .reviews-page-cta .hero-actions {
+    flex-direction: column;
+  }
+
+  .reviews-page-cta .hero-actions .btn {
+    width: 100%;
+  }
+
+}
+
+/* =========================================================
+   24. FOOTER
+   ========================================================= */
+
+.site-footer {
+  padding: 52px 0 24px;
+
+  background: var(--brown-dark);
+  color: var(--off-white);
+}
+
+.footer-grid {
+  display: grid;
+
+  grid-template-columns: 1.4fr 1fr 1fr;
+
+  gap: 40px;
+
+  margin-bottom: 38px;
+}
+
+.footer-logo {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--off-white);
+
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.footer-tagline {
+  margin-bottom: 18px;
+
+  color: var(--gold);
+
+  font-family: var(--font-display);
+  font-style: italic;
+}
+
+.site-footer h4 {
+  margin-bottom: 14px;
+
+  color: var(--gold);
+
+  font-family: var(--font-tag);
+  font-size: .75rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.site-footer li {
+  margin-bottom: 8px;
+}
+
+.site-footer a {
+  color: var(--off-white);
+
+  font-size: .9rem;
+
+  opacity: .85;
+}
+
+.site-footer a:hover {
+  color: var(--pink);
+
+  opacity: 1;
+}
+
+.social-row {
+  display: flex;
+
+  gap: 12px;
+}
+
+.social-row a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  border: 1px solid rgba(247, 247, 247, .35);
+  border-radius: 50%;
+
+  transition:
+    background .15s ease,
+    border-color .15s ease,
+    transform .15s ease;
+}
+
+.social-row a:hover {
+  background: rgba(247, 247, 247, .1);
+
+  border-color: var(--pink);
+
+  transform: translateY(-2px);
+}
+
+.social-row svg {
+  width: 18px;
+  height: 18px;
+
+  fill: var(--off-white);
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding-top: 20px;
+
+  color: rgba(247, 247, 247, .6);
+
+  border-top: 1px solid rgba(247, 247, 247, .18);
+
+  font-size: .78rem;
+}
+
+
+/* =========================================================
+   25. UTILITIES
+   ========================================================= */
+
+.text-center {
+  text-align: center;
+}
+
+.mt-sm {
+  margin-top: 16px;
+}
+
+.mt-md {
+  margin-top: 28px;
+}
+
+.mt-lg {
+  margin-top: 44px;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.max-700 {
+  max-width: 700px;
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* =========================================================
+   26. RESPONSIVE — LARGE TABLET / SMALL DESKTOP
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .nav-wrap {
+    gap: 18px;
+  }
+
+  .logo > span {
+    width: 135px;
+  }
+
+  .main-nav ul {
+    gap: 13px;
+  }
+
+  .main-nav a {
+    font-size: .77rem;
+  }
+
+  .main-nav .nav-order a {
+    padding: 8px 13px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pack-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pricing-route-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pricing-route-card:last-child {
+    grid-column: 1 / -1;
+
+    max-width: 520px;
+
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .pricing-why-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+}
+
+
+/* =========================================================
+   27. RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 860px) {
+
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  section {
+    padding: 62px 0;
+  }
+
+
+  /* -------------------------------------------------------
+     Navigation becomes mobile
+     ------------------------------------------------------- */
+
+  .nav-wrap {
+    position: relative;
+
+    flex-wrap: wrap;
+
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .logo > span {
+    width: auto;
+  }
+
+  .nav-toggle {
+    display: block;
+  }
+
+  .main-nav {
+    display: none;
+
+    width: 100%;
+
+    margin-left: 0;
+  }
+
+  .main-nav.open {
+    display: block;
+  }
+
+  .main-nav ul {
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 0;
+
+    padding: 12px 0 4px;
+  }
+
+  .main-nav li {
+    width: 100%;
+  }
+
+  .main-nav a {
+    display: block;
+
+    width: 100%;
+
+    padding: 10px 4px;
+
+    font-size: .92rem;
+  }
+
+  .main-nav a::after {
+    display: none;
+  }
+
+  .main-nav .nav-order {
+    margin-top: 7px;
+  }
+
+  .main-nav .nav-order a {
+    display: inline-flex;
+    justify-content: center;
+
+    width: auto;
+
+    padding: 10px 20px;
+  }
+
+
+  /* -------------------------------------------------------
+     About
+     ------------------------------------------------------- */
+
+  .about-wrap {
+    grid-template-columns: 1fr;
+
+    gap: 36px;
+  }
+
+
+  /* -------------------------------------------------------
+     Gift tiers
+     ------------------------------------------------------- */
+
+  .tier-grid {
+    grid-template-columns: 1fr;
+
+    max-width: 600px;
+
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .tier.tier--feature {
+    transform: none;
+  }
+
+
+  /* -------------------------------------------------------
+     Order
+     ------------------------------------------------------- */
+
+  .order-steps {
+    grid-template-columns: 1fr;
+  }
+
+
+  /* -------------------------------------------------------
+     Bertha
+     ------------------------------------------------------- */
+
+  .bertha-thanks-card {
+    padding: 50px 34px;
+  }
+
+  .bertha-prices {
+    grid-template-columns:
+      minmax(220px, 280px)
+      minmax(200px, 240px)
+      minmax(220px, 280px);
+
+    gap: 18px;
+  }
+
+  .bertha-price {
+    padding: 24px 18px;
+  }
+
+  .bertha-price strong {
+    font-size: 2.8rem;
+  }
+
+  .bertha-price-mascot img {
+    width: 220px;
+  }
+
+
+  /* -------------------------------------------------------
+     Pricing
+     ------------------------------------------------------- */
+
+  .custom-price-formula {
+    grid-template-columns: 1fr;
+
+    max-width: 620px;
+
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .custom-price-symbol {
+    transform: rotate(90deg);
+
+    text-align: center;
+  }
+
+  .custom-price-piece {
+    min-height: 0;
+  }
+
+  .pricing-delivery-card {
+    padding: 44px 36px;
+  }
+
+  .pricing-why-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+
+  /* -------------------------------------------------------
+     Catalog
+     ------------------------------------------------------- */
+
+  .catalog-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .catalog-toolbar-group {
+    justify-content: space-between;
+
+    width: 100%;
+  }
+
+}
+
+
+/* =========================================================
+   28. RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  body {
+    font-size: 16px;
+  }
+
+  .container {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  section {
+    padding: 54px 0;
+  }
+
+
+  /* -------------------------------------------------------
+     Header
+     ------------------------------------------------------- */
+
+  .logo {
+    gap: 8px;
+
+    font-size: 1.05rem;
+  }
+
+  .logo .logo-mark {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+
+    flex-basis: 44px;
+  }
+
+
+  /* -------------------------------------------------------
+     Hero
+     ------------------------------------------------------- */
+
+  .hero {
+    padding: 58px 0 64px;
+  }
+
+  .page-hero {
+    padding: 54px 0 62px;
+  }
+
+  .hero p.lead {
+    font-size: 1.03rem;
+  }
+
+  .hero .hero-actions,
+  .page-hero .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+
+    width: 100%;
+    max-width: 420px;
+
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero .hero-actions .btn,
+  .page-hero .hero-actions .btn {
+    width: 100%;
+  }
+
+  .hero-brand-banner,
+  .flavor-hero-banner {
+    border-width: 4px;
+    border-radius: 20px;
+
+    box-shadow: 5px 5px 0 var(--brown-dark);
+  }
+
+
+  /* -------------------------------------------------------
+     General grids
+     ------------------------------------------------------- */
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pack-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  /* -------------------------------------------------------
+     Cookie cards
+     ------------------------------------------------------- */
+
+  .cookie-card,
+  .pack-card {
+    min-height: 460px;
+  }
+
+  .cookie-card-overlay,
+  .pack-card-overlay {
+    padding: 28px 22px 24px;
+  }
+
+
+  /* -------------------------------------------------------
+     Events
+     ------------------------------------------------------- */
+
+  .event-card {
+    flex-direction: column;
+  }
+
+
+  /* -------------------------------------------------------
+     Order
+     ------------------------------------------------------- */
+
+  .order-panel {
+    padding: 38px 24px;
+  }
+
+
+  /* -------------------------------------------------------
+     CTA
+     ------------------------------------------------------- */
+
+  .cta-band {
+    padding: 38px 24px;
+  }
+
+  .cta-band .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cta-band .hero-actions .btn {
+    width: 100%;
+  }
+
+
+  /* -------------------------------------------------------
+     Homepage image carousel
+     ------------------------------------------------------- */
+
+  .home-carousel {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .carousel-btn {
+    width: 42px;
+    height: 42px;
+
+    font-size: 1.65rem;
+  }
+
+  .carousel-prev {
+    left: 10px;
+  }
+
+  .carousel-next {
+    right: 10px;
+  }
+
+
+  /* -------------------------------------------------------
+     Bertha
+     ------------------------------------------------------- */
+
+  .bertha-thanks-card {
+    padding: 44px 24px;
+  }
+
+  .bertha-prices {
+    grid-template-columns: 1fr;
+
+    gap: 18px;
+
+    max-width: 360px;
+  }
+
+  .bertha-price {
+    width: 100%;
+  }
+
+  .bertha-price-mascot {
+    order: 2;
+  }
+
+  .bertha-price-mascot img {
+    width: 210px;
+  }
+
+  .bertha-prices .bertha-price:first-child {
+    order: 1;
+  }
+
+  .bertha-prices .bertha-price:last-child {
+    order: 3;
+  }
+
+  .bertha-thanks .hero-actions {
+    grid-template-columns: 1fr;
+
+    max-width: 420px;
+  }
+
+  .bertha-extra-links {
+    grid-template-columns: 1fr;
+
+    max-width: 420px;
+
+    gap: 8px;
+  }
+
+  .bertha-extra-links a {
+    min-height: 38px;
+
+    font-size: .98rem;
+  }
+
+
+  /* -------------------------------------------------------
+     Pricing
+     ------------------------------------------------------- */
+
+  .pricing-route-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-route-card:last-child {
+    grid-column: auto;
+
+    max-width: none;
+  }
+
+  .pricing-feature {
+    padding: 42px 24px;
+  }
+
+  .pricing-pair,
+  .pricing-pair--wide {
+    grid-template-columns: 1fr;
+
+    max-width: 340px;
+
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .pricing-delivery-card {
+    padding: 40px 24px;
+  }
+
+  .pricing-why-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-example {
+    padding: 28px 22px;
+  }
+
+
+  /* -------------------------------------------------------
+     Catalog
+     ------------------------------------------------------- */
+
+  .catalog-toolbar {
+    padding: 18px;
+  }
+
+  .catalog-toolbar-group {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .catalog-select {
+    width: 100%;
+  }
+
+  .catalog-filters {
+    width: 100%;
+  }
+
+  .catalog-filter {
+    flex: 1 1 auto;
+  }
+
+  .flavor-catalog-grid,
+  .catalog-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .catalog-card {
+    max-width: 420px;
+
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+  /* -------------------------------------------------------
+     Footer
+     ------------------------------------------------------- */
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+
+    gap: 30px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+
+    gap: 8px;
+  }
+
+}
+
+
+/* =========================================================
+   29. RESPONSIVE — SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 520px) {
+
+  h1 {
+    font-size: clamp(2.1rem, 11vw, 3rem);
+  }
+
+  h2 {
+    font-size: clamp(1.7rem, 8vw, 2.25rem);
+  }
+
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+
+  /* -------------------------------------------------------
+     Hero headline
+     ------------------------------------------------------- */
+
+  .hero-headline {
+    white-space: normal;
+  }
+
+
+  /* -------------------------------------------------------
+     Buttons
+     ------------------------------------------------------- */
+
+  .btn {
+    padding: 13px 21px;
+
+    font-size: .9rem;
+  }
+
+
+  /* -------------------------------------------------------
+     Cookie cards
+     ------------------------------------------------------- */
+
+  .cookie-card,
+  .pack-card {
+    min-height: 430px;
+
+    border-radius: 22px;
+  }
+
+  .cookie-card-overlay,
+  .pack-card-overlay {
+    padding: 26px 20px 22px;
+  }
+
+  .cookie-card-overlay h3,
+  .pack-card-overlay h3 {
+    font-size: 1.4rem;
+  }
+
+
+  /* -------------------------------------------------------
+     Bertha
+     ------------------------------------------------------- */
+
+  .bertha-thanks-card {
+    padding: 38px 18px;
+
+    border-radius: 22px;
+  }
+
+  .bertha-lead {
+    font-size: .98rem;
+  }
+
+  .bertha-price {
+    padding: 22px 18px;
+  }
+
+  .bertha-price strong {
+    font-size: 2.7rem;
+  }
+
+  .bertha-price-mascot img {
+    width: 185px;
+  }
+
+  .bertha-note {
+    font-size: .92rem;
+  }
+
+
+  /* -------------------------------------------------------
+     Pricing
+     ------------------------------------------------------- */
+
+  .pricing-feature {
+    padding: 36px 18px;
+  }
+
+  .pricing-mini-card {
+    padding: 20px;
+  }
+
+  .pricing-mini-card strong {
+    font-size: 2.3rem;
+  }
+
+  .pricing-callout {
+    padding: 19px 18px;
+  }
+
+  .custom-price-piece {
+    padding: 24px 18px;
+  }
+
+  .pricing-delivery-card {
+    padding: 34px 20px;
+  }
+
+
+  /* -------------------------------------------------------
+     Reviews page
+     ------------------------------------------------------- */
+
+  .reviews-page-intro {
+    margin-bottom: 34px;
+  }
+
+  .reviews-page-summary {
+    margin-bottom: 38px;
+  }
+
+  .reviews-page-card {
+    border-radius: 22px;
+  }
+
+
+  /* -------------------------------------------------------
+     Footer
+     ------------------------------------------------------- */
+
+  .site-footer {
+    padding-top: 44px;
+  }
+
+}
+
+
+/* =========================================================
+   30. RESPONSIVE — VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 390px) {
+
+  .nav-wrap {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .logo {
+    font-size: .96rem;
+  }
+
+  .logo .logo-mark {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+
+    flex-basis: 40px;
+  }
+
+  .nav-toggle {
+    padding: 7px 8px;
+  }
+
+  .hero {
+    padding-top: 50px;
+    padding-bottom: 56px;
+  }
+
+  .page-hero {
+    padding-top: 48px;
+    padding-bottom: 56px;
+  }
+
+  .hero-brand-banner,
+  .flavor-hero-banner {
+    border-width: 3px;
+
+    border-radius: 17px;
+  }
+
+  .cookie-card,
+  .pack-card {
+    min-height: 410px;
+  }
+
+  .carousel-btn {
+    width: 38px;
+    height: 38px;
+
+    font-size: 1.45rem;
+  }
+
+  .bertha-price-mascot img {
+    width: 165px;
+  }
+
+  .pricing-example-row {
+    gap: 12px;
+
+    font-size: .9rem;
+  }
+
+}
+
+
+/* =========================================================
+   31. PRINT
+   ========================================================= */
+
+@media print {
+
+  .site-header,
+  .site-footer,
+  .nav-toggle,
+  .hero-actions,
+  .carousel-btn,
+  .carousel-dots,
+  .reviews-carousel-btn,
+  .reviews-carousel-dots,
+  .reviews-actions,
+  .social-row,
+  .bertha-extra-links {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  section {
+    padding: 24px 0;
+  }
+
+  .container {
+    max-width: none;
+
+    padding: 0;
+  }
+
+  .hero,
+  .page-hero,
+  .bertha-thanks-card,
+  .pricing-feature--bertha,
+  .pricing-delivery-card,
+  .reviews-page-summary,
+  .reviews-carousel .review-card-featured {
+    background: #fff !important;
+    color: #000 !important;
+
+    border: 1px solid #000;
+
+    box-shadow: none !important;
+  }
+
+  .hero h1,
+  .page-hero h1,
+  .bertha-thanks h2,
+  .pricing-feature--bertha h2,
+  .pricing-delivery-card h2,
+  .reviews-carousel .review-card-featured blockquote {
+    color: #000 !important;
+  }
+
+}
+
+
+/* =========================================================
+   32. BERTHA COLLAPSIBLE DROPDOWN
+   ========================================================= */
+
+/*
+   Expected HTML structure:
+
+   <details class="bertha-dropdown">
+     <summary class="bertha-dropdown-summary">
+       ...
+     </summary>
+
+     <div class="bertha-dropdown-content">
+       ...
+     </div>
+   </details>
+*/
+
+
+.bertha-dropdown {
+  position: relative;
+
+  width: 100%;
+
+  margin: 0;
+
+  background: transparent;
+
+  border: 0;
+}
+
+
+/* ---------------------------------------------------------
+   Remove browser default disclosure marker
+   --------------------------------------------------------- */
+
+.bertha-dropdown > summary {
+  list-style: none;
+}
+
+.bertha-dropdown > summary::-webkit-details-marker {
+  display: none;
+}
+
+
+/* ---------------------------------------------------------
+   Closed / clickable summary
+   --------------------------------------------------------- */
+
+.bertha-dropdown-summary {
+  position: relative;
+  z-index: 4;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+
+  width: 100%;
+
+  padding: 20px 56px 20px 24px;
+
+  background: var(--brown);
+  color: var(--off-white);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-lg);
+
+  box-shadow: 6px 6px 0 var(--gold);
+
+  cursor: pointer;
+
+  text-align: center;
+
+  transition:
+    background .18s ease,
+    box-shadow .18s ease,
+    transform .18s ease;
+}
+
+.bertha-dropdown-summary:hover {
+  background: var(--brown-dark);
+
+  box-shadow: 8px 8px 0 var(--pink);
+
+  transform: translateY(-2px);
+}
+
+.bertha-dropdown-summary:focus-visible {
+  outline: 4px solid var(--gold);
+  outline-offset: 4px;
+}
+
+
+/* ---------------------------------------------------------
+   Summary text
+   --------------------------------------------------------- */
+
+.bertha-dropdown-summary-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 3px;
+
+  min-width: 0;
+}
+
+.bertha-dropdown-summary .eyebrow,
+.bertha-dropdown-summary-kicker {
+  display: block;
+
+  margin: 0;
+
+  color: var(--gold);
+
+  font-family: var(--font-tag);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.bertha-dropdown-summary-title {
+  display: block;
+
+  margin: 0;
+
+  color: var(--off-white);
+
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 1.65rem);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+
+/* ---------------------------------------------------------
+   Dropdown arrow
+   --------------------------------------------------------- */
+
+.bertha-dropdown-summary::after {
+  content: "⌄";
+
+  position: absolute;
+
+  top: 50%;
+  right: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  color: var(--gold);
+
+  font-family: var(--font-body);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+
+  transform: translateY(-55%);
+
+  transition:
+    transform .22s ease,
+    color .18s ease;
+}
+
+.bertha-dropdown[open] > .bertha-dropdown-summary::after {
+  color: var(--pink);
+
+  transform:
+    translateY(-42%)
+    rotate(180deg);
+}
+
+
+/* ---------------------------------------------------------
+   Expanded state
+   --------------------------------------------------------- */
+
+.bertha-dropdown[open] > .bertha-dropdown-summary {
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+
+  box-shadow: 6px 6px 0 var(--pink);
+}
+
+
+/* ---------------------------------------------------------
+   Expanded content
+   --------------------------------------------------------- */
+
+.bertha-dropdown-content {
+  position: relative;
+  z-index: 1;
+
+  margin-top: 18px;
+}
+
+
+/*
+   If the existing .bertha-thanks-card lives inside the
+   dropdown, remove unnecessary outer spacing.
+*/
+
+.bertha-dropdown-content .bertha-thanks-card {
+  margin: 0;
+}
+
+
+/* ---------------------------------------------------------
+   Optional animation
+   --------------------------------------------------------- */
+
+@keyframes berthaDropdownReveal {
+  from {
+    opacity: 0;
+
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+.bertha-dropdown[open] > .bertha-dropdown-content {
+  animation: berthaDropdownReveal .22s ease both;
+}
+
+
+/* =========================================================
+   BERTHA DROPDOWN — ALTERNATE STRUCTURE SUPPORT
+   ========================================================= */
+
+/*
+   These selectors also support a structure where the
+   <details> itself uses the existing bertha-thanks class.
+*/
+
+details.bertha-thanks {
+  padding-bottom: 22px;
+}
+
+details.bertha-thanks > summary {
+  list-style: none;
+}
+
+details.bertha-thanks > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.bertha-thanks .bertha-thanks-card {
+  margin-top: 18px;
+}
+
+
+/* ---------------------------------------------------------
+   Compact Bertha summary
+   --------------------------------------------------------- */
+
+.bertha-summary {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: min(100%, var(--container));
+
+  margin: 0 auto;
+  padding: 0 24px;
+
+  list-style: none;
+
+  cursor: pointer;
+}
+
+.bertha-summary::-webkit-details-marker {
+  display: none;
+}
+
+.bertha-summary-inner {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  padding: 22px 58px 22px 28px;
+
+  background: var(--brown);
+  color: var(--off-white);
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: 6px 6px 0 var(--gold);
+
+  text-align: center;
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    background .18s ease;
+}
+
+.bertha-summary:hover .bertha-summary-inner {
+  background: var(--brown-dark);
+
+  box-shadow: 8px 8px 0 var(--pink);
+
+  transform: translateY(-2px);
+}
+
+.bertha-summary-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 4px;
+}
+
+.bertha-summary-kicker {
+  color: var(--gold);
+
+  font-family: var(--font-tag);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.bertha-summary-title {
+  color: var(--off-white);
+
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.bertha-summary-arrow {
+  position: absolute;
+
+  top: 50%;
+  right: 25px;
+
+  color: var(--gold);
+
+  font-size: 1.4rem;
+  font-weight: 800;
+
+  transform: translateY(-50%);
+
+  transition:
+    transform .2s ease,
+    color .2s ease;
+}
+
+details[open] > .bertha-summary .bertha-summary-arrow {
+  color: var(--pink);
+
+  transform:
+    translateY(-50%)
+    rotate(180deg);
+}
+
+
+/* =========================================================
+   BERTHA DROPDOWN — TABLET
+   ========================================================= */
+
+@media (max-width: 860px) {
+
+  .bertha-dropdown-summary {
+    padding:
+      18px
+      52px
+      18px
+      20px;
+  }
+
+  .bertha-dropdown-summary::after {
+    right: 20px;
+  }
+
+  .bertha-summary {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .bertha-summary-inner {
+    padding:
+      20px
+      54px
+      20px
+      22px;
+  }
+
+  .bertha-summary-arrow {
+    right: 21px;
+  }
+
+}
+
+
+/* =========================================================
+   BERTHA DROPDOWN — MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  details.bertha-thanks {
+    padding-bottom: 16px;
+  }
+
+  .bertha-dropdown-summary {
+    padding:
+      17px
+      48px
+      17px
+      18px;
+
+    border-radius: 22px;
+
+    box-shadow: 5px 5px 0 var(--gold);
+  }
+
+  .bertha-dropdown-summary:hover {
+    transform: none;
+  }
+
+  .bertha-dropdown-summary::after {
+    right: 17px;
+
+    width: 28px;
+    height: 28px;
+
+    font-size: 1.35rem;
+  }
+
+  .bertha-dropdown-summary-title {
+    font-size: 1.25rem;
+  }
+
+  .bertha-dropdown-summary .eyebrow,
+  .bertha-dropdown-summary-kicker {
+    font-size: .63rem;
+  }
+
+  .bertha-dropdown-content {
+    margin-top: 14px;
+  }
+
+  .bertha-summary {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .bertha-summary-inner {
+    padding:
+      18px
+      48px
+      18px
+      18px;
+
+    border-radius: 22px;
+
+    box-shadow: 5px 5px 0 var(--gold);
+  }
+
+  .bertha-summary:hover .bertha-summary-inner {
+    transform: none;
+  }
+
+  .bertha-summary-title {
+    font-size: 1.25rem;
+  }
+
+  .bertha-summary-kicker {
+    font-size: .63rem;
+  }
+
+  .bertha-summary-arrow {
+    right: 18px;
+  }
+
+}
+
+
+/* =========================================================
+   BERTHA DROPDOWN — SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .bertha-dropdown-summary {
+    padding:
+      15px
+      43px
+      15px
+      14px;
+  }
+
+  .bertha-dropdown-summary::after {
+    right: 13px;
+  }
+
+  .bertha-dropdown-summary-title {
+    font-size: 1.12rem;
+  }
+
+  .bertha-summary {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .bertha-summary-inner {
+    padding:
+      16px
+      43px
+      16px
+      14px;
+  }
+
+  .bertha-summary-title {
+    font-size: 1.12rem;
+  }
+
+  .bertha-summary-arrow {
+    right: 14px;
+  }
+
+}
+
+
+/* =========================================================
+   33. FINAL SAFETY / LAYOUT FIXES
+   ========================================================= */
+
+/*
+   Prevent long text or controls from forcing horizontal
+   overflow on narrow devices.
+*/
+
+.cookie-card,
+.pack-card,
+.catalog-card,
+.review-card,
+.reviews-page-card,
+.bertha-thanks-card,
+.pricing-route-card,
+.pricing-mini-card,
+.custom-price-piece {
+  min-width: 0;
+}
+
+.review-card blockquote,
+.reviews-page-card blockquote,
+.cookie-card p,
+.pack-card p,
+.catalog-card p,
+.bertha-thanks p,
+.pricing-route-card p {
+  overflow-wrap: break-word;
+}
+
+
+/* ---------------------------------------------------------
+   Prevent accidental horizontal page scrolling
+   --------------------------------------------------------- */
+
+html,
+body {
+  max-width: 100%;
+
+  overflow-x: hidden;
+}
+
+
+/* ---------------------------------------------------------
+   Hide explicitly hidden catalog/review elements
+   --------------------------------------------------------- */
+
+[hidden] {
+  display: none !important;
+}
+
+
+/* ---------------------------------------------------------
+   Accessible clickable cards
+   --------------------------------------------------------- */
+
+.cookie-card-link,
+.pack-card,
+.catalog-card,
+.reviews-carousel .review-card {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ---------------------------------------------------------
+   Ensure SVG icons inherit their intended size
+   --------------------------------------------------------- */
+
+svg {
+  max-width: 100%;
+}
+
+
+/* =========================================================
+   END OF OLLY'S BAKED ASSORTMENTS STYLESHEET
+   ========================================================= */
