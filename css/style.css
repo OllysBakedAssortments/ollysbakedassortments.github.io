@@ -2914,6 +2914,8 @@ a.catalog-card:focus-visible {
 
   width: 100%;
 
+  height: 330px;
+
   overflow: hidden;
 
   border-radius: var(--radius-lg);
@@ -2947,9 +2949,10 @@ a.catalog-card:focus-visible {
    --------------------------------------------------------- */
 
 .reviews-carousel-slide {
-  flex: 0 0 auto;
+  flex: 0 0 330px;
 
   width: 100%;
+  height: 330px;
 
   padding: 4px 8px 10px;
 }
@@ -3926,16 +3929,21 @@ a.catalog-card:focus-visible {
     padding: 20px 0;
   }
 
-  .reviews-carousel-viewport {
-    border-radius: 20px;
-  }
+.reviews-carousel-viewport {
+  height: 360px;
 
-  .reviews-carousel-slide {
-    padding:
-      4px
-      4px
-      9px;
-  }
+  border-radius: 20px;
+}
+
+.reviews-carousel-slide {
+  flex-basis: 360px;
+  height: 360px;
+
+  padding:
+    4px
+    4px
+    9px;
+}
 
   .reviews-carousel .review-card,
   .reviews-carousel .review-card-featured {
@@ -5170,129 +5178,98 @@ a.catalog-card:focus-visible {
 
 
 /* =========================================================
-   32. BERTHA COLLAPSIBLE DROPDOWN
+   32. BERTHA COLLAPSIBLE CARD
    ========================================================= */
 
 /*
-   Expected HTML structure:
-
-   <details class="bertha-dropdown">
-     <summary class="bertha-dropdown-summary">
-       ...
-     </summary>
-
-     <div class="bertha-dropdown-content">
-       ...
-     </div>
-   </details>
+   The <details> element IS the Bertha card.
+   There is no separate accordion bubble + card.
 */
-
 
 .bertha-dropdown {
   position: relative;
 
   width: 100%;
-
   margin: 0;
 
-  background: transparent;
-
-  border: 0;
-}
-
-
-/* ---------------------------------------------------------
-   Remove browser default disclosure marker
-   --------------------------------------------------------- */
-
-.bertha-dropdown > summary {
-  list-style: none;
-}
-
-.bertha-dropdown > summary::-webkit-details-marker {
-  display: none;
-}
-
-
-/* ---------------------------------------------------------
-   Closed / clickable summary
-   --------------------------------------------------------- */
-
-.bertha-dropdown-summary {
-  position: relative;
-  z-index: 4;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 14px;
-
-  width: 100%;
-
-  padding: 20px 56px 20px 24px;
+  overflow: hidden;
 
   background: var(--brown);
   color: var(--off-white);
 
-  border: 2px solid var(--brown);
   border-radius: var(--radius-lg);
-
-  box-shadow: 6px 6px 0 var(--gold);
-
-  cursor: pointer;
-
-  text-align: center;
-
-  transition:
-    background .18s ease,
-    box-shadow .18s ease,
-    transform .18s ease;
-}
-
-.bertha-dropdown-summary:hover {
-  background: var(--brown-dark);
-
-  box-shadow: 8px 8px 0 var(--pink);
-
-  transform: translateY(-2px);
-}
-
-.bertha-dropdown-summary:focus-visible {
-  outline: 4px solid var(--gold);
-  outline-offset: 4px;
 }
 
 
 /* ---------------------------------------------------------
-   Summary text
+   SUMMARY
    --------------------------------------------------------- */
 
-.bertha-dropdown-summary-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.bertha-dropdown-summary {
+  position: relative;
+  z-index: 3;
 
-  gap: 3px;
+  display: block;
 
-  min-width: 0;
+  width: 100%;
+
+  padding: 58px 72px 42px;
+
+  color: var(--off-white);
+
+  list-style: none;
+  text-align: center;
+
+  cursor: pointer;
+
+  -webkit-tap-highlight-color: transparent;
 }
+
+.bertha-dropdown-summary::-webkit-details-marker {
+  display: none;
+}
+
+.bertha-dropdown-summary::marker {
+  display: none;
+  content: "";
+}
+
+
+/* Keep summary content at same width as original Bertha card */
+
+.bertha-dropdown-summary-text {
+  position: relative;
+  z-index: 2;
+
+  display: block;
+
+  width: 100%;
+  max-width: 940px;
+
+  margin: 0 auto;
+}
+
+
+/* Original eyebrow styling */
 
 .bertha-dropdown-summary .eyebrow,
 .bertha-dropdown-summary-kicker {
-  display: block;
+  display: inline-block;
 
-  margin: 0;
+  margin: 0 0 14px;
 
   color: var(--gold);
 
   font-family: var(--font-tag);
-  font-size: .7rem;
-  font-weight: 700;
-  letter-spacing: .1em;
-  line-height: 1.25;
+  font-size: .8rem;
+  font-weight: 400;
+  letter-spacing: .14em;
+  line-height: 1.4;
   text-transform: uppercase;
 }
+
+
+/* Original large Fraunces heading */
 
 .bertha-dropdown-summary-title {
   display: block;
@@ -5302,14 +5279,29 @@ a.catalog-card:focus-visible {
   color: var(--off-white);
 
   font-family: var(--font-display);
-  font-size: clamp(1.25rem, 3vw, 1.65rem);
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
   font-weight: 600;
   line-height: 1.15;
 }
 
 
+/* Optional summary intro */
+
+.bertha-dropdown-summary-intro {
+  max-width: 760px;
+
+  margin: 20px auto 0;
+
+  color: var(--gold-soft);
+
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+
 /* ---------------------------------------------------------
-   Dropdown arrow
+   ARROW
    --------------------------------------------------------- */
 
 .bertha-dropdown-summary::after {
@@ -5317,24 +5309,25 @@ a.catalog-card:focus-visible {
 
   position: absolute;
 
-  top: 50%;
-  right: 24px;
+  top: 28px;
+  right: 30px;
+  z-index: 4;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
 
   color: var(--gold);
 
   font-family: var(--font-body);
-  font-size: 1.5rem;
+  font-size: 1.55rem;
   font-weight: 800;
   line-height: 1;
 
-  transform: translateY(-55%);
+  transform: translateY(-4px);
 
   transition:
     transform .22s ease,
@@ -5345,374 +5338,236 @@ a.catalog-card:focus-visible {
   color: var(--pink);
 
   transform:
-    translateY(-42%)
+    translateY(4px)
     rotate(180deg);
 }
 
 
 /* ---------------------------------------------------------
-   Expanded state
+   HOVER / KEYBOARD
    --------------------------------------------------------- */
 
-.bertha-dropdown[open] > .bertha-dropdown-summary {
-  border-bottom-left-radius: 16px;
-  border-bottom-right-radius: 16px;
+.bertha-dropdown-summary:hover
+.bertha-dropdown-summary-title {
+  color: var(--gold-soft);
+}
 
-  box-shadow: 6px 6px 0 var(--pink);
+.bertha-dropdown-summary:focus-visible {
+  outline: 4px solid var(--gold);
+  outline-offset: -8px;
+
+  border-radius: var(--radius-lg);
 }
 
 
 /* ---------------------------------------------------------
-   Expanded content
+   CONTENT
    --------------------------------------------------------- */
+
+/*
+   Critical difference from the old version:
+   NO margin-top.
+   NO second background.
+   NO second rounded card.
+
+   Content simply continues downward inside the same
+   brown parent.
+*/
 
 .bertha-dropdown-content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 
-  margin-top: 18px;
+  margin: 0;
+  padding: 0 48px 58px;
+
+  background: transparent;
 }
 
 
 /*
-   If the existing .bertha-thanks-card lives inside the
-   dropdown, remove unnecessary outer spacing.
+   If your existing HTML still contains
+   .bertha-thanks-card inside the content, neutralize
+   its "second card" appearance.
 */
 
 .bertha-dropdown-content .bertha-thanks-card {
   margin: 0;
+  padding: 0;
+
+  overflow: visible;
+
+  background: transparent;
+
+  border-radius: 0;
+}
+
+
+/*
+   The title/eyebrow are already in the summary.
+   Hide duplicates inside the expanded content.
+*/
+
+.bertha-dropdown-content .bertha-thanks-card > .eyebrow,
+.bertha-dropdown-content .bertha-thanks-content > .eyebrow,
+.bertha-dropdown-content .bertha-thanks-card h2,
+.bertha-dropdown-content .bertha-thanks-content > h2 {
+  display: none;
 }
 
 
 /* ---------------------------------------------------------
-   Optional animation
+   DECORATIVE SPOTS
    --------------------------------------------------------- */
 
-@keyframes berthaDropdownReveal {
+/*
+   Let the existing Bertha spots belong to the entire
+   expandable card rather than a second interior box.
+*/
+
+.bertha-dropdown .bertha-spot-one,
+.bertha-dropdown .bertha-spot-two {
+  z-index: 1;
+}
+
+
+/* ---------------------------------------------------------
+   OPENING ANIMATION
+   --------------------------------------------------------- */
+
+@keyframes berthaReveal {
   from {
     opacity: 0;
-
-    transform: translateY(-8px);
+    transform: translateY(-10px);
   }
 
   to {
     opacity: 1;
-
     transform: translateY(0);
   }
 }
 
 .bertha-dropdown[open] > .bertha-dropdown-content {
-  animation: berthaDropdownReveal .22s ease both;
+  animation: berthaReveal .24s ease both;
 }
 
 
 /* =========================================================
-   BERTHA DROPDOWN — ALTERNATE STRUCTURE SUPPORT
-   ========================================================= */
-
-/*
-   These selectors also support a structure where the
-   <details> itself uses the existing bertha-thanks class.
-*/
-
-details.bertha-thanks {
-  padding-bottom: 22px;
-}
-
-details.bertha-thanks > summary {
-  list-style: none;
-}
-
-details.bertha-thanks > summary::-webkit-details-marker {
-  display: none;
-}
-
-details.bertha-thanks .bertha-thanks-card {
-  margin-top: 18px;
-}
-
-
-/* ---------------------------------------------------------
-   Compact Bertha summary
-   --------------------------------------------------------- */
-
-.bertha-summary {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: min(100%, var(--container));
-
-  margin: 0 auto;
-  padding: 0 24px;
-
-  list-style: none;
-
-  cursor: pointer;
-}
-
-.bertha-summary::-webkit-details-marker {
-  display: none;
-}
-
-.bertha-summary-inner {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-
-  padding: 22px 58px 22px 28px;
-
-  background: var(--brown);
-  color: var(--off-white);
-
-  border-radius: var(--radius-lg);
-
-  box-shadow: 6px 6px 0 var(--gold);
-
-  text-align: center;
-
-  transition:
-    transform .18s ease,
-    box-shadow .18s ease,
-    background .18s ease;
-}
-
-.bertha-summary:hover .bertha-summary-inner {
-  background: var(--brown-dark);
-
-  box-shadow: 8px 8px 0 var(--pink);
-
-  transform: translateY(-2px);
-}
-
-.bertha-summary-copy {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 4px;
-}
-
-.bertha-summary-kicker {
-  color: var(--gold);
-
-  font-family: var(--font-tag);
-  font-size: .7rem;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-
-.bertha-summary-title {
-  color: var(--off-white);
-
-  font-family: var(--font-display);
-  font-size: clamp(1.3rem, 3vw, 1.7rem);
-  font-weight: 600;
-  line-height: 1.15;
-}
-
-.bertha-summary-arrow {
-  position: absolute;
-
-  top: 50%;
-  right: 25px;
-
-  color: var(--gold);
-
-  font-size: 1.4rem;
-  font-weight: 800;
-
-  transform: translateY(-50%);
-
-  transition:
-    transform .2s ease,
-    color .2s ease;
-}
-
-details[open] > .bertha-summary .bertha-summary-arrow {
-  color: var(--pink);
-
-  transform:
-    translateY(-50%)
-    rotate(180deg);
-}
-
-
-/* =========================================================
-   BERTHA DROPDOWN — TABLET
+   BERTHA COLLAPSIBLE — TABLET
    ========================================================= */
 
 @media (max-width: 860px) {
 
   .bertha-dropdown-summary {
     padding:
-      18px
-      52px
-      18px
-      20px;
+      50px
+      58px
+      36px;
   }
 
   .bertha-dropdown-summary::after {
-    right: 20px;
+    top: 24px;
+    right: 24px;
   }
 
-  .bertha-summary {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  .bertha-summary-inner {
+  .bertha-dropdown-content {
     padding:
-      20px
-      54px
-      20px
-      22px;
-  }
-
-  .bertha-summary-arrow {
-    right: 21px;
+      0
+      34px
+      50px;
   }
 
 }
 
 
 /* =========================================================
-   BERTHA DROPDOWN — MOBILE
+   BERTHA COLLAPSIBLE — MOBILE
    ========================================================= */
 
 @media (max-width: 700px) {
 
-  details.bertha-thanks {
-    padding-bottom: 16px;
+  .bertha-dropdown {
+    border-radius: 22px;
   }
 
   .bertha-dropdown-summary {
     padding:
-      17px
-      48px
-      17px
-      18px;
-
-    border-radius: 22px;
-
-    box-shadow: 5px 5px 0 var(--gold);
-  }
-
-  .bertha-dropdown-summary:hover {
-    transform: none;
-  }
-
-  .bertha-dropdown-summary::after {
-    right: 17px;
-
-    width: 28px;
-    height: 28px;
-
-    font-size: 1.35rem;
-  }
-
-  .bertha-dropdown-summary-title {
-    font-size: 1.25rem;
+      44px
+      42px
+      32px;
   }
 
   .bertha-dropdown-summary .eyebrow,
   .bertha-dropdown-summary-kicker {
-    font-size: .63rem;
+    margin-bottom: 10px;
+
+    font-size: .7rem;
+  }
+
+  .bertha-dropdown-summary-title {
+    font-size: clamp(1.7rem, 8vw, 2.25rem);
+  }
+
+  .bertha-dropdown-summary-intro {
+    margin-top: 16px;
+
+    font-size: .98rem;
+  }
+
+  .bertha-dropdown-summary::after {
+    top: 18px;
+    right: 18px;
+
+    width: 30px;
+    height: 30px;
+
+    font-size: 1.35rem;
   }
 
   .bertha-dropdown-content {
-    margin-top: 14px;
-  }
-
-  .bertha-summary {
-    padding-left: 18px;
-    padding-right: 18px;
-  }
-
-  .bertha-summary-inner {
     padding:
-      18px
-      48px
-      18px
-      18px;
-
-    border-radius: 22px;
-
-    box-shadow: 5px 5px 0 var(--gold);
-  }
-
-  .bertha-summary:hover .bertha-summary-inner {
-    transform: none;
-  }
-
-  .bertha-summary-title {
-    font-size: 1.25rem;
-  }
-
-  .bertha-summary-kicker {
-    font-size: .63rem;
-  }
-
-  .bertha-summary-arrow {
-    right: 18px;
+      0
+      24px
+      44px;
   }
 
 }
 
 
 /* =========================================================
-   BERTHA DROPDOWN — SMALL MOBILE
+   BERTHA COLLAPSIBLE — SMALL MOBILE
    ========================================================= */
 
-@media (max-width: 420px) {
+@media (max-width: 520px) {
 
   .bertha-dropdown-summary {
     padding:
-      15px
-      43px
-      15px
-      14px;
-  }
-
-  .bertha-dropdown-summary::after {
-    right: 13px;
+      38px
+      30px
+      28px;
   }
 
   .bertha-dropdown-summary-title {
-    font-size: 1.12rem;
+    font-size: clamp(1.7rem, 8vw, 2.25rem);
   }
 
-  .bertha-summary {
-    padding-left: 15px;
-    padding-right: 15px;
+  .bertha-dropdown-summary-intro {
+    font-size: .95rem;
   }
 
-  .bertha-summary-inner {
-    padding:
-      16px
-      43px
-      16px
-      14px;
-  }
-
-  .bertha-summary-title {
-    font-size: 1.12rem;
-  }
-
-  .bertha-summary-arrow {
+  .bertha-dropdown-summary::after {
+    top: 14px;
     right: 14px;
   }
 
-}
+  .bertha-dropdown-content {
+    padding:
+      0
+      18px
+      38px;
+  }
 
+}
 
 /* =========================================================
    33. FINAL SAFETY / LAYOUT FIXES
