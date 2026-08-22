@@ -405,9 +405,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // =======================================================
 
     // Time each review stays on screen.
-    // 3000 = 3 seconds.
+    // 4000 = 4 seconds.
     // Change ONLY this number if you want to adjust speed.
-    var reviewAutoplayDelay = 3000;
+    var reviewAutoplayDelay = 4000;
 
     var reviewAutoplayTimer = null;
 
