@@ -63,6 +63,7 @@ html {
 
 body {
   margin: 0;
+  padding-top: 83px;
 
   background: var(--off-white);
   color: var(--black);
@@ -219,13 +220,18 @@ h3 {
    ========================================================= */
 
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 50;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+
+  width: 100%;
 
   background: var(--off-white);
 
   border-bottom: 3px solid var(--brown);
+  box-shadow: 0 3px 12px rgba(85, 33, 10, 0.10);
 }
 
 .nav-wrap {
@@ -4687,8 +4693,9 @@ a.flavor-catalog-card:focus-visible {
 @media (max-width: 700px) {
 
   body {
-    font-size: 16px;
-  }
+  padding-top: 71px;
+  font-size: 16px;
+}
 
   .container {
     padding-left: 18px;
@@ -5162,6 +5169,12 @@ a.flavor-catalog-card:focus-visible {
 
 @media (max-width: 390px) {
 
+  body {
+    padding-top: 67px;
+  }
+
+  /* rest of your existing rules */
+   
   .nav-wrap {
     padding-left: 14px;
     padding-right: 14px;
