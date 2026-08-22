@@ -2240,6 +2240,24 @@ section {
    21. FLAVORS / MENU PAGE
    ========================================================= */
 
+/* ---------------------------------------------------------
+   Flavor hero headline colors
+   --------------------------------------------------------- */
+
+.flavor-hero-title {
+  color: var(--off-white);
+}
+
+.flavor-hero-title em {
+  color: var(--pink);
+  font-style: italic;
+}
+
+.flavor-hero-title .cookies-yellow {
+  color: var(--gold);
+  font-style: normal;
+}
+
 .flavor-hero-banner {
   display: block;
 
