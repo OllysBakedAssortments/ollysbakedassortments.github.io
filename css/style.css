@@ -2476,24 +2476,29 @@ section {
 
 /* ---------------------------------------------------------
    Flavor card top row
+   Badges overlay the cookie image
    --------------------------------------------------------- */
 
 .flavor-card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  position: absolute;
 
-  gap: 12px;
+  inset: 0;
+  z-index: 5;
 
-  min-height: 62px;
+  display: block;
 
-  padding: 14px 16px;
+  padding: 0;
 
-  background: var(--cream);
+  background: transparent;
+
+  pointer-events: none;
 }
 
 .flavor-status,
 .catalog-price {
+  position: absolute;
+  top: 16px;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2503,6 +2508,8 @@ section {
   border: 2px solid var(--brown);
   border-radius: 999px;
 
+  box-shadow: 2px 2px 0 var(--brown);
+
   font-family: var(--font-tag);
   font-size: .72rem;
   font-weight: 700;
@@ -2510,6 +2517,10 @@ section {
 }
 
 .flavor-status {
+  left: 16px;
+
+  max-width: calc(100% - 90px);
+
   background: var(--pink-soft);
   color: var(--brown-dark);
 
@@ -2522,12 +2533,10 @@ section {
 }
 
 .catalog-price {
-  flex: 0 0 auto;
+  right: 16px;
 
   background: var(--gold);
   color: var(--brown-dark);
-
-  box-shadow: 2px 2px 0 var(--brown);
 
   font-size: .78rem;
 
@@ -2775,39 +2784,6 @@ a.catalog-card:focus-visible,
 a.flavor-catalog-card:focus-visible {
   outline: 4px solid var(--gold);
   outline-offset: 4px;
-}
-
-
-/* ---------------------------------------------------------
-   Catalog price tag
-   --------------------------------------------------------- */
-
-.catalog-price-tag {
-  position: absolute;
-
-  top: 16px;
-  right: 16px;
-  z-index: 4;
-
-  padding: 6px 11px;
-
-  background: var(--gold);
-  color: var(--brown-dark);
-
-  border: 2px solid var(--brown);
-  border-radius: 999px;
-
-  box-shadow: 2px 2px 0 var(--brown);
-
-  font-family: var(--font-tag);
-  font-size: .78rem;
-  font-weight: 700;
-
-  transform: rotate(3deg);
-}
-
-.catalog-price-tag--specialty {
-  background: var(--pink);
 }
 
 /* ---------------------------------------------------------
