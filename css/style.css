@@ -5182,9 +5182,19 @@ a.catalog-card:focus-visible {
    ========================================================= */
 
 /*
-   The <details> element IS the Bertha card.
-   There is no separate accordion bubble + card.
+   The <details> element itself is the Bertha card.
+
+   Closed:
+   - eyebrow
+   - heading
+   - neighborhood story
+   - interaction cue
+
+   Open:
+   - the SAME brown card grows downward
+   - pricing, Bertha, note and buttons are revealed
 */
+
 
 .bertha-dropdown {
   position: relative;
@@ -5202,7 +5212,7 @@ a.catalog-card:focus-visible {
 
 
 /* ---------------------------------------------------------
-   SUMMARY
+   SUMMARY / ALWAYS-VISIBLE PORTION
    --------------------------------------------------------- */
 
 .bertha-dropdown-summary {
@@ -5230,14 +5240,15 @@ a.catalog-card:focus-visible {
 }
 
 .bertha-dropdown-summary::marker {
-  display: none;
   content: "";
 }
 
 
-/* Keep summary content at same width as original Bertha card */
+/* ---------------------------------------------------------
+   SUMMARY CONTENT WIDTH
+   --------------------------------------------------------- */
 
-.bertha-dropdown-summary-text {
+.bertha-dropdown-summary-content {
   position: relative;
   z-index: 2;
 
@@ -5250,10 +5261,11 @@ a.catalog-card:focus-visible {
 }
 
 
-/* Original eyebrow styling */
+/* ---------------------------------------------------------
+   EYEBROW
+   --------------------------------------------------------- */
 
-.bertha-dropdown-summary .eyebrow,
-.bertha-dropdown-summary-kicker {
+.bertha-dropdown-summary .eyebrow {
   display: inline-block;
 
   margin: 0 0 14px;
@@ -5269,11 +5281,11 @@ a.catalog-card:focus-visible {
 }
 
 
-/* Original large Fraunces heading */
+/* ---------------------------------------------------------
+   HEADING
+   --------------------------------------------------------- */
 
-.bertha-dropdown-summary-title {
-  display: block;
-
+.bertha-dropdown-summary h2 {
   margin: 0;
 
   color: var(--off-white);
@@ -5282,12 +5294,20 @@ a.catalog-card:focus-visible {
   font-size: clamp(1.9rem, 3.4vw, 2.6rem);
   font-weight: 600;
   line-height: 1.15;
+
+  transition: color .18s ease;
+}
+
+.bertha-dropdown-summary:hover h2 {
+  color: var(--gold-soft);
 }
 
 
-/* Optional summary intro */
+/* ---------------------------------------------------------
+   INTRO / STORY
+   --------------------------------------------------------- */
 
-.bertha-dropdown-summary-intro {
+.bertha-summary-lead {
   max-width: 760px;
 
   margin: 20px auto 0;
@@ -5297,6 +5317,57 @@ a.catalog-card:focus-visible {
   font-family: var(--font-body);
   font-size: 1.05rem;
   line-height: 1.6;
+}
+
+.bertha-summary-lead strong {
+  color: var(--off-white);
+}
+
+.bertha-summary-lead i {
+  color: var(--pink);
+
+  font-family: var(--font-display);
+  font-style: italic;
+}
+
+
+/* ---------------------------------------------------------
+   EXPAND LABEL
+   --------------------------------------------------------- */
+
+.bertha-expand-label {
+  display: inline-block;
+
+  margin-top: 24px;
+
+  color: var(--gold);
+
+  font-family: var(--font-tag);
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 1.4;
+  text-transform: uppercase;
+
+  transition:
+    color .18s ease,
+    transform .18s ease;
+}
+
+.bertha-dropdown-summary:hover .bertha-expand-label {
+  color: var(--pink);
+
+  transform: translateY(2px);
+}
+
+
+/*
+   Once open, the content itself makes the state obvious,
+   so the interaction label disappears.
+*/
+
+.bertha-dropdown[open] .bertha-expand-label {
+  display: none;
 }
 
 
@@ -5344,13 +5415,8 @@ a.catalog-card:focus-visible {
 
 
 /* ---------------------------------------------------------
-   HOVER / KEYBOARD
+   KEYBOARD FOCUS
    --------------------------------------------------------- */
-
-.bertha-dropdown-summary:hover
-.bertha-dropdown-summary-title {
-  color: var(--gold-soft);
-}
 
 .bertha-dropdown-summary:focus-visible {
   outline: 4px solid var(--gold);
@@ -5361,17 +5427,14 @@ a.catalog-card:focus-visible {
 
 
 /* ---------------------------------------------------------
-   CONTENT
+   EXPANDED CONTENT
    --------------------------------------------------------- */
 
 /*
-   Critical difference from the old version:
-   NO margin-top.
-   NO second background.
-   NO second rounded card.
+   No second card.
 
-   Content simply continues downward inside the same
-   brown parent.
+   This content simply continues downward inside the
+   existing brown <details> element.
 */
 
 .bertha-dropdown-content {
@@ -5379,40 +5442,43 @@ a.catalog-card:focus-visible {
   z-index: 2;
 
   margin: 0;
-  padding: 0 48px 58px;
+
+  padding:
+    0
+    48px
+    58px;
 
   background: transparent;
 }
 
 
-/*
-   If your existing HTML still contains
-   .bertha-thanks-card inside the content, neutralize
-   its "second card" appearance.
-*/
+/* ---------------------------------------------------------
+   EXPANDED CONTENT INNER WRAPPER
+   --------------------------------------------------------- */
 
-.bertha-dropdown-content .bertha-thanks-card {
-  margin: 0;
-  padding: 0;
+.bertha-dropdown-content .bertha-thanks-content {
+  position: relative;
+  z-index: 2;
 
-  overflow: visible;
+  width: 100%;
+  max-width: 940px;
 
-  background: transparent;
-
-  border-radius: 0;
+  margin: 0 auto;
 }
 
 
-/*
-   The title/eyebrow are already in the summary.
-   Hide duplicates inside the expanded content.
-*/
+/* ---------------------------------------------------------
+   EXPANDED LEAD
+   --------------------------------------------------------- */
 
-.bertha-dropdown-content .bertha-thanks-card > .eyebrow,
-.bertha-dropdown-content .bertha-thanks-content > .eyebrow,
-.bertha-dropdown-content .bertha-thanks-card h2,
-.bertha-dropdown-content .bertha-thanks-content > h2 {
-  display: none;
+.bertha-dropdown-content .bertha-lead {
+  max-width: 760px;
+
+  margin: 0 auto 28px;
+
+  color: var(--gold-soft);
+
+  font-size: 1.05rem;
 }
 
 
@@ -5420,14 +5486,11 @@ a.catalog-card:focus-visible {
    DECORATIVE SPOTS
    --------------------------------------------------------- */
 
-/*
-   Let the existing Bertha spots belong to the entire
-   expandable card rather than a second interior box.
-*/
-
 .bertha-dropdown .bertha-spot-one,
 .bertha-dropdown .bertha-spot-two {
   z-index: 1;
+
+  pointer-events: none;
 }
 
 
@@ -5436,15 +5499,19 @@ a.catalog-card:focus-visible {
    --------------------------------------------------------- */
 
 @keyframes berthaReveal {
+
   from {
     opacity: 0;
+
     transform: translateY(-10px);
   }
 
   to {
     opacity: 1;
+
     transform: translateY(0);
   }
+
 }
 
 .bertha-dropdown[open] > .bertha-dropdown-content {
@@ -5497,21 +5564,26 @@ a.catalog-card:focus-visible {
       32px;
   }
 
-  .bertha-dropdown-summary .eyebrow,
-  .bertha-dropdown-summary-kicker {
+  .bertha-dropdown-summary .eyebrow {
     margin-bottom: 10px;
 
     font-size: .7rem;
   }
 
-  .bertha-dropdown-summary-title {
+  .bertha-dropdown-summary h2 {
     font-size: clamp(1.7rem, 8vw, 2.25rem);
   }
 
-  .bertha-dropdown-summary-intro {
+  .bertha-summary-lead {
     margin-top: 16px;
 
     font-size: .98rem;
+  }
+
+  .bertha-expand-label {
+    margin-top: 20px;
+
+    font-size: .68rem;
   }
 
   .bertha-dropdown-summary::after {
@@ -5547,11 +5619,11 @@ a.catalog-card:focus-visible {
       28px;
   }
 
-  .bertha-dropdown-summary-title {
+  .bertha-dropdown-summary h2 {
     font-size: clamp(1.7rem, 8vw, 2.25rem);
   }
 
-  .bertha-dropdown-summary-intro {
+  .bertha-summary-lead {
     font-size: .95rem;
   }
 
