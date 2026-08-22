@@ -2434,9 +2434,11 @@ section {
 
 /* ---------------------------------------------------------
    Catalog cookie cards
+   Supports both catalog-card and flavor-catalog-card markup
    --------------------------------------------------------- */
 
-.catalog-card {
+.catalog-card,
+.flavor-catalog-card {
   position: relative;
 
   display: flex;
@@ -2458,13 +2460,85 @@ section {
     box-shadow .18s ease;
 }
 
-.catalog-card:hover {
+.catalog-card:hover,
+.flavor-catalog-card:hover {
   transform: translateY(-4px);
 
   box-shadow: 7px 7px 0 var(--pink);
 }
 
-.catalog-card-image {
+
+/* ---------------------------------------------------------
+   Flavor card top row
+   --------------------------------------------------------- */
+
+.flavor-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  min-height: 62px;
+
+  padding: 14px 16px;
+
+  background: var(--cream);
+}
+
+.flavor-status,
+.catalog-price {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 11px;
+
+  border: 2px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .72rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.flavor-status {
+  background: var(--pink-soft);
+  color: var(--brown-dark);
+
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
+.flavor-status-specialty {
+  background: var(--gold);
+}
+
+.catalog-price {
+  flex: 0 0 auto;
+
+  background: var(--gold);
+  color: var(--brown-dark);
+
+  box-shadow: 2px 2px 0 var(--brown);
+
+  font-size: .78rem;
+
+  transform: rotate(3deg);
+}
+
+.catalog-price-premium {
+  background: var(--pink);
+}
+
+
+/* ---------------------------------------------------------
+   Catalog images
+   --------------------------------------------------------- */
+
+.catalog-card-image,
+.flavor-catalog-image {
   position: relative;
 
   width: 100%;
@@ -2475,7 +2549,10 @@ section {
   background: var(--pink-soft);
 }
 
-.catalog-card-image img {
+.catalog-card-image img,
+.flavor-catalog-image img {
+  display: block;
+
   width: 100%;
   height: 100%;
 
@@ -2484,7 +2561,8 @@ section {
   transition: transform .3s ease;
 }
 
-.catalog-card:hover .catalog-card-image img {
+.catalog-card:hover .catalog-card-image img,
+.flavor-catalog-card:hover .flavor-catalog-image img {
   transform: scale(1.035);
 }
 
@@ -2508,7 +2586,13 @@ section {
   text-transform: uppercase;
 }
 
-.catalog-card-body {
+
+/* ---------------------------------------------------------
+   Catalog card body
+   --------------------------------------------------------- */
+
+.catalog-card-body,
+.flavor-catalog-body {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -2558,7 +2642,8 @@ section {
   background: var(--pink-soft);
 }
 
-.catalog-card h3 {
+.catalog-card h3,
+.flavor-catalog-card h3 {
   margin-bottom: 9px;
 
   color: var(--brown);
@@ -2566,7 +2651,8 @@ section {
   font-size: 1.4rem;
 }
 
-.catalog-card-description {
+.catalog-card-description,
+.flavor-catalog-body p {
   flex: 1 1 auto;
 
   margin-bottom: 18px;
@@ -2617,11 +2703,17 @@ section {
   letter-spacing: .02em;
 }
 
-.catalog-card-link {
+
+/* ---------------------------------------------------------
+   Catalog card links
+   --------------------------------------------------------- */
+
+.catalog-card-link,
+.flavor-catalog-link {
   display: inline-flex;
   align-items: center;
 
-  margin-top: 18px;
+  margin-top: auto;
 
   color: var(--brown);
 
@@ -2629,7 +2721,8 @@ section {
   font-weight: 800;
 }
 
-.catalog-card-link:hover {
+.catalog-card-link:hover,
+.flavor-catalog-link:hover {
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
@@ -2637,26 +2730,43 @@ section {
 
 
 /* ---------------------------------------------------------
+   Specialty / dog catalog cards
+   --------------------------------------------------------- */
+
+.flavor-catalog-card-specialty {
+  background: #fff8fc;
+}
+
+.flavor-catalog-card-dog {
+  background: var(--gold-soft);
+}
+
+
+/* ---------------------------------------------------------
    Entire catalog card clickable
    --------------------------------------------------------- */
 
-a.catalog-card {
+a.catalog-card,
+a.flavor-catalog-card {
   color: var(--brown-dark);
 
   text-decoration: none;
 }
 
-a.catalog-card:visited {
+a.catalog-card:visited,
+a.flavor-catalog-card:visited {
   color: var(--brown-dark);
 }
 
-a.catalog-card:hover {
+a.catalog-card:hover,
+a.flavor-catalog-card:hover {
   color: var(--brown-dark);
 
   text-decoration: none;
 }
 
-a.catalog-card:focus-visible {
+a.catalog-card:focus-visible,
+a.flavor-catalog-card:focus-visible {
   outline: 4px solid var(--gold);
   outline-offset: 4px;
 }
@@ -2693,7 +2803,6 @@ a.catalog-card:focus-visible {
 .catalog-price-tag--specialty {
   background: var(--pink);
 }
-
 
 /* ---------------------------------------------------------
    Empty catalog result
@@ -4869,12 +4978,13 @@ a.catalog-card:focus-visible {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .catalog-card {
-    max-width: 420px;
+.catalog-card,
+.flavor-catalog-card {
+  max-width: 420px;
 
-    margin-left: auto;
-    margin-right: auto;
-  }
+  margin-left: auto;
+  margin-right: auto;
+}
 
 
   /* -------------------------------------------------------
@@ -5946,6 +6056,7 @@ a.catalog-card:focus-visible {
 .cookie-card,
 .pack-card,
 .catalog-card,
+.flavor-catalog-card,
 .review-card,
 .reviews-page-card,
 .bertha-thanks-card,
@@ -5960,6 +6071,7 @@ a.catalog-card:focus-visible {
 .cookie-card p,
 .pack-card p,
 .catalog-card p,
+.flavor-catalog-card p,
 .bertha-thanks p,
 .pricing-route-card p {
   overflow-wrap: break-word;
