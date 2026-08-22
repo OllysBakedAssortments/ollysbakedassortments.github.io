@@ -360,9 +360,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 
-  // =========================================================
+    // =========================================================
   // HOMEPAGE REVIEW CAROUSEL
-  // ONE REVIEW DISPLAYED AT A TIME
+  // ONE REVIEW DISPLAYED AT A TIME + AUTOPLAY
   // =========================================================
 
   var reviewsCarousel = document.querySelector('.reviews-carousel');
@@ -401,12 +401,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // =======================================================
+    // REVIEW AUTOPLAY SETTINGS
+    // =======================================================
+
+    // Time each review stays on screen.
+    // 3000 = 3 seconds.
+    // Change ONLY this number if you want to adjust speed.
+    var reviewAutoplayDelay = 3000;
+
+    var reviewAutoplayTimer = null;
+
+    var reviewReduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    );
+
+
+    // =======================================================
     // CREATE REVIEW DOTS
     // =======================================================
 
     if (reviewsDotsContainer) {
 
-      // Clear anything already inside so dots cannot duplicate
       reviewsDotsContainer.innerHTML = '';
 
       reviewSlides.forEach(function (_, index) {
@@ -426,6 +441,7 @@ document.addEventListener('DOMContentLoaded', function () {
           reviewCurrentIndex = index;
 
           updateReviewsCarousel();
+          restartReviewAutoplay();
 
         });
 
@@ -447,12 +463,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // =======================================================
     // GET CURRENT REVIEW SLIDE HEIGHT
-    //
-    // Desktop CSS = 330px
-    // Mobile CSS  = 360px
-    //
-    // We read the actual rendered height instead of hard-
-    // coding it here. That keeps the JS synchronized with CSS.
     // =======================================================
 
     function getReviewSlideHeight() {
@@ -510,13 +520,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
 
-      // Optional counter support
-      //
-      // Supports HTML such as:
-      //
-      // <span class="reviews-carousel-current">1</span>
-      // <span class="reviews-carousel-total">3</span>
-
+      // Update optional review counter
       if (reviewsCounter) {
 
         var currentCounter =
@@ -530,22 +534,23 @@ document.addEventListener('DOMContentLoaded', function () {
           );
 
         if (currentCounter) {
+
           currentCounter.textContent =
             reviewCurrentIndex + 1;
+
         }
 
         if (totalCounter) {
+
           totalCounter.textContent =
             reviewSlides.length;
+
         }
 
       }
 
 
-      // Accessibility:
-      // only the currently displayed review is treated
-      // as the active visible slide
-
+      // Accessibility
       reviewSlides.forEach(function (slide, index) {
 
         var isCurrent =
@@ -602,6 +607,62 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // =======================================================
+    // REVIEW AUTOPLAY
+    // =======================================================
+
+    function startReviewAutoplay() {
+
+      // Do not autoplay if:
+      // - there is only one review
+      // - reduced motion is enabled
+      // - browser tab is hidden
+
+      if (
+        reviewSlides.length <= 1 ||
+        reviewReduceMotion.matches ||
+        document.hidden
+      ) {
+        return;
+      }
+
+
+      stopReviewAutoplay();
+
+
+      reviewAutoplayTimer = setInterval(
+        function () {
+
+          nextReview();
+
+        },
+        reviewAutoplayDelay
+      );
+
+    }
+
+
+    function stopReviewAutoplay() {
+
+      if (reviewAutoplayTimer !== null) {
+
+        clearInterval(reviewAutoplayTimer);
+
+        reviewAutoplayTimer = null;
+
+      }
+
+    }
+
+
+    function restartReviewAutoplay() {
+
+      stopReviewAutoplay();
+      startReviewAutoplay();
+
+    }
+
+
+    // =======================================================
     // REVIEW ARROW CONTROLS
     // =======================================================
 
@@ -612,6 +673,7 @@ document.addEventListener('DOMContentLoaded', function () {
         function () {
 
           previousReview();
+          restartReviewAutoplay();
 
         }
       );
@@ -626,11 +688,58 @@ document.addEventListener('DOMContentLoaded', function () {
         function () {
 
           nextReview();
+          restartReviewAutoplay();
 
         }
       );
 
     }
+
+
+    // =======================================================
+    // PAUSE REVIEW AUTOPLAY DURING INTERACTION
+    // =======================================================
+
+    reviewsCarousel.addEventListener(
+      'mouseenter',
+      function () {
+
+        stopReviewAutoplay();
+
+      }
+    );
+
+
+    reviewsCarousel.addEventListener(
+      'mouseleave',
+      function () {
+
+        startReviewAutoplay();
+
+      }
+    );
+
+
+    reviewsCarousel.addEventListener(
+      'touchstart',
+      function () {
+
+        stopReviewAutoplay();
+
+      },
+      { passive: true }
+    );
+
+
+    reviewsCarousel.addEventListener(
+      'touchend',
+      function () {
+
+        startReviewAutoplay();
+
+      },
+      { passive: true }
+    );
 
 
     // =======================================================
@@ -651,6 +760,7 @@ document.addEventListener('DOMContentLoaded', function () {
             event.preventDefault();
 
             nextReview();
+            restartReviewAutoplay();
 
           }
 
@@ -663,6 +773,57 @@ document.addEventListener('DOMContentLoaded', function () {
             event.preventDefault();
 
             previousReview();
+            restartReviewAutoplay();
+
+          }
+
+        }
+      );
+
+    }
+
+
+    // =======================================================
+    // BROWSER TAB VISIBILITY
+    // =======================================================
+
+    document.addEventListener(
+      'visibilitychange',
+      function () {
+
+        if (document.hidden) {
+
+          stopReviewAutoplay();
+
+        } else {
+
+          startReviewAutoplay();
+
+        }
+
+      }
+    );
+
+
+    // =======================================================
+    // REDUCED MOTION SETTING
+    // =======================================================
+
+    if (
+      typeof reviewReduceMotion.addEventListener === 'function'
+    ) {
+
+      reviewReduceMotion.addEventListener(
+        'change',
+        function () {
+
+          if (reviewReduceMotion.matches) {
+
+            stopReviewAutoplay();
+
+          } else {
+
+            startReviewAutoplay();
 
           }
 
@@ -674,10 +835,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // =======================================================
     // HANDLE SCREEN SIZE CHANGES
-    //
-    // Important because review slides are:
-    // 330px tall on desktop
-    // 360px tall on mobile.
     // =======================================================
 
     var reviewResizeTimer = null;
@@ -706,6 +863,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // =======================================================
 
     updateReviewsCarousel();
+    startReviewAutoplay();
 
   }
 
