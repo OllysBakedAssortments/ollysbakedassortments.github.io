@@ -2829,6 +2829,442 @@ a.flavor-catalog-card:focus-visible {
   display: none;
 }
 
+/* =========================================================
+   FLAVOR CATALOG ORGANIZER
+   ========================================================= */
+
+.catalog-organizer {
+  width: 100%;
+  max-width: 900px;
+
+  margin: 0 auto 38px;
+  padding: 30px;
+
+  background: var(--cream);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-lg);
+
+  box-shadow: 6px 6px 0 var(--pink);
+}
+
+
+/* ---------------------------------------------------------
+   Organizer heading
+   --------------------------------------------------------- */
+
+.catalog-organizer-heading {
+  margin-bottom: 22px;
+
+  text-align: center;
+}
+
+.catalog-organizer-heading h3 {
+  margin-bottom: 5px;
+
+  font-size: 1.55rem;
+}
+
+.catalog-organizer-heading p {
+  margin: 0;
+
+  color: var(--brown-dark);
+
+  font-size: .96rem;
+}
+
+
+/* ---------------------------------------------------------
+   Filter buttons
+   --------------------------------------------------------- */
+
+.catalog-filters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-bottom: 24px;
+}
+
+.catalog-filter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 38px;
+
+  padding: 8px 14px;
+
+  background: var(--off-white);
+  color: var(--brown-dark);
+
+  border: 1px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  line-height: 1.2;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    background .15s ease,
+    color .15s ease,
+    transform .15s ease,
+    box-shadow .15s ease;
+}
+
+.catalog-filter:hover {
+  background: var(--pink-soft);
+
+  transform: translateY(-1px);
+}
+
+.catalog-filter.active,
+.catalog-filter[aria-pressed="true"] {
+  background: var(--brown);
+  color: var(--off-white);
+
+  box-shadow: 3px 3px 0 var(--gold);
+}
+
+
+/* ---------------------------------------------------------
+   Search + sort row
+   --------------------------------------------------------- */
+
+.catalog-tools {
+  display: grid;
+
+  grid-template-columns: minmax(0, 1fr) minmax(210px, 250px);
+
+  align-items: end;
+
+  gap: 18px;
+
+  margin-bottom: 18px;
+}
+
+.catalog-search-wrap,
+.catalog-sort-wrap {
+  min-width: 0;
+}
+
+.catalog-control-label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+
+/* ---------------------------------------------------------
+   Search
+   --------------------------------------------------------- */
+
+.catalog-search-field {
+  position: relative;
+}
+
+.catalog-search-icon {
+  position: absolute;
+
+  top: 50%;
+  left: 15px;
+
+  pointer-events: none;
+
+  transform: translateY(-50%);
+}
+
+.catalog-search {
+  width: 100%;
+  min-height: 48px;
+
+  padding: 11px 16px 11px 45px;
+
+  background: var(--off-white);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-body);
+  font-size: 1rem;
+
+  appearance: none;
+}
+
+.catalog-search::placeholder {
+  color: rgba(85, 33, 10, .6);
+}
+
+.catalog-search:focus {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+
+/* ---------------------------------------------------------
+   Sort menu
+   --------------------------------------------------------- */
+
+.catalog-sort {
+  width: 100%;
+  min-height: 48px;
+
+  padding: 10px 42px 10px 16px;
+
+  background: var(--off-white);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: 999px;
+
+  font-family: var(--font-body);
+  font-size: .95rem;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.catalog-sort:focus {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+
+/* ---------------------------------------------------------
+   Results / reset
+   --------------------------------------------------------- */
+
+.catalog-results-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  padding-top: 16px;
+
+  border-top: 1px solid rgba(122, 47, 0, .18);
+}
+
+.catalog-count {
+  margin: 0;
+
+  color: var(--brown-dark);
+
+  font-family: var(--font-tag);
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+
+.catalog-reset {
+  padding: 0;
+
+  background: none;
+  color: var(--brown);
+
+  border: 0;
+
+  font-family: var(--font-body);
+  font-size: .88rem;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.catalog-reset:hover {
+  color: var(--pink);
+}
+
+
+/* ---------------------------------------------------------
+   Ratings on catalog cards
+   --------------------------------------------------------- */
+
+.catalog-rating {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 6px;
+
+  margin: -6px 0 18px;
+
+  color: var(--brown-dark);
+
+  font-size: .83rem;
+  line-height: 1.2;
+}
+
+.catalog-rating > span:first-child {
+  color: var(--brown);
+
+  letter-spacing: .04em;
+}
+
+.catalog-rating strong {
+  color: var(--brown);
+
+  font-weight: 800;
+}
+
+.catalog-rating > span:last-child {
+  opacity: .72;
+}
+
+
+/* ---------------------------------------------------------
+   Hidden filtered cards
+   --------------------------------------------------------- */
+
+.flavor-catalog-card.catalog-hidden {
+  display: none;
+}
+
+
+/* ---------------------------------------------------------
+   Empty state
+   --------------------------------------------------------- */
+
+.catalog-empty {
+  max-width: 520px;
+
+  margin: 20px auto 38px;
+  padding: 38px 26px;
+
+  background: var(--gold-soft);
+
+  border: 2px dashed var(--brown);
+  border-radius: var(--radius-lg);
+
+  text-align: center;
+}
+
+.catalog-empty[hidden] {
+  display: none;
+}
+
+.catalog-empty > span {
+  display: block;
+
+  margin-bottom: 10px;
+
+  font-size: 2.4rem;
+}
+
+.catalog-empty h3 {
+  margin-bottom: 8px;
+}
+
+.catalog-empty p {
+  margin-bottom: 20px;
+
+  color: var(--brown-dark);
+}
+
+
+/* ---------------------------------------------------------
+   Smooth reordering
+   --------------------------------------------------------- */
+
+.flavor-catalog-card {
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    opacity .18s ease;
+}
+
+
+/* =========================================================
+   ORGANIZER — TABLET
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .catalog-organizer {
+    padding: 26px 22px;
+  }
+
+  .catalog-tools {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =========================================================
+   ORGANIZER — MOBILE
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+  .catalog-organizer {
+    margin-bottom: 30px;
+    padding: 24px 16px;
+
+    border-radius: 22px;
+
+    box-shadow: 4px 4px 0 var(--pink);
+  }
+
+  .catalog-organizer-heading {
+    margin-bottom: 20px;
+  }
+
+  .catalog-filters {
+    gap: 8px;
+
+    margin-bottom: 22px;
+  }
+
+  .catalog-filter {
+    flex: 1 1 auto;
+
+    min-height: 40px;
+
+    padding: 8px 11px;
+
+    font-size: .62rem;
+  }
+
+  .catalog-tools {
+    gap: 14px;
+  }
+
+  .catalog-results-row {
+    align-items: flex-start;
+    flex-direction: column;
+
+    gap: 8px;
+  }
+
+  .catalog-search,
+  .catalog-sort {
+    min-height: 46px;
+  }
+
+}
 
 /* =========================================================
    22. CUSTOMER REVIEWS — HOMEPAGE
