@@ -867,4 +867,633 @@ document.addEventListener('DOMContentLoaded', function () {
 
   }
 
+  // =========================================================
+  // FLAVOR CATALOG ORGANIZER
+  // =========================================================
+
+  var flavorCatalogGrid = document.getElementById(
+    'flavor-catalog-grid'
+  );
+
+  if (flavorCatalogGrid) {
+
+    var flavorCards = Array.from(
+      flavorCatalogGrid.querySelectorAll(
+        '.flavor-catalog-card'
+      )
+    );
+
+    var catalogFilters = Array.from(
+      document.querySelectorAll(
+        '.catalog-filter'
+      )
+    );
+
+    var catalogSearch = document.getElementById(
+      'catalog-search'
+    );
+
+    var catalogSort = document.getElementById(
+      'catalog-sort'
+    );
+
+    var catalogCount = document.getElementById(
+      'catalog-count'
+    );
+
+    var catalogReset = document.getElementById(
+      'catalog-reset'
+    );
+
+    var catalogEmpty = document.getElementById(
+      'catalog-empty'
+    );
+
+    var catalogEmptyReset = document.getElementById(
+      'catalog-empty-reset'
+    );
+
+
+    // =======================================================
+    // CATALOG STATE
+    // =======================================================
+
+    var activeCatalogFilter = 'all';
+
+
+    // =======================================================
+    // HELPER: NORMALIZE TEXT
+    // =======================================================
+
+    function normalizeCatalogText(value) {
+
+      return String(value || '')
+        .toLowerCase()
+        .trim();
+
+    }
+
+
+    // =======================================================
+    // HELPER: NUMBER VALUE
+    // =======================================================
+
+    function catalogNumber(value, fallback) {
+
+      var parsed = parseFloat(value);
+
+      return Number.isFinite(parsed)
+        ? parsed
+        : fallback;
+
+    }
+
+
+    // =======================================================
+    // CHECK FILTER MATCH
+    // =======================================================
+
+    function catalogMatchesFilter(card) {
+
+      var category =
+        normalizeCatalogText(
+          card.dataset.category
+        );
+
+      var available =
+        card.dataset.available === 'true';
+
+      var favorite =
+        card.dataset.favorite === 'true';
+
+
+      switch (activeCatalogFilter) {
+
+        case 'available':
+          return available;
+
+        case 'classic':
+          return category === 'classic';
+
+        case 'rotating':
+          return category === 'rotating';
+
+        case 'specialty':
+          return category === 'specialty';
+
+        case 'favorite':
+          return favorite;
+
+        case 'furry':
+          return category === 'furry';
+
+        case 'all':
+        default:
+          return true;
+
+      }
+
+    }
+
+
+    // =======================================================
+    // CHECK SEARCH MATCH
+    // =======================================================
+
+    function catalogMatchesSearch(card) {
+
+      if (!catalogSearch) {
+        return true;
+      }
+
+      var query =
+        normalizeCatalogText(
+          catalogSearch.value
+        );
+
+      if (!query) {
+        return true;
+      }
+
+
+      var name =
+        normalizeCatalogText(
+          card.dataset.name
+        );
+
+      var keywords =
+        normalizeCatalogText(
+          card.dataset.keywords
+        );
+
+      var descriptionElement =
+        card.querySelector(
+          '.flavor-catalog-body > p'
+        );
+
+      var description =
+        descriptionElement
+          ? normalizeCatalogText(
+              descriptionElement.textContent
+            )
+          : '';
+
+
+      var searchableText =
+        name +
+        ' ' +
+        keywords +
+        ' ' +
+        description;
+
+
+      return searchableText.includes(query);
+
+    }
+
+
+    // =======================================================
+    // SORT CATALOG
+    // =======================================================
+
+    function sortFlavorCatalog() {
+
+      if (!catalogSort) {
+        return;
+      }
+
+      var sortValue = catalogSort.value;
+
+      var sortedCards =
+        flavorCards.slice();
+
+
+      sortedCards.sort(function (a, b) {
+
+        var nameA =
+          normalizeCatalogText(
+            a.dataset.name
+          );
+
+        var nameB =
+          normalizeCatalogText(
+            b.dataset.name
+          );
+
+
+        var priceA =
+          catalogNumber(
+            a.dataset.price,
+            0
+          );
+
+        var priceB =
+          catalogNumber(
+            b.dataset.price,
+            0
+          );
+
+
+        var featuredA =
+          catalogNumber(
+            a.dataset.featured,
+            999
+          );
+
+        var featuredB =
+          catalogNumber(
+            b.dataset.featured,
+            999
+          );
+
+
+        var ratingA =
+          catalogNumber(
+            a.dataset.rating,
+            -1
+          );
+
+        var ratingB =
+          catalogNumber(
+            b.dataset.rating,
+            -1
+          );
+
+
+        var reviewsA =
+          catalogNumber(
+            a.dataset.reviewCount,
+            0
+          );
+
+        var reviewsB =
+          catalogNumber(
+            b.dataset.reviewCount,
+            0
+          );
+
+
+        var dateA =
+          Date.parse(
+            a.dataset.added || ''
+          ) || 0;
+
+        var dateB =
+          Date.parse(
+            b.dataset.added || ''
+          ) || 0;
+
+
+        // -----------------------------------------------
+        // NAME A-Z
+        // -----------------------------------------------
+
+        if (sortValue === 'name-asc') {
+
+          return nameA.localeCompare(
+            nameB
+          );
+
+        }
+
+
+        // -----------------------------------------------
+        // NAME Z-A
+        // -----------------------------------------------
+
+        if (sortValue === 'name-desc') {
+
+          return nameB.localeCompare(
+            nameA
+          );
+
+        }
+
+
+        // -----------------------------------------------
+        // PRICE LOW-HIGH
+        // -----------------------------------------------
+
+        if (sortValue === 'price-asc') {
+
+          if (priceA !== priceB) {
+            return priceA - priceB;
+          }
+
+          return nameA.localeCompare(
+            nameB
+          );
+
+        }
+
+
+        // -----------------------------------------------
+        // PRICE HIGH-LOW
+        // -----------------------------------------------
+
+        if (sortValue === 'price-desc') {
+
+          if (priceA !== priceB) {
+            return priceB - priceA;
+          }
+
+          return nameA.localeCompare(
+            nameB
+          );
+
+        }
+
+
+        // -----------------------------------------------
+        // NEWEST ADDITION
+        // -----------------------------------------------
+
+        if (sortValue === 'newest') {
+
+          if (dateA !== dateB) {
+            return dateB - dateA;
+          }
+
+          return featuredA - featuredB;
+
+        }
+
+
+        // -----------------------------------------------
+        // HIGHEST RATED
+        //
+        // Rating first
+        // Review count second
+        // Featured priority third
+        //
+        // Unrated cookies automatically move below
+        // reviewed cookies.
+        // -----------------------------------------------
+
+        if (sortValue === 'rating') {
+
+          if (ratingA !== ratingB) {
+            return ratingB - ratingA;
+          }
+
+          if (reviewsA !== reviewsB) {
+            return reviewsB - reviewsA;
+          }
+
+          return featuredA - featuredB;
+
+        }
+
+
+        // -----------------------------------------------
+        // DEFAULT: FEATURED
+        // -----------------------------------------------
+
+        return featuredA - featuredB;
+
+      });
+
+
+      sortedCards.forEach(function (card) {
+
+        flavorCatalogGrid.appendChild(
+          card
+        );
+
+      });
+
+    }
+
+
+    // =======================================================
+    // APPLY FILTERS
+    // =======================================================
+
+    function updateFlavorCatalog() {
+
+      var visibleCount = 0;
+
+
+      sortFlavorCatalog();
+
+
+      flavorCards.forEach(function (card) {
+
+        var matchesFilter =
+          catalogMatchesFilter(card);
+
+        var matchesSearch =
+          catalogMatchesSearch(card);
+
+        var shouldShow =
+          matchesFilter &&
+          matchesSearch;
+
+
+        card.classList.toggle(
+          'catalog-hidden',
+          !shouldShow
+        );
+
+
+        if (shouldShow) {
+          visibleCount += 1;
+        }
+
+      });
+
+
+      // =====================================================
+      // RESULT COUNT
+      // =====================================================
+
+      if (catalogCount) {
+
+        var label =
+          visibleCount === 1
+            ? 'cookie'
+            : 'cookies';
+
+        catalogCount.textContent =
+          'Showing ' +
+          visibleCount +
+          ' ' +
+          label;
+
+      }
+
+
+      // =====================================================
+      // EMPTY STATE
+      // =====================================================
+
+      if (catalogEmpty) {
+
+        catalogEmpty.hidden =
+          visibleCount !== 0;
+
+      }
+
+      flavorCatalogGrid.hidden =
+        visibleCount === 0;
+
+    }
+
+
+    // =======================================================
+    // FILTER BUTTONS
+    // =======================================================
+
+    catalogFilters.forEach(
+      function (button) {
+
+        button.addEventListener(
+          'click',
+          function () {
+
+            activeCatalogFilter =
+              button.dataset.filter || 'all';
+
+
+            catalogFilters.forEach(
+              function (filterButton) {
+
+                var isActive =
+                  filterButton === button;
+
+                filterButton.classList.toggle(
+                  'active',
+                  isActive
+                );
+
+                filterButton.setAttribute(
+                  'aria-pressed',
+                  isActive
+                    ? 'true'
+                    : 'false'
+                );
+
+              }
+            );
+
+
+            updateFlavorCatalog();
+
+          }
+        );
+
+      }
+    );
+
+
+    // =======================================================
+    // SEARCH
+    // =======================================================
+
+    if (catalogSearch) {
+
+      catalogSearch.addEventListener(
+        'input',
+        function () {
+
+          updateFlavorCatalog();
+
+        }
+      );
+
+    }
+
+
+    // =======================================================
+    // SORT
+    // =======================================================
+
+    if (catalogSort) {
+
+      catalogSort.addEventListener(
+        'change',
+        function () {
+
+          updateFlavorCatalog();
+
+        }
+      );
+
+    }
+
+
+    // =======================================================
+    // RESET CATALOG
+    // =======================================================
+
+    function resetFlavorCatalog() {
+
+      activeCatalogFilter = 'all';
+
+
+      catalogFilters.forEach(
+        function (button) {
+
+          var isAll =
+            button.dataset.filter === 'all';
+
+          button.classList.toggle(
+            'active',
+            isAll
+          );
+
+          button.setAttribute(
+            'aria-pressed',
+            isAll
+              ? 'true'
+              : 'false'
+          );
+
+        }
+      );
+
+
+      if (catalogSearch) {
+        catalogSearch.value = '';
+      }
+
+
+      if (catalogSort) {
+        catalogSort.value = 'featured';
+      }
+
+
+      updateFlavorCatalog();
+
+    }
+
+
+    if (catalogReset) {
+
+      catalogReset.addEventListener(
+        'click',
+        resetFlavorCatalog
+      );
+
+    }
+
+
+    if (catalogEmptyReset) {
+
+      catalogEmptyReset.addEventListener(
+        'click',
+        resetFlavorCatalog
+      );
+
+    }
+
+
+    // =======================================================
+    // INITIALIZE CATALOG
+    // =======================================================
+
+    updateFlavorCatalog();
+
+  }
+  
 });
