@@ -2683,8 +2683,7 @@ section {
   font-weight: 800;
 }
 
-.catalog-card-link:hover,
-.flavor-catalog-link:hover {
+.catalog-card-link:hover {
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
@@ -2705,14 +2704,17 @@ section {
 
 
 /* ---------------------------------------------------------
-   Entire catalog card clickable
+   Entire flavor catalog card clickable
    --------------------------------------------------------- */
 
 a.catalog-card,
 a.flavor-catalog-card {
   color: var(--brown-dark);
-
   text-decoration: none;
+
+  cursor: pointer;
+
+  -webkit-tap-highlight-color: transparent;
 }
 
 a.catalog-card:visited,
@@ -2723,14 +2725,61 @@ a.flavor-catalog-card:visited {
 a.catalog-card:hover,
 a.flavor-catalog-card:hover {
   color: var(--brown-dark);
-
   text-decoration: none;
+
+  transform: translateY(-4px);
+
+  box-shadow: 7px 7px 0 var(--pink);
 }
 
 a.catalog-card:focus-visible,
 a.flavor-catalog-card:focus-visible {
   outline: 4px solid var(--gold);
   outline-offset: 4px;
+}
+
+
+/* Image subtly enlarges when the card is hovered */
+
+a.catalog-card:hover .catalog-card-image img,
+a.flavor-catalog-card:hover .flavor-catalog-image img {
+  transform: scale(1.035);
+}
+
+
+/* "Meet This Cookie" acts visually like the card CTA */
+
+.flavor-catalog-link {
+  display: inline-flex;
+  align-items: center;
+
+  margin-top: auto;
+
+  color: var(--brown);
+
+  font-size: .9rem;
+  font-weight: 800;
+
+  transition:
+    transform .15s ease,
+    color .15s ease;
+}
+
+a.flavor-catalog-card:hover .flavor-catalog-link {
+  color: var(--brown-dark);
+
+  transform: translateX(5px);
+}
+
+
+/* Specialty and dog cards keep their custom backgrounds */
+
+a.flavor-catalog-card.flavor-catalog-card-specialty {
+  background: #fff8fc;
+}
+
+a.flavor-catalog-card.flavor-catalog-card-dog {
+  background: var(--gold-soft);
 }
 
 /* ---------------------------------------------------------
