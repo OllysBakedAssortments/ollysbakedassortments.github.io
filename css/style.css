@@ -6568,6 +6568,1225 @@ svg {
   max-width: 100%;
 }
 
+/* =========================================================
+   34. INDIVIDUAL COOKIE / FLAVOR PAGES
+   ========================================================= */
+
+
+/* =========================================================
+   COOKIE PAGE — BASE
+   ========================================================= */
+
+.cookie-profile-page {
+  overflow: hidden;
+}
+
+
+/* ---------------------------------------------------------
+   Breadcrumbs
+   --------------------------------------------------------- */
+
+.cookie-breadcrumbs {
+  padding: 18px 24px 0;
+
+  font-size: .9rem;
+}
+
+.cookie-breadcrumbs a {
+  color: var(--brown);
+
+  font-weight: 700;
+}
+
+.cookie-breadcrumbs a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.cookie-breadcrumbs span {
+  margin: 0 8px;
+
+  color: var(--brown-dark);
+
+  opacity: .55;
+}
+
+.cookie-breadcrumbs strong {
+  color: var(--brown-dark);
+}
+
+
+/* =========================================================
+   COOKIE HERO
+   ========================================================= */
+
+.cookie-profile-hero {
+  position: relative;
+
+  padding: 42px 0 70px;
+}
+
+.cookie-hero-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  align-items: center;
+
+  gap: 60px;
+}
+
+
+/* =========================================================
+   HERO IMAGE GALLERY
+   ========================================================= */
+
+.cookie-hero-gallery {
+  position: relative;
+
+  min-width: 0;
+
+  padding: 14px;
+
+  background: var(--off-white);
+
+  border: 2px solid rgba(122, 47, 0, .08);
+  border-radius: 36px;
+
+  box-shadow:
+    0 16px 38px rgba(75, 47, 31, .12);
+}
+
+
+.cookie-hero-gallery-track {
+  display: flex;
+
+  width: 100%;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  border-radius: 25px;
+
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+
+  scrollbar-width: none;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+.cookie-hero-gallery-track::-webkit-scrollbar {
+  display: none;
+}
+
+
+.cookie-hero-slide {
+  flex: 0 0 100%;
+
+  min-width: 100%;
+
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+
+.cookie-hero-slide img {
+  display: block;
+
+  width: 100%;
+
+  aspect-ratio: 1 / 1;
+
+  object-fit: cover;
+  object-position: center;
+
+  border-radius: 25px;
+}
+
+
+/* ---------------------------------------------------------
+   Hero price badge
+   --------------------------------------------------------- */
+
+.cookie-hero-price {
+  position: absolute;
+
+  top: 30px;
+  right: 30px;
+  z-index: 4;
+
+  display: grid;
+  place-items: center;
+
+  width: 72px;
+  height: 72px;
+
+  background: var(--gold);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: 50%;
+
+  box-shadow: 3px 3px 0 var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+
+/* ---------------------------------------------------------
+   Gallery arrows
+   --------------------------------------------------------- */
+
+.cookie-gallery-arrow {
+  position: absolute;
+
+  top: 50%;
+  z-index: 5;
+
+  display: grid;
+  place-items: center;
+
+  width: 44px;
+  height: 44px;
+
+  padding: 0;
+
+  background: rgba(247, 247, 247, .94);
+  color: var(--brown);
+
+  border: 2px solid var(--brown);
+  border-radius: 50%;
+
+  box-shadow: 3px 3px 0 var(--pink);
+
+  font-family: var(--font-body);
+  font-size: 1.65rem;
+  font-weight: 800;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transform: translateY(-50%);
+
+  transition:
+    transform .15s ease,
+    background .15s ease,
+    box-shadow .15s ease;
+}
+
+.cookie-gallery-arrow:hover {
+  background: var(--gold-soft);
+
+  box-shadow: 4px 4px 0 var(--pink);
+}
+
+.cookie-gallery-arrow:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.cookie-gallery-prev {
+  left: 26px;
+}
+
+.cookie-gallery-next {
+  right: 26px;
+}
+
+
+/* ---------------------------------------------------------
+   Gallery dots
+   --------------------------------------------------------- */
+
+.cookie-gallery-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 13px 0 2px;
+}
+
+.cookie-gallery-dot {
+  width: 9px;
+  height: 9px;
+
+  padding: 0;
+
+  background: #d8c1b4;
+
+  border: 0;
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  transition:
+    background .15s ease,
+    transform .15s ease;
+}
+
+.cookie-gallery-dot:hover {
+  background: var(--pink);
+
+  transform: scale(1.2);
+}
+
+.cookie-gallery-dot.active,
+.cookie-gallery-dot[aria-current="true"] {
+  background: var(--brown);
+
+  transform: scale(1.35);
+}
+
+.cookie-gallery-dot:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+
+/* ---------------------------------------------------------
+   Gallery hint
+   --------------------------------------------------------- */
+
+.cookie-gallery-hint {
+  margin: 7px 0 0;
+
+  color: var(--brown-dark);
+
+  font-family: var(--font-tag);
+  font-size: .68rem;
+  line-height: 1.35;
+  text-align: center;
+
+  opacity: .6;
+}
+
+
+/* =========================================================
+   HERO COOKIE INFORMATION
+   ========================================================= */
+
+.cookie-hero-content {
+  min-width: 0;
+}
+
+
+.cookie-status-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-bottom: 18px;
+}
+
+
+.cookie-pill {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 8px 14px;
+
+  background: var(--pink-soft);
+  color: var(--brown-dark);
+
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .72rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+
+.cookie-pill-available {
+  background: #e3f1df;
+  color: #315a2c;
+}
+
+
+.cookie-profile-title {
+  margin: 0 0 18px;
+
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: clamp(2.9rem, 7vw, 5.8rem);
+  font-weight: 600;
+  line-height: .95;
+  letter-spacing: -.045em;
+}
+
+
+.cookie-profile-description {
+  max-width: 620px;
+
+  margin: 0 0 24px;
+
+  color: var(--black);
+
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
+
+.cookie-rating-summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin: 0 0 26px;
+}
+
+
+.cookie-rating-stars {
+  color: var(--brown);
+
+  font-size: 1.05rem;
+  letter-spacing: 2px;
+}
+
+
+.cookie-rating-summary strong {
+  color: var(--black);
+
+  font-size: .95rem;
+  font-weight: 800;
+}
+
+
+.cookie-rating-summary span:last-child {
+  color: var(--brown-dark);
+
+  font-size: .9rem;
+
+  opacity: .7;
+}
+
+
+/* ---------------------------------------------------------
+   Hero buttons need dark-page secondary override
+   --------------------------------------------------------- */
+
+.cookie-hero-content .hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 16px;
+}
+
+
+.cookie-hero-content .btn-secondary {
+  color: var(--brown-dark);
+
+  border-color: var(--brown);
+}
+
+
+.cookie-hero-content .btn-secondary:hover {
+  background: var(--gold-soft);
+}
+
+
+/* =========================================================
+   MEET THE COOKIE
+   ========================================================= */
+
+.cookie-story {
+  padding: 80px 0;
+}
+
+
+.cookie-story-grid {
+  display: grid;
+
+  grid-template-columns:
+    .9fr
+    1.1fr;
+
+  align-items: start;
+
+  gap: 70px;
+}
+
+
+.cookie-story-heading {
+  position: sticky;
+
+  top: 110px;
+}
+
+
+.cookie-story-heading .eyebrow {
+  color: var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .76rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+
+.cookie-story-heading h2 {
+  margin-top: 8px;
+
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  line-height: 1;
+}
+
+
+.cookie-story-copy {
+  color: var(--black);
+
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+
+.cookie-story-copy p:first-child {
+  margin-top: 0;
+}
+
+
+/* =========================================================
+   FLAVOR & TEXTURE
+   ========================================================= */
+
+.cookie-flavor-notes {
+  padding: 80px 0;
+}
+
+
+.cookie-flavor-notes .eyebrow {
+  color: var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .76rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+
+.cookie-notes-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 20px;
+
+  margin-top: 35px;
+}
+
+
+.cookie-note-card {
+  min-width: 0;
+
+  padding: 28px 20px;
+
+  background: var(--off-white);
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 10px 26px rgba(75, 47, 31, .08);
+
+  text-align: center;
+}
+
+
+.cookie-note-icon {
+  display: block;
+
+  margin-bottom: 14px;
+
+  font-size: 2rem;
+}
+
+
+.cookie-note-card strong {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: var(--black);
+
+  font-weight: 800;
+}
+
+
+.cookie-note-card small {
+  display: block;
+
+  color: var(--brown-dark);
+
+  opacity: .72;
+}
+
+
+/* =========================================================
+   COOKIE DETAILS
+   ========================================================= */
+
+.cookie-stats-section {
+  padding: 80px 0;
+}
+
+
+.cookie-stats-card {
+  padding: 42px;
+
+  background: var(--off-white);
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 14px 35px rgba(75, 47, 31, .09);
+}
+
+
+.cookie-stats-card .section-head {
+  margin-bottom: 34px;
+}
+
+
+.cookie-stats-card .eyebrow {
+  color: var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .76rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+
+.cookie-stats-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+
+.cookie-stat {
+  min-width: 0;
+
+  padding: 24px;
+
+  background: var(--cream);
+
+  border-radius: 20px;
+}
+
+
+.cookie-stat-label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--brown-dark);
+
+  font-family: var(--font-tag);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  line-height: 1.35;
+  text-transform: uppercase;
+
+  opacity: .7;
+}
+
+
+.cookie-stat-value {
+  display: block;
+
+  color: var(--black);
+
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   INGREDIENTS & ALLERGENS
+   ========================================================= */
+
+.cookie-ingredients-section {
+  padding: 80px 0;
+}
+
+
+.cookie-ingredients-section .eyebrow {
+  color: var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .76rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+
+.cookie-ingredients-card {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 2fr)
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  gap: 20px;
+
+  margin-top: 34px;
+}
+
+
+.cookie-ingredients-main,
+.cookie-allergens,
+.cookie-weight {
+  min-width: 0;
+
+  padding: 28px;
+
+  background: var(--off-white);
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 10px 26px rgba(75, 47, 31, .08);
+}
+
+
+.cookie-ingredients-main h3 {
+  margin: 0 0 12px;
+}
+
+
+.cookie-ingredients-main p {
+  margin: 0;
+
+  color: var(--brown-dark);
+
+  line-height: 1.75;
+}
+
+
+.cookie-allergens strong,
+.cookie-weight strong {
+  display: block;
+
+  margin-top: 8px;
+
+  color: var(--black);
+
+  font-size: 1.08rem;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   COOKIE REVIEWS
+   ========================================================= */
+
+.cookie-reviews-section {
+  padding: 80px 0;
+}
+
+
+.cookie-reviews-section .eyebrow {
+  color: var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .76rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+
+.cookie-review-summary-card {
+  display: grid;
+
+  grid-template-columns:
+    auto
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 30px;
+
+  margin-top: 32px;
+  padding: 34px;
+
+  background: var(--off-white);
+
+  border-radius: 26px;
+
+  box-shadow:
+    0 12px 30px rgba(75, 47, 31, .09);
+}
+
+
+.cookie-review-number {
+  color: var(--black);
+
+  font-size: 3.4rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+
+.cookie-review-details .cookie-rating-stars {
+  display: block;
+
+  margin-bottom: 6px;
+}
+
+
+.cookie-review-details p {
+  margin: 0;
+
+  color: var(--brown-dark);
+
+  opacity: .75;
+}
+
+
+/*
+   Existing .btn-secondary is designed for brown/dark backgrounds.
+   This fixes it for the white review card.
+*/
+
+.cookie-review-summary-card .btn-secondary {
+  color: var(--brown-dark);
+
+  border-color: var(--brown);
+}
+
+
+.cookie-review-summary-card .btn-secondary:hover {
+  background: var(--gold-soft);
+}
+
+
+/* =========================================================
+   RELATED COOKIES
+   ========================================================= */
+
+.related-cookies-section {
+  padding: 80px 0;
+}
+
+
+.related-cookies-section .eyebrow {
+  color: var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .76rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+
+.related-cookie-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 24px;
+
+  margin-top: 34px;
+}
+
+
+.related-cookie-card {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  background: var(--off-white);
+  color: var(--brown-dark);
+
+  border: 2px solid var(--brown);
+  border-radius: 24px;
+
+  box-shadow:
+    0 10px 28px rgba(75, 47, 31, .09);
+
+  text-decoration: none;
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+
+.related-cookie-card:visited {
+  color: var(--brown-dark);
+}
+
+
+.related-cookie-card:hover {
+  color: var(--brown-dark);
+
+  transform: translateY(-4px);
+
+  box-shadow: 7px 7px 0 var(--pink);
+}
+
+
+.related-cookie-card:focus-visible {
+  outline: 4px solid var(--gold);
+  outline-offset: 4px;
+}
+
+
+.related-cookie-card img {
+  display: block;
+
+  width: 100%;
+
+  aspect-ratio: 4 / 3;
+
+  object-fit: cover;
+
+  transition: transform .3s ease;
+}
+
+
+.related-cookie-card:hover img {
+  transform: scale(1.035);
+}
+
+
+.related-cookie-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+
+  padding: 22px;
+}
+
+
+.related-cookie-body h3 {
+  margin: 0 0 8px;
+}
+
+
+.related-cookie-body p {
+  flex: 1 1 auto;
+
+  margin: 0 0 12px;
+
+  color: var(--brown-dark);
+
+  font-size: .93rem;
+  line-height: 1.55;
+}
+
+
+.related-cookie-link {
+  display: inline-flex;
+
+  margin-top: auto;
+
+  color: var(--brown);
+
+  font-size: .9rem;
+  font-weight: 800;
+
+  transition: transform .15s ease;
+}
+
+
+.related-cookie-card:hover .related-cookie-link {
+  transform: translateX(5px);
+}
+
+
+/* =========================================================
+   COOKIE PAGE CTA
+   ========================================================= */
+
+.flavor-pack-cta {
+  padding: 80px 0;
+}
+
+
+.flavor-pack-cta .eyebrow {
+  color: var(--brown-dark);
+
+  font-family: var(--font-tag);
+  font-size: .76rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   INDIVIDUAL COOKIE PAGE — TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .cookie-hero-grid,
+  .cookie-story-grid {
+    grid-template-columns: 1fr;
+
+    gap: 40px;
+  }
+
+
+  .cookie-hero-gallery {
+    width: min(100%, 620px);
+
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+  .cookie-story-heading {
+    position: static;
+  }
+
+
+  .cookie-stats-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+
+  .cookie-notes-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+
+  .cookie-ingredients-card {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+
+  .cookie-ingredients-main {
+    grid-column: 1 / -1;
+  }
+
+
+  .related-cookie-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+
+  .cookie-review-summary-card {
+    grid-template-columns: 1fr;
+
+    text-align: center;
+  }
+
+
+  .cookie-review-summary-card .btn {
+    justify-self: center;
+  }
+
+}
+
+
+/* =========================================================
+   INDIVIDUAL COOKIE PAGE — MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+  .cookie-breadcrumbs {
+    padding-left: 15px;
+    padding-right: 15px;
+
+    font-size: .8rem;
+  }
+
+
+  .cookie-profile-hero {
+    padding-top: 28px;
+    padding-bottom: 54px;
+  }
+
+
+  .cookie-hero-grid {
+    gap: 34px;
+  }
+
+
+  .cookie-hero-gallery {
+    padding: 9px;
+
+    border-radius: 27px;
+  }
+
+
+  .cookie-hero-gallery-track,
+  .cookie-hero-slide img {
+    border-radius: 20px;
+  }
+
+
+  .cookie-profile-title {
+    font-size: clamp(2.8rem, 15vw, 4.5rem);
+  }
+
+
+  .cookie-profile-description {
+    font-size: 1.02rem;
+  }
+
+
+  .cookie-hero-price {
+    top: 20px;
+    right: 20px;
+
+    width: 62px;
+    height: 62px;
+
+    font-size: 1rem;
+  }
+
+
+  /*
+     Swipe is the primary control on touchscreens.
+  */
+
+  .cookie-gallery-arrow {
+    display: none;
+  }
+
+
+  .cookie-gallery-hint {
+    font-size: .63rem;
+  }
+
+
+  .cookie-hero-content .hero-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+
+  .cookie-hero-content .hero-actions .btn {
+    width: 100%;
+  }
+
+
+  .cookie-story,
+  .cookie-flavor-notes,
+  .cookie-stats-section,
+  .cookie-ingredients-section,
+  .cookie-reviews-section,
+  .related-cookies-section,
+  .flavor-pack-cta {
+    padding-top: 54px;
+    padding-bottom: 54px;
+  }
+
+
+  .cookie-story-copy {
+    font-size: 1rem;
+  }
+
+
+  .cookie-stats-card {
+    padding: 28px 20px;
+  }
+
+
+  .cookie-stats-grid,
+  .cookie-notes-grid,
+  .cookie-ingredients-card,
+  .related-cookie-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .cookie-ingredients-main {
+    grid-column: auto;
+  }
+
+
+  .cookie-note-card,
+  .cookie-stat,
+  .cookie-ingredients-main,
+  .cookie-allergens,
+  .cookie-weight {
+    padding: 22px 20px;
+  }
+
+
+  .cookie-review-summary-card {
+    padding: 28px 20px;
+  }
+
+
+  .cookie-review-number {
+    font-size: 3rem;
+  }
+
+}
+
+
+/* =========================================================
+   INDIVIDUAL COOKIE PAGE — VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 390px) {
+
+  .cookie-profile-title {
+    font-size: 2.65rem;
+  }
+
+
+  .cookie-pill {
+    padding: 7px 11px;
+
+    font-size: .64rem;
+  }
+
+
+  .cookie-hero-price {
+    width: 56px;
+    height: 56px;
+  }
+
+
+  .cookie-stats-card {
+    padding: 24px 16px;
+  }
+
+
+  .cookie-review-summary-card {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+}
+
 
 /* =========================================================
    END OF OLLY'S BAKED ASSORTMENTS STYLESHEET
