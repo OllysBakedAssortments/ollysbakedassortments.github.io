@@ -2655,7 +2655,7 @@ section {
 }
 
 .catalog-card-stars {
-  color: var(--gold);
+  color: var(--brown);
 
   font-size: .9rem;
   letter-spacing: .02em;
@@ -3102,16 +3102,12 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 }
 
 .catalog-rating > span:first-child {
-  color: var(--gold);
+  color: var(--brown);
 
   font-size: .92rem;
   letter-spacing: .025em;
 
-  text-shadow:
-    .5px 0 var(--brown),
-    -.5px 0 var(--brown),
-    0 .5px var(--brown),
-    0 -.5px var(--brown);
+  text-shadow: none;
 }
 
 .catalog-rating strong {
