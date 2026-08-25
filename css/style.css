@@ -726,7 +726,7 @@ section {
 .cookie-card {
   position: relative;
 
-  min-height: 500px;
+  min-height: 450px;
 
   padding: 0;
 
@@ -2373,9 +2373,9 @@ section {
 .flavor-catalog-grid,
 .catalog-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 
-  gap: 22px;
+  gap: 24px;
 
   width: 100%;
 }
