@@ -1488,10 +1488,184 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
+        // =======================================================
+    // COOKIE RATINGS
+    // =======================================================
+
+    function renderCatalogRatings() {
+
+      flavorCards.forEach(function (card) {
+
+        var body = card.querySelector(
+          '.flavor-catalog-body'
+        );
+
+        var cookieLink = card.querySelector(
+          '.flavor-catalog-link'
+        );
+
+        if (!body || !cookieLink) {
+          return;
+        }
+
+
+        // Remove any rating row already written into the HTML.
+        // This prevents duplicate ratings.
+        var existingRating = card.querySelector(
+          '.catalog-rating'
+        );
+
+        if (existingRating) {
+          existingRating.remove();
+        }
+
+
+        var rating = catalogNumber(
+          card.dataset.rating,
+          0
+        );
+
+        var reviewCount = catalogNumber(
+          card.dataset.reviewCount,
+          0
+        );
+
+
+        // Create rating row
+        var ratingRow = document.createElement(
+          'div'
+        );
+
+        ratingRow.className = 'catalog-rating';
+
+
+        // -----------------------------------------------
+        // REVIEWED COOKIE
+        // -----------------------------------------------
+
+        if (
+          rating > 0 &&
+          reviewCount > 0
+        ) {
+
+          var stars = document.createElement(
+            'span'
+          );
+
+          stars.className = 'catalog-rating-stars';
+
+          stars.setAttribute(
+            'aria-hidden',
+            'true'
+          );
+
+          stars.textContent = '★★★★★';
+
+
+          var ratingNumber = document.createElement(
+            'strong'
+          );
+
+          ratingNumber.textContent =
+            rating.toFixed(1);
+
+
+          var reviewText = document.createElement(
+            'span'
+          );
+
+          reviewText.className =
+            'catalog-rating-count';
+
+          reviewText.textContent =
+            reviewCount +
+            (reviewCount === 1
+              ? ' review'
+              : ' reviews');
+
+
+          ratingRow.appendChild(stars);
+          ratingRow.appendChild(ratingNumber);
+          ratingRow.appendChild(reviewText);
+
+
+          ratingRow.setAttribute(
+            'aria-label',
+            rating.toFixed(1) +
+            ' out of 5 stars from ' +
+            reviewCount +
+            (reviewCount === 1
+              ? ' review'
+              : ' reviews')
+          );
+
+        }
+
+
+        // -----------------------------------------------
+        // COOKIE WITHOUT REVIEWS YET
+        // -----------------------------------------------
+
+        else {
+
+          ratingRow.classList.add(
+            'catalog-rating-unrated'
+          );
+
+
+          var emptyStars =
+            document.createElement('span');
+
+          emptyStars.className =
+            'catalog-rating-stars catalog-rating-stars-empty';
+
+          emptyStars.setAttribute(
+            'aria-hidden',
+            'true'
+          );
+
+          emptyStars.textContent =
+            '☆☆☆☆☆';
+
+
+          var unratedText =
+            document.createElement('span');
+
+          unratedText.className =
+            'catalog-rating-count';
+
+          unratedText.textContent =
+            'Not yet rated';
+
+
+          ratingRow.appendChild(
+            emptyStars
+          );
+
+          ratingRow.appendChild(
+            unratedText
+          );
+
+        }
+
+
+        // Put rating immediately above
+        // "Meet This Cookie →"
+        body.insertBefore(
+          ratingRow,
+          cookieLink
+        );
+
+      });
+
+    }
+
+
     // =======================================================
     // INITIALIZE CATALOG
     // =======================================================
 
+    renderCatalogRatings();
     updateFlavorCatalog();
 
   }
