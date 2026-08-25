@@ -2362,77 +2362,6 @@ section {
   outline-offset: 3px;
 }
 
-
-/* ---------------------------------------------------------
-   Filter buttons
-   --------------------------------------------------------- */
-
-.catalog-filters {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-
-  gap: 9px;
-}
-
-.catalog-filter {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  min-height: 38px;
-
-  padding: 7px 13px;
-
-  background: var(--off-white);
-  color: var(--brown-dark);
-
-  border: 1px solid var(--brown);
-  border-radius: 999px;
-
-  font-family: var(--font-tag);
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: .03em;
-  text-transform: uppercase;
-
-  cursor: pointer;
-
-  transition:
-    background .15s ease,
-    color .15s ease,
-    transform .15s ease;
-}
-
-.catalog-filter:hover {
-  background: var(--pink-soft);
-
-  transform: translateY(-1px);
-}
-
-.catalog-filter.active,
-.catalog-filter[aria-pressed="true"] {
-  background: var(--brown);
-  color: var(--off-white);
-}
-
-
-/* ---------------------------------------------------------
-   Catalog count
-   --------------------------------------------------------- */
-
-.catalog-count {
-  margin: 0 0 22px;
-
-  color: var(--brown-dark);
-
-  font-family: var(--font-tag);
-  font-size: .75rem;
-  font-weight: 700;
-  letter-spacing: .04em;
-}
-
-
 /* ---------------------------------------------------------
    Flavor catalog grid
    --------------------------------------------------------- */
@@ -2831,14 +2760,16 @@ a.flavor-catalog-card:focus-visible {
 
 /* =========================================================
    FLAVOR CATALOG ORGANIZER
-   ========================================================= */
+========================================================= */
 
 .catalog-organizer {
-  width: 100%;
-  max-width: 900px;
+  position: relative;
 
-  margin: 0 auto 38px;
-  padding: 30px;
+  width: 100%;
+  max-width: 960px;
+
+  margin: 0 auto 42px;
+  padding: 34px 32px 26px;
 
   background: var(--cream);
 
@@ -2850,27 +2781,36 @@ a.flavor-catalog-card:focus-visible {
 
 
 /* ---------------------------------------------------------
-   Organizer heading
-   --------------------------------------------------------- */
+   Catalog intro
+--------------------------------------------------------- */
 
 .catalog-organizer-heading {
-  margin-bottom: 22px;
+  max-width: 680px;
+
+  margin: 0 auto 26px;
 
   text-align: center;
 }
 
-.catalog-organizer-heading h3 {
-  margin-bottom: 5px;
+.catalog-organizer-heading .eyebrow {
+  margin-bottom: 8px;
+}
 
-  font-size: 1.55rem;
+.catalog-organizer-heading h2 {
+  margin-bottom: 10px;
+
+  color: var(--brown);
 }
 
 .catalog-organizer-heading p {
-  margin: 0;
+  max-width: 620px;
+
+  margin: 0 auto;
 
   color: var(--brown-dark);
 
-  font-size: .96rem;
+  font-size: .95rem;
+  line-height: 1.65;
 }
 
 
@@ -3097,7 +3037,6 @@ a.flavor-catalog-card:focus-visible {
   color: var(--pink);
 }
 
-
 /* ---------------------------------------------------------
    Ratings on catalog cards
    --------------------------------------------------------- */
@@ -3107,30 +3046,44 @@ a.flavor-catalog-card:focus-visible {
   align-items: center;
   flex-wrap: wrap;
 
-  gap: 6px;
+  gap: 7px;
 
-  margin: -6px 0 18px;
+  margin: 2px 0 17px;
 
   color: var(--brown-dark);
 
-  font-size: .83rem;
-  line-height: 1.2;
+  font-size: .8rem;
+  line-height: 1.25;
 }
 
 .catalog-rating > span:first-child {
-  color: var(--brown);
+  color: var(--gold);
 
-  letter-spacing: .04em;
+  font-size: .92rem;
+  letter-spacing: .025em;
+
+  text-shadow:
+    .5px 0 var(--brown),
+    -.5px 0 var(--brown),
+    0 .5px var(--brown),
+    0 -.5px var(--brown);
 }
 
 .catalog-rating strong {
   color: var(--brown);
 
-  font-weight: 800;
+  font-family: var(--font-tag);
+  font-size: .72rem;
+  font-weight: 700;
 }
 
 .catalog-rating > span:last-child {
-  opacity: .72;
+  color: var(--brown-dark);
+
+  font-family: var(--font-tag);
+  font-size: .67rem;
+
+  opacity: .7;
 }
 
 
