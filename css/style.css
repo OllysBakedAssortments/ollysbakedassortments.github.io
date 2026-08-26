@@ -6589,6 +6589,8 @@ svg {
 .cookie-breadcrumbs {
   padding: 18px 24px 0;
 
+  color: var(--brown-dark);
+
   font-size: .9rem;
 }
 
@@ -6607,9 +6609,7 @@ svg {
 .cookie-breadcrumbs span {
   margin: 0 8px;
 
-  color: var(--brown-dark);
-
-  opacity: .55;
+  opacity: .5;
 }
 
 .cookie-breadcrumbs strong {
@@ -6624,19 +6624,96 @@ svg {
 .cookie-profile-hero {
   position: relative;
 
-  padding: 42px 0 70px;
+  padding: 34px 0 76px;
 }
+
+
+/* ---------------------------------------------------------
+   Cookie title above gallery
+   --------------------------------------------------------- */
+
+.cookie-hero-heading {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  max-width: 950px;
+
+  margin: 0 auto 38px;
+
+  text-align: center;
+}
+
+
+.cookie-profile-title {
+  margin: 0 0 18px;
+
+  color: var(--brown);
+
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6vw, 5.2rem);
+  font-weight: 600;
+  line-height: .96;
+  letter-spacing: -.035em;
+}
+
+
+/* ---------------------------------------------------------
+   Status pills under title
+   --------------------------------------------------------- */
+
+.cookie-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin: 0;
+}
+
+
+.cookie-pill {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 8px 14px;
+
+  background: var(--pink-soft);
+  color: var(--brown-dark);
+
+  border-radius: 999px;
+
+  font-family: var(--font-tag);
+  font-size: .7rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+
+.cookie-pill-available {
+  background: #e3f1df;
+  color: #315a2c;
+}
+
+
+/* ---------------------------------------------------------
+   Hero two-column layout
+   --------------------------------------------------------- */
 
 .cookie-hero-grid {
   display: grid;
 
   grid-template-columns:
-    minmax(0, 1fr)
-    minmax(0, 1fr);
+    minmax(0, 1.05fr)
+    minmax(0, .95fr);
 
   align-items: center;
 
-  gap: 60px;
+  gap: 58px;
 }
 
 
@@ -6653,8 +6730,8 @@ svg {
 
   background: var(--off-white);
 
-  border: 2px solid rgba(122, 47, 0, .08);
-  border-radius: 36px;
+  border: 2px solid rgba(122, 47, 0, .12);
+  border-radius: 34px;
 
   box-shadow:
     0 16px 38px rgba(75, 47, 31, .12);
@@ -6669,7 +6746,7 @@ svg {
   overflow-x: auto;
   overflow-y: hidden;
 
-  border-radius: 25px;
+  border-radius: 24px;
 
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
@@ -6704,26 +6781,26 @@ svg {
   object-fit: cover;
   object-position: center;
 
-  border-radius: 25px;
+  border-radius: 24px;
 }
 
 
 /* ---------------------------------------------------------
-   Hero price badge
+   Price badge
    --------------------------------------------------------- */
 
 .cookie-hero-price {
   position: absolute;
 
-  top: 30px;
-  right: 30px;
+  top: 28px;
+  right: 28px;
   z-index: 4;
 
   display: grid;
   place-items: center;
 
-  width: 72px;
-  height: 72px;
+  width: 70px;
+  height: 70px;
 
   background: var(--gold);
   color: var(--brown-dark);
@@ -6734,7 +6811,7 @@ svg {
   box-shadow: 3px 3px 0 var(--brown);
 
   font-family: var(--font-tag);
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 700;
 }
 
@@ -6780,20 +6857,24 @@ svg {
     box-shadow .15s ease;
 }
 
+
 .cookie-gallery-arrow:hover {
   background: var(--gold-soft);
 
   box-shadow: 4px 4px 0 var(--pink);
 }
 
+
 .cookie-gallery-arrow:focus-visible {
   outline: 3px solid var(--gold);
   outline-offset: 3px;
 }
 
+
 .cookie-gallery-prev {
   left: 26px;
 }
+
 
 .cookie-gallery-next {
   right: 26px;
@@ -6814,6 +6895,7 @@ svg {
   padding: 13px 0 2px;
 }
 
+
 .cookie-gallery-dot {
   width: 9px;
   height: 9px;
@@ -6832,11 +6914,13 @@ svg {
     transform .15s ease;
 }
 
+
 .cookie-gallery-dot:hover {
   background: var(--pink);
 
   transform: scale(1.2);
 }
+
 
 .cookie-gallery-dot.active,
 .cookie-gallery-dot[aria-current="true"] {
@@ -6844,6 +6928,7 @@ svg {
 
   transform: scale(1.35);
 }
+
 
 .cookie-gallery-dot:focus-visible {
   outline: 3px solid var(--gold);
@@ -6856,12 +6941,12 @@ svg {
    --------------------------------------------------------- */
 
 .cookie-gallery-hint {
-  margin: 7px 0 0;
+  margin: 8px 0 0;
 
   color: var(--brown-dark);
 
   font-family: var(--font-tag);
-  font-size: .68rem;
+  font-size: .66rem;
   line-height: 1.35;
   text-align: center;
 
@@ -6870,7 +6955,7 @@ svg {
 
 
 /* =========================================================
-   HERO COOKIE INFORMATION
+   MEET THE COOKIE — HERO CONTENT
    ========================================================= */
 
 .cookie-hero-content {
@@ -6878,53 +6963,28 @@ svg {
 }
 
 
-.cookie-status-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+.cookie-meet-eyebrow {
+  display: inline-block;
 
-  gap: 10px;
+  margin-bottom: 10px;
 
-  margin-bottom: 18px;
-}
-
-
-.cookie-pill {
-  display: inline-flex;
-  align-items: center;
-
-  gap: 6px;
-
-  padding: 8px 14px;
-
-  background: var(--pink-soft);
-  color: var(--brown-dark);
-
-  border-radius: 999px;
+  color: var(--brown);
 
   font-family: var(--font-tag);
   font-size: .72rem;
   font-weight: 700;
-  line-height: 1;
+  letter-spacing: .1em;
+  text-transform: uppercase;
 }
 
 
-.cookie-pill-available {
-  background: #e3f1df;
-  color: #315a2c;
-}
-
-
-.cookie-profile-title {
+.cookie-meet-title {
   margin: 0 0 18px;
 
   color: var(--brown);
 
-  font-family: var(--font-display);
-  font-size: clamp(2.9rem, 7vw, 5.8rem);
-  font-weight: 600;
-  line-height: .95;
-  letter-spacing: -.045em;
+  font-size: clamp(1.9rem, 3.2vw, 2.7rem);
+  line-height: 1.08;
 }
 
 
@@ -6935,19 +6995,73 @@ svg {
 
   color: var(--black);
 
-  font-size: 1.15rem;
-  line-height: 1.7;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+
+.cookie-profile-description p {
+  margin-bottom: 1em;
+}
+
+
+.cookie-profile-description p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* =========================================================
+   CLICKABLE HERO REVIEW SUMMARY
+   ========================================================= */
+
+.cookie-rating-link {
+  display: inline-block;
+
+  margin-bottom: 26px;
+
+  color: inherit;
+
+  border-radius: 14px;
+
+  text-decoration: none;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+.cookie-rating-link:visited {
+  color: inherit;
 }
 
 
 .cookie-rating-summary {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   flex-wrap: wrap;
 
   gap: 8px;
 
-  margin: 0 0 26px;
+  margin: 0;
+  padding: 10px 12px;
+
+  border-radius: 14px;
+
+  transition:
+    background .15s ease,
+    transform .15s ease;
+}
+
+
+.cookie-rating-link:hover .cookie-rating-summary {
+  background: var(--gold-soft);
+
+  transform: translateY(-2px);
+}
+
+
+.cookie-rating-link:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
 }
 
 
@@ -6960,25 +7074,42 @@ svg {
 
 
 .cookie-rating-summary strong {
-  color: var(--black);
+  color: var(--brown);
 
-  font-size: .95rem;
-  font-weight: 800;
+  font-family: var(--font-tag);
+  font-size: .78rem;
+  font-weight: 700;
 }
 
 
-.cookie-rating-summary span:last-child {
+.cookie-rating-summary span:not(.cookie-rating-stars):not(.cookie-rating-arrow) {
   color: var(--brown-dark);
 
-  font-size: .9rem;
+  font-size: .86rem;
 
-  opacity: .7;
+  opacity: .72;
 }
 
 
-/* ---------------------------------------------------------
-   Hero buttons need dark-page secondary override
-   --------------------------------------------------------- */
+.cookie-rating-arrow {
+  margin-left: 2px;
+
+  color: var(--brown);
+
+  font-weight: 800;
+
+  transition: transform .15s ease;
+}
+
+
+.cookie-rating-link:hover .cookie-rating-arrow {
+  transform: translateX(4px);
+}
+
+
+/* =========================================================
+   HERO BUTTONS
+   ========================================================= */
 
 .cookie-hero-content .hero-actions {
   display: flex;
@@ -7002,66 +7133,6 @@ svg {
 
 
 /* =========================================================
-   MEET THE COOKIE
-   ========================================================= */
-
-.cookie-story {
-  padding: 80px 0;
-}
-
-
-.cookie-story-grid {
-  display: grid;
-
-  grid-template-columns:
-    .9fr
-    1.1fr;
-
-  align-items: start;
-
-  gap: 70px;
-}
-
-
-.cookie-story-heading {
-  position: sticky;
-
-  top: 110px;
-}
-
-
-.cookie-story-heading .eyebrow {
-  color: var(--brown);
-
-  font-family: var(--font-tag);
-  font-size: .76rem;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-
-.cookie-story-heading h2 {
-  margin-top: 8px;
-
-  font-size: clamp(2.2rem, 5vw, 4rem);
-  line-height: 1;
-}
-
-
-.cookie-story-copy {
-  color: var(--black);
-
-  font-size: 1.1rem;
-  line-height: 1.8;
-}
-
-
-.cookie-story-copy p:first-child {
-  margin-top: 0;
-}
-
-
-/* =========================================================
    FLAVOR & TEXTURE
    ========================================================= */
 
@@ -7070,12 +7141,22 @@ svg {
 }
 
 
-.cookie-flavor-notes .eyebrow {
+.cookie-flavor-notes .eyebrow,
+.cookie-stats-card .eyebrow,
+.cookie-ingredients-section .eyebrow,
+.cookie-reviews-section .eyebrow,
+.related-cookies-section .eyebrow,
+.flavor-pack-cta .eyebrow {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
   color: var(--brown);
 
   font-family: var(--font-tag);
-  font-size: .76rem;
-  letter-spacing: .08em;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .09em;
   text-transform: uppercase;
 }
 
@@ -7083,7 +7164,8 @@ svg {
 .cookie-notes-grid {
   display: grid;
 
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
 
   gap: 20px;
 
@@ -7162,16 +7244,6 @@ svg {
 }
 
 
-.cookie-stats-card .eyebrow {
-  color: var(--brown);
-
-  font-family: var(--font-tag);
-  font-size: .76rem;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-
 .cookie-stats-grid {
   display: grid;
 
@@ -7201,7 +7273,7 @@ svg {
   color: var(--brown-dark);
 
   font-family: var(--font-tag);
-  font-size: .7rem;
+  font-size: .68rem;
   font-weight: 700;
   letter-spacing: .08em;
   line-height: 1.35;
@@ -7228,16 +7300,6 @@ svg {
 
 .cookie-ingredients-section {
   padding: 80px 0;
-}
-
-
-.cookie-ingredients-section .eyebrow {
-  color: var(--brown);
-
-  font-family: var(--font-tag);
-  font-size: .76rem;
-  letter-spacing: .08em;
-  text-transform: uppercase;
 }
 
 
@@ -7299,21 +7361,11 @@ svg {
 
 
 /* =========================================================
-   COOKIE REVIEWS
+   COOKIE REVIEWS SECTION
    ========================================================= */
 
 .cookie-reviews-section {
   padding: 80px 0;
-}
-
-
-.cookie-reviews-section .eyebrow {
-  color: var(--brown);
-
-  font-family: var(--font-tag);
-  font-size: .76rem;
-  letter-spacing: .08em;
-  text-transform: uppercase;
 }
 
 
@@ -7366,11 +7418,6 @@ svg {
 }
 
 
-/*
-   Existing .btn-secondary is designed for brown/dark backgrounds.
-   This fixes it for the white review card.
-*/
-
 .cookie-review-summary-card .btn-secondary {
   color: var(--brown-dark);
 
@@ -7389,16 +7436,6 @@ svg {
 
 .related-cookies-section {
   padding: 80px 0;
-}
-
-
-.related-cookies-section .eyebrow {
-  color: var(--brown);
-
-  font-family: var(--font-tag);
-  font-size: .76rem;
-  letter-spacing: .08em;
-  text-transform: uppercase;
 }
 
 
@@ -7523,7 +7560,7 @@ svg {
 
 
 /* =========================================================
-   COOKIE PAGE CTA
+   GIRAFFE PACK CTA
    ========================================================= */
 
 .flavor-pack-cta {
@@ -7533,11 +7570,6 @@ svg {
 
 .flavor-pack-cta .eyebrow {
   color: var(--brown-dark);
-
-  font-family: var(--font-tag);
-  font-size: .76rem;
-  letter-spacing: .08em;
-  text-transform: uppercase;
 }
 
 
@@ -7547,8 +7579,17 @@ svg {
 
 @media (max-width: 900px) {
 
-  .cookie-hero-grid,
-  .cookie-story-grid {
+  .cookie-profile-hero {
+    padding-top: 30px;
+  }
+
+
+  .cookie-hero-heading {
+    margin-bottom: 30px;
+  }
+
+
+  .cookie-hero-grid {
     grid-template-columns: 1fr;
 
     gap: 40px;
@@ -7563,8 +7604,11 @@ svg {
   }
 
 
-  .cookie-story-heading {
-    position: static;
+  .cookie-hero-content {
+    width: min(100%, 620px);
+
+    margin-left: auto;
+    margin-right: auto;
   }
 
 
@@ -7626,13 +7670,33 @@ svg {
 
 
   .cookie-profile-hero {
-    padding-top: 28px;
+    padding-top: 24px;
     padding-bottom: 54px;
   }
 
 
+  .cookie-hero-heading {
+    margin-bottom: 24px;
+
+    text-align: left;
+  }
+
+
+  .cookie-profile-title {
+    margin-bottom: 14px;
+
+    font-size: clamp(2.65rem, 13vw, 4rem);
+    line-height: .98;
+  }
+
+
+  .cookie-status-row {
+    justify-content: flex-start;
+  }
+
+
   .cookie-hero-grid {
-    gap: 34px;
+    gap: 30px;
   }
 
 
@@ -7649,29 +7713,19 @@ svg {
   }
 
 
-  .cookie-profile-title {
-    font-size: clamp(2.8rem, 15vw, 4.5rem);
-  }
-
-
-  .cookie-profile-description {
-    font-size: 1.02rem;
-  }
-
-
   .cookie-hero-price {
     top: 20px;
     right: 20px;
 
-    width: 62px;
-    height: 62px;
+    width: 60px;
+    height: 60px;
 
-    font-size: 1rem;
+    font-size: .94rem;
   }
 
 
   /*
-     Swipe is the primary control on touchscreens.
+     Swipe becomes the main gallery control on touch devices.
   */
 
   .cookie-gallery-arrow {
@@ -7680,7 +7734,38 @@ svg {
 
 
   .cookie-gallery-hint {
-    font-size: .63rem;
+    font-size: .61rem;
+  }
+
+
+  .cookie-meet-title {
+    font-size: clamp(1.7rem, 8vw, 2.2rem);
+  }
+
+
+  .cookie-profile-description {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+
+  .cookie-rating-link {
+    display: block;
+
+    width: fit-content;
+    max-width: 100%;
+  }
+
+
+  .cookie-rating-summary {
+    padding-left: 0;
+  }
+
+
+  .cookie-rating-link:hover .cookie-rating-summary {
+    background: transparent;
+
+    transform: none;
   }
 
 
@@ -7695,7 +7780,6 @@ svg {
   }
 
 
-  .cookie-story,
   .cookie-flavor-notes,
   .cookie-stats-section,
   .cookie-ingredients-section,
@@ -7704,11 +7788,6 @@ svg {
   .flavor-pack-cta {
     padding-top: 54px;
     padding-bottom: 54px;
-  }
-
-
-  .cookie-story-copy {
-    font-size: 1rem;
   }
 
 
@@ -7758,20 +7837,25 @@ svg {
 @media (max-width: 390px) {
 
   .cookie-profile-title {
-    font-size: 2.65rem;
+    font-size: 2.5rem;
   }
 
 
   .cookie-pill {
-    padding: 7px 11px;
+    padding: 7px 10px;
 
-    font-size: .64rem;
+    font-size: .61rem;
   }
 
 
   .cookie-hero-price {
-    width: 56px;
-    height: 56px;
+    width: 54px;
+    height: 54px;
+  }
+
+
+  .cookie-meet-title {
+    font-size: 1.7rem;
   }
 
 
@@ -7786,7 +7870,6 @@ svg {
   }
 
 }
-
 
 /* =========================================================
    END OF OLLY'S BAKED ASSORTMENTS STYLESHEET
