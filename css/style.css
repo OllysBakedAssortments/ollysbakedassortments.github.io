@@ -6960,6 +6960,8 @@ svg {
 
 .cookie-hero-content {
   min-width: 0;
+
+  text-align: left;
 }
 
 
@@ -7586,6 +7588,13 @@ svg {
 
   .cookie-hero-heading {
     margin-bottom: 30px;
+
+    text-align: center;
+  }
+
+
+  .cookie-status-row {
+    justify-content: center;
   }
 
 
@@ -7609,6 +7618,8 @@ svg {
 
     margin-left: auto;
     margin-right: auto;
+
+    text-align: left;
   }
 
 
@@ -7675,10 +7686,14 @@ svg {
   }
 
 
+  /* -------------------------------------------------------
+     Keep cookie name + tags centered on mobile
+     ------------------------------------------------------- */
+
   .cookie-hero-heading {
     margin-bottom: 24px;
 
-    text-align: left;
+    text-align: center;
   }
 
 
@@ -7687,13 +7702,19 @@ svg {
 
     font-size: clamp(2.65rem, 13vw, 4rem);
     line-height: .98;
+
+    text-align: center;
   }
 
 
   .cookie-status-row {
-    justify-content: flex-start;
+    justify-content: center;
   }
 
+
+  /* -------------------------------------------------------
+     Hero layout
+     ------------------------------------------------------- */
 
   .cookie-hero-grid {
     gap: 30px;
@@ -7738,6 +7759,22 @@ svg {
   }
 
 
+  /* -------------------------------------------------------
+     Keep Meet the Cookie content left-aligned
+     ------------------------------------------------------- */
+
+  .cookie-hero-content {
+    text-align: left;
+  }
+
+
+  .cookie-meet-eyebrow,
+  .cookie-meet-title,
+  .cookie-profile-description {
+    text-align: left;
+  }
+
+
   .cookie-meet-title {
     font-size: clamp(1.7rem, 8vw, 2.2rem);
   }
@@ -7748,6 +7785,10 @@ svg {
     line-height: 1.7;
   }
 
+
+  /* -------------------------------------------------------
+     Review link
+     ------------------------------------------------------- */
 
   .cookie-rating-link {
     display: block;
@@ -7769,6 +7810,10 @@ svg {
   }
 
 
+  /* -------------------------------------------------------
+     Hero buttons
+     ------------------------------------------------------- */
+
   .cookie-hero-content .hero-actions {
     align-items: stretch;
     flex-direction: column;
@@ -7779,6 +7824,10 @@ svg {
     width: 100%;
   }
 
+
+  /* -------------------------------------------------------
+     Section spacing
+     ------------------------------------------------------- */
 
   .cookie-flavor-notes,
   .cookie-stats-section,
@@ -7795,6 +7844,10 @@ svg {
     padding: 28px 20px;
   }
 
+
+  /* -------------------------------------------------------
+     Single-column mobile cards
+     ------------------------------------------------------- */
 
   .cookie-stats-grid,
   .cookie-notes-grid,
