@@ -868,6 +868,455 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // =========================================================
+  // INDIVIDUAL COOKIE PAGE IMAGE GALLERY
+  // AUTOPLAY + ARROWS + DOTS + SWIPE / SCROLL
+  // =========================================================
+
+  var cookieGallery = document.querySelector(
+    '.cookie-hero-gallery'
+  );
+
+  if (cookieGallery) {
+
+    var cookieGalleryTrack = cookieGallery.querySelector(
+      '.cookie-hero-gallery-track'
+    );
+
+    var cookieGallerySlides = Array.from(
+      cookieGallery.querySelectorAll(
+        '.cookie-hero-slide'
+      )
+    );
+
+    var cookieGalleryPrev = cookieGallery.querySelector(
+      '.cookie-gallery-prev'
+    );
+
+    var cookieGalleryNext = cookieGallery.querySelector(
+      '.cookie-gallery-next'
+    );
+
+    var cookieGalleryDots = Array.from(
+      cookieGallery.querySelectorAll(
+        '.cookie-gallery-dot'
+      )
+    );
+
+    var cookieGalleryIndex = 0;
+
+    // 4000 = 4 seconds per image
+    var cookieGalleryAutoplayDelay = 4000;
+
+    var cookieGalleryAutoplayTimer = null;
+
+    var cookieGalleryScrollTimer = null;
+
+    var cookieGalleryReduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    );
+
+
+    // =======================================================
+    // GET CURRENT COOKIE IMAGE
+    // =======================================================
+
+    function getCookieGalleryIndex() {
+
+      if (
+        !cookieGalleryTrack ||
+        cookieGallerySlides.length === 0
+      ) {
+        return 0;
+      }
+
+      var slideWidth =
+        cookieGalleryTrack.clientWidth;
+
+      if (!slideWidth) {
+        return cookieGalleryIndex;
+      }
+
+      return Math.round(
+        cookieGalleryTrack.scrollLeft /
+        slideWidth
+      );
+
+    }
+
+
+    // =======================================================
+    // UPDATE COOKIE GALLERY DOTS
+    // =======================================================
+
+    function updateCookieGalleryDots(index) {
+
+      cookieGalleryDots.forEach(
+        function (dot, dotIndex) {
+
+          var isActive =
+            dotIndex === index;
+
+          dot.classList.toggle(
+            'active',
+            isActive
+          );
+
+          dot.setAttribute(
+            'aria-current',
+            isActive
+              ? 'true'
+              : 'false'
+          );
+
+        }
+      );
+
+    }
+
+
+    // =======================================================
+    // MOVE TO COOKIE IMAGE
+    // =======================================================
+
+    function goToCookieGallerySlide(index) {
+
+      if (
+        !cookieGalleryTrack ||
+        cookieGallerySlides.length === 0
+      ) {
+        return;
+      }
+
+
+      // Loop from last image back to first
+      if (index >= cookieGallerySlides.length) {
+        index = 0;
+      }
+
+
+      // Loop backward from first image to last
+      if (index < 0) {
+        index = cookieGallerySlides.length - 1;
+      }
+
+
+      cookieGalleryIndex = index;
+
+
+      var targetSlide =
+        cookieGallerySlides[index];
+
+
+      cookieGalleryTrack.scrollTo({
+        left: targetSlide.offsetLeft,
+        behavior: cookieGalleryReduceMotion.matches
+          ? 'auto'
+          : 'smooth'
+      });
+
+
+      updateCookieGalleryDots(
+        cookieGalleryIndex
+      );
+
+    }
+
+
+    // =======================================================
+    // NEXT / PREVIOUS COOKIE IMAGE
+    // =======================================================
+
+    function nextCookieGallerySlide() {
+
+      cookieGalleryIndex =
+        getCookieGalleryIndex();
+
+      goToCookieGallerySlide(
+        cookieGalleryIndex + 1
+      );
+
+    }
+
+
+    function previousCookieGallerySlide() {
+
+      cookieGalleryIndex =
+        getCookieGalleryIndex();
+
+      goToCookieGallerySlide(
+        cookieGalleryIndex - 1
+      );
+
+    }
+
+
+    // =======================================================
+    // COOKIE GALLERY AUTOPLAY
+    // =======================================================
+
+    function stopCookieGalleryAutoplay() {
+
+      if (
+        cookieGalleryAutoplayTimer !== null
+      ) {
+
+        clearInterval(
+          cookieGalleryAutoplayTimer
+        );
+
+        cookieGalleryAutoplayTimer = null;
+
+      }
+
+    }
+
+
+    function startCookieGalleryAutoplay() {
+
+      stopCookieGalleryAutoplay();
+
+
+      if (
+        cookieGallerySlides.length <= 1 ||
+        cookieGalleryReduceMotion.matches ||
+        document.hidden
+      ) {
+        return;
+      }
+
+
+      cookieGalleryAutoplayTimer =
+        setInterval(
+          function () {
+
+            nextCookieGallerySlide();
+
+          },
+          cookieGalleryAutoplayDelay
+        );
+
+    }
+
+
+    function restartCookieGalleryAutoplay() {
+
+      stopCookieGalleryAutoplay();
+      startCookieGalleryAutoplay();
+
+    }
+
+
+    // =======================================================
+    // COOKIE GALLERY ARROWS
+    // =======================================================
+
+    if (cookieGalleryPrev) {
+
+      cookieGalleryPrev.addEventListener(
+        'click',
+        function () {
+
+          previousCookieGallerySlide();
+          restartCookieGalleryAutoplay();
+
+        }
+      );
+
+    }
+
+
+    if (cookieGalleryNext) {
+
+      cookieGalleryNext.addEventListener(
+        'click',
+        function () {
+
+          nextCookieGallerySlide();
+          restartCookieGalleryAutoplay();
+
+        }
+      );
+
+    }
+
+
+    // =======================================================
+    // COOKIE GALLERY DOTS
+    // =======================================================
+
+    cookieGalleryDots.forEach(
+      function (dot, index) {
+
+        dot.addEventListener(
+          'click',
+          function () {
+
+            goToCookieGallerySlide(index);
+            restartCookieGalleryAutoplay();
+
+          }
+        );
+
+      }
+    );
+
+
+    // =======================================================
+    // KEEP DOTS SYNCED WITH MANUAL SWIPE / SCROLL
+    // =======================================================
+
+    if (cookieGalleryTrack) {
+
+      cookieGalleryTrack.addEventListener(
+        'scroll',
+        function () {
+
+          clearTimeout(
+            cookieGalleryScrollTimer
+          );
+
+
+          cookieGalleryScrollTimer =
+            setTimeout(
+              function () {
+
+                cookieGalleryIndex =
+                  getCookieGalleryIndex();
+
+
+                updateCookieGalleryDots(
+                  cookieGalleryIndex
+                );
+
+              },
+              80
+            );
+
+        },
+        { passive: true }
+      );
+
+    }
+
+
+    // =======================================================
+    // PAUSE AUTOPLAY WHILE USER INTERACTS
+    // =======================================================
+
+    cookieGallery.addEventListener(
+      'mouseenter',
+      function () {
+
+        stopCookieGalleryAutoplay();
+
+      }
+    );
+
+
+    cookieGallery.addEventListener(
+      'mouseleave',
+      function () {
+
+        startCookieGalleryAutoplay();
+
+      }
+    );
+
+
+    cookieGallery.addEventListener(
+      'touchstart',
+      function () {
+
+        stopCookieGalleryAutoplay();
+
+      },
+      { passive: true }
+    );
+
+
+    cookieGallery.addEventListener(
+      'touchend',
+      function () {
+
+        cookieGalleryIndex =
+          getCookieGalleryIndex();
+
+        startCookieGalleryAutoplay();
+
+      },
+      { passive: true }
+    );
+
+
+    // =======================================================
+    // PAUSE WHEN BROWSER TAB IS HIDDEN
+    // =======================================================
+
+    document.addEventListener(
+      'visibilitychange',
+      function () {
+
+        if (document.hidden) {
+
+          stopCookieGalleryAutoplay();
+
+        } else {
+
+          startCookieGalleryAutoplay();
+
+        }
+
+      }
+    );
+
+
+    // =======================================================
+    // REDUCED MOTION
+    // =======================================================
+
+    if (
+      typeof cookieGalleryReduceMotion
+        .addEventListener === 'function'
+    ) {
+
+      cookieGalleryReduceMotion.addEventListener(
+        'change',
+        function () {
+
+          if (
+            cookieGalleryReduceMotion.matches
+          ) {
+
+            stopCookieGalleryAutoplay();
+
+          } else {
+
+            startCookieGalleryAutoplay();
+
+          }
+
+        }
+      );
+
+    }
+
+
+    // =======================================================
+    // INITIALIZE COOKIE GALLERY
+    // =======================================================
+
+    cookieGalleryIndex =
+      getCookieGalleryIndex();
+
+    updateCookieGalleryDots(
+      cookieGalleryIndex
+    );
+
+    startCookieGalleryAutoplay();
+
+  }
+  
+  // =========================================================
   // FLAVOR CATALOG ORGANIZER
   // =========================================================
 
