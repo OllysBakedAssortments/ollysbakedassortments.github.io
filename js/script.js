@@ -904,8 +904,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var cookieGalleryIndex = 0;
 
-    // 4000 = 4 seconds per image
-    var cookieGalleryAutoplayDelay = 4000;
+    // 3500 = 3.5 seconds per image
+    var cookieGalleryAutoplayDelay = 3500;
 
     var cookieGalleryAutoplayTimer = null;
 
