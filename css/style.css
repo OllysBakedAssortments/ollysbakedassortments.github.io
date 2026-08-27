@@ -7186,15 +7186,7 @@ svg {
 
 
 .cookie-flavor-notes::after {
-  width: 120px;
-  height: 120px;
-
-  left: 4%;
-  bottom: -38px;
-
-  background: var(--gold);
-
-  opacity: .9;
+  display: none;
 }
 
 
@@ -7328,15 +7320,7 @@ svg {
 
 
 .cookie-stats-section::before {
-  width: 155px;
-  height: 155px;
-
-  top: -48px;
-  left: 5%;
-
-  background: var(--gold);
-
-  opacity: .9;
+  display: none;
 }
 
 
@@ -7746,15 +7730,7 @@ svg {
 
 
 .cookie-reviews-section .container::after {
-  width: 115px;
-  height: 115px;
-
-  right: -28px;
-  bottom: -38px;
-
-  background: var(--gold);
-
-  opacity: .78;
+  display: none;
 }
 
 
