@@ -7139,10 +7139,61 @@ svg {
    ========================================================= */
 
 .cookie-flavor-notes {
+  position: relative;
+
   padding: 80px 0;
+
+  overflow: hidden;
 
   background: var(--brown);
   color: var(--off-white);
+}
+
+
+.cookie-flavor-notes .container {
+  position: relative;
+  z-index: 2;
+}
+
+
+.cookie-flavor-notes::before,
+.cookie-flavor-notes::after {
+  content: "";
+
+  position: absolute;
+  z-index: 0;
+
+  pointer-events: none;
+
+  border-radius:
+    62% 38% 55% 45% /
+    45% 60% 40% 55%;
+}
+
+
+.cookie-flavor-notes::before {
+  width: 165px;
+  height: 165px;
+
+  top: -55px;
+  right: 5%;
+
+  background: var(--pink);
+
+  opacity: .88;
+}
+
+
+.cookie-flavor-notes::after {
+  width: 120px;
+  height: 120px;
+
+  left: 4%;
+  bottom: -38px;
+
+  background: var(--gold);
+
+  opacity: .9;
 }
 
 
@@ -7244,9 +7295,62 @@ svg {
    ========================================================= */
 
 .cookie-stats-section {
+  position: relative;
+
   padding: 80px 0;
 
+  overflow: hidden;
+
   background: var(--pink);
+}
+
+
+.cookie-stats-section .container {
+  position: relative;
+  z-index: 2;
+}
+
+
+.cookie-stats-section::before,
+.cookie-stats-section::after {
+  content: "";
+
+  position: absolute;
+  z-index: 0;
+
+  pointer-events: none;
+
+  border-radius:
+    62% 38% 55% 45% /
+    45% 60% 40% 55%;
+}
+
+
+.cookie-stats-section::before {
+  width: 155px;
+  height: 155px;
+
+  top: -48px;
+  left: 5%;
+
+  background: var(--gold);
+
+  opacity: .9;
+}
+
+
+.cookie-stats-section::after {
+  width: 130px;
+  height: 130px;
+
+  right: -42px;
+  bottom: 38px;
+
+  background: transparent;
+
+  border: 3px solid var(--brown);
+
+  opacity: .55;
 }
 
 
@@ -7365,7 +7469,60 @@ svg {
    ========================================================= */
 
 .cookie-ingredients-section {
+  position: relative;
+
   padding: 80px 0;
+
+  overflow: hidden;
+}
+
+
+.cookie-ingredients-section .container {
+  position: relative;
+  z-index: 2;
+}
+
+
+.cookie-ingredients-section::before,
+.cookie-ingredients-section::after {
+  content: "";
+
+  position: absolute;
+  z-index: 0;
+
+  pointer-events: none;
+
+  border-radius:
+    62% 38% 55% 45% /
+    45% 60% 40% 55%;
+}
+
+
+.cookie-ingredients-section::before {
+  width: 150px;
+  height: 150px;
+
+  top: 45px;
+  right: -50px;
+
+  background: var(--pink);
+
+  opacity: .72;
+}
+
+
+.cookie-ingredients-section::after {
+  width: 125px;
+  height: 125px;
+
+  left: -48px;
+  bottom: 42px;
+
+  background: transparent;
+
+  border: 3px solid var(--gold);
+
+  opacity: .72;
 }
 
 
@@ -8138,8 +8295,6 @@ svg {
     font-size: 3rem;
   }
 
-}
-
   /* -------------------------------------------------------
      Homepage-style cookie reviews on mobile
      ------------------------------------------------------- */
@@ -8188,6 +8343,65 @@ svg {
   .cookie-review-summary-card .btn {
     width: 100%;
   }
+
+  /* -------------------------------------------------------
+     Decorative cookie-page spots on mobile
+     ------------------------------------------------------- */
+
+  .cookie-flavor-notes::before {
+    width: 105px;
+    height: 105px;
+
+    top: -35px;
+    right: -24px;
+  }
+
+
+  .cookie-flavor-notes::after {
+    width: 78px;
+    height: 78px;
+
+    left: -24px;
+    bottom: -20px;
+  }
+
+
+  .cookie-ingredients-section::before {
+    width: 95px;
+    height: 95px;
+
+    top: 26px;
+    right: -42px;
+  }
+
+
+  .cookie-ingredients-section::after {
+    width: 82px;
+    height: 82px;
+
+    left: -38px;
+    bottom: 28px;
+  }
+
+
+  .cookie-stats-section::before {
+    width: 95px;
+    height: 95px;
+
+    top: -30px;
+    left: -24px;
+  }
+
+
+  .cookie-stats-section::after {
+    width: 85px;
+    height: 85px;
+
+    right: -38px;
+    bottom: 25px;
+  }
+
+}
 
 /* =========================================================
    INDIVIDUAL COOKIE PAGE — VERY SMALL MOBILE
