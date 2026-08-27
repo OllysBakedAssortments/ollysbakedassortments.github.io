@@ -7456,13 +7456,86 @@ svg {
 
 
 /* =========================================================
-   COOKIE REVIEWS — GOLD
+   COOKIE REVIEWS — HOMEPAGE-STYLE SHELL
    ========================================================= */
 
 .cookie-reviews-section {
   padding: 80px 0;
 
+  background: var(--off-white);
+}
+
+
+/* ---------------------------------------------------------
+   Main review shell
+   --------------------------------------------------------- */
+
+.cookie-reviews-section .container {
+  position: relative;
+
+  padding: 58px 48px 52px;
+
+  overflow: hidden;
+
+  background: var(--cream);
+
+  border: 2px solid var(--brown);
+  border-radius: var(--radius-lg);
+
+  box-shadow: 8px 8px 0 var(--pink);
+}
+
+
+/* Keep actual content above decorative spots */
+
+.cookie-reviews-section .container > * {
+  position: relative;
+  z-index: 2;
+}
+
+
+/* ---------------------------------------------------------
+   Decorative OBA spots
+   --------------------------------------------------------- */
+
+.cookie-reviews-section .container::before,
+.cookie-reviews-section .container::after {
+  content: "";
+
+  position: absolute;
+  z-index: 0;
+
+  pointer-events: none;
+
+  border-radius:
+    62% 38% 55% 45% /
+    45% 60% 40% 55%;
+}
+
+
+.cookie-reviews-section .container::before {
+  width: 150px;
+  height: 150px;
+
+  top: -60px;
+  left: -35px;
+
+  background: var(--pink);
+
+  opacity: .72;
+}
+
+
+.cookie-reviews-section .container::after {
+  width: 115px;
+  height: 115px;
+
+  right: -28px;
+  bottom: -38px;
+
   background: var(--gold);
+
+  opacity: .78;
 }
 
 
@@ -7470,10 +7543,17 @@ svg {
    Reviews heading
    --------------------------------------------------------- */
 
+.cookie-reviews-section .section-head {
+  max-width: 760px;
+
+  margin-bottom: 36px;
+}
+
+
 .cookie-reviews-section .eyebrow {
   display: inline-block;
 
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 
   color: var(--brown);
 
@@ -7487,6 +7567,8 @@ svg {
 
 .cookie-reviews-section .section-head h2 {
   color: var(--brown);
+
+  font-size: clamp(2rem, 4vw, 3rem);
 }
 
 
@@ -7516,10 +7598,10 @@ svg {
 
   background: var(--off-white);
 
+  border: 2px solid var(--brown);
   border-radius: 26px;
 
-  box-shadow:
-    0 12px 30px rgba(75, 47, 31, .14);
+  box-shadow: 5px 5px 0 var(--pink);
 }
 
 
@@ -7541,7 +7623,16 @@ svg {
 
   margin-bottom: 6px;
 
-  color: var(--brown);
+  color: var(--gold);
+
+  font-size: 1.15rem;
+  letter-spacing: .04em;
+
+  text-shadow:
+    1px 0 var(--brown),
+    -1px 0 var(--brown),
+    0 1px var(--brown),
+    0 -1px var(--brown);
 }
 
 
@@ -7559,15 +7650,19 @@ svg {
    --------------------------------------------------------- */
 
 .cookie-review-summary-card .btn-secondary {
-  background: var(--off-white);
+  background: var(--gold);
   color: var(--brown-dark);
 
   border-color: var(--brown);
+
+  box-shadow: 4px 4px 0 var(--brown);
 }
 
 
 .cookie-review-summary-card .btn-secondary:hover {
-  background: var(--pink-soft);
+  background: var(--pink);
+
+  box-shadow: 6px 6px 0 var(--brown);
 }
 
 /* =========================================================
@@ -8045,6 +8140,54 @@ svg {
 
 }
 
+  /* -------------------------------------------------------
+     Homepage-style cookie reviews on mobile
+     ------------------------------------------------------- */
+
+  .cookie-reviews-section .container {
+    padding: 42px 18px 38px;
+
+    border-radius: 22px;
+
+    box-shadow: 5px 5px 0 var(--pink);
+  }
+
+
+  .cookie-reviews-section .container::before {
+    width: 110px;
+    height: 110px;
+
+    top: -42px;
+    left: -32px;
+  }
+
+
+  .cookie-reviews-section .container::after {
+    width: 85px;
+    height: 85px;
+
+    right: -24px;
+    bottom: -28px;
+  }
+
+
+  .cookie-review-summary-card {
+    gap: 18px;
+
+    padding: 28px 20px;
+
+    border-radius: 22px;
+  }
+
+
+  .cookie-review-number {
+    font-size: 3rem;
+  }
+
+
+  .cookie-review-summary-card .btn {
+    width: 100%;
+  }
 
 /* =========================================================
    INDIVIDUAL COOKIE PAGE — VERY SMALL MOBILE
