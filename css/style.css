@@ -8003,6 +8003,17 @@ svg {
   transform: translateX(5px);
 }
 
+/* =========================================================
+   REVIEW → RELATED COOKIES SPACING
+   ========================================================= */
+
+.cookie-reviews-section {
+  padding-bottom: 35px;
+}
+
+.related-cookies-section {
+  padding-top: 45px;
+}
 
 /* =========================================================
    GIRAFFE PACK CTA
@@ -8471,6 +8482,46 @@ svg {
   .cookie-review-summary-card {
     padding-left: 18px;
     padding-right: 18px;
+  }
+
+}
+
+/* =========================================================
+   HOMEPAGE REVIEWS — FINAL SPACING CLEANUP
+   ========================================================= */
+
+/* Less empty space above/below entire review section */
+.home-reviews {
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+/* Tighten internal review panel */
+.reviews-shell {
+  padding-top: 56px;
+  padding-bottom: 52px;
+}
+
+/* Remove gold/yellow review decoration */
+.reviews-spot-gold {
+  display: none !important;
+}
+
+/* Keep pink decoration */
+.reviews-spot-pink {
+  display: block;
+}
+
+@media (max-width: 560px) {
+
+  .home-reviews {
+    padding-top: 42px;
+    padding-bottom: 42px;
+  }
+
+  .reviews-shell {
+    padding-top: 40px;
+    padding-bottom: 38px;
   }
 
 }
