@@ -7549,14 +7549,32 @@ svg {
 
   grid-template-columns:
     minmax(0, 2fr)
-    minmax(0, 1fr)
-    minmax(0, 1fr);
+    minmax(260px, .95fr);
 
-  align-items: center;
+  grid-template-areas:
+    "ingredients contains"
+    "ingredients weight";
+
+  align-items: stretch;
 
   gap: 20px;
 
   margin-top: 34px;
+}
+
+
+.cookie-ingredients-main {
+  grid-area: ingredients;
+}
+
+
+.cookie-allergens {
+  grid-area: contains;
+}
+
+
+.cookie-weight {
+  grid-area: weight;
 }
 
 
@@ -7567,19 +7585,38 @@ svg {
 
   padding: 28px;
 
-  background: var(--off-white);
+  background: var(--cream);
+  color: var(--brown-dark);
 
+  border: 2px solid var(--brown);
   border-radius: 24px;
+
+  box-shadow:
+    5px 5px 0 rgba(255, 153, 216, .9);
 
   text-align: center;
 
-  box-shadow:
-    0 10px 26px rgba(75, 47, 31, .08);
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
 }
 
+.cookie-ingredients-main {
+  padding: 34px 32px;
+
+  background: var(--cream);
+
+  box-shadow:
+    7px 7px 0 var(--pink);
+}
 
 .cookie-ingredients-main h3 {
-  margin: 0 0 12px;
+  margin: 0 0 16px;
+
+  color: var(--brown);
+
+  font-size: 1.45rem;
+  font-weight: 700;
 
   text-align: center;
 }
@@ -7590,14 +7627,22 @@ svg {
 
   color: var(--brown-dark);
 
+  font-size: .98rem;
   line-height: 1.75;
+
   text-align: center;
 }
 
 
 .cookie-allergens .cookie-stat-label,
 .cookie-weight .cookie-stat-label {
+  margin-bottom: 10px;
+
+  color: var(--brown);
+
   text-align: center;
+
+  opacity: .72;
 }
 
 
@@ -7607,13 +7652,27 @@ svg {
 
   margin-top: 8px;
 
-  color: var(--black);
+  color: var(--brown-dark);
 
   font-size: 1.08rem;
+  font-weight: 800;
   line-height: 1.5;
+
   text-align: center;
 }
 
+@media (hover: hover) {
+
+  .cookie-ingredients-main:hover,
+  .cookie-allergens:hover,
+  .cookie-weight:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+      7px 7px 0 var(--pink);
+  }
+
+}
 
 /* =========================================================
    COOKIE REVIEWS — HOMEPAGE-STYLE SHELL
@@ -8053,17 +8112,6 @@ svg {
   }
 
 
-  .cookie-ingredients-card {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-  }
-
-
-  .cookie-ingredients-main {
-    grid-column: 1 / -1;
-  }
-
-
   .related-cookie-grid {
     grid-template-columns:
       repeat(2, minmax(0, 1fr));
@@ -8267,17 +8315,21 @@ svg {
      Single-column mobile cards
      ------------------------------------------------------- */
 
-  .cookie-stats-grid,
-  .cookie-notes-grid,
-  .cookie-ingredients-card,
-  .related-cookie-grid {
-    grid-template-columns: 1fr;
-  }
+.cookie-stats-grid,
+.cookie-notes-grid,
+.related-cookie-grid {
+  grid-template-columns: 1fr;
+}
 
 
-  .cookie-ingredients-main {
-    grid-column: auto;
-  }
+.cookie-ingredients-card {
+  grid-template-columns: 1fr;
+
+  grid-template-areas:
+    "ingredients"
+    "contains"
+    "weight";
+}
 
 
   .cookie-note-card,
