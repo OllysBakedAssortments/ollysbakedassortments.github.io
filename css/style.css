@@ -6587,8 +6587,9 @@ svg {
    --------------------------------------------------------- */
 
 .cookie-breadcrumbs {
-  padding: 18px 24px 0;
+  padding: 16px 24px;
 
+  background: var(--gold);
   color: var(--brown-dark);
 
   font-size: .9rem;
@@ -7474,6 +7475,8 @@ svg {
   padding: 80px 0;
 
   overflow: hidden;
+
+  background: var(--gold);
 }
 
 
@@ -7520,9 +7523,9 @@ svg {
 
   background: transparent;
 
-  border: 3px solid var(--gold);
+  border: 3px solid var(--brown);
 
-  opacity: .72;
+  opacity: .55;
 }
 
 
