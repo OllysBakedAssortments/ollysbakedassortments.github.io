@@ -7369,6 +7369,21 @@ svg {
 }
 
 
+.cookie-ingredients-section .eyebrow {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color: var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+
 .cookie-ingredients-card {
   display: grid;
 
@@ -7564,6 +7579,21 @@ svg {
 }
 
 
+.related-cookies-section .eyebrow {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color: var(--brown);
+
+  font-family: var(--font-tag);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+
 .related-cookie-grid {
   display: grid;
 
@@ -7694,7 +7724,17 @@ svg {
 
 
 .flavor-pack-cta .eyebrow {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
   color: var(--brown-dark);
+
+  font-family: var(--font-tag);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
 }
 
 
