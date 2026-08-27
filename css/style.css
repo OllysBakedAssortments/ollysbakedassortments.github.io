@@ -6587,7 +6587,15 @@ svg {
    --------------------------------------------------------- */
 
 .cookie-breadcrumbs {
-  padding: 16px 24px;
+  position: relative;
+
+  width: 100vw;
+
+  margin-left: calc(50% - 50vw);
+  padding: 16px max(
+    24px,
+    calc((100vw - var(--container)) / 2 + 24px)
+  );
 
   background: var(--gold);
   color: var(--brown-dark);
