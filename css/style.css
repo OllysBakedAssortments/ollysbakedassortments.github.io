@@ -6589,18 +6589,28 @@ svg {
 .cookie-breadcrumbs {
   position: relative;
 
-  width: 100vw;
+  padding: 16px 24px;
 
-  margin-left: calc(50% - 50vw);
-  padding: 16px max(
-    24px,
-    calc((100vw - var(--container)) / 2 + 24px)
-  );
-
-  background: var(--gold);
   color: var(--brown-dark);
 
   font-size: .9rem;
+  z-index: 1;
+}
+
+.cookie-breadcrumbs::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+
+  width: 100vw;
+
+  background: var(--gold);
+
+  transform: translateX(-50%);
+  z-index: -1;
 }
 
 .cookie-breadcrumbs a {
