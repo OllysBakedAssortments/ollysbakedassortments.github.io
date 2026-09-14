@@ -4947,13 +4947,15 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
      ------------------------------------------------------- */
 
   .nav-wrap {
-    position: relative;
+  position: relative;
 
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 
-    padding-top: 12px;
-    padding-bottom: 12px;
-  }
+  gap: 8px;
+
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
 
   .logo > span {
     width: auto;
@@ -4962,24 +4964,26 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
    .nav-wrap .mobile-header-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   margin-left: auto;
 }
 
-  .mobile-cart-trigger {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+.mobile-cart-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-    gap: 6px;
+  gap: 5px;
 
-    padding: 8px 4px;
+  padding: 6px 2px;
 
-    color: var(--brown-dark);
+  color: var(--brown-dark);
 
-    font-size: .92rem;
-    font-weight: 800;
-  }
+  font-size: .78rem;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
 
   .mobile-cart-trigger .cart-count {
     margin-left: 0;
