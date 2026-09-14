@@ -852,3 +852,55 @@ body.cart-open {
 .footer-cart-trigger:hover {
   text-decoration: underline;
 }
+/* =========================================================
+   NAV CART — DESKTOP + MOBILE SPACING
+========================================================= */
+
+/* Desktop */
+.nav-cart {
+  display: flex;
+  align-items: center;
+
+  margin-left: 0.35rem;
+  margin-right: 1rem;
+}
+
+.nav-cart .cart-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.4rem;
+
+  padding: 0.65rem 0.35rem;
+
+  white-space: nowrap;
+}
+
+
+/* Mobile navigation */
+@media (max-width: 900px) {
+
+  .nav-cart {
+    display: block;
+
+    margin-left: 0;
+    margin-right: 0;
+
+    margin-top: 0.65rem;
+  }
+
+  .nav-cart .cart-trigger {
+    justify-content: flex-start;
+
+    width: auto;
+
+    padding: 0;
+
+    gap: 0.55rem;
+
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+}
