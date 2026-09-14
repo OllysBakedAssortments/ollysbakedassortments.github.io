@@ -149,174 +149,233 @@
 
 
     /* =========================================================
-       COOKIE GRID
-    ========================================================= */
+   COOKIE ORDER GRID — COMPACT COMMERCE CARDS
+========================================================= */
 
-    .cookie-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 20px;
+.cookie-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
 
-      margin-top: 28px;
-    }
+  margin-top: 24px;
+}
 
-    .cookie-order-card {
-      display: flex;
-      flex-direction: column;
 
-      overflow: hidden;
+/* CARD */
 
-      min-height: 100%;
+.cookie-order-card {
+  display: flex;
+  flex-direction: column;
 
-      background: #fff;
+  min-width: 0;
+  overflow: hidden;
 
-      border:
-        2px solid rgba(88, 55, 42, .11);
+  background: #fff;
 
-      border-radius: 24px;
+  border: 2px solid rgba(88, 55, 42, .11);
+  border-radius: 18px;
 
-      box-shadow:
-        0 8px 22px rgba(73, 45, 32, .06);
+  box-shadow:
+    0 6px 18px rgba(73, 45, 32, .06);
 
-      transition:
-        transform .2s ease,
-        box-shadow .2s ease;
-    }
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    border-color .18s ease;
+}
 
-    .cookie-order-card:hover {
-      transform: translateY(-3px);
 
-      box-shadow:
-        0 12px 26px rgba(73, 45, 32, .09);
-    }
+.cookie-order-card:hover {
+  transform: translateY(-2px);
 
-    .cookie-order-image {
-      position: relative;
+  border-color:
+    rgba(88, 55, 42, .2);
 
-      aspect-ratio: 4 / 3;
+  box-shadow:
+    0 10px 22px rgba(73, 45, 32, .09);
+}
 
-      overflow: hidden;
 
-      background:
-        rgba(88, 55, 42, .06);
-    }
+/* IMAGE */
 
-    .cookie-order-image img {
-      display: block;
+.cookie-order-image {
+  position: relative;
 
-      width: 100%;
-      height: 100%;
+  width: 100%;
+  aspect-ratio: 1 / 1;
 
-      object-fit: cover;
-    }
+  overflow: hidden;
 
-    .cookie-order-body {
-      display: flex;
-      flex: 1;
-      flex-direction: column;
+  background:
+    rgba(88, 55, 42, .055);
+}
 
-      padding: 20px;
-    }
 
-    .cookie-order-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
+.cookie-order-image img {
+  display: block;
 
-      gap: 16px;
-    }
+  width: 100%;
+  height: 100%;
 
-    .cookie-order-top h3 {
-      margin: 0;
+  object-fit: cover;
+}
 
-      font-size: 1.23rem;
-    }
 
-    .cookie-price {
-      flex-shrink: 0;
+/* CARD CONTENT */
 
-      font-weight: 900;
-      white-space: nowrap;
-    }
+.cookie-order-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 
-    .cookie-order-description {
-      margin: 10px 0 20px;
+  padding: 13px;
+}
 
-      font-size: .94rem;
-      line-height: 1.55;
 
-      opacity: .8;
-    }
+.cookie-order-top {
+  display: flex;
+  flex-direction: column;
 
-    .quantity-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+  gap: 4px;
+}
 
-      gap: 14px;
 
-      margin-top: auto;
-    }
+.cookie-order-top h3 {
+  margin: 0;
 
-    .quantity-label {
-      font-size: .9rem;
-      font-weight: 800;
-    }
+  color:
+    var(--brown-dark, #4d3026);
 
-    .quantity-control {
-      display: inline-flex;
-      align-items: center;
+  font-size: 1rem;
+  line-height: 1.18;
+}
 
-      overflow: hidden;
 
-      background: #fff;
+.cookie-price {
+  display: block;
 
-      border:
-        2px solid rgba(88, 55, 42, .15);
+  color:
+    var(--brown-dark, #4d3026);
 
-      border-radius: 999px;
-    }
+  font-size: .94rem;
+  font-weight: 900;
+}
 
-    .quantity-control button {
-      display: grid;
-      place-items: center;
 
-      width: 42px;
-      height: 42px;
+.cookie-order-description {
+  display: -webkit-box;
+  overflow: hidden;
 
-      border: 0;
+  margin: 8px 0 13px;
 
-      background: transparent;
+  color:
+    rgba(77, 48, 38, .78);
 
-      color: inherit;
+  font-size: .78rem;
+  line-height: 1.4;
 
-      font-family: inherit;
-      font-size: 1.3rem;
-      font-weight: 900;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
 
-      cursor: pointer;
-    }
 
-    .quantity-control button:hover {
-      background:
-        rgba(88, 55, 42, .07);
-    }
+/* QUANTITY */
 
-    .quantity-control button:focus-visible {
-      outline:
-        3px solid rgba(88, 55, 42, .22);
+.quantity-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-      outline-offset: -3px;
-    }
+  gap: 8px;
 
-    .quantity-value {
-      min-width: 34px;
+  margin-top: auto;
+}
 
-      text-align: center;
 
-      font-weight: 900;
-    }
+.quantity-label {
+  font-size: .72rem;
+  font-weight: 800;
 
+  color:
+    rgba(77, 48, 38, .7);
+}
+
+
+.quantity-control {
+  display: inline-grid;
+
+  grid-template-columns:
+    32px 28px 32px;
+
+  align-items: center;
+
+  overflow: hidden;
+
+  flex-shrink: 0;
+
+  background:
+    var(--cream, #fffaf1);
+
+  border:
+    1.5px solid rgba(88, 55, 42, .17);
+
+  border-radius: 999px;
+}
+
+
+.quantity-control button {
+  display: grid;
+  place-items: center;
+
+  width: 32px;
+  height: 32px;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color:
+    var(--brown-dark, #4d3026);
+
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 900;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background .15s ease;
+}
+
+
+.quantity-control button:hover {
+  background:
+    rgba(88, 55, 42, .08);
+}
+
+
+.quantity-control button:focus-visible {
+  outline:
+    2px solid rgba(88, 55, 42, .32);
+
+  outline-offset: -2px;
+}
+
+
+.quantity-value {
+  min-width: 28px;
+
+  color:
+    var(--brown-dark, #4d3026);
+
+  text-align: center;
+
+  font-size: .82rem;
+  font-weight: 900;
+}
 
     /* =========================================================
        PACKS
@@ -784,11 +843,70 @@
         padding: 48px 0;
       }
 
-      .cookie-grid,
-      .fulfillment-choice-grid,
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
+      .cookie-grid {
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+}
+
+
+.fulfillment-choice-grid,
+.form-grid {
+  grid-template-columns: 1fr;
+}
+
+      .cookie-order-body {
+  padding: 10px;
+}
+
+
+.cookie-order-top h3 {
+  font-size: .9rem;
+}
+
+
+.cookie-price {
+  font-size: .86rem;
+}
+
+
+.cookie-order-description {
+  margin-top: 6px;
+  margin-bottom: 10px;
+
+  font-size: .72rem;
+  line-height: 1.35;
+
+  -webkit-line-clamp: 2;
+}
+
+
+.quantity-label {
+  display: none;
+}
+
+
+.quantity-row {
+  justify-content: flex-end;
+}
+
+
+.quantity-control {
+  grid-template-columns:
+    30px 25px 30px;
+}
+
+
+.quantity-control button {
+  width: 30px;
+  height: 30px;
+}
+
+
+.quantity-value {
+  min-width: 25px;
+}
 
       .form-group.full {
         grid-column: auto;
@@ -1077,9 +1195,367 @@
 
 
             <div
-              class="cookie-grid"
-              id="cookie-grid"
-            >
+  class="cookie-grid"
+  id="cookie-grid"
+>
+
+
+  <!-- BROWN BUTTER BLISS -->
+
+  <article
+    class="cookie-order-card"
+    data-product-id="brown-butter-bliss"
+    data-product-name="Brown Butter Bliss"
+    data-product-price="4.00"
+  >
+
+    <div class="cookie-order-image">
+
+      <img
+        src="/images/cookies/brown-butter-bliss.jpg"
+        alt="Brown Butter Bliss cookie"
+        loading="lazy"
+        onerror="this.style.display='none'"
+      >
+
+    </div>
+
+
+    <div class="cookie-order-body">
+
+      <div class="cookie-order-top">
+
+        <h3>
+          Brown Butter Bliss
+        </h3>
+
+        <span class="cookie-price">
+          $4.00
+        </span>
+
+      </div>
+
+
+      <p class="cookie-order-description">
+        Brown butter chocolate chip with soft centers,
+        crisp edges, and melty chocolate.
+      </p>
+
+
+      <div class="quantity-row">
+
+        <span class="quantity-label">
+          Qty
+        </span>
+
+
+        <div
+          class="quantity-control"
+          aria-label="Brown Butter Bliss quantity"
+        >
+
+          <button
+            type="button"
+            class="qty-minus"
+            aria-label="Remove one Brown Butter Bliss"
+          >
+            −
+          </button>
+
+
+          <span
+            class="quantity-value"
+            data-quantity
+          >
+            0
+          </span>
+
+
+          <button
+            type="button"
+            class="qty-plus"
+            aria-label="Add one Brown Butter Bliss"
+          >
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </article>
+
+
+
+  <!-- PLAIN JANE -->
+
+  <article
+    class="cookie-order-card"
+    data-product-id="plain-jane"
+    data-product-name="Plain Jane"
+    data-product-price="4.00"
+  >
+
+    <div class="cookie-order-image">
+
+      <img
+        src="/images/cookies/plain-jane.jpg"
+        alt="Plain Jane cookie"
+        loading="lazy"
+        onerror="this.style.display='none'"
+      >
+
+    </div>
+
+
+    <div class="cookie-order-body">
+
+      <div class="cookie-order-top">
+
+        <h3>
+          Plain Jane
+        </h3>
+
+        <span class="cookie-price">
+          $4.00
+        </span>
+
+      </div>
+
+
+      <p class="cookie-order-description">
+        Soft buttery vanilla with crisp golden edges.
+        Sometimes simple is the sweetest.
+      </p>
+
+
+      <div class="quantity-row">
+
+        <span class="quantity-label">
+          Qty
+        </span>
+
+
+        <div
+          class="quantity-control"
+          aria-label="Plain Jane quantity"
+        >
+
+          <button
+            type="button"
+            class="qty-minus"
+            aria-label="Remove one Plain Jane"
+          >
+            −
+          </button>
+
+
+          <span
+            class="quantity-value"
+            data-quantity
+          >
+            0
+          </span>
+
+
+          <button
+            type="button"
+            class="qty-plus"
+            aria-label="Add one Plain Jane"
+          >
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </article>
+
+
+
+  <!-- CAMPFIRE CRUNCH -->
+
+  <article
+    class="cookie-order-card"
+    data-product-id="campfire-crunch"
+    data-product-name="Campfire Crunch"
+    data-product-price="4.50"
+  >
+
+    <div class="cookie-order-image">
+
+      <img
+        src="/images/cookies/campfire-crunch.jpg"
+        alt="Campfire Crunch cookie"
+        loading="lazy"
+        onerror="this.style.display='none'"
+      >
+
+    </div>
+
+
+    <div class="cookie-order-body">
+
+      <div class="cookie-order-top">
+
+        <h3>
+          Campfire Crunch
+        </h3>
+
+        <span class="cookie-price">
+          $4.50
+        </span>
+
+      </div>
+
+
+      <p class="cookie-order-description">
+        Chocolate, marshmallow, graham cracker,
+        and a gooey s'mores center.
+      </p>
+
+
+      <div class="quantity-row">
+
+        <span class="quantity-label">
+          Qty
+        </span>
+
+
+        <div
+          class="quantity-control"
+          aria-label="Campfire Crunch quantity"
+        >
+
+          <button
+            type="button"
+            class="qty-minus"
+            aria-label="Remove one Campfire Crunch"
+          >
+            −
+          </button>
+
+
+          <span
+            class="quantity-value"
+            data-quantity
+          >
+            0
+          </span>
+
+
+          <button
+            type="button"
+            class="qty-plus"
+            aria-label="Add one Campfire Crunch"
+          >
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </article>
+
+
+
+  <!-- BLISSCOFF -->
+
+  <article
+    class="cookie-order-card"
+    data-product-id="blisscoff"
+    data-product-name="Blisscoff"
+    data-product-price="4.50"
+  >
+
+    <div class="cookie-order-image">
+
+      <img
+        src="/images/cookies/blisscoff.jpg"
+        alt="Blisscoff cookie"
+        loading="lazy"
+        onerror="this.style.display='none'"
+      >
+
+    </div>
+
+
+    <div class="cookie-order-body">
+
+      <div class="cookie-order-top">
+
+        <h3>
+          Blisscoff
+        </h3>
+
+        <span class="cookie-price">
+          $4.50
+        </span>
+
+      </div>
+
+
+      <p class="cookie-order-description">
+        Warm cookie-butter flavor packed into
+        a soft bakery-style cookie.
+      </p>
+
+
+      <div class="quantity-row">
+
+        <span class="quantity-label">
+          Qty
+        </span>
+
+
+        <div
+          class="quantity-control"
+          aria-label="Blisscoff quantity"
+        >
+
+          <button
+            type="button"
+            class="qty-minus"
+            aria-label="Remove one Blisscoff"
+          >
+            −
+          </button>
+
+
+          <span
+            class="quantity-value"
+            data-quantity
+          >
+            0
+          </span>
+
+
+          <button
+            type="button"
+            class="qty-plus"
+            aria-label="Add one Blisscoff"
+          >
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </article>
+
+
+</div>
 
 
               <!-- BROWN BUTTER BLISS -->
