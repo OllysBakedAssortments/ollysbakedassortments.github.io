@@ -391,7 +391,8 @@ h3 {
   display: none;
 }
 
-.mobile-cart-trigger {
+/* Keep the mobile Cart + hamburger completely hidden on desktop */
+.nav-wrap .mobile-header-actions {
   display: none;
 }
 
@@ -4958,14 +4959,12 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
     width: auto;
   }
 
-    .mobile-header-actions {
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    margin-left: auto;
-  }
+   .nav-wrap .mobile-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
 
   .mobile-cart-trigger {
     display: inline-flex;
