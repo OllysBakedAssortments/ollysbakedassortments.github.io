@@ -4959,12 +4959,27 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
   .nav-wrap {
   position: relative;
 
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 
-  gap: 8px;
+  gap: 6px;
 
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding: 10px 12px;
+}
+
+.logo {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.logo > span {
+  width: auto;
+
+  font-size: .96rem;
+  line-height: 1.05;
+}
+
+.nav-wrap .mobile-header-actions {
+  flex: 0 0 auto;
 }
 
   .logo > span {
@@ -5010,12 +5025,13 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
   }
 
   .main-nav {
-    display: none;
+  display: none;
 
-    width: 100%;
+  flex: 0 0 100%;
+  width: 100%;
 
-    margin-left: 0;
-  }
+  margin-left: 0;
+}
 
   .main-nav.open {
     display: block;
