@@ -2,162 +2,1593 @@
 <html lang="en">
 <head>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-77G7LQ1ZXP"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-77G7LQ1ZXP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-77G7LQ1ZXP');
+  </script>
 
-  gtag('config', 'G-77G7LQ1ZXP');
-</script>
-  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Order OBA Cookies | Local Pickup in La Mesa, CA</title>
+  <title>Order OBA Cookies | Pickup & Delivery in La Mesa, CA</title>
 
-  <meta name="description" content="Order fresh OBA Cookies for local pickup in La Mesa, CA. Browse the weekly cookie lineup, choose your favorites, and preorder from Olly's Baked Assortments.">
+  <meta
+    name="description"
+    content="Order fresh OBA Cookies for local pickup or delivery in La Mesa, CA. Build your batch, choose your fulfillment method, and checkout securely."
+  >
 
   <link rel="canonical" href="https://ollysbakedassortments.com/order.html">
 
   <!-- Social sharing / Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Olly's Baked Assortments">
-  <meta property="og:title" content="Order OBA Cookies | Local Pickup in La Mesa">
-  <meta property="og:description" content="Preorder fresh, handmade OBA Cookies for local pickup in La Mesa, CA.">
+  <meta property="og:title" content="Order OBA Cookies | Pickup & Delivery">
+  <meta property="og:description" content="Build your batch of fresh OBA Cookies for pickup or local delivery.">
   <meta property="og:url" content="https://ollysbakedassortments.com/order.html">
   <meta property="og:image" content="https://ollysbakedassortments.com/images/brand/logo.jpg">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Order OBA Cookies | Local Pickup in La Mesa">
-  <meta name="twitter:description" content="Preorder fresh, handmade OBA Cookies for local pickup in La Mesa, CA.">
+  <meta name="twitter:title" content="Order OBA Cookies | Pickup & Delivery">
+  <meta name="twitter:description" content="Build your batch of fresh OBA Cookies for pickup or local delivery.">
   <meta name="twitter:image" content="https://ollysbakedassortments.com/images/brand/logo.jpg">
 
   <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+    /* -------------------------------------------------
+       ORDER PAGE
+    ------------------------------------------------- */
+
+    .order-hero {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .order-hero .container {
+      position: relative;
+      z-index: 2;
+    }
+
+    .order-intro {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .order-intro p {
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .order-section {
+      padding: 72px 0;
+    }
+
+    .order-section-header {
+      max-width: 760px;
+      margin: 0 auto 36px;
+      text-align: center;
+    }
+
+    .order-section-header h2 {
+      margin-bottom: 10px;
+    }
+
+    .order-section-header p {
+      margin: 0 auto;
+      max-width: 620px;
+    }
+
+    .order-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(280px, .75fr);
+      gap: 32px;
+      align-items: start;
+    }
+
+    .order-main {
+      min-width: 0;
+    }
+
+    .order-sidebar {
+      position: sticky;
+      top: 110px;
+    }
+
+    .order-card {
+      background: var(--cream, #fffaf1);
+      border: 2px solid rgba(88, 55, 42, .14);
+      border-radius: 26px;
+      padding: 26px;
+      box-shadow: 0 12px 28px rgba(73, 45, 32, .08);
+    }
+
+    .order-card + .order-card {
+      margin-top: 24px;
+    }
+
+    .order-card h2,
+    .order-card h3 {
+      margin-top: 0;
+    }
+
+    .section-kicker {
+      display: inline-block;
+      margin-bottom: 8px;
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: .72;
+    }
+
+    /* -------------------------------------------------
+       COOKIE LINEUP
+    ------------------------------------------------- */
+
+    .cookie-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .cookie-order-card {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #fff;
+      border: 2px solid rgba(88, 55, 42, .12);
+      border-radius: 24px;
+      min-height: 100%;
+      box-shadow: 0 8px 22px rgba(73, 45, 32, .07);
+    }
+
+    .cookie-order-image {
+      aspect-ratio: 4 / 3;
+      background: rgba(88, 55, 42, .07);
+      overflow: hidden;
+    }
+
+    .cookie-order-image img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .cookie-order-body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .cookie-order-top {
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .cookie-order-top h3 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+
+    .cookie-price {
+      flex-shrink: 0;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .cookie-order-description {
+      margin: 10px 0 18px;
+      font-size: .95rem;
+      line-height: 1.55;
+      opacity: .82;
+    }
+
+    .quantity-row {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .quantity-control {
+      display: inline-flex;
+      align-items: center;
+      border: 2px solid rgba(88, 55, 42, .16);
+      border-radius: 999px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .quantity-control button {
+      width: 42px;
+      height: 42px;
+      border: 0;
+      background: transparent;
+      font-size: 1.3rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .quantity-control button:hover {
+      background: rgba(88, 55, 42, .07);
+    }
+
+    .quantity-value {
+      min-width: 34px;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    /* -------------------------------------------------
+       GIRAFFE PACKS
+    ------------------------------------------------- */
+
+    .pack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .pack-option {
+      position: relative;
+      background: #fff;
+      border: 2px solid rgba(88, 55, 42, .12);
+      border-radius: 22px;
+      padding: 22px;
+    }
+
+    .pack-option h3 {
+      margin-bottom: 6px;
+    }
+
+    .pack-option p {
+      margin-bottom: 18px;
+      font-size: .92rem;
+      opacity: .78;
+    }
+
+    .pack-price {
+      display: block;
+      margin-bottom: 16px;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .pack-option .btn {
+      width: 100%;
+      text-align: center;
+    }
+
+    /* -------------------------------------------------
+       FULFILLMENT
+    ------------------------------------------------- */
+
+    .fulfillment-choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .fulfillment-choice {
+      position: relative;
+    }
+
+    .fulfillment-choice input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .fulfillment-choice label {
+      display: block;
+      height: 100%;
+      border: 2px solid rgba(88, 55, 42, .14);
+      border-radius: 22px;
+      padding: 22px;
+      cursor: pointer;
+      background: #fff;
+      transition: .2s ease;
+    }
+
+    .fulfillment-choice label:hover {
+      transform: translateY(-2px);
+    }
+
+    .fulfillment-choice input:checked + label {
+      border-color: var(--brown-dark, #4d3026);
+      box-shadow: 0 0 0 3px rgba(88, 55, 42, .08);
+    }
+
+    .fulfillment-icon {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 2rem;
+    }
+
+    .fulfillment-choice h3 {
+      margin: 0 0 7px;
+    }
+
+    .fulfillment-choice p {
+      margin: 0;
+      font-size: .92rem;
+      opacity: .78;
+    }
+
+    .fulfillment-panel {
+      margin-top: 20px;
+      padding: 22px;
+      border-radius: 20px;
+      background: rgba(88, 55, 42, .05);
+    }
+
+    .fulfillment-panel[hidden] {
+      display: none;
+    }
+
+    /* -------------------------------------------------
+       FORMS
+    ------------------------------------------------- */
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-size: .9rem;
+      font-weight: 800;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      border: 2px solid rgba(88, 55, 42, .16);
+      border-radius: 14px;
+      background: #fff;
+      padding: 13px 14px;
+      font: inherit;
+      color: inherit;
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--brown-dark, #4d3026);
+      box-shadow: 0 0 0 3px rgba(88, 55, 42, .08);
+    }
+
+    .field-help {
+      font-size: .82rem;
+      opacity: .7;
+    }
+
+    /* -------------------------------------------------
+       ORDER SUMMARY
+    ------------------------------------------------- */
+
+    .cart-empty {
+      margin: 0;
+      padding: 16px 0;
+      text-align: center;
+      opacity: .66;
+    }
+
+    .cart-items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px 16px;
+      padding: 13px 0;
+      border-bottom: 1px solid rgba(88, 55, 42, .11);
+    }
+
+    .cart-item-name {
+      font-weight: 800;
+    }
+
+    .cart-item-meta {
+      font-size: .84rem;
+      opacity: .7;
+    }
+
+    .cart-item-price {
+      grid-row: 1 / span 2;
+      grid-column: 2;
+      align-self: center;
+      font-weight: 800;
+    }
+
+    .summary-lines {
+      margin-top: 16px;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 7px 0;
+    }
+
+    .summary-total {
+      margin-top: 10px;
+      padding-top: 14px;
+      border-top: 2px solid rgba(88, 55, 42, .16);
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    /* -------------------------------------------------
+       PAYMENT
+    ------------------------------------------------- */
+
+    .square-placeholder {
+      padding: 22px;
+      border: 2px dashed rgba(88, 55, 42, .24);
+      border-radius: 18px;
+      background: rgba(255,255,255,.72);
+      text-align: center;
+    }
+
+    .square-placeholder strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .payment-note {
+      margin: 14px 0 0;
+      font-size: .84rem;
+      line-height: 1.5;
+      opacity: .72;
+    }
+
+    .checkout-button {
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .checkout-button[disabled] {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    /* -------------------------------------------------
+       BERTHA NOTE
+    ------------------------------------------------- */
+
+    .bertha-note {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .bertha-note-icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .bertha-note h3 {
+      margin: 0 0 6px;
+    }
+
+    .bertha-note p {
+      margin: 0;
+    }
+
+    /* -------------------------------------------------
+       MOBILE
+    ------------------------------------------------- */
+
+    @media (max-width: 900px) {
+      .order-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .order-sidebar {
+        position: static;
+      }
+
+      .pack-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .order-section {
+        padding: 50px 0;
+      }
+
+      .cookie-grid,
+      .fulfillment-choice-grid,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+      .order-card {
+        padding: 20px;
+        border-radius: 22px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
 <header class="site-header">
   <div class="nav-wrap">
-    <a href="index.html" class="logo"><span class="logo-mark">🍪</span> Olly's Baked Assortments</a>
+
+    <a href="index.html" class="logo">
+      <span class="logo-mark">🍪</span>
+      Olly's Baked Assortments
+    </a>
+
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
+
     <nav class="main-nav">
       <ul>
-        <li><a href="index.html" >Home</a></li>
+        <li><a href="index.html">Home</a></li>
         <li><a href="menu.html">Flavors</a></li>
-        <li><a href="seasonal.html" >Seasonal</a></li>
-        <li><a href="gift-boxes.html" >Gift Boxes</a></li>
-        <li><a href="events.html" >Events</a></li>
-        <li><a href="about.html" >About Olly</a></li>
-        <li><a href="faq.html" >FAQ</a></li>
-        <li class="nav-order"><a href="order.html" aria-current="page">Order</a></li>
+        <li><a href="seasonal.html">Seasonal</a></li>
+        <li><a href="gift-boxes.html">Gift Boxes</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="about.html">About Olly</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li class="nav-order">
+          <a href="order.html" aria-current="page">Order</a>
+        </li>
       </ul>
     </nav>
+
   </div>
 </header>
 
+
 <main>
-  <section class="page-hero spot-field">
-    <div class="spot spot--pink" style="width:130px;height:130px;top:-20px;right:10%;"></div>
+
+  <!-- HERO -->
+  <section class="page-hero spot-field order-hero">
+
+    <div
+      class="spot spot--pink"
+      style="width:140px;height:140px;top:-30px;right:9%;"
+    ></div>
+
+    <div
+      class="spot spot--gold"
+      style="width:95px;height:95px;bottom:-25px;left:7%;opacity:.45;"
+    ></div>
+
     <div class="container">
-      <span class="eyebrow">Ready When You Are</span>
-      <h1>Order Your Cookies</h1>
-      <p>Ordering happens over on Hotplate for now — here's exactly how it works.</p>
-    </div>
-  </section>
+      <div class="order-intro">
 
-  <section>
-    <div class="container">
-      <div class="order-panel spot-field">
-        <div class="spot spot--gold" style="width:110px;height:110px;top:-25px;left:8%;opacity:.35;"></div>
-        <h2>Order on Hotplate</h2>
-        <p>We currently take all orders through Hotplate, our online ordering platform. Tap below to see this week's flavors and place your order.</p>
+        <span class="eyebrow">Cookies Worth The Walk</span>
 
-        <ol class="order-steps">
-          <li>
-            <span class="step-num">Step 1</span>
-            Head to our Hotplate shop and browse this week's cookie lineup, seasonal flavors, and gift box options.
-          </li>
-          <li>
-            <span class="step-num">Step 2</span>
-            Choose your cookies or build a Giraffe Pack, then check out securely right on Hotplate.
-          </li>
-          <li>
-            <span class="step-num">Step 3</span>
-            Watch for pickup details on your order confirmation, and get ready to enjoy a fresh, handmade batch.
-          </li>
-        </ol>
+        <h1>Build Your Batch</h1>
 
-        <a class="btn btn-gold" href="https://www.hotplate.com/ollysbakedassortments" target="_blank" rel="noopener">Order on Hotplate →</a>
-      </div>
+        <p>
+          Pick your favorites, choose pickup at Bertha or local delivery,
+          and we'll take care of the rest.
+        </p>
 
-      <div class="note-box mt-lg" style="max-width: 720px; margin-left: auto; margin-right: auto;">
-        We're working on bringing ordering directly to this website soon. In the meantime, Hotplate is the place to go for the current flavor lineup and checkout.
       </div>
     </div>
+
   </section>
+
+
+  <!-- ORDER AREA -->
+  <section class="order-section">
+
+    <div class="container">
+
+      <div class="order-layout">
+
+        <!-- MAIN CHECKOUT COLUMN -->
+        <div class="order-main">
+
+          <!-- WEEKLY LINEUP -->
+          <div class="order-card">
+
+            <span class="section-kicker">Step 1</span>
+
+            <h2>This Week's Cookie Lineup</h2>
+
+            <p>
+              Build your batch one cookie at a time.
+              Availability may change as batches sell out.
+            </p>
+
+            <div class="cookie-grid mt-lg" id="cookie-grid">
+
+              <!-- Brown Butter Bliss -->
+              <article
+                class="cookie-order-card"
+                data-product-id="brown-butter-bliss"
+                data-name="Brown Butter Bliss"
+                data-price="4.00"
+              >
+
+                <div class="cookie-order-image">
+                  <img
+                    src="/images/cookies/brown-butter-bliss.jpg"
+                    alt="Brown Butter Bliss cookie"
+                    onerror="this.style.display='none'"
+                  >
+                </div>
+
+                <div class="cookie-order-body">
+
+                  <div class="cookie-order-top">
+                    <h3>Brown Butter Bliss</h3>
+                    <span class="cookie-price">$4.00</span>
+                  </div>
+
+                  <p class="cookie-order-description">
+                    Rich brown butter chocolate chip cookie with soft centers,
+                    crisp edges, and pools of melty chocolate.
+                  </p>
+
+                  <div class="quantity-row">
+
+                    <span>Quantity</span>
+
+                    <div class="quantity-control">
+                      <button type="button" class="qty-minus" aria-label="Remove Brown Butter Bliss">−</button>
+                      <span class="quantity-value">0</span>
+                      <button type="button" class="qty-plus" aria-label="Add Brown Butter Bliss">+</button>
+                    </div>
+
+                  </div>
+
+                </div>
+              </article>
+
+
+              <!-- Plain Jane -->
+              <article
+                class="cookie-order-card"
+                data-product-id="plain-jane"
+                data-name="Plain Jane"
+                data-price="4.00"
+              >
+
+                <div class="cookie-order-image">
+                  <img
+                    src="/images/cookies/plain-jane.jpg"
+                    alt="Plain Jane cookie"
+                    onerror="this.style.display='none'"
+                  >
+                </div>
+
+                <div class="cookie-order-body">
+
+                  <div class="cookie-order-top">
+                    <h3>Plain Jane</h3>
+                    <span class="cookie-price">$4.00</span>
+                  </div>
+
+                  <p class="cookie-order-description">
+                    Soft, buttery vanilla cookie with crisp golden edges.
+                    Sometimes simple is the sweetest.
+                  </p>
+
+                  <div class="quantity-row">
+
+                    <span>Quantity</span>
+
+                    <div class="quantity-control">
+                      <button type="button" class="qty-minus" aria-label="Remove Plain Jane">−</button>
+                      <span class="quantity-value">0</span>
+                      <button type="button" class="qty-plus" aria-label="Add Plain Jane">+</button>
+                    </div>
+
+                  </div>
+
+                </div>
+              </article>
+
+
+              <!-- Campfire Crunch -->
+              <article
+                class="cookie-order-card"
+                data-product-id="campfire-crunch"
+                data-name="Campfire Crunch"
+                data-price="4.50"
+              >
+
+                <div class="cookie-order-image">
+                  <img
+                    src="/images/cookies/campfire-crunch.jpg"
+                    alt="Campfire Crunch cookie"
+                    onerror="this.style.display='none'"
+                  >
+                </div>
+
+                <div class="cookie-order-body">
+
+                  <div class="cookie-order-top">
+                    <h3>Campfire Crunch</h3>
+                    <span class="cookie-price">$4.50</span>
+                  </div>
+
+                  <p class="cookie-order-description">
+                    Brown butter, chocolate, marshmallow and a gooey s'mores center,
+                    baked over a graham cracker.
+                  </p>
+
+                  <div class="quantity-row">
+
+                    <span>Quantity</span>
+
+                    <div class="quantity-control">
+                      <button type="button" class="qty-minus" aria-label="Remove Campfire Crunch">−</button>
+                      <span class="quantity-value">0</span>
+                      <button type="button" class="qty-plus" aria-label="Add Campfire Crunch">+</button>
+                    </div>
+
+                  </div>
+
+                </div>
+              </article>
+
+
+              <!-- Blisscoff -->
+              <article
+                class="cookie-order-card"
+                data-product-id="blisscoff"
+                data-name="Blisscoff"
+                data-price="4.50"
+              >
+
+                <div class="cookie-order-image">
+                  <img
+                    src="/images/cookies/blisscoff.jpg"
+                    alt="Blisscoff cookie"
+                    onerror="this.style.display='none'"
+                  >
+                </div>
+
+                <div class="cookie-order-body">
+
+                  <div class="cookie-order-top">
+                    <h3>Blisscoff</h3>
+                    <span class="cookie-price">$4.50</span>
+                  </div>
+
+                  <p class="cookie-order-description">
+                    Warm cookie butter flavor packed into a soft bakery-style cookie.
+                  </p>
+
+                  <div class="quantity-row">
+
+                    <span>Quantity</span>
+
+                    <div class="quantity-control">
+                      <button type="button" class="qty-minus" aria-label="Remove Blisscoff">−</button>
+                      <span class="quantity-value">0</span>
+                      <button type="button" class="qty-plus" aria-label="Add Blisscoff">+</button>
+                    </div>
+
+                  </div>
+
+                </div>
+              </article>
+
+            </div>
+          </div>
+
+
+          <!-- GIRAFFE PACKS -->
+          <div class="order-card">
+
+            <span class="section-kicker">Or Make It A Pack</span>
+
+            <h2>Giraffe Packs</h2>
+
+            <p>
+              Feeding a few Longnecks? Start with a box and build from there.
+            </p>
+
+            <div class="pack-grid mt-lg">
+
+              <article class="pack-option">
+                <h3>Little Giraffe</h3>
+                <p>A small assortment for when one cookie somehow isn't enough.</p>
+                <span class="pack-price">$—</span>
+                <button class="btn btn-secondary pack-button" type="button">
+                  Build This Pack
+                </button>
+              </article>
+
+              <article class="pack-option">
+                <h3>Classic Giraffe</h3>
+                <p>The everyday OBA box for sharing, gifting, or keeping entirely to yourself.</p>
+                <span class="pack-price">$—</span>
+                <button class="btn btn-primary pack-button" type="button">
+                  Build This Pack
+                </button>
+              </article>
+
+              <article class="pack-option">
+                <h3>Big Longneck</h3>
+                <p>A larger batch for families, parties, offices, and serious cookie business.</p>
+                <span class="pack-price">$—</span>
+                <button class="btn btn-secondary pack-button" type="button">
+                  Build This Pack
+                </button>
+              </article>
+
+            </div>
+
+          </div>
+
+
+          <!-- FULFILLMENT -->
+          <div class="order-card">
+
+            <span class="section-kicker">Step 2</span>
+
+            <h2>How Are Your Cookies Getting Home?</h2>
+
+            <div class="fulfillment-choice-grid mt-lg">
+
+              <div class="fulfillment-choice">
+                <input
+                  type="radio"
+                  name="fulfillment"
+                  id="fulfillment-pickup"
+                  value="pickup"
+                  checked
+                >
+
+                <label for="fulfillment-pickup">
+                  <span class="fulfillment-icon">🦒</span>
+                  <h3>Pickup at Bertha</h3>
+                  <p>
+                    Choose a pickup window and we'll have your batch waiting.
+                  </p>
+                </label>
+              </div>
+
+
+              <div class="fulfillment-choice">
+                <input
+                  type="radio"
+                  name="fulfillment"
+                  id="fulfillment-delivery"
+                  value="delivery"
+                >
+
+                <label for="fulfillment-delivery">
+                  <span class="fulfillment-icon">🍪</span>
+                  <h3>Local Delivery</h3>
+                  <p>
+                    Available to eligible addresses within our local delivery area.
+                  </p>
+                </label>
+              </div>
+
+            </div>
+
+
+            <!-- PICKUP PANEL -->
+            <div class="fulfillment-panel" id="pickup-panel">
+
+              <div class="form-grid">
+
+                <div class="form-group">
+                  <label for="pickup-date">Pickup Date</label>
+
+                  <select id="pickup-date" name="pickup-date">
+                    <option value="">Choose a date</option>
+                    <option value="friday">Friday</option>
+                    <option value="saturday">Saturday</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="pickup-time">Pickup Time</label>
+
+                  <select id="pickup-time" name="pickup-time">
+                    <option value="">Choose a time</option>
+                    <option>12:00 PM</option>
+                    <option>12:30 PM</option>
+                    <option>1:00 PM</option>
+                    <option>1:30 PM</option>
+                    <option>2:00 PM</option>
+                    <option>2:30 PM</option>
+                    <option>3:00 PM</option>
+                    <option>3:30 PM</option>
+                    <option>4:00 PM</option>
+                    <option>4:30 PM</option>
+                    <option>5:00 PM</option>
+                  </select>
+                </div>
+
+              </div>
+
+              <div class="bertha-note mt-lg">
+
+                <div class="bertha-note-icon">🦒</div>
+
+                <div>
+                  <h3>Bertha Pickup</h3>
+
+                  <p>
+                    Your order will be waiting on Bertha's bottom shelf during
+                    your selected pickup time. Running late? Your cookies may be
+                    moved inside to keep them fresh.
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- DELIVERY PANEL -->
+            <div class="fulfillment-panel" id="delivery-panel" hidden>
+
+              <div class="form-grid">
+
+                <div class="form-group full">
+                  <label for="delivery-address">Street Address</label>
+                  <input
+                    id="delivery-address"
+                    type="text"
+                    autocomplete="street-address"
+                    placeholder="123 Cookie Lane"
+                  >
+                </div>
+
+                <div class="form-group">
+                  <label for="delivery-city">City</label>
+                  <input
+                    id="delivery-city"
+                    type="text"
+                    autocomplete="address-level2"
+                    placeholder="La Mesa"
+                  >
+                </div>
+
+                <div class="form-group">
+                  <label for="delivery-zip">ZIP Code</label>
+                  <input
+                    id="delivery-zip"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="postal-code"
+                    placeholder="91942"
+                  >
+                </div>
+
+                <div class="form-group">
+                  <label for="delivery-date">Delivery Date</label>
+
+                  <select id="delivery-date">
+                    <option value="">Choose a date</option>
+                    <option value="friday">Friday</option>
+                    <option value="saturday">Saturday</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="delivery-window">Delivery Window</label>
+
+                  <select id="delivery-window">
+                    <option value="">Choose a window</option>
+                    <option>12 PM – 2 PM</option>
+                    <option>2 PM – 4 PM</option>
+                    <option>4 PM – 6 PM</option>
+                  </select>
+                </div>
+
+                <div class="form-group full">
+                  <label for="delivery-notes">Delivery Notes</label>
+
+                  <textarea
+                    id="delivery-notes"
+                    placeholder="Gate code, apartment instructions, where to leave the cookies, etc."
+                  ></textarea>
+                </div>
+
+              </div>
+
+              <p class="field-help mt-lg">
+                Delivery availability and fees will be confirmed before payment.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- CUSTOMER DETAILS -->
+          <div class="order-card">
+
+            <span class="section-kicker">Step 3</span>
+
+            <h2>Who's This Batch For?</h2>
+
+            <div class="form-grid mt-lg">
+
+              <div class="form-group">
+                <label for="first-name">First Name</label>
+
+                <input
+                  id="first-name"
+                  type="text"
+                  autocomplete="given-name"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="last-name">Last Name</label>
+
+                <input
+                  id="last-name"
+                  type="text"
+                  autocomplete="family-name"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email</label>
+
+                <input
+                  id="email"
+                  type="email"
+                  autocomplete="email"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="phone">Phone</label>
+
+                <input
+                  id="phone"
+                  type="tel"
+                  autocomplete="tel"
+                  required
+                >
+              </div>
+
+              <div class="form-group full">
+                <label for="order-notes">
+                  Anything Olly Should Know?
+                </label>
+
+                <textarea
+                  id="order-notes"
+                  placeholder="Gift note, pickup note, special instructions, etc."
+                ></textarea>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- PAYMENT -->
+          <div class="order-card">
+
+            <span class="section-kicker">Step 4</span>
+
+            <h2>Checkout</h2>
+
+            <p>
+              Your payment will be processed securely through Square.
+            </p>
+
+            <!--
+              Square Web Payments SDK will eventually mount
+              its secure payment element inside this container.
+            -->
+            <div id="card-container" class="square-placeholder mt-lg">
+
+              <strong>Square Checkout Goes Here</strong>
+
+              <span>
+                We'll connect this section to your Square account after
+                the order page itself is finalized.
+              </span>
+
+            </div>
+
+            <p class="payment-note">
+              Payment information will be entered through Square's secure
+              payment fields. OBA will not store your card number.
+            </p>
+
+            <button
+              id="checkout-button"
+              class="btn btn-gold checkout-button"
+              type="button"
+              disabled
+            >
+              Continue to Payment
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- ORDER SUMMARY SIDEBAR -->
+        <aside class="order-sidebar">
+
+          <div class="order-card">
+
+            <span class="section-kicker">Your Batch</span>
+
+            <h2>Order Summary</h2>
+
+            <p class="cart-empty" id="cart-empty">
+              Your batch is empty.<br>
+              Add a cookie or two. 🍪
+            </p>
+
+            <ul class="cart-items" id="cart-items"></ul>
+
+            <div class="summary-lines">
+
+              <div class="summary-line">
+                <span>Subtotal</span>
+                <strong id="subtotal">$0.00</strong>
+              </div>
+
+              <div class="summary-line">
+                <span>Delivery</span>
+                <strong id="delivery-fee">$0.00</strong>
+              </div>
+
+              <div class="summary-line">
+                <span>Tax</span>
+                <strong id="tax">$0.00</strong>
+              </div>
+
+              <div class="summary-line summary-total">
+                <span>Total</span>
+                <strong id="total">$0.00</strong>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="order-card">
+
+            <div class="bertha-note">
+
+              <div class="bertha-note-icon">🍪</div>
+
+              <div>
+                <h3>Baked Fresh</h3>
+
+                <p>
+                  OBA Cookies are made in small batches, so quantities
+                  and flavors may be limited each week.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+    </div>
+
+  </section>
+
 
   <div class="trail" aria-hidden="true">
-    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
   </div>
 
+
+  <!-- FAQ CTA -->
   <section class="bg-cream">
+
     <div class="container">
+
       <div class="cta-band">
+
         <h2>Questions Before You Order?</h2>
-        <p>Check the FAQ, or reach out directly and we'll help you out.</p>
+
+        <p>
+          Check the FAQ, or reach out directly and we'll help you out.
+        </p>
+
         <div class="hero-actions">
-          <a class="btn btn-primary" href="faq.html">Read the FAQ</a>
-          <a class="btn btn-secondary" style="color:var(--brown-dark); border-color: var(--brown-dark);" href="mailto:info@ollysbakedassortments.com">Email Us</a>
+
+          <a class="btn btn-primary" href="faq.html">
+            Read the FAQ
+          </a>
+
+          <a
+            class="btn btn-secondary"
+            style="color:var(--brown-dark); border-color:var(--brown-dark);"
+            href="mailto:info@ollysbakedassortments.com"
+          >
+            Email Us
+          </a>
+
         </div>
+
       </div>
+
     </div>
+
   </section>
+
 </main>
 
+
 <footer class="site-footer">
+
   <div class="container">
+
     <div class="footer-grid">
+
       <div>
-        <span class="footer-logo">Olly's Baked Assortments</span>
-        <p class="footer-tagline">Cookies Worth The Walk</p>
+
+        <span class="footer-logo">
+          Olly's Baked Assortments
+        </span>
+
+        <p class="footer-tagline">
+          Cookies Worth The Walk
+        </p>
+
         <div class="social-row">
-          <a href="https://www.instagram.com/ollysbakedassortments" aria-label="Instagram" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 2 .25 2.4.42.6.24 1 .53 1.5 1a4.1 4.1 0 011 1.5c.17.4.36 1.2.42 2.4.06 1.3.07 1.7.07 4.9s-.01 3.6-.07 4.9c-.06 1.2-.25 2-.42 2.4a4.1 4.1 0 01-1 1.5c-.5.5-.9.8-1.5 1-.4.17-1.2.36-2.4.42-1.3.06-1.7.07-4.9.07s-3.6-.01-4.9-.07c-1.2-.06-2-.25-2.4-.42a4.1 4.1 0 01-1.5-1 4.1 4.1 0 01-1-1.5c-.17-.4-.36-1.2-.42-2.4C2.21 15.6 2.2 15.2 2.2 12s.01-3.6.07-4.9c.06-1.2.25-2 .42-2.4a4.1 4.1 0 011-1.5 4.1 4.1 0 011.5-1c.4-.17 1.2-.36 2.4-.42C8.4 2.21 8.8 2.2 12 2.2zm0 1.8c-3.15 0-3.52.01-4.76.07-1 .04-1.5.2-1.87.34-.47.18-.8.4-1.16.75-.35.35-.57.7-.75 1.16-.14.36-.3.87-.34 1.87C3.01 8.48 3 8.85 3 12s.01 3.52.07 4.76c.04 1 .2 1.5.34 1.87.18.47.4.8.75 1.16.35.35.7.57 1.16.75.36.14.87.3 1.87.34 1.24.06 1.6.07 4.76.07s3.52-.01 4.76-.07c1-.04 1.5-.2 1.87-.34.47-.18.8-.4 1.16-.75.35-.35.57-.7.75-1.16.14-.36.3-.87.34-1.87.06-1.24.07-1.6.07-4.76s-.01-3.52-.07-4.76c-.04-1-.2-1.5-.34-1.87a3 3 0 00-.75-1.16 3 3 0 00-1.16-.75c-.36-.14-.87-.3-1.87-.34C15.52 3.01 15.15 3 12 3zm0 3.9a5.1 5.1 0 110 10.2 5.1 5.1 0 010-10.2zm0 1.8a3.3 3.3 0 100 6.6 3.3 3.3 0 000-6.6zm5.3-2a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/></svg>
+
+          <a
+            href="https://www.instagram.com/ollysbakedassortments"
+            aria-label="Instagram"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 2 .25 2.4.42.6.24 1 .53 1.5 1a4.1 4.1 0 011 1.5c.17.4.36 1.2.42 2.4.06 1.3.07 1.7.07 4.9s-.01 3.6-.07 4.9c-.06 1.2-.25 2-.42 2.4a4.1 4.1 0 01-1 1.5c-.5.5-.9.8-1.5 1-.4.17-1.2.36-2.4.42-1.3.06-1.7.07-4.9.07s-3.6-.01-4.9-.07c-1.2-.06-2-.25-2.4-.42a4.1 4.1 0 01-1.5-1 4.1 4.1 0 01-1-1.5c-.17-.4-.36-1.2-.42-2.4C2.21 15.6 2.2 15.2 2.2 12s.01-3.6.07-4.9c.06-1.2.25-2 .42-2.4a4.1 4.1 0 011-1.5 4.1 4.1 0 011.5-1c.4-.17 1.2-.36 2.4-.42C8.4 2.21 8.8 2.2 12 2.2zm0 1.8c-3.15 0-3.52.01-4.76.07-1 .04-1.5.2-1.87.34-.47.18-.8.4-1.16.75-.35.35-.57.7-.75 1.16-.14.36-.3.87-.34 1.87C3.01 8.48 3 8.85 3 12s.01 3.52.07 4.76c.04 1 .2 1.5.34 1.87.18.47.4.8.75 1.16.35.35.7.57 1.16.75.36.14.87.3 1.87.34 1.24.06 1.6.07 4.76.07s3.52-.01 4.76-.07c1-.04 1.5-.2 1.87-.34.47-.18.8-.4 1.16-.75.35-.35.57-.7.75-1.16.14-.36.3-.87.34-1.87.06-1.24.07-1.6.07-4.76s-.01-3.52-.07-4.76c-.04-1-.2-1.5-.34-1.87a3 3 0 00-.75-1.16 3 3 0 00-1.16-.75c-.36-.14-.87-.3-1.87-.34C15.52 3.01 15.15 3 12 3zm0 3.9a5.1 5.1 0 110 10.2 5.1 5.1 0 010-10.2zm0 1.8a3.3 3.3 0 100 6.6 3.3 3.3 0 000-6.6zm5.3-2a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/>
+            </svg>
           </a>
-          <a href="https://www.tiktok.com/@ollysbakedassortments" aria-label="TikTok" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><path d="M16.5 2h-3v13.6a2.6 2.6 0 11-2.6-2.6c.2 0 .4 0 .6.05V9.9a5.6 5.6 0 00-.6-.03A5.7 5.7 0 105.4 15.6c0-.03.01-.06.01-.09V15.5A5.7 5.7 0 0011 21.2a5.7 5.7 0 005.5-5.6V8.8a8.3 8.3 0 004.6 1.4V7.2a5.3 5.3 0 01-4.6-5.2z"/></svg>
+
+          <a
+            href="https://www.tiktok.com/@ollysbakedassortments"
+            aria-label="TikTok"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg viewBox="0 0 24 24">
+              <path d="M16.5 2h-3v13.6a2.6 2.6 0 11-2.6-2.6c.2 0 .4 0 .6.05V9.9a5.6 5.6 0 00-.6-.03A5.7 5.7 0 105.4 15.6c0-.03.01-.06.01-.09V15.5A5.7 5.7 0 0011 21.2a5.7 5.7 0 005.5-5.6V8.8a8.3 8.3 0 004.6 1.4V7.2a5.3 5.3 0 01-4.6-5.2z"/>
+            </svg>
           </a>
+
         </div>
+
       </div>
+
+
       <div>
+
         <h4>Explore</h4>
+
         <ul>
           <li><a href="menu.html">Flavors</a></li>
           <li><a href="specialty.html">Specialty</a></li>
           <li><a href="gift-boxes.html">Gift Boxes</a></li>
           <li><a href="events.html">Events</a></li>
         </ul>
+
       </div>
+
+
       <div>
+
         <h4>Get In Touch</h4>
+
         <ul>
-          <li><a href="mailto:info@ollysbakedassortments.com">info@ollysbakedassortments.com</a></li>
+          <li>
+            <a href="mailto:info@ollysbakedassortments.com">
+              info@ollysbakedassortments.com
+            </a>
+          </li>
+
           <li>La Mesa, CA</li>
-          <li><a href="order.html">Order via Hotplate →</a></li>
+
+          <li>
+            <a href="order.html">
+              Order Cookies →
+            </a>
+          </li>
         </ul>
+
       </div>
+
     </div>
+
+
     <div class="footer-bottom">
-      <span>&copy; 2026 Olly's Baked Assortments. All rights reserved.</span>
-      <span>Small-batch. Baked fresh weekly. La Mesa, CA.</span>
+
+      <span>
+        &copy; 2026 Olly's Baked Assortments. All rights reserved.
+      </span>
+
+      <span>
+        Small-batch. Baked fresh weekly. La Mesa, CA.
+      </span>
+
     </div>
+
   </div>
+
 </footer>
 
+
 <script src="/js/script.js"></script>
+
+<script>
+  /* -------------------------------------------------
+     TEMPORARY FRONT-END CART
+     Square integration comes next.
+  ------------------------------------------------- */
+
+  const TAX_RATE = 0;
+  const DELIVERY_FEE = 0;
+
+  const productCards = document.querySelectorAll('.cookie-order-card');
+
+  const cartItemsEl = document.getElementById('cart-items');
+  const cartEmptyEl = document.getElementById('cart-empty');
+
+  const subtotalEl = document.getElementById('subtotal');
+  const deliveryFeeEl = document.getElementById('delivery-fee');
+  const taxEl = document.getElementById('tax');
+  const totalEl = document.getElementById('total');
+
+  const checkoutButton = document.getElementById('checkout-button');
+
+  const pickupRadio = document.getElementById('fulfillment-pickup');
+  const deliveryRadio = document.getElementById('fulfillment-delivery');
+
+  const pickupPanel = document.getElementById('pickup-panel');
+  const deliveryPanel = document.getElementById('delivery-panel');
+
+  const cart = {};
+
+
+  function formatMoney(value) {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(value);
+  }
+
+
+  function getFulfillmentType() {
+    return deliveryRadio.checked ? 'delivery' : 'pickup';
+  }
+
+
+  function renderCart() {
+
+    cartItemsEl.innerHTML = '';
+
+    let subtotal = 0;
+    let itemCount = 0;
+
+    Object.values(cart).forEach(item => {
+
+      if (item.quantity <= 0) return;
+
+      itemCount += item.quantity;
+
+      const lineTotal = item.price * item.quantity;
+
+      subtotal += lineTotal;
+
+      const li = document.createElement('li');
+
+      li.className = 'cart-item';
+
+      li.innerHTML = `
+        <span class="cart-item-name">${item.name}</span>
+        <span class="cart-item-meta">Qty ${item.quantity}</span>
+        <span class="cart-item-price">${formatMoney(lineTotal)}</span>
+      `;
+
+      cartItemsEl.appendChild(li);
+
+    });
+
+
+    cartEmptyEl.hidden = itemCount > 0;
+
+
+    const deliveryFee =
+      getFulfillmentType() === 'delivery'
+        ? DELIVERY_FEE
+        : 0;
+
+
+    const tax = subtotal * TAX_RATE;
+
+    const total = subtotal + deliveryFee + tax;
+
+
+    subtotalEl.textContent = formatMoney(subtotal);
+
+    deliveryFeeEl.textContent =
+      deliveryFee > 0
+        ? formatMoney(deliveryFee)
+        : '$0.00';
+
+    taxEl.textContent = formatMoney(tax);
+
+    totalEl.textContent = formatMoney(total);
+
+
+    /*
+      Checkout stays disabled until
+      Square payment integration is connected.
+    */
+    checkoutButton.disabled = true;
+
+  }
+
+
+  productCards.forEach(card => {
+
+    const minusButton = card.querySelector('.qty-minus');
+    const plusButton = card.querySelector('.qty-plus');
+    const quantityValue = card.querySelector('.quantity-value');
+
+    const productId = card.dataset.productId;
+    const name = card.dataset.name;
+    const price = Number(card.dataset.price);
+
+
+    cart[productId] = {
+      id: productId,
+      name,
+      price,
+      quantity: 0
+    };
+
+
+    plusButton.addEventListener('click', () => {
+
+      cart[productId].quantity += 1;
+
+      quantityValue.textContent =
+        cart[productId].quantity;
+
+      renderCart();
+
+    });
+
+
+    minusButton.addEventListener('click', () => {
+
+      if (cart[productId].quantity > 0) {
+        cart[productId].quantity -= 1;
+      }
+
+      quantityValue.textContent =
+        cart[productId].quantity;
+
+      renderCart();
+
+    });
+
+  });
+
+
+  function updateFulfillment() {
+
+    const isPickup = pickupRadio.checked;
+
+    pickupPanel.hidden = !isPickup;
+
+    deliveryPanel.hidden = isPickup;
+
+    renderCart();
+
+  }
+
+
+  pickupRadio.addEventListener(
+    'change',
+    updateFulfillment
+  );
+
+
+  deliveryRadio.addEventListener(
+    'change',
+    updateFulfillment
+  );
+
+
+  /*
+    Pack buttons are intentionally placeholders
+    until the exact Giraffe Pack sizes/prices
+    are finalized.
+  */
+  document.querySelectorAll('.pack-button')
+    .forEach(button => {
+
+      button.addEventListener('click', () => {
+
+        alert(
+          'Giraffe Pack builder coming next!'
+        );
+
+      });
+
+    });
+
+
+  renderCart();
+
+</script>
+
 </body>
 </html>
