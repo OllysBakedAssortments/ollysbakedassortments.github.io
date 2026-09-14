@@ -127,15 +127,40 @@
     </a>
 
 
-    <button
-      class="nav-toggle"
-      aria-label="Toggle menu"
-      aria-expanded="false"
+    <div class="mobile-header-actions">
+
+  <button
+    class="cart-trigger mobile-cart-trigger"
+    type="button"
+    data-cart-open
+    aria-label="Open your cookie cart"
+    aria-expanded="false"
+  >
+    <span class="mobile-cart-label">
+      Cart
+    </span>
+
+    <span
+      class="cart-count"
+      data-cart-count
+      hidden
     >
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+      0
+    </span>
+  </button>
+
+
+  <button
+    class="nav-toggle"
+    aria-label="Toggle menu"
+    aria-expanded="false"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+</div>
 
 
     <nav
