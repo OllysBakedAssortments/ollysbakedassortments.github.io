@@ -242,9 +242,9 @@ h3 {
   max-width: var(--container);
 
   margin: 0 auto;
-  padding: 14px 24px;
+  padding: 14px 18px;
 
-  gap: 26px;
+  gap: 18px;
 }
 
 .logo {
@@ -290,7 +290,7 @@ h3 {
   align-items: center;
   flex-wrap: nowrap;
 
-  gap: 19px;
+  gap: 14px;
 }
 
 .main-nav li {
@@ -356,6 +356,10 @@ h3 {
 
 .main-nav .nav-order a:hover {
   background: var(--brown-dark);
+}
+
+.main-nav .nav-cart {
+  margin-left: -6px;
 }
 
 .nav-toggle {
@@ -1803,7 +1807,7 @@ section {
 }
 
 .bertha-spot-one {
-  width: 150px;
+  width: 140px;
   height: 150px;
 
   top: -45px;
@@ -4879,23 +4883,29 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 @media (max-width: 1000px) {
 
   .nav-wrap {
-    gap: 18px;
+    gap: 12px;
+    padding-left: 14px;
+    padding-right: 14px;
   }
 
   .logo > span {
-    width: 135px;
+    width: 125px;
   }
 
   .main-nav ul {
-    gap: 13px;
+    gap: 10px;
   }
 
   .main-nav a {
-    font-size: .77rem;
+    font-size: .74rem;
   }
 
   .main-nav .nav-order a {
-    padding: 8px 13px;
+    padding: 8px 12px;
+  }
+
+  .main-nav .nav-cart {
+    margin-left: -5px;
   }
 
   .grid {
