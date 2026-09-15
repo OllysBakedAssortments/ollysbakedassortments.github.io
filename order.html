@@ -3941,6 +3941,28 @@
       const DELIVERY_FEE = 0;
       const TAX_RATE = 0;
 
+      /* =========================================================
+         SQUARE WEB PAYMENTS — SANDBOX
+      ========================================================= */
+      
+      const SQUARE_APPLICATION_ID =
+        'sandbox-sq0idb-AuM6KnLa2HFF7H_Bl1s3vg';
+      
+      const SQUARE_LOCATION_ID =
+        'LAAH6EOFFSPV7';
+      
+      const cardContainer =
+        document.getElementById('card-container');
+      
+      const paymentStatusContainer =
+        document.getElementById('payment-status-container');
+      
+      const checkoutButton =
+        document.getElementById('checkout-button');
+      
+      let squarePayments = null;
+      let squareCard = null;
+
       /* TEMPORARY DISPLAY INVENTORY.
          Later this must come from the backend and be revalidated at checkout. */
       const COOKIE_INVENTORY = {
@@ -4001,6 +4023,50 @@
       let activeGallery = [];
       let activeSlide = 0;
 
+      async function initializeSquareCard() {
+  if (!window.Square) {
+    console.error('Square Web Payments SDK failed to load.');
+
+    paymentStatusContainer.textContent =
+      'Secure payment fields could not be loaded. Please refresh the page.';
+
+    paymentStatusContainer.classList.add(
+      'is-visible',
+      'is-error'
+    );
+
+    return;
+  }
+
+  try {
+    squarePayments = window.Square.payments(
+      SQUARE_APPLICATION_ID,
+      SQUARE_LOCATION_ID
+    );
+
+    squareCard = await squarePayments.card();
+
+    await squareCard.attach('#card-container');
+
+    checkoutButton.textContent = 'Continue With Payment';
+
+    console.log('Square Sandbox card form initialized.');
+  } catch (error) {
+    console.error(
+      'Unable to initialize Square card form:',
+      error
+    );
+
+    paymentStatusContainer.textContent =
+      'Secure payment fields could not be loaded. Please refresh the page.';
+
+    paymentStatusContainer.classList.add(
+      'is-visible',
+      'is-error'
+    );
+  }
+}
+      
       function formatMoney(value) {
         if (window.OBA_CART && typeof window.OBA_CART.formatMoney === 'function') {
           return window.OBA_CART.formatMoney(Number(value) || 0);
@@ -4251,9 +4317,10 @@
       updateFulfillmentPanels();
       renderOrderSummary();
       renderInventory();
+
+      initializeSquareCard();
     });
   </script>
 
 </body>
-
 </html>
