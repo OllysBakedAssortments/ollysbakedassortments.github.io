@@ -160,13 +160,46 @@
       box-sizing: border-box;
     }
 
+    /* =========================================================
+         ORDER HERO — COMPACT COMMERCE VERSION
+         Keeps the homepage visual system while bringing Step 1
+         higher into the viewport.
+     ========================================================= */
+    
+    .order-page .hero {
+      padding-top: 64px;
+      padding-bottom: 62px;
+    }
+    
+    .order-page .hero .eyebrow {
+      margin-bottom: 18px;
+    }
+    
+    .order-page .hero .hero-headline {
+      margin-bottom: 28px;
+    }
+    
+    .order-page .hero .hero-brand-banner {
+      width: min(100%, 800px);
+      margin-bottom: 26px;
+    }
+    
+    .order-page .hero .lead {
+      max-width: 650px;
+      margin-bottom: 24px;
+      line-height: 1.55;
+    }
+    
+    .order-page .hero .hero-actions {
+      margin-top: 0;
+    }
 
     /* =========================================================
        ORDER AREA
     ========================================================== */
 
     .order-section {
-      padding: 64px 0 78px;
+      padding: 42px 0 78px;
     }
 
 
@@ -1360,9 +1393,30 @@
 
     @media (max-width: 680px) {
 
-      .order-section {
-        padding: 46px 0 56px;
-      }
+  .order-page .hero {
+    padding-top: 44px;
+    padding-bottom: 44px;
+  }
+
+  .order-page .hero .eyebrow {
+    margin-bottom: 13px;
+  }
+
+  .order-page .hero .hero-headline {
+    margin-bottom: 20px;
+  }
+
+  .order-page .hero .hero-brand-banner {
+    margin-bottom: 20px;
+  }
+
+  .order-page .hero .lead {
+    margin-bottom: 18px;
+  }
+
+  .order-section {
+    padding: 30px 0 56px;
+  }
 
       .order-panel {
         padding: 18px;
