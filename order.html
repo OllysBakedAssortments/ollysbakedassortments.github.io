@@ -152,8 +152,50 @@
     .order-page *, .order-page *::before, .order-page *::after { box-sizing: border-box; }
     .order-hero { position: relative; overflow: hidden; }
     .order-hero .container { position: relative; z-index: 2; }
-    .order-intro { max-width: 760px; margin: 0 auto; text-align: center; }
-    .order-intro p { max-width: 650px; margin-left: auto; margin-right: auto; }
+
+    /* Match the established homepage/flavor-page hero rhythm:
+       eyebrow → heading → OBA banner → copy → CTAs */
+    .order-intro {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .order-intro h1 { margin-bottom: 24px; }
+    .order-intro .hero-brand-banner {
+      display: block;
+      width: min(100%, 860px);
+      margin: 0 auto 22px;
+      overflow: hidden;
+      border: 6px solid #fff;
+      border-radius: 24px;
+      box-shadow: 10px 10px 0 rgba(76, 42, 24, .38);
+    }
+    .order-intro .hero-brand-banner img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .order-intro .order-hero-copy {
+      max-width: 700px;
+      margin: 0 auto 20px;
+      color: #fff8ef;
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+    .order-intro .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 0;
+    }
+    .order-intro .hero-actions .btn {
+      min-width: 190px;
+    }
+    .order-intro .order-cart-hero-button {
+      cursor: pointer;
+    }
+
     .order-section { padding: 64px 0 78px; }
 
     /* DESKTOP COMMERCE GRID:
@@ -177,6 +219,19 @@
     .order-fulfillment-section { grid-area: fulfillment; }
     .order-customer-section { grid-area: customer; }
     .order-checkout-section { grid-area: checkout; }
+
+    /* Steps 2–4 truly occupy the entire commerce row.
+       Their inner forms stay intentionally constrained for readability. */
+    .order-fulfillment-section,
+    .order-customer-section,
+    .order-checkout-section {
+      grid-column: 1 / -1;
+      width: 100%;
+      max-width: none;
+      margin-left: 0;
+      margin-right: 0;
+      justify-self: stretch;
+    }
 
     .order-panel {
       position: relative; overflow: hidden; padding: 26px;
@@ -268,8 +323,30 @@
     .order-bertha-note p { margin:0; color:rgba(77,48,38,.78); font-size:.82rem; line-height:1.5; }
 
     /* SUMMARY: outer card stays in row 1, item list scrolls */
-    .order-summary-panel { display:flex; flex-direction:column; min-height:0; max-height:100%; }
+    .order-summary-panel {
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+      max-height:100%;
+      color:var(--brown-dark,#4d3026);
+    }
     .order-summary-panel h2 { margin:0 0 10px; }
+
+    /* Explicit contrast guard against global hero/footer/light-text rules. */
+    .order-summary-panel,
+    .order-summary-panel h2,
+    .order-summary-panel span,
+    .order-summary-panel strong,
+    .order-summary-panel .order-summary-item-name,
+    .order-summary-panel .order-summary-item-price,
+    .order-summary-panel .order-summary-line,
+    .order-summary-panel .order-summary-total {
+      color:var(--brown-dark,#4d3026) !important;
+    }
+    .order-summary-panel .order-summary-item-meta,
+    .order-summary-panel .order-summary-empty {
+      color:rgba(77,48,38,.62) !important;
+    }
     .order-summary-empty { margin:0; padding:16px 0 18px; color:rgba(77,48,38,.62); text-align:center; font-size:.88rem; line-height:1.5; }
     .order-summary-scroll { flex:1 1 auto; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding-right:5px; scrollbar-width:thin; }
     .order-summary-items { list-style:none; margin:0; padding:0; }
@@ -332,6 +409,24 @@
       .order-summary-panel { max-height:560px; }
     }
     @media (max-width:680px) {
+      .order-intro h1 { margin-bottom: 18px; }
+      .order-intro .hero-brand-banner {
+        margin-bottom: 18px;
+        border-width: 4px;
+        border-radius: 18px;
+        box-shadow: 7px 7px 0 rgba(76,42,24,.34);
+      }
+      .order-intro .order-hero-copy {
+        margin-bottom: 16px;
+        font-size: .92rem;
+      }
+      .order-intro .hero-actions {
+        gap: 10px;
+      }
+      .order-intro .hero-actions .btn {
+        min-width: 0;
+        flex: 1 1 150px;
+      }
       .order-section { padding:46px 0 56px; }
       .order-panel { padding:18px; border-radius:21px; }
       .order-cookie-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
@@ -558,7 +653,6 @@
 
     <section class="page-hero spot-field order-hero">
 
-
       <div
         class="spot spot--pink"
         style="
@@ -568,7 +662,6 @@
           right:9%;
         "
       ></div>
-
 
       <div
         class="spot spot--gold"
@@ -580,7 +673,6 @@
           opacity:.45;
         "
       ></div>
-
 
       <div class="container">
 
@@ -594,10 +686,36 @@
             Build Your Batch
           </h1>
 
-          <p>
-            Pick your favorites, choose pickup at Bertha
-            or local delivery, and we'll take care of the rest.
+          <div class="hero-brand-banner">
+            <img
+              src="/images/brand/oba-banner.jpg"
+              alt="Olly's Baked Assortments — soft, gooey, handmade cookies made from scratch"
+            >
+          </div>
+
+          <p class="order-hero-copy">
+            Pick your favorites, choose pickup at Bertha or local delivery,
+            and we'll take care of the rest.
           </p>
+
+          <div class="hero-actions">
+
+            <a
+              class="btn btn-pink"
+              href="#fulfillment"
+            >
+              Ready to Checkout?
+            </a>
+
+            <button
+              class="btn btn-outline order-cart-hero-button"
+              type="button"
+              data-cart-open
+            >
+              Check My Cart
+            </button>
+
+          </div>
 
         </div>
 
@@ -1249,7 +1367,7 @@
 
             </section>
 
-            <section class="order-panel order-fulfillment-section">
+            <section class="order-panel order-fulfillment-section" id="fulfillment">
 
               <div class="order-panel-heading">
 
