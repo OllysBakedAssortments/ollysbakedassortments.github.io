@@ -4085,18 +4085,31 @@
     throw new Error('Square card form is not ready.');
   }
 
-  const amount =
-    Number(window.OBA_CART.subtotal()) || 0;
+  const verificationDetails = {
+    amount: '1.00',
 
-  if (amount <= 0) {
-    throw new Error(
-      'Add at least one cookie before testing payment.'
-    );
-  }
+    billingContact: {
+      givenName: 'John',
+      familyName: 'Doe',
+      email: 'john.doe@example.com',
+      phone: '3214563987',
+      addressLines: [
+        '123 Main Street',
+        'Apartment 1'
+      ],
+      city: 'Oakland',
+      state: 'CA',
+      countryCode: 'US'
+    },
+
+    currencyCode: 'USD',
+    intent: 'CHARGE',
+    customerInitiated: true,
+    sellerKeyedIn: false
+  };
 
   const tokenResult =
     await squareCard.tokenize();
-
   if (tokenResult.status === 'OK') {
     return tokenResult.token;
   }
