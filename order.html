@@ -148,1768 +148,224 @@
   ========================================================== -->
 
   <style>
+    .order-page { color: var(--brown-dark, #4d3026); }
+    .order-page *, .order-page *::before, .order-page *::after { box-sizing: border-box; }
+    .order-hero { position: relative; overflow: hidden; }
+    .order-hero .container { position: relative; z-index: 2; }
+    .order-intro { max-width: 760px; margin: 0 auto; text-align: center; }
+    .order-intro p { max-width: 650px; margin-left: auto; margin-right: auto; }
+    .order-section { padding: 64px 0 78px; }
 
-    /* =========================================================
-       PAGE SHELL
-    ========================================================= */
-
-    .order-page {
-      color: var(--brown-dark, #4d3026);
-    }
-
-
-    .order-page *,
-    .order-page *::before,
-    .order-page *::after {
-      box-sizing: border-box;
-    }
-
-
-    .order-hero {
-      position: relative;
-      overflow: hidden;
-    }
-
-
-    .order-hero .container {
-      position: relative;
-      z-index: 2;
-    }
-
-
-    .order-intro {
-      max-width: 760px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-
-    .order-intro p {
-      max-width: 650px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-
-    .order-section {
-      padding: 64px 0 78px;
-    }
-
-
+    /* DESKTOP COMMERCE GRID:
+       row 1 lineup + summary, row 2 pack + fresh, later steps full width */
     .order-layout {
       display: grid;
-
-      grid-template-columns:
-        minmax(0, 1.55fr)
-        minmax(285px, .72fr);
-
-      align-items: start;
-
+      grid-template-columns: minmax(0, 1.55fr) minmax(285px, .72fr);
+      grid-template-areas:
+        "cookies summary"
+        "pack fresh"
+        "fulfillment fulfillment"
+        "customer customer"
+        "checkout checkout";
       gap: 28px;
+      align-items: stretch;
     }
-
-
-    .order-main {
-      min-width: 0;
-    }
-
-
-    .order-sidebar {
-      position: sticky;
-      top: 108px;
-    }
-
-
-    /* =========================================================
-       ORDER PANELS
-    ========================================================= */
+    .order-cookies-panel { grid-area: cookies; }
+    .order-summary-panel { grid-area: summary; }
+    .order-pack-panel { grid-area: pack; }
+    .order-fresh-panel { grid-area: fresh; }
+    .order-fulfillment-section { grid-area: fulfillment; }
+    .order-customer-section { grid-area: customer; }
+    .order-checkout-section { grid-area: checkout; }
 
     .order-panel {
-      position: relative;
-      overflow: hidden;
-
-      padding: 26px;
-
-      background:
-        var(--cream, #fffaf1);
-
-      border:
-        2px solid rgba(88, 55, 42, .12);
-
-      border-radius: 26px;
-
-      box-shadow:
-        0 10px 28px rgba(73, 45, 32, .07);
+      position: relative; overflow: hidden; padding: 26px;
+      background: var(--cream, #fffaf1);
+      border: 2px solid rgba(88,55,42,.12); border-radius: 26px;
+      box-shadow: 0 10px 28px rgba(73,45,32,.07);
     }
-
-
-    .order-panel + .order-panel {
-      margin-top: 24px;
-    }
-
-
-    .order-panel h2,
-    .order-panel h3,
-    .order-panel p {
-      color: var(--brown-dark, #4d3026);
-    }
-
-
-    .order-panel-heading {
-      margin-bottom: 22px;
-    }
-
-
+    .order-panel h2, .order-panel h3, .order-panel p { color: var(--brown-dark,#4d3026); }
+    .order-panel-heading { margin-bottom: 22px; text-align: center; }
     .order-step-label {
-      display: inline-flex;
-      align-items: center;
-
-      min-height: 28px;
-
-      margin-bottom: 8px;
-      padding: 5px 10px;
-
-      background:
-        rgba(88, 55, 42, .07);
-
-      border-radius: 999px;
-
-      color:
-        rgba(77, 48, 38, .72);
-
-      font-size: .72rem;
-      font-weight: 900;
-      letter-spacing: .09em;
-      line-height: 1;
-      text-transform: uppercase;
+      display: inline-flex; align-items: center; min-height: 28px; margin-bottom: 8px; padding: 5px 10px;
+      background: rgba(88,55,42,.07); border-radius: 999px; color: rgba(77,48,38,.72);
+      font-size: .72rem; font-weight: 900; letter-spacing: .09em; line-height: 1; text-transform: uppercase;
     }
+    .order-panel-heading h2 { margin: 0 0 7px; font-size: clamp(1.55rem,2.2vw,2.05rem); }
+    .order-panel-heading p { max-width: 660px; margin: 0 auto; font-size: .94rem; line-height: 1.55; opacity: .78; }
 
-
-    .order-panel-heading h2 {
-      margin:
-        0 0 7px;
-
-      font-size:
-        clamp(1.55rem, 2.2vw, 2.05rem);
-    }
-
-
-    .order-panel-heading p {
-      max-width: 660px;
-
-      margin: 0;
-
-      font-size: .94rem;
-      line-height: 1.55;
-
-      opacity: .78;
-    }
-
-
-    /* =========================================================
-       COOKIE PRODUCT GRID
-    ========================================================= */
-
-    .order-cookie-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-      gap: 13px;
-    }
-
-
+    /* COOKIE GRID */
+    .order-cookie-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 13px; }
     .order-cookie-card {
-      display: flex;
-      flex-direction: column;
-
-      min-width: 0;
-      overflow: hidden;
-
-      background: #fff;
-
-      border:
-        2px solid rgba(88, 55, 42, .11);
-
-      border-radius: 18px;
-
-      box-shadow:
-        0 5px 16px rgba(73, 45, 32, .055);
-
-      transition:
-        transform .16s ease,
-        box-shadow .16s ease,
-        border-color .16s ease;
+      display: flex; flex-direction: column; min-width: 0; overflow: hidden; background: #fff;
+      border: 2px solid rgba(88,55,42,.11); border-radius: 18px;
+      box-shadow: 0 5px 16px rgba(73,45,32,.055);
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, opacity .16s ease;
     }
-
-
-    .order-cookie-card:hover {
-      transform: translateY(-2px);
-
-      border-color:
-        rgba(88, 55, 42, .22);
-
-      box-shadow:
-        0 9px 22px rgba(73, 45, 32, .085);
-    }
-
-
-    /* IMAGE / DETAILS BUTTON */
-
-    .order-cookie-details-trigger {
-      display: block;
-
-      width: 100%;
-
-      padding: 0;
-
-      border: 0;
-
-      background: transparent;
-
-      text-align: inherit;
-
-      cursor: pointer;
-    }
-
-
-    .order-cookie-image {
-      position: relative;
-
-      width: 100%;
-      aspect-ratio: 1 / .82;
-
-      overflow: hidden;
-
-      background:
-        rgba(88, 55, 42, .055);
-    }
-
-
-    .order-cookie-image img {
-      display: block;
-
-      width: 100%;
-      height: 100%;
-
-      object-fit: cover;
-    }
-
-
-    .order-cookie-image-fallback {
-      display: none;
-
-      position: absolute;
-      inset: 0;
-
-      place-items: center;
-
-      padding: 18px;
-
-      background:
-        var(--cream, #fffaf1);
-
-      color:
-        rgba(77, 48, 38, .58);
-
-      text-align: center;
-    }
-
-
-    .order-cookie-image-fallback span {
-      display: block;
-
-      margin-bottom: 5px;
-
-      font-size: 1.7rem;
-    }
-
-
-    .order-cookie-image-fallback small {
-      font-size: .7rem;
-      font-weight: 800;
-    }
-
-
+    .order-cookie-card:hover { transform: translateY(-2px); border-color: rgba(88,55,42,.22); box-shadow: 0 9px 22px rgba(73,45,32,.085); }
+    .order-cookie-card.is-sold-out { opacity: .72; }
+    .order-cookie-details-trigger { display: block; width: 100%; padding: 0; border: 0; background: transparent; text-align: inherit; cursor: pointer; }
+    .order-cookie-image { position: relative; width: 100%; aspect-ratio: 1/.82; overflow: hidden; background: rgba(88,55,42,.055); }
+    .order-cookie-image img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .order-cookie-image-fallback { display:none; position:absolute; inset:0; place-items:center; padding:18px; background:var(--cream,#fffaf1); color:rgba(77,48,38,.58); text-align:center; }
+    .order-cookie-image-fallback span { display:block; margin-bottom:5px; font-size:1.7rem; }
+    .order-cookie-image-fallback small { font-size:.7rem; font-weight:800; }
     .order-cookie-details-badge {
-      position: absolute;
-
-      right: 8px;
-      bottom: 8px;
-
-      padding:
-        5px 8px;
-
-      background:
-        rgba(255, 250, 241, .94);
-
-      border:
-        1px solid rgba(88, 55, 42, .12);
-
-      border-radius:
-        999px;
-
-      color:
-        var(--brown-dark, #4d3026);
-
-      font-size:
-        .64rem;
-
-      font-weight:
-        900;
-
-      box-shadow:
-        0 3px 10px rgba(73, 45, 32, .08);
-    }
-
-
-    /* CARD BODY */
-
-    .order-cookie-card-body {
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-
-      padding:
-        12px;
-    }
-
-
-    .order-cookie-name {
-      margin:
-        0 0 4px;
-
-      color:
-        var(--brown-dark, #4d3026);
-
-      font-size:
-        .98rem;
-
-      line-height:
-        1.18;
-    }
-
-
-    .order-cookie-price {
-      display: block;
-
-      margin-bottom:
-        7px;
-
-      color:
-        var(--brown-dark, #4d3026);
-
-      font-size:
-        .91rem;
-
-      font-weight:
-        900;
-    }
-
-
-    .order-cookie-description {
-      display: -webkit-box;
-      overflow: hidden;
-
-      margin:
-        0 0 11px;
-
-      color:
-        rgba(77, 48, 38, .75);
-
-      font-size:
-        .76rem;
-
-      line-height:
-        1.38;
-
-      -webkit-box-orient:
-        vertical;
-
-      -webkit-line-clamp:
-        3;
-    }
-
-
-    /* QUANTITY */
-
-    .order-cookie-actions {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 8px;
-
-      margin-top: auto;
-    }
-
-
-    .order-cookie-qty-label {
-      color:
-        rgba(77, 48, 38, .63);
-
-      font-size:
-        .67rem;
-
-      font-weight:
-        900;
-
-      text-transform:
-        uppercase;
-
-      letter-spacing:
-        .045em;
-    }
-
-
-    .order-quantity-control {
-      display: inline-grid;
-
-      grid-template-columns:
-        31px 27px 31px;
-
-      align-items: center;
-
-      overflow: hidden;
-
-      flex-shrink: 0;
-
-      background:
-        var(--cream, #fffaf1);
-
-      border:
-        1.5px solid rgba(88, 55, 42, .16);
-
-      border-radius:
-        999px;
-    }
-
-
-    .order-quantity-control button {
-      display: grid;
-      place-items: center;
-
-      width:
-        31px;
-
-      height:
-        31px;
-
-      padding: 0;
-
-      border: 0;
-
-      background:
-        transparent;
-
-      color:
-        var(--brown-dark, #4d3026);
-
-      font:
-        inherit;
-
-      font-size:
-        1rem;
-
-      font-weight:
-        900;
-
-      cursor:
-        pointer;
-    }
-
-
-    .order-quantity-control button:hover {
-      background:
-        rgba(88, 55, 42, .08);
-    }
-
-
-    .order-quantity-control button:focus-visible {
-      outline:
-        2px solid rgba(88, 55, 42, .34);
-
-      outline-offset:
-        -2px;
-    }
-
-
-    .order-quantity-value {
-      min-width:
-        27px;
-
-      color:
-        var(--brown-dark, #4d3026);
-
-      text-align:
-        center;
-
-      font-size:
-        .79rem;
-
-      font-weight:
-        900;
-    }
-
-
-    /* =========================================================
-       GIRAFFE PACK CTA
-    ========================================================= */
-
-    .order-pack-cta {
-      display: grid;
-
-      grid-template-columns:
-        minmax(0, 1fr) auto;
-
-      align-items: center;
-
-      gap: 20px;
-
-      padding:
-        20px;
-
-      background:
-        #fff;
-
-      border:
-        2px solid rgba(88, 55, 42, .11);
-
-      border-radius:
-        20px;
-    }
-
-
-    .order-pack-cta-copy h3 {
-      margin:
-        0 0 6px;
-    }
-
-
-    .order-pack-cta-copy p {
-      margin: 0;
-
-      color:
-        rgba(77, 48, 38, .76);
-
-      font-size:
-        .9rem;
-
-      line-height:
-        1.5;
-    }
-
-
-    .order-pack-button {
-      white-space:
-        nowrap;
-    }
-
-
-    /* =========================================================
-       FULFILLMENT
-    ========================================================= */
-
-    .order-fulfillment-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-      gap:
-        14px;
-    }
-
-
-    .order-fulfillment-choice {
-      position: relative;
-    }
-
-
-    .order-fulfillment-choice input {
-      position: absolute;
-
-      opacity: 0;
-
-      pointer-events: none;
-    }
-
-
-    .order-fulfillment-choice label {
-      display: block;
-
-      height: 100%;
-
-      padding:
-        18px;
-
-      background:
-        #fff;
-
-      border:
-        2px solid rgba(88, 55, 42, .13);
-
-      border-radius:
-        19px;
-
-      cursor:
-        pointer;
-
-      transition:
-        transform .15s ease,
-        border-color .15s ease,
-        box-shadow .15s ease;
-    }
-
-
-    .order-fulfillment-choice label:hover {
-      transform:
-        translateY(-1px);
-    }
-
-
-    .order-fulfillment-choice input:checked + label {
-      border-color:
-        var(--brown-dark, #4d3026);
-
-      box-shadow:
-        0 0 0 4px rgba(88, 55, 42, .055);
-    }
-
-
-    .order-fulfillment-choice input:focus-visible + label {
-      outline:
-        3px solid rgba(88, 55, 42, .22);
-
-      outline-offset:
-        3px;
-    }
-
-
-    .order-fulfillment-icon {
-      display: block;
-
-      margin-bottom:
-        8px;
-
-      font-size:
-        1.7rem;
-    }
-
-
-    .order-fulfillment-choice h3 {
-      margin:
-        0 0 5px;
-
-      font-size:
-        1.05rem;
-    }
-
-
-    .order-fulfillment-choice p {
-      margin: 0;
-
-      color:
-        rgba(77, 48, 38, .76);
-
-      font-size:
-        .84rem;
-
-      line-height:
-        1.45;
-    }
-
-
-    .order-fulfillment-panel {
-      margin-top:
-        16px;
-
-      padding:
-        18px;
-
-      background:
-        rgba(88, 55, 42, .045);
-
-      border-radius:
-        18px;
-    }
-
-
-    .order-fulfillment-panel[hidden] {
-      display: none;
-    }
-
-
-    /* =========================================================
-       FORMS
-    ========================================================= */
-
-    .order-form-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-      gap:
-        15px;
-    }
-
-
-    .order-form-group {
-      display: flex;
-      flex-direction: column;
-
-      gap:
-        6px;
-    }
-
-
-    .order-form-group.full {
-      grid-column:
-        1 / -1;
-    }
-
-
-    .order-form-group label {
-      color:
-        var(--brown-dark, #4d3026);
-
-      font-size:
-        .82rem;
-
-      font-weight:
-        900;
-    }
-
-
-    .order-form-group input,
-    .order-form-group select,
-    .order-form-group textarea {
-      width: 100%;
-
-      padding:
-        12px 13px;
-
-      background:
-        #fff;
-
-      border:
-        2px solid rgba(88, 55, 42, .14);
-
-      border-radius:
-        13px;
-
-      color:
-        var(--brown-dark, #4d3026);
-
-      font:
-        inherit;
-    }
-
-
-    .order-form-group textarea {
-      min-height:
-        100px;
-
-      resize:
-        vertical;
-    }
-
-
-    .order-form-group input:focus,
-    .order-form-group select:focus,
-    .order-form-group textarea:focus {
-      outline:
-        none;
-
-      border-color:
-        var(--brown-dark, #4d3026);
-
-      box-shadow:
-        0 0 0 3px rgba(88, 55, 42, .07);
-    }
-
-
-    .order-field-help {
-      margin:
-        11px 0 0;
-
-      color:
-        rgba(77, 48, 38, .68);
-
-      font-size:
-        .78rem;
-
-      line-height:
-        1.45;
-    }
-
-
-    /* =========================================================
-       BERTHA INFO
-    ========================================================= */
-
-    .order-bertha-note {
-      display: grid;
-
-      grid-template-columns:
-        auto minmax(0, 1fr);
-
-      align-items: start;
-
-      gap:
-        12px;
-
-      margin-top:
-        16px;
-
-      padding:
-        15px;
-
-      background:
-        #fff;
-
-      border:
-        1.5px solid rgba(88, 55, 42, .09);
-
-      border-radius:
-        15px;
-
-      color:
-        var(--brown-dark, #4d3026);
-    }
-
-
-    .order-bertha-note-icon {
-      font-size:
-        1.6rem;
-
-      line-height:
-        1;
-    }
-
-
-    .order-bertha-note h3 {
-      margin:
-        0 0 4px;
-
-      color:
-        var(--brown-dark, #4d3026);
-
-      font-size:
-        .96rem;
-    }
-
-
-    .order-bertha-note p {
-      margin: 0;
-
-      color:
-        rgba(77, 48, 38, .78);
-
-      font-size:
-        .82rem;
-
-      line-height:
-        1.5;
-    }
-
-
-    /* =========================================================
-       ORDER SUMMARY
-    ========================================================= */
-
-    .order-summary-panel {
-      overflow: visible;
-    }
-
-
-    .order-summary-empty {
-      margin:
-        0;
-
-      padding:
-        16px 0 18px;
-
-      color:
-        rgba(77, 48, 38, .62);
-
-      text-align:
-        center;
-
-      font-size:
-        .88rem;
-
-      line-height:
-        1.5;
-    }
-
-
-    .order-summary-items {
-      list-style:
-        none;
-
-      margin:
-        0;
-
-      padding:
-        0;
-    }
-
-
-    .order-summary-item {
-      display: grid;
-
-      grid-template-columns:
-        minmax(0, 1fr) auto;
-
-      gap:
-        4px 12px;
-
-      padding:
-        12px 0;
-
-      border-bottom:
-        1px solid rgba(88, 55, 42, .1);
-    }
-
-
-    .order-summary-item-name {
-      color:
-        var(--brown-dark, #4d3026);
-
-      font-size:
-        .88rem;
-
-      font-weight:
-        900;
-    }
-
-
-    .order-summary-item-meta {
-      color:
-        rgba(77, 48, 38, .62);
-
-      font-size:
-        .74rem;
-    }
-
-
-    .order-summary-item-price {
-      grid-column:
-        2;
-
-      grid-row:
-        1 / span 2;
-
-      align-self:
-        center;
-
-      color:
-        var(--brown-dark, #4d3026);
-
-      font-size:
-        .84rem;
-
-      font-weight:
-        900;
-    }
-
-
-    .order-summary-lines {
-      margin-top:
-        14px;
-    }
-
-
-    .order-summary-line {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      gap:
-        15px;
-
-      padding:
-        6px 0;
-
-      color:
-        var(--brown-dark, #4d3026);
-
-      font-size:
-        .84rem;
-    }
-
-
-    .order-summary-total {
-      margin-top:
-        8px;
-
-      padding-top:
-        12px;
-
-      border-top:
-        2px solid rgba(88, 55, 42, .13);
-
-      font-size:
-        1rem;
-
-      font-weight:
-        900;
-    }
-
-
-    .order-summary-checkout-link {
-      width:
-        100%;
-
-      margin-top:
-        16px;
-
-      text-align:
-        center;
-    }
-
-
-    .order-clear-cart {
-      width:
-        100%;
-
-      margin-top:
-        10px;
-
-      padding:
-        5px;
-
-      border:
-        0;
-
-      background:
-        transparent;
-
-      color:
-        rgba(77, 48, 38, .58);
-
-      font:
-        inherit;
-
-      font-size:
-        .75rem;
-
-      font-weight:
-        800;
-
-      text-decoration:
-        underline;
-
-      cursor:
-        pointer;
-    }
-
-
-    .order-clear-cart:hover {
-      color:
-        var(--brown-dark, #4d3026);
-    }
-
-
-    /* =========================================================
-       PAYMENT
-    ========================================================= */
-
-    .order-square-placeholder {
-      margin-top:
-        18px;
-
-      padding:
-        22px;
-
-      background:
-        rgba(255, 255, 255, .78);
-
-      border:
-        2px dashed rgba(88, 55, 42, .21);
-
-      border-radius:
-        17px;
-
-      text-align:
-        center;
-    }
-
-
-    .order-square-placeholder strong {
-      display: block;
-
-      margin-bottom:
-        5px;
-
-      color:
-        var(--brown-dark, #4d3026);
-    }
-
-
-    .order-square-placeholder span {
-      display: block;
-
-      color:
-        rgba(77, 48, 38, .7);
-
-      font-size:
-        .85rem;
-
-      line-height:
-        1.5;
-    }
-
-
-    .order-payment-note {
-      margin:
-        12px 0 0;
-
-      color:
-        rgba(77, 48, 38, .65);
-
-      font-size:
-        .77rem;
-
-      line-height:
-        1.45;
-    }
-
-
-    .order-checkout-button {
-      width:
-        100%;
-
-      margin-top:
-        17px;
-    }
-
-
-    .order-checkout-button[disabled] {
-      opacity:
-        .45;
-
-      cursor:
-        not-allowed;
-    }
-
-
-    /* =========================================================
-       COOKIE DETAIL DIALOG
-    ========================================================= */
-
-    .cookie-detail-dialog {
-      width:
-        min(760px, calc(100% - 28px));
-
-      max-height:
-        min(88vh, 760px);
-
-      margin:
-        auto;
-
-      padding:
-        0;
-
-      overflow:
-        hidden;
-
-      background:
-        var(--cream, #fffaf1);
-
-      border:
-        0;
-
-      border-radius:
-        24px;
-
-      color:
-        var(--brown-dark, #4d3026);
-
-      box-shadow:
-        0 28px 80px rgba(35, 20, 15, .28);
-    }
-
-
-    .cookie-detail-dialog::backdrop {
-      background:
-        rgba(46, 30, 24, .58);
-
-      backdrop-filter:
-        blur(3px);
-    }
-
-
-    .cookie-detail-layout {
-      display: grid;
-
-      grid-template-columns:
-        minmax(0, .95fr)
-        minmax(0, 1.05fr);
-
-      max-height:
-        inherit;
-
-      overflow:
-        auto;
-    }
-
-
-    .cookie-detail-media {
-      min-height:
-        100%;
-
-      background:
-        rgba(88, 55, 42, .06);
-    }
-
-
-    .cookie-detail-media img {
-      display: block;
-
-      width:
-        100%;
-
-      height:
-        100%;
-
-      min-height:
-        360px;
-
-      object-fit:
-        cover;
-    }
-
-
-    .cookie-detail-content {
-      position:
-        relative;
-
-      display:
-        flex;
-
-      flex-direction:
-        column;
-
-      padding:
-        28px;
-    }
-
-
-    .cookie-detail-close {
-      position:
-        absolute;
-
-      top:
-        14px;
-
-      right:
-        14px;
-
-      display:
-        grid;
-
-      place-items:
-        center;
-
-      width:
-        34px;
-
-      height:
-        34px;
-
-      padding:
-        0;
-
-      background:
-        #fff;
-
-      border:
-        1.5px solid rgba(88, 55, 42, .12);
-
-      border-radius:
-        50%;
-
-      color:
-        var(--brown-dark, #4d3026);
-
-      font:
-        inherit;
-
-      font-size:
-        1.15rem;
-
-      font-weight:
-        900;
-
-      cursor:
-        pointer;
-    }
-
-
-    .cookie-detail-eyebrow {
-      display:
-        block;
-
-      margin-bottom:
-        7px;
-
-      color:
-        rgba(77, 48, 38, .58);
-
-      font-size:
-        .67rem;
-
-      font-weight:
-        900;
-
-      letter-spacing:
-        .09em;
-
-      text-transform:
-        uppercase;
-    }
-
-
-    .cookie-detail-name {
-      padding-right:
-        38px;
-
-      margin:
-        0 0 5px;
-
-      font-size:
-        clamp(1.6rem, 3vw, 2.2rem);
-
-      line-height:
-        1.05;
-    }
-
-
-    .cookie-detail-price {
-      display:
-        block;
-
-      margin-bottom:
-        14px;
-
-      font-size:
-        1.05rem;
-
-      font-weight:
-        900;
-    }
-
-
-    .cookie-detail-description {
-      margin:
-        0 0 18px;
-
-      color:
-        rgba(77, 48, 38, .78);
-
-      font-size:
-        .92rem;
-
-      line-height:
-        1.58;
-    }
-
-
-    .cookie-detail-links {
-      display:
-        flex;
-
-      flex-wrap:
-        wrap;
-
-      gap:
-        8px;
-
-      margin-top:
-        auto;
-
-      padding-top:
-        16px;
-    }
-
-
-    .cookie-detail-flavor-link {
-      display:
-        inline-flex;
-
-      align-items:
-        center;
-
-      min-height:
-        38px;
-
-      padding:
-        8px 12px;
-
-      border:
-        2px solid rgba(88, 55, 42, .14);
-
-      border-radius:
-        999px;
-
-      color:
-        var(--brown-dark, #4d3026);
-
-      font-size:
-        .78rem;
-
-      font-weight:
-        900;
-
-      text-decoration:
-        none;
-    }
-
-
-    .cookie-detail-purchase-row {
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        space-between;
-
-      gap:
-        12px;
-
-      margin-top:
-        18px;
-
-      padding-top:
-        16px;
-
-      border-top:
-        1px solid rgba(88, 55, 42, .11);
-    }
-
-
-    .cookie-detail-purchase-label {
-      font-size:
-        .75rem;
-
-      font-weight:
-        900;
-
-      text-transform:
-        uppercase;
-
-      letter-spacing:
-        .04em;
-
-      color:
-        rgba(77, 48, 38, .63);
-    }
-
-
-    /* =========================================================
-       FAQ CTA
-    ========================================================= */
-
-    .order-faq-section {
-      padding:
-        0 0 72px;
-    }
-
-
-    /* =========================================================
-       TABLET
-    ========================================================= */
-
-    @media (max-width: 900px) {
-
+      position:absolute; right:8px; bottom:8px; padding:5px 8px; background:rgba(255,250,241,.94);
+      border:1px solid rgba(88,55,42,.12); border-radius:999px; color:var(--brown-dark,#4d3026);
+      font-size:.64rem; font-weight:900; box-shadow:0 3px 10px rgba(73,45,32,.08);
+    }
+    .order-stock-badge {
+      position:absolute; left:8px; top:8px; z-index:2; display:none; padding:5px 8px; border-radius:999px;
+      background:#fff3c7; border:1px solid rgba(88,55,42,.14); color:var(--brown-dark,#4d3026);
+      font-size:.62rem; font-weight:900; box-shadow:0 3px 10px rgba(73,45,32,.08);
+    }
+    .order-stock-badge.is-visible { display:inline-flex; }
+    .order-stock-badge.is-sold-out { background:var(--brown-dark,#4d3026); color:#fff; }
+    .order-cookie-card-body { display:flex; flex:1; flex-direction:column; padding:12px; }
+    .order-cookie-name { margin:0 0 4px; color:var(--brown-dark,#4d3026); font-size:.98rem; line-height:1.18; }
+    .order-cookie-price { display:block; margin-bottom:7px; color:var(--brown-dark,#4d3026); font-size:.91rem; font-weight:900; }
+    .order-cookie-description { display:-webkit-box; overflow:hidden; margin:0 0 11px; color:rgba(77,48,38,.75); font-size:.76rem; line-height:1.38; -webkit-box-orient:vertical; -webkit-line-clamp:3; }
+    .order-cookie-actions { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:auto; }
+    .order-cookie-qty-label { color:rgba(77,48,38,.63); font-size:.67rem; font-weight:900; text-transform:uppercase; letter-spacing:.045em; }
+    .order-quantity-control { display:inline-grid; grid-template-columns:31px 27px 31px; align-items:center; overflow:hidden; flex-shrink:0; background:var(--cream,#fffaf1); border:1.5px solid rgba(88,55,42,.16); border-radius:999px; }
+    .order-quantity-control button { display:grid; place-items:center; width:31px; height:31px; padding:0; border:0; background:transparent; color:var(--brown-dark,#4d3026); font:inherit; font-size:1rem; font-weight:900; cursor:pointer; }
+    .order-quantity-control button:hover:not(:disabled) { background:rgba(88,55,42,.08); }
+    .order-quantity-control button:disabled { opacity:.28; cursor:not-allowed; }
+    .order-quantity-value { min-width:27px; color:var(--brown-dark,#4d3026); text-align:center; font-size:.79rem; font-weight:900; }
+
+    /* ROW 2 */
+    .order-pack-panel, .order-fresh-panel { display:flex; align-items:stretch; }
+    .order-pack-cta { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:20px; width:100%; padding:20px; background:#fff; border:2px solid rgba(88,55,42,.11); border-radius:20px; }
+    .order-pack-cta-copy h3 { margin:0 0 6px; }
+    .order-pack-cta-copy p { margin:0; color:rgba(77,48,38,.76); font-size:.9rem; line-height:1.5; }
+    .order-pack-button { white-space:nowrap; }
+    .order-fresh-panel .order-bertha-note { width:100%; margin:0; align-self:stretch; align-items:center; }
+
+    /* FULFILLMENT / FORMS */
+    .order-fulfillment-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+    .order-fulfillment-choice { position:relative; }
+    .order-fulfillment-choice input { position:absolute; opacity:0; pointer-events:none; }
+    .order-fulfillment-choice label { display:block; height:100%; padding:18px; background:#fff; border:2px solid rgba(88,55,42,.13); border-radius:19px; cursor:pointer; transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease; text-align:center; }
+    .order-fulfillment-choice label:hover { transform:translateY(-1px); }
+    .order-fulfillment-choice input:checked + label { border-color:var(--brown-dark,#4d3026); box-shadow:0 0 0 4px rgba(88,55,42,.055); }
+    .order-fulfillment-icon { display:block; margin-bottom:8px; font-size:1.7rem; }
+    .order-fulfillment-choice h3 { margin:0 0 5px; font-size:1.05rem; }
+    .order-fulfillment-choice p { margin:0; color:rgba(77,48,38,.76); font-size:.84rem; line-height:1.45; }
+    .order-fulfillment-panel { margin-top:16px; padding:18px; background:rgba(88,55,42,.045); border-radius:18px; }
+    .order-fulfillment-panel[hidden] { display:none; }
+    .order-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:15px; max-width:900px; margin:0 auto; }
+    .order-form-group { display:flex; flex-direction:column; gap:6px; }
+    .order-form-group.full { grid-column:1/-1; }
+    .order-form-group label { color:var(--brown-dark,#4d3026); font-size:.82rem; font-weight:900; }
+    .order-form-group input,.order-form-group select,.order-form-group textarea { width:100%; padding:12px 13px; background:#fff; border:2px solid rgba(88,55,42,.14); border-radius:13px; color:var(--brown-dark,#4d3026); font:inherit; }
+    .order-form-group textarea { min-height:100px; resize:vertical; }
+    .order-form-group input:focus,.order-form-group select:focus,.order-form-group textarea:focus { outline:none; border-color:var(--brown-dark,#4d3026); box-shadow:0 0 0 3px rgba(88,55,42,.07); }
+    .order-field-help { margin:11px auto 0; max-width:900px; color:rgba(77,48,38,.68); font-size:.78rem; line-height:1.45; }
+    .order-bertha-note { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:start; gap:12px; margin:16px auto 0; max-width:900px; padding:15px; background:#fff; border:1.5px solid rgba(88,55,42,.09); border-radius:15px; color:var(--brown-dark,#4d3026); }
+    .order-bertha-note-icon { font-size:1.6rem; line-height:1; }
+    .order-bertha-note h3 { margin:0 0 4px; font-size:.96rem; }
+    .order-bertha-note p { margin:0; color:rgba(77,48,38,.78); font-size:.82rem; line-height:1.5; }
+
+    /* SUMMARY: outer card stays in row 1, item list scrolls */
+    .order-summary-panel { display:flex; flex-direction:column; min-height:0; max-height:100%; }
+    .order-summary-panel h2 { margin:0 0 10px; }
+    .order-summary-empty { margin:0; padding:16px 0 18px; color:rgba(77,48,38,.62); text-align:center; font-size:.88rem; line-height:1.5; }
+    .order-summary-scroll { flex:1 1 auto; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding-right:5px; scrollbar-width:thin; }
+    .order-summary-items { list-style:none; margin:0; padding:0; }
+    .order-summary-item { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 12px; padding:12px 0; border-bottom:1px solid rgba(88,55,42,.1); }
+    .order-summary-item-name { font-size:.88rem; font-weight:900; }
+    .order-summary-item-meta { color:rgba(77,48,38,.62); font-size:.74rem; }
+    .order-summary-item-price { grid-column:2; grid-row:1/span 2; align-self:center; font-size:.84rem; font-weight:900; }
+    .order-summary-footer { flex:0 0 auto; background:var(--cream,#fffaf1); }
+    .order-summary-lines { margin-top:14px; }
+    .order-summary-line { display:flex; align-items:center; justify-content:space-between; gap:15px; padding:6px 0; font-size:.84rem; }
+    .order-summary-total { margin-top:8px; padding-top:12px; border-top:2px solid rgba(88,55,42,.13); font-size:1rem; font-weight:900; }
+    .order-summary-checkout-link { width:100%; margin-top:16px; text-align:center; }
+    .order-clear-cart { width:100%; margin-top:10px; padding:5px; border:0; background:transparent; color:rgba(77,48,38,.58); font:inherit; font-size:.75rem; font-weight:800; text-decoration:underline; cursor:pointer; }
+
+    /* PAYMENT */
+    .order-square-placeholder { max-width:900px; margin:18px auto 0; padding:22px; background:rgba(255,255,255,.78); border:2px dashed rgba(88,55,42,.21); border-radius:17px; text-align:center; }
+    .order-square-placeholder strong { display:block; margin-bottom:5px; }
+    .order-square-placeholder span { display:block; color:rgba(77,48,38,.7); font-size:.85rem; line-height:1.5; }
+    .order-payment-note { max-width:900px; margin:12px auto 0; color:rgba(77,48,38,.65); font-size:.77rem; line-height:1.45; }
+    .order-checkout-button { display:block; width:min(900px,100%); margin:17px auto 0; }
+    .order-checkout-button[disabled] { opacity:.45; cursor:not-allowed; }
+
+    /* DETAIL DIALOG + CAROUSEL */
+    .cookie-detail-dialog { width:min(900px,calc(100% - 28px)); max-height:min(90vh,780px); margin:auto; padding:0; overflow:hidden; background:var(--cream,#fffaf1); border:0; border-radius:24px; color:var(--brown-dark,#4d3026); box-shadow:0 28px 80px rgba(35,20,15,.28); }
+    .cookie-detail-dialog::backdrop { background:rgba(46,30,24,.58); backdrop-filter:blur(3px); }
+    .cookie-detail-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); max-height:inherit; overflow:auto; }
+    .cookie-detail-media { position:relative; min-width:0; background:rgba(88,55,42,.06); }
+    .cookie-carousel-viewport { position:relative; width:100%; height:100%; min-height:460px; overflow:hidden; }
+    .cookie-carousel-track { display:flex; height:100%; transition:transform .28s ease; }
+    .cookie-carousel-slide { flex:0 0 100%; min-width:100%; height:100%; }
+    .cookie-carousel-slide img { display:block; width:100%; height:100%; min-height:460px; object-fit:cover; }
+    .cookie-carousel-button { position:absolute; top:50%; z-index:3; transform:translateY(-50%); display:grid; place-items:center; width:38px; height:38px; padding:0; border:1px solid rgba(88,55,42,.14); border-radius:50%; background:rgba(255,250,241,.94); color:var(--brown-dark,#4d3026); font:inherit; font-size:1.2rem; font-weight:900; cursor:pointer; box-shadow:0 4px 14px rgba(73,45,32,.12); }
+    .cookie-carousel-button.prev { left:12px; } .cookie-carousel-button.next { right:12px; }
+    .cookie-carousel-button[hidden] { display:none; }
+    .cookie-carousel-dots { position:absolute; left:50%; bottom:14px; z-index:3; transform:translateX(-50%); display:flex; gap:6px; padding:6px 8px; background:rgba(255,250,241,.88); border-radius:999px; }
+    .cookie-carousel-dot { width:8px; height:8px; padding:0; border:0; border-radius:50%; background:rgba(77,48,38,.28); cursor:pointer; }
+    .cookie-carousel-dot.is-active { background:var(--brown-dark,#4d3026); }
+    .cookie-detail-content { position:relative; display:flex; flex-direction:column; padding:28px; }
+    .cookie-detail-close { position:absolute; top:14px; right:14px; z-index:4; display:grid; place-items:center; width:34px; height:34px; padding:0; background:#fff; border:1.5px solid rgba(88,55,42,.12); border-radius:50%; color:var(--brown-dark,#4d3026); font:inherit; font-size:1.15rem; font-weight:900; cursor:pointer; }
+    .cookie-detail-eyebrow { display:block; margin-bottom:7px; color:rgba(77,48,38,.58); font-size:.67rem; font-weight:900; letter-spacing:.09em; text-transform:uppercase; }
+    .cookie-detail-name { padding-right:38px; margin:0 0 5px; font-size:clamp(1.6rem,3vw,2.2rem); line-height:1.05; }
+    .cookie-detail-price { display:block; margin-bottom:10px; font-size:1.05rem; font-weight:900; }
+    .cookie-detail-stock { display:none; width:max-content; margin-bottom:14px; padding:6px 9px; border-radius:999px; background:#fff3c7; font-size:.72rem; font-weight:900; }
+    .cookie-detail-stock.is-visible { display:inline-flex; }
+    .cookie-detail-stock.is-sold-out { background:var(--brown-dark,#4d3026); color:#fff; }
+    .cookie-detail-description { margin:0 0 18px; color:rgba(77,48,38,.78); font-size:.92rem; line-height:1.58; }
+    .cookie-detail-links { display:flex; flex-wrap:wrap; gap:8px; margin-top:auto; padding-top:16px; }
+    .cookie-detail-flavor-link { display:inline-flex; align-items:center; min-height:38px; padding:8px 12px; border:2px solid rgba(88,55,42,.14); border-radius:999px; color:var(--brown-dark,#4d3026); font-size:.78rem; font-weight:900; text-decoration:none; }
+    .cookie-detail-purchase-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:18px; padding-top:16px; border-top:1px solid rgba(88,55,42,.11); }
+    .cookie-detail-purchase-label { font-size:.75rem; font-weight:900; text-transform:uppercase; letter-spacing:.04em; color:rgba(77,48,38,.63); }
+
+    .order-faq-section { padding:0 0 72px; }
+
+    @media (max-width:900px) {
       .order-layout {
-        grid-template-columns:
-          1fr;
+        grid-template-columns:1fr;
+        grid-template-areas:"cookies" "summary" "pack" "fresh" "fulfillment" "customer" "checkout";
+        gap:20px;
       }
-
-
-      .order-sidebar {
-        position:
-          static;
-      }
-
-
-      .order-summary-panel {
-        margin-top:
-          0;
-      }
-
+      .order-summary-panel { max-height:560px; }
     }
-
-
-    /* =========================================================
-       MOBILE
-    ========================================================= */
-
-    @media (max-width: 680px) {
-
-      .order-section {
-        padding:
-          46px 0 56px;
-      }
-
-
-      .order-panel {
-        padding:
-          18px;
-
-        border-radius:
-          21px;
-      }
-
-
-      .order-panel + .order-panel {
-        margin-top:
-          18px;
-      }
-
-
-      .order-panel-heading {
-        margin-bottom:
-          17px;
-      }
-
-
-      .order-cookie-grid {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-
-        gap:
-          9px;
-      }
-
-
-      .order-cookie-card {
-        border-radius:
-          15px;
-      }
-
-
-      .order-cookie-image {
-        aspect-ratio:
-          1 / .82;
-      }
-
-
-      .order-cookie-details-badge {
-        right:
-          6px;
-
-        bottom:
-          6px;
-
-        padding:
-          4px 6px;
-
-        font-size:
-          .57rem;
-      }
-
-
-      .order-cookie-card-body {
-        padding:
-          9px;
-      }
-
-
-      .order-cookie-name {
-        font-size:
-          .85rem;
-
-        line-height:
-          1.16;
-      }
-
-
-      .order-cookie-price {
-        margin-bottom:
-          5px;
-
-        font-size:
-          .82rem;
-      }
-
-
-      .order-cookie-description {
-        margin-bottom:
-          8px;
-
-        font-size:
-          .68rem;
-
-        line-height:
-          1.34;
-
-        -webkit-line-clamp:
-          2;
-      }
-
-
-      .order-cookie-qty-label {
-        display:
-          none;
-      }
-
-
-      .order-cookie-actions {
-        justify-content:
-          flex-end;
-      }
-
-
-      .order-quantity-control {
-        grid-template-columns:
-          29px 24px 29px;
-      }
-
-
-      .order-quantity-control button {
-        width:
-          29px;
-
-        height:
-          29px;
-      }
-
-
-      .order-quantity-value {
-        min-width:
-          24px;
-
-        font-size:
-          .74rem;
-      }
-
-
-      .order-pack-cta {
-        grid-template-columns:
-          1fr;
-
-        gap:
-          14px;
-      }
-
-
-      .order-pack-button {
-        width:
-          100%;
-
-        text-align:
-          center;
-      }
-
-
-      .order-fulfillment-grid,
-      .order-form-grid {
-        grid-template-columns:
-          1fr;
-      }
-
-
-      .order-form-group.full {
-        grid-column:
-          auto;
-      }
-
-
-      .cookie-detail-dialog {
-        width:
-          min(94%, 520px);
-
-        max-height:
-          90vh;
-
-        border-radius:
-          20px;
-      }
-
-
-      .cookie-detail-layout {
-        grid-template-columns:
-          1fr;
-      }
-
-
-      .cookie-detail-media img {
-        min-height:
-          0;
-
-        aspect-ratio:
-          16 / 10;
-      }
-
-
-      .cookie-detail-content {
-        padding:
-          20px;
-      }
-
-
-      .cookie-detail-name {
-        padding-right:
-          34px;
-      }
-
+    @media (max-width:680px) {
+      .order-section { padding:46px 0 56px; }
+      .order-panel { padding:18px; border-radius:21px; }
+      .order-cookie-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+      .order-cookie-card { border-radius:15px; }
+      .order-cookie-details-badge { right:6px; bottom:6px; padding:4px 6px; font-size:.57rem; }
+      .order-stock-badge { left:6px; top:6px; padding:4px 6px; font-size:.56rem; }
+      .order-cookie-card-body { padding:9px; }
+      .order-cookie-name { font-size:.85rem; }
+      .order-cookie-price { margin-bottom:5px; font-size:.82rem; }
+      .order-cookie-description { margin-bottom:8px; font-size:.68rem; line-height:1.34; -webkit-line-clamp:2; }
+      .order-cookie-qty-label { display:none; }
+      .order-cookie-actions { justify-content:flex-end; }
+      .order-quantity-control { grid-template-columns:29px 24px 29px; }
+      .order-quantity-control button { width:29px; height:29px; }
+      .order-quantity-value { min-width:24px; font-size:.74rem; }
+      .order-pack-cta { grid-template-columns:1fr; gap:14px; }
+      .order-pack-button { width:100%; text-align:center; }
+      .order-fulfillment-grid,.order-form-grid { grid-template-columns:1fr; }
+      .order-form-group.full { grid-column:auto; }
+      .cookie-detail-dialog { width:min(94%,520px); max-height:92vh; border-radius:20px; }
+      .cookie-detail-layout { grid-template-columns:1fr; }
+      .cookie-carousel-viewport,.cookie-carousel-slide img { min-height:0; height:auto; aspect-ratio:16/10; }
+      .cookie-detail-content { padding:20px; }
+      .cookie-detail-name { padding-right:34px; }
+      .order-summary-panel { max-height:520px; }
     }
-
-
-    /* =========================================================
-       VERY SMALL MOBILE
-    ========================================================= */
-
-    @media (max-width: 390px) {
-
-      .order-panel {
-        padding:
-          14px;
-      }
-
-
-      .order-cookie-grid {
-        gap:
-          7px;
-      }
-
-
-      .order-cookie-card-body {
-        padding:
-          8px;
-      }
-
-
-      .order-quantity-control {
-        grid-template-columns:
-          27px 22px 27px;
-      }
-
-
-      .order-quantity-control button {
-        width:
-          27px;
-
-        height:
-          27px;
-      }
-
-
-      .order-quantity-value {
-        min-width:
-          22px;
-      }
-
+    @media (max-width:390px) {
+      .order-panel { padding:14px; }
+      .order-cookie-grid { gap:7px; }
+      .order-cookie-card-body { padding:8px; }
+      .order-quantity-control { grid-template-columns:27px 22px 27px; }
+      .order-quantity-control button { width:27px; height:27px; }
+      .order-quantity-value { min-width:22px; }
     }
-
   </style>
 
 </head>
@@ -2156,25 +612,11 @@
     ======================================================== -->
 
     <section class="order-section">
-
       <div class="container">
-
         <div class="order-layout">
 
-
-          <!-- =================================================
-               MAIN CHECKOUT COLUMN
-          ================================================== -->
-
-          <div class="order-main">
-
-
-            <!-- ===============================================
-                 STEP 1 — COOKIES
-            ================================================ -->
-
             <section
-              class="order-panel"
+              class="order-panel order-cookies-panel"
               id="cookies"
             >
 
@@ -2236,6 +678,8 @@
                           <small>Brown Butter Bliss</small>
                         </div>
                       </div>
+
+                      <span class="order-stock-badge" data-stock-badge></span>
 
                       <span class="order-cookie-details-badge">
                         Details
@@ -2342,6 +786,8 @@
                         </div>
                       </div>
 
+                      <span class="order-stock-badge" data-stock-badge></span>
+
                       <span class="order-cookie-details-badge">
                         Details
                       </span>
@@ -2446,6 +892,8 @@
                           <small>Campfire Crunch</small>
                         </div>
                       </div>
+
+                      <span class="order-stock-badge" data-stock-badge></span>
 
                       <span class="order-cookie-details-badge">
                         Details
@@ -2552,6 +1000,8 @@
                         </div>
                       </div>
 
+                      <span class="order-stock-badge" data-stock-badge></span>
+
                       <span class="order-cookie-details-badge">
                         Details
                       </span>
@@ -2627,11 +1077,7 @@
 
 
 
-            <!-- ===============================================
-                 GIRAFFE PACK HANDOFF
-            ================================================ -->
-
-            <section class="order-panel">
+            <section class="order-panel order-pack-panel">
 
               <div class="order-pack-cta">
 
@@ -2667,11 +1113,143 @@
 
 
 
-            <!-- ===============================================
-                 STEP 2 — FULFILLMENT
-            ================================================ -->
+            <section class="order-panel order-summary-panel">
 
-            <section class="order-panel">
+              <span class="order-step-label">
+                Your Batch
+              </span>
+
+              <h2>
+                Order Summary
+              </h2>
+
+
+              <div class="order-summary-scroll">
+
+                <p
+                  class="order-summary-empty"
+                  id="cart-empty"
+                >
+                  Your batch is empty.
+                  <br>
+                  Add a cookie or two. 🍪
+                </p>
+
+                <ul
+                  class="order-summary-items"
+                  id="cart-items"
+                ></ul>
+
+              </div>
+
+              <div class="order-summary-footer">
+
+              <div class="order-summary-lines">
+
+
+                <div class="order-summary-line">
+
+                  <span>
+                    Subtotal
+                  </span>
+
+                  <strong id="subtotal">
+                    $0.00
+                  </strong>
+
+                </div>
+
+
+                <div class="order-summary-line">
+
+                  <span>
+                    Delivery
+                  </span>
+
+                  <strong id="delivery-fee">
+                    $0.00
+                  </strong>
+
+                </div>
+
+
+                <div class="order-summary-line">
+
+                  <span>
+                    Tax
+                  </span>
+
+                  <strong id="tax">
+                    $0.00
+                  </strong>
+
+                </div>
+
+
+                <div class="order-summary-line order-summary-total">
+
+                  <span>
+                    Total
+                  </span>
+
+                  <strong id="total">
+                    $0.00
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <a
+                class="btn btn-gold order-summary-checkout-link"
+                href="#checkout"
+              >
+                Continue To Checkout
+              </a>
+
+
+              <button
+                type="button"
+                class="order-clear-cart"
+                id="clear-cart"
+                hidden
+              >
+                Clear batch
+              </button>
+
+              </div>
+
+            </section>
+
+
+
+            <section class="order-panel order-fresh-panel">
+
+              <div class="order-bertha-note">
+
+                <div class="order-bertha-note-icon">
+                  🍪
+                </div>
+
+                <div>
+
+                  <h3>
+                    Baked Fresh
+                  </h3>
+
+                  <p>
+                    OBA Cookies are baked in small batches,
+                    so flavors and quantities can sell out.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </section>
+
+            <section class="order-panel order-fulfillment-section">
 
               <div class="order-panel-heading">
 
@@ -3040,11 +1618,7 @@
 
 
 
-            <!-- ===============================================
-                 STEP 3 — CUSTOMER
-            ================================================ -->
-
-            <section class="order-panel">
+            <section class="order-panel order-customer-section">
 
               <div class="order-panel-heading">
 
@@ -3151,12 +1725,8 @@
 
 
 
-            <!-- ===============================================
-                 STEP 4 — PAYMENT
-            ================================================ -->
-
             <section
-              class="order-panel"
+              class="order-panel order-checkout-section"
               id="checkout"
             >
 
@@ -3212,157 +1782,9 @@
 
             </section>
 
-          </div>
-
-
-
-          <!-- =================================================
-               SIDEBAR
-          ================================================== -->
-
-          <aside class="order-sidebar">
-
-
-            <!-- SUMMARY -->
-
-            <section class="order-panel order-summary-panel">
-
-              <span class="order-step-label">
-                Your Batch
-              </span>
-
-              <h2>
-                Order Summary
-              </h2>
-
-
-              <p
-                class="order-summary-empty"
-                id="cart-empty"
-              >
-                Your batch is empty.
-                <br>
-                Add a cookie or two. 🍪
-              </p>
-
-
-              <ul
-                class="order-summary-items"
-                id="cart-items"
-              ></ul>
-
-
-              <div class="order-summary-lines">
-
-
-                <div class="order-summary-line">
-
-                  <span>
-                    Subtotal
-                  </span>
-
-                  <strong id="subtotal">
-                    $0.00
-                  </strong>
-
-                </div>
-
-
-                <div class="order-summary-line">
-
-                  <span>
-                    Delivery
-                  </span>
-
-                  <strong id="delivery-fee">
-                    $0.00
-                  </strong>
-
-                </div>
-
-
-                <div class="order-summary-line">
-
-                  <span>
-                    Tax
-                  </span>
-
-                  <strong id="tax">
-                    $0.00
-                  </strong>
-
-                </div>
-
-
-                <div class="order-summary-line order-summary-total">
-
-                  <span>
-                    Total
-                  </span>
-
-                  <strong id="total">
-                    $0.00
-                  </strong>
-
-                </div>
-
-              </div>
-
-
-              <a
-                class="btn btn-gold order-summary-checkout-link"
-                href="#checkout"
-              >
-                Continue To Checkout
-              </a>
-
-
-              <button
-                type="button"
-                class="order-clear-cart"
-                id="clear-cart"
-                hidden
-              >
-                Clear batch
-              </button>
-
-            </section>
-
-
-
-            <!-- FRESHNESS NOTE -->
-
-            <section class="order-panel">
-
-              <div class="order-bertha-note">
-
-                <div class="order-bertha-note-icon">
-                  🍪
-                </div>
-
-                <div>
-
-                  <h3>
-                    Baked Fresh
-                  </h3>
-
-                  <p>
-                    OBA Cookies are baked in small batches,
-                    so flavors and quantities can sell out.
-                  </p>
-
-                </div>
-
-              </div>
-
-            </section>
-
-          </aside>
 
         </div>
-
       </div>
-
     </section>
 
 
@@ -3458,11 +1880,14 @@
 
       <div class="cookie-detail-media">
 
-        <img
-          id="cookie-detail-image"
-          src="/images/brand/logo.png"
-          alt=""
-        >
+        <div class="cookie-carousel-viewport">
+          <div class="cookie-carousel-track" id="cookie-carousel-track"></div>
+
+          <button class="cookie-carousel-button prev" id="cookie-carousel-prev" type="button" aria-label="Previous cookie photo">‹</button>
+          <button class="cookie-carousel-button next" id="cookie-carousel-next" type="button" aria-label="Next cookie photo">›</button>
+
+          <div class="cookie-carousel-dots" id="cookie-carousel-dots" aria-label="Cookie photo gallery"></div>
+        </div>
 
       </div>
 
@@ -3498,6 +1923,11 @@
         >
           $0.00
         </span>
+
+        <span
+          class="cookie-detail-stock"
+          id="cookie-detail-stock"
+        ></span>
 
 
         <p
@@ -3983,892 +2413,317 @@
   ========================================================== -->
 
   <script>
-
-    document.addEventListener(
-      'DOMContentLoaded',
-      () => {
-
-
-        /* =====================================================
-           CONFIG
-        ====================================================== */
-
-        /*
-          TEMPORARY FRONT-END VALUES.
-
-          These are display values only until checkout is moved
-          to the secure backend.
-
-          The backend will eventually calculate:
-          - authoritative product prices
-          - delivery fees
-          - tax
-          - availability
-          - final total
-        */
-
-        const DELIVERY_FEE = 0;
-        const TAX_RATE = 0;
-
-
-
-        /* =====================================================
-           REQUIRE SHARED CART
-        ====================================================== */
-
-        if (!window.OBA_CART) {
-
-          console.error(
-            'OBA_CART is unavailable. Check /js/cart.js.'
-          );
-
-          return;
-
-        }
-
-
-
-        /* =====================================================
-           ELEMENTS
-        ====================================================== */
-
-        const productCards =
-          document.querySelectorAll(
-            '.order-cookie-card'
-          );
-
-
-        const cartItemsElement =
-          document.getElementById(
-            'cart-items'
-          );
-
-
-        const cartEmptyElement =
-          document.getElementById(
-            'cart-empty'
-          );
-
-
-        const subtotalElement =
-          document.getElementById(
-            'subtotal'
-          );
-
-
-        const deliveryFeeElement =
-          document.getElementById(
-            'delivery-fee'
-          );
-
-
-        const taxElement =
-          document.getElementById(
-            'tax'
-          );
-
-
-        const totalElement =
-          document.getElementById(
-            'total'
-          );
-
-
-        const clearCartButton =
-          document.getElementById(
-            'clear-cart'
-          );
-
-
-        const pickupRadio =
-          document.getElementById(
-            'fulfillment-pickup'
-          );
-
-
-        const deliveryRadio =
-          document.getElementById(
-            'fulfillment-delivery'
-          );
-
-
-        const pickupPanel =
-          document.getElementById(
-            'pickup-panel'
-          );
-
-
-        const deliveryPanel =
-          document.getElementById(
-            'delivery-panel'
-          );
-
-
-
-        /* =====================================================
-           DETAIL DIALOG
-        ====================================================== */
-
-        const cookieDialog =
-          document.getElementById(
-            'cookie-detail-dialog'
-          );
-
-
-        const cookieDialogClose =
-          document.getElementById(
-            'cookie-detail-close'
-          );
-
-
-        const cookieDialogImage =
-          document.getElementById(
-            'cookie-detail-image'
-          );
-
-
-        const cookieDialogName =
-          document.getElementById(
-            'cookie-detail-name'
-          );
-
-
-        const cookieDialogPrice =
-          document.getElementById(
-            'cookie-detail-price'
-          );
-
-
-        const cookieDialogDescription =
-          document.getElementById(
-            'cookie-detail-description'
-          );
-
-
-        const cookieDialogFlavorLink =
-          document.getElementById(
-            'cookie-detail-flavor-link'
-          );
-
-
-        const dialogQuantity =
-          document.getElementById(
-            'dialog-quantity'
-          );
-
-
-        const dialogQtyMinus =
-          document.getElementById(
-            'dialog-qty-minus'
-          );
-
-
-        const dialogQtyPlus =
-          document.getElementById(
-            'dialog-qty-plus'
-          );
-
-
-        let activeDialogProduct =
-          null;
-
-
-
-        /* =====================================================
-           MONEY FORMAT
-        ====================================================== */
-
-        function formatMoney(value) {
-
-          if (
-            window.OBA_CART &&
-            typeof window.OBA_CART.formatMoney === 'function'
-          ) {
-
-            return window.OBA_CART.formatMoney(
-              Number(value) || 0
-            );
-
-          }
-
-
-          return new Intl.NumberFormat(
-            'en-US',
-            {
-              style: 'currency',
-              currency: 'USD'
-            }
-          ).format(
-            Number(value) || 0
-          );
-
-        }
-
-
-
-        /* =====================================================
-           PRODUCT HELPERS
-        ====================================================== */
-
-        function productFromCard(card) {
-
-          return {
-
-            id:
-              card.dataset.productId,
-
-            name:
-              card.dataset.productName,
-
-            price:
-              Number(
-                card.dataset.productPrice
-              ),
-
-            image:
-              card.dataset.productImage || '',
-
-            description:
-              card.dataset.productDescription || '',
-
-            url:
-              card.dataset.productUrl || '/menu.html'
-
-          };
-
-        }
-
-
-
-        /* =====================================================
-           IMAGE FALLBACKS
-        ====================================================== */
-
-        productCards.forEach(card => {
-
-          const image =
-            card.querySelector(
-              '.order-cookie-image img'
-            );
-
-
-          const fallback =
-            card.querySelector(
-              '.order-cookie-image-fallback'
-            );
-
-
-          if (!image || !fallback) {
-            return;
-          }
-
-
-          image.addEventListener(
-            'error',
-            () => {
-
-              image.style.display =
-                'none';
-
-
-              fallback.style.display =
-                'grid';
-
-            }
-          );
-
-        });
-
-
-
-        /* =====================================================
-           FULFILLMENT
-        ====================================================== */
-
-        function getFulfillmentType() {
-
-          return deliveryRadio.checked
-            ? 'delivery'
-            : 'pickup';
-
-        }
-
-
-        function updateFulfillmentPanels() {
-
-          const isPickup =
-            pickupRadio.checked;
-
-
-          pickupPanel.hidden =
-            !isPickup;
-
-
-          deliveryPanel.hidden =
-            isPickup;
-
-
-          renderOrderSummary();
-
-        }
-
-
-
-        /* =====================================================
-           CARD QUANTITIES
-        ====================================================== */
-
-        function updateProductCardQuantities() {
-
-          const cart =
-            window.OBA_CART.getCart();
-
-
-          productCards.forEach(card => {
-
-            const quantityElement =
-              card.querySelector(
-                '[data-quantity]'
-              );
-
-
-            if (!quantityElement) {
-              return;
-            }
-
-
-            const cartItem =
-              cart[
-                card.dataset.productId
-              ];
-
-
-            quantityElement.textContent =
-              cartItem
-                ? cartItem.quantity
-                : 0;
-
-          });
-
-        }
-
-
-
-        /* =====================================================
-           DETAIL DIALOG QUANTITY
-        ====================================================== */
-
-        function updateDialogQuantity() {
-
-          if (!activeDialogProduct) {
-
-            dialogQuantity.textContent =
-              '0';
-
-            return;
-
-          }
-
-
-          const item =
-            window.OBA_CART.getItem(
-              activeDialogProduct.id
-            );
-
-
-          dialogQuantity.textContent =
-            item
-              ? item.quantity
-              : 0;
-
-        }
-
-
-
-        /* =====================================================
-           OPEN PRODUCT DIALOG
-        ====================================================== */
-
-        function openCookieDialog(card) {
-
-          const product =
-            productFromCard(card);
-
-
-          activeDialogProduct =
-            product;
-
-
-          cookieDialogName.textContent =
-            product.name;
-
-
-          cookieDialogPrice.textContent =
-            formatMoney(
-              product.price
-            );
-
-
-          cookieDialogDescription.textContent =
-            product.description;
-
-
-          cookieDialogFlavorLink.href =
-            product.url;
-
-
-          cookieDialogFlavorLink.setAttribute(
-            'aria-label',
-            `Learn more about ${product.name}`
-          );
-
-
-          cookieDialogImage.src =
-            product.image ||
-            '/images/brand/logo.png';
-
-
-          cookieDialogImage.alt =
-            product.name;
-
-
-          cookieDialogImage.onerror =
-            () => {
-
-              cookieDialogImage.onerror =
-                null;
-
-
-              cookieDialogImage.src =
-                '/images/brand/logo.png';
-
-            };
-
-
-          dialogQtyMinus.setAttribute(
-            'aria-label',
-            `Remove one ${product.name}`
-          );
-
-
-          dialogQtyPlus.setAttribute(
-            'aria-label',
-            `Add one ${product.name}`
-          );
-
-
-          updateDialogQuantity();
-
-
-          if (
-            typeof cookieDialog.showModal === 'function'
-          ) {
-
-            cookieDialog.showModal();
-
-          }
-
-        }
-
-
-
-        /* =====================================================
-           CLOSE PRODUCT DIALOG
-        ====================================================== */
-
-        function closeCookieDialog() {
-
-          if (cookieDialog.open) {
-
-            cookieDialog.close();
-
-          }
-
-
-          activeDialogProduct =
-            null;
-
-        }
-
-
-
-        /* =====================================================
-           ORDER SUMMARY
-        ====================================================== */
-
-        function renderOrderSummary() {
-
-          const cart =
-            window.OBA_CART.getCart();
-
-
-          const items =
-            Object.values(cart);
-
-
-          cartItemsElement.innerHTML =
-            '';
-
-
-          items.forEach(item => {
-
-            const lineTotal =
-              Number(item.price) *
-              Number(item.quantity);
-
-
-            const listItem =
-              document.createElement(
-                'li'
-              );
-
-
-            listItem.className =
-              'order-summary-item';
-
-
-            const name =
-              document.createElement(
-                'span'
-              );
-
-
-            name.className =
-              'order-summary-item-name';
-
-
-            name.textContent =
-              item.name;
-
-
-            const meta =
-              document.createElement(
-                'span'
-              );
-
-
-            meta.className =
-              'order-summary-item-meta';
-
-
-            meta.textContent =
-              `Qty ${item.quantity}`;
-
-
-            const price =
-              document.createElement(
-                'span'
-              );
-
-
-            price.className =
-              'order-summary-item-price';
-
-
-            price.textContent =
-              formatMoney(
-                lineTotal
-              );
-
-
-            listItem.append(
-              name,
-              meta,
-              price
-            );
-
-
-            cartItemsElement.appendChild(
-              listItem
-            );
-
-          });
-
-
-          const cartCount =
-            window.OBA_CART.count();
-
-
-          cartEmptyElement.hidden =
-            cartCount > 0;
-
-
-          clearCartButton.hidden =
-            cartCount === 0;
-
-
-          const subtotal =
-            Number(
-              window.OBA_CART.subtotal()
-            ) || 0;
-
-
-          const deliveryFee =
-            getFulfillmentType() === 'delivery'
-              ? DELIVERY_FEE
-              : 0;
-
-
-          const tax =
-            subtotal *
-            TAX_RATE;
-
-
-          const total =
-            subtotal +
-            deliveryFee +
-            tax;
-
-
-          subtotalElement.textContent =
-            formatMoney(
-              subtotal
-            );
-
-
-          deliveryFeeElement.textContent =
-            formatMoney(
-              deliveryFee
-            );
-
-
-          taxElement.textContent =
-            formatMoney(
-              tax
-            );
-
-
-          totalElement.textContent =
-            formatMoney(
-              total
-            );
-
-        }
-
-
-
-        /* =====================================================
-           PRODUCT CARD EVENTS
-        ====================================================== */
-
-        productCards.forEach(card => {
-
-          const product =
-            productFromCard(card);
-
-
-          const plusButton =
-            card.querySelector(
-              '.qty-plus'
-            );
-
-
-          const minusButton =
-            card.querySelector(
-              '.qty-minus'
-            );
-
-
-          const detailsButton =
-            card.querySelector(
-              '.order-cookie-details-trigger'
-            );
-
-
-          if (plusButton) {
-
-            plusButton.addEventListener(
-              'click',
-              () => {
-
-                window.OBA_CART.add(
-                  product,
-                  1
-                );
-
-              }
-            );
-
-          }
-
-
-          if (minusButton) {
-
-            minusButton.addEventListener(
-              'click',
-              () => {
-
-                window.OBA_CART.remove(
-                  product.id,
-                  1
-                );
-
-              }
-            );
-
-          }
-
-
-          if (detailsButton) {
-
-            detailsButton.addEventListener(
-              'click',
-              () => {
-
-                openCookieDialog(
-                  card
-                );
-
-              }
-            );
-
-          }
-
-        });
-
-
-
-        /* =====================================================
-           DIALOG EVENTS
-        ====================================================== */
-
-        cookieDialogClose.addEventListener(
-          'click',
-          closeCookieDialog
-        );
-
-
-        cookieDialog.addEventListener(
-          'click',
-          event => {
-
-            if (
-              event.target ===
-              cookieDialog
-            ) {
-
-              closeCookieDialog();
-
-            }
-
-          }
-        );
-
-
-        dialogQtyPlus.addEventListener(
-          'click',
-          () => {
-
-            if (!activeDialogProduct) {
-              return;
-            }
-
-
-            window.OBA_CART.add(
-              activeDialogProduct,
-              1
-            );
-
-          }
-        );
-
-
-        dialogQtyMinus.addEventListener(
-          'click',
-          () => {
-
-            if (!activeDialogProduct) {
-              return;
-            }
-
-
-            window.OBA_CART.remove(
-              activeDialogProduct.id,
-              1
-            );
-
-          }
-        );
-
-
-
-        /* =====================================================
-           CLEAR CART
-        ====================================================== */
-
-        clearCartButton.addEventListener(
-          'click',
-          () => {
-
-            const confirmed =
-              window.confirm(
-                'Clear your cookie batch?'
-              );
-
-
-            if (!confirmed) {
-              return;
-            }
-
-
-            window.OBA_CART.clear();
-
-          }
-        );
-
-
-
-        /* =====================================================
-           FULFILLMENT EVENTS
-        ====================================================== */
-
-        pickupRadio.addEventListener(
-          'change',
-          updateFulfillmentPanels
-        );
-
-
-        deliveryRadio.addEventListener(
-          'change',
-          updateFulfillmentPanels
-        );
-
-
-
-        /* =====================================================
-           SHARED CART EVENT
-        ====================================================== */
-
-        window.addEventListener(
-          'oba-cart-updated',
-          () => {
-
-            updateProductCardQuantities();
-
-            updateDialogQuantity();
-
-            renderOrderSummary();
-
-          }
-        );
-
-
-
-        /* =====================================================
-           INITIAL RENDER
-        ====================================================== */
-
-        updateProductCardQuantities();
-
-        updateDialogQuantity();
-
-        updateFulfillmentPanels();
-
-        renderOrderSummary();
-
+    document.addEventListener('DOMContentLoaded', () => {
+      const DELIVERY_FEE = 0;
+      const TAX_RATE = 0;
+
+      /* TEMPORARY DISPLAY INVENTORY.
+         Later this must come from the backend and be revalidated at checkout. */
+      const COOKIE_INVENTORY = {
+        'brown-butter-bliss': 12,
+        'plain-jane': 4,
+        'campfire-crunch': 2,
+        'blisscoff': 0
+      };
+      const LOW_STOCK_THRESHOLD = 5;
+
+      /* Add more real image paths here as each cookie gallery grows.
+         Missing images automatically fall back to the OBA logo. */
+      const COOKIE_GALLERIES = {
+        'brown-butter-bliss': ['/images/brown-butter-bliss.jpg'],
+        'plain-jane': ['/images/plain-jane.jpg'],
+        'campfire-crunch': ['/images/campfire-crunch.jpg'],
+        'blisscoff': ['/images/blisscoff.jpg']
+      };
+
+      if (!window.OBA_CART) {
+        console.error('OBA_CART is unavailable. Check /js/cart.js.');
+        return;
       }
-    );
 
+      const productCards = [...document.querySelectorAll('.order-cookie-card')];
+      const cartItemsElement = document.getElementById('cart-items');
+      const cartEmptyElement = document.getElementById('cart-empty');
+      const subtotalElement = document.getElementById('subtotal');
+      const deliveryFeeElement = document.getElementById('delivery-fee');
+      const taxElement = document.getElementById('tax');
+      const totalElement = document.getElementById('total');
+      const clearCartButton = document.getElementById('clear-cart');
+      const pickupRadio = document.getElementById('fulfillment-pickup');
+      const deliveryRadio = document.getElementById('fulfillment-delivery');
+      const pickupPanel = document.getElementById('pickup-panel');
+      const deliveryPanel = document.getElementById('delivery-panel');
+
+      const cookieDialog = document.getElementById('cookie-detail-dialog');
+      const cookieDialogClose = document.getElementById('cookie-detail-close');
+      const cookieDialogName = document.getElementById('cookie-detail-name');
+      const cookieDialogPrice = document.getElementById('cookie-detail-price');
+      const cookieDialogStock = document.getElementById('cookie-detail-stock');
+      const cookieDialogDescription = document.getElementById('cookie-detail-description');
+      const cookieDialogFlavorLink = document.getElementById('cookie-detail-flavor-link');
+      const dialogQuantity = document.getElementById('dialog-quantity');
+      const dialogQtyMinus = document.getElementById('dialog-qty-minus');
+      const dialogQtyPlus = document.getElementById('dialog-qty-plus');
+      const carouselTrack = document.getElementById('cookie-carousel-track');
+      const carouselDots = document.getElementById('cookie-carousel-dots');
+      const carouselPrev = document.getElementById('cookie-carousel-prev');
+      const carouselNext = document.getElementById('cookie-carousel-next');
+
+      let activeDialogProduct = null;
+      let activeGallery = [];
+      let activeSlide = 0;
+
+      function formatMoney(value) {
+        if (window.OBA_CART && typeof window.OBA_CART.formatMoney === 'function') {
+          return window.OBA_CART.formatMoney(Number(value) || 0);
+        }
+        return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(value)||0);
+      }
+
+      function productFromCard(card) {
+        return {
+          id: card.dataset.productId,
+          name: card.dataset.productName,
+          price: Number(card.dataset.productPrice),
+          image: card.dataset.productImage || '',
+          description: card.dataset.productDescription || '',
+          url: card.dataset.productUrl || '/menu.html'
+        };
+      }
+
+      function getInventory(productId) {
+        return Math.max(0, Number(COOKIE_INVENTORY[productId] ?? 0));
+      }
+
+      function getCartQuantity(productId) {
+        const item = window.OBA_CART.getItem(productId);
+        return item ? Number(item.quantity) || 0 : 0;
+      }
+
+      function stockLabel(productId) {
+        const available = getInventory(productId);
+        if (available === 0) return 'Sold Out';
+        if (available <= LOW_STOCK_THRESHOLD) return `Only ${available} left`;
+        return '';
+      }
+
+      function canAdd(productId) {
+        return getCartQuantity(productId) < getInventory(productId);
+      }
+
+      function safeAdd(product) {
+        if (!canAdd(product.id)) return;
+        window.OBA_CART.add(product, 1);
+      }
+
+      function renderInventory() {
+        productCards.forEach(card => {
+          const id = card.dataset.productId;
+          const available = getInventory(id);
+          const badge = card.querySelector('[data-stock-badge]');
+          const plus = card.querySelector('.qty-plus');
+          const minus = card.querySelector('.qty-minus');
+          const label = stockLabel(id);
+
+          card.classList.toggle('is-sold-out', available === 0);
+          badge.textContent = label;
+          badge.classList.toggle('is-visible', Boolean(label));
+          badge.classList.toggle('is-sold-out', available === 0);
+
+          if (plus) plus.disabled = !canAdd(id);
+          if (minus) minus.disabled = getCartQuantity(id) <= 0;
+        });
+
+        if (activeDialogProduct) {
+          const available = getInventory(activeDialogProduct.id);
+          const label = stockLabel(activeDialogProduct.id);
+          cookieDialogStock.textContent = label;
+          cookieDialogStock.classList.toggle('is-visible', Boolean(label));
+          cookieDialogStock.classList.toggle('is-sold-out', available === 0);
+          dialogQtyPlus.disabled = !canAdd(activeDialogProduct.id);
+          dialogQtyMinus.disabled = getCartQuantity(activeDialogProduct.id) <= 0;
+        }
+      }
+
+      productCards.forEach(card => {
+        const image = card.querySelector('.order-cookie-image img');
+        const fallback = card.querySelector('.order-cookie-image-fallback');
+        if (!image || !fallback) return;
+        image.addEventListener('error', () => {
+          image.style.display='none';
+          fallback.style.display='grid';
+        });
+      });
+
+      function getFulfillmentType() {
+        return deliveryRadio.checked ? 'delivery' : 'pickup';
+      }
+
+      function updateFulfillmentPanels() {
+        const isPickup = pickupRadio.checked;
+        pickupPanel.hidden = !isPickup;
+        deliveryPanel.hidden = isPickup;
+        renderOrderSummary();
+      }
+
+      function updateProductCardQuantities() {
+        productCards.forEach(card => {
+          const q = card.querySelector('[data-quantity]');
+          if (q) q.textContent = getCartQuantity(card.dataset.productId);
+        });
+        renderInventory();
+      }
+
+      function updateDialogQuantity() {
+        dialogQuantity.textContent = activeDialogProduct ? getCartQuantity(activeDialogProduct.id) : '0';
+        renderInventory();
+      }
+
+      function galleryFor(product) {
+        const configured = COOKIE_GALLERIES[product.id] || [];
+        const images = configured.filter(Boolean);
+        if (!images.length && product.image) images.push(product.image);
+        return images.length ? images : ['/images/brand/logo.png'];
+      }
+
+      function renderCarousel() {
+        carouselTrack.innerHTML = '';
+        carouselDots.innerHTML = '';
+
+        activeGallery.forEach((src,index) => {
+          const slide = document.createElement('div');
+          slide.className='cookie-carousel-slide';
+          const img=document.createElement('img');
+          img.src=src;
+          img.alt=`${activeDialogProduct.name} photo ${index+1}`;
+          img.addEventListener('error',()=>{ img.src='/images/brand/logo.png'; });
+          slide.appendChild(img);
+          carouselTrack.appendChild(slide);
+
+          const dot=document.createElement('button');
+          dot.type='button';
+          dot.className='cookie-carousel-dot';
+          dot.setAttribute('aria-label',`View photo ${index+1}`);
+          dot.addEventListener('click',()=>goToSlide(index));
+          carouselDots.appendChild(dot);
+        });
+
+        const multiple=activeGallery.length>1;
+        carouselPrev.hidden=!multiple;
+        carouselNext.hidden=!multiple;
+        carouselDots.hidden=!multiple;
+        goToSlide(0);
+      }
+
+      function goToSlide(index) {
+        if (!activeGallery.length) return;
+        activeSlide=(index+activeGallery.length)%activeGallery.length;
+        carouselTrack.style.transform=`translateX(-${activeSlide*100}%)`;
+        [...carouselDots.children].forEach((dot,i)=>dot.classList.toggle('is-active',i===activeSlide));
+      }
+
+      function openCookieDialog(card) {
+        const product=productFromCard(card);
+        activeDialogProduct=product;
+        cookieDialogName.textContent=product.name;
+        cookieDialogPrice.textContent=formatMoney(product.price);
+        cookieDialogDescription.textContent=product.description;
+        cookieDialogFlavorLink.href=product.url;
+        cookieDialogFlavorLink.setAttribute('aria-label',`Learn more about ${product.name}`);
+        dialogQtyMinus.setAttribute('aria-label',`Remove one ${product.name}`);
+        dialogQtyPlus.setAttribute('aria-label',`Add one ${product.name}`);
+        activeGallery=galleryFor(product);
+        renderCarousel();
+        updateDialogQuantity();
+        if (typeof cookieDialog.showModal==='function') cookieDialog.showModal();
+      }
+
+      function closeCookieDialog() {
+        if (cookieDialog.open) cookieDialog.close();
+        activeDialogProduct=null;
+        activeGallery=[];
+        activeSlide=0;
+      }
+
+      function renderOrderSummary() {
+        const items=Object.values(window.OBA_CART.getCart());
+        cartItemsElement.innerHTML='';
+
+        items.forEach(item=>{
+          const li=document.createElement('li');
+          li.className='order-summary-item';
+          const name=document.createElement('span');
+          name.className='order-summary-item-name';
+          name.textContent=item.name;
+          const meta=document.createElement('span');
+          meta.className='order-summary-item-meta';
+          meta.textContent=`Qty ${item.quantity}`;
+          const price=document.createElement('span');
+          price.className='order-summary-item-price';
+          price.textContent=formatMoney(Number(item.price)*Number(item.quantity));
+          li.append(name,meta,price);
+          cartItemsElement.appendChild(li);
+        });
+
+        const count=window.OBA_CART.count();
+        cartEmptyElement.hidden=count>0;
+        clearCartButton.hidden=count===0;
+
+        const subtotal=Number(window.OBA_CART.subtotal())||0;
+        const deliveryFee=getFulfillmentType()==='delivery'?DELIVERY_FEE:0;
+        const tax=subtotal*TAX_RATE;
+        const total=subtotal+deliveryFee+tax;
+
+        subtotalElement.textContent=formatMoney(subtotal);
+        deliveryFeeElement.textContent=formatMoney(deliveryFee);
+        taxElement.textContent=formatMoney(tax);
+        totalElement.textContent=formatMoney(total);
+      }
+
+      productCards.forEach(card=>{
+        const product=productFromCard(card);
+        card.querySelector('.qty-plus')?.addEventListener('click',()=>safeAdd(product));
+        card.querySelector('.qty-minus')?.addEventListener('click',()=>window.OBA_CART.remove(product.id,1));
+        card.querySelector('.order-cookie-details-trigger')?.addEventListener('click',()=>openCookieDialog(card));
+      });
+
+      cookieDialogClose.addEventListener('click',closeCookieDialog);
+      cookieDialog.addEventListener('click',event=>{ if(event.target===cookieDialog) closeCookieDialog(); });
+      carouselPrev.addEventListener('click',()=>goToSlide(activeSlide-1));
+      carouselNext.addEventListener('click',()=>goToSlide(activeSlide+1));
+
+      /* Swipe gallery on touch devices */
+      let touchStartX=null;
+      carouselTrack.addEventListener('touchstart',e=>{ touchStartX=e.changedTouches[0].clientX; },{passive:true});
+      carouselTrack.addEventListener('touchend',e=>{
+        if(touchStartX===null) return;
+        const delta=e.changedTouches[0].clientX-touchStartX;
+        if(Math.abs(delta)>45) goToSlide(activeSlide+(delta<0?1:-1));
+        touchStartX=null;
+      },{passive:true});
+
+      dialogQtyPlus.addEventListener('click',()=>{ if(activeDialogProduct) safeAdd(activeDialogProduct); });
+      dialogQtyMinus.addEventListener('click',()=>{ if(activeDialogProduct) window.OBA_CART.remove(activeDialogProduct.id,1); });
+
+      clearCartButton.addEventListener('click',()=>{
+        if(window.confirm('Clear your cookie batch?')) window.OBA_CART.clear();
+      });
+
+      pickupRadio.addEventListener('change',updateFulfillmentPanels);
+      deliveryRadio.addEventListener('change',updateFulfillmentPanels);
+
+      window.addEventListener('oba-cart-updated',()=>{
+        updateProductCardQuantities();
+        updateDialogQuantity();
+        renderOrderSummary();
+      });
+
+      updateProductCardQuantities();
+      updateDialogQuantity();
+      updateFulfillmentPanels();
+      renderOrderSummary();
+      renderInventory();
+    });
   </script>
 
 </body>
