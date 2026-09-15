@@ -161,6 +161,7 @@
       text-align: center;
     }
     .order-intro h1 { margin-bottom: 24px; }
+    
     .order-intro .hero-brand-banner {
       display: block;
       width: min(100%, 860px);
@@ -470,178 +471,180 @@
 
 
   <!-- =========================================================
-       HEADER
-  ========================================================== -->
+     HEADER
+========================================================== -->
 
-  <header class="site-header">
+<header class="site-header">
 
-    <div class="nav-wrap">
+  <div class="nav-wrap">
 
 
-      <!-- BRAND -->
-      <a
-        href="/"
-        class="logo"
+    <!-- BRAND -->
+    <a
+      href="/"
+      class="logo"
+      aria-label="Olly's Baked Assortments home"
+    >
+
+      <img
+        src="/images/brand/logo.png"
+        alt=""
+        class="logo-mark"
       >
 
-        <img
-          src="/images/brand/logo.png"
-          alt=""
-          class="logo-mark"
-        >
+      <span>
+        Olly's Baked Assortments
+      </span>
 
-        <span>
-          Olly's Baked Assortments
+    </a>
+
+
+    <!-- MOBILE CART + MENU -->
+    <div class="mobile-header-actions">
+
+      <button
+        class="cart-trigger mobile-cart-trigger"
+        type="button"
+        data-cart-open
+        aria-label="Open your cookie cart"
+        aria-expanded="false"
+      >
+
+        <span class="mobile-cart-label">
+          Cart
         </span>
 
-      </a>
-
-
-      <!-- MOBILE CART + MENU -->
-      <div class="mobile-header-actions">
-
-        <button
-          class="cart-trigger mobile-cart-trigger"
-          type="button"
-          data-cart-open
-          aria-label="Open your cookie cart"
-          aria-expanded="false"
+        <span
+          class="cart-count"
+          data-cart-count
+          hidden
         >
+          0
+        </span>
 
-          <span class="mobile-cart-label">
-            Cart
-          </span>
-
-          <span
-            class="cart-count"
-            data-cart-count
-            hidden
-          >
-            0
-          </span>
-
-        </button>
+      </button>
 
 
-        <button
-          class="nav-toggle"
-          type="button"
-          aria-label="Toggle menu"
-          aria-expanded="false"
-        >
-
-          <span></span>
-          <span></span>
-          <span></span>
-
-        </button>
-
-      </div>
-
-
-      <!-- MAIN NAV -->
-      <nav
-        class="main-nav"
-        aria-label="Main navigation"
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-label="Toggle menu"
+        aria-expanded="false"
       >
 
-        <ul>
+        <span></span>
+        <span></span>
+        <span></span>
 
-          <li>
-            <a href="/">
-              Home
-            </a>
-          </li>
-
-          <li>
-            <a href="/menu.html">
-              Flavors
-            </a>
-          </li>
-
-          <li>
-            <a href="/gift-boxes.html">
-              Giraffe Packs
-            </a>
-          </li>
-
-          <li>
-            <a href="/pricing.html">
-              Pricing &amp; Ordering
-            </a>
-          </li>
-
-          <li>
-            <a href="/events.html">
-              Events
-            </a>
-          </li>
-
-          <li>
-            <a href="/reviews.html">
-              Reviews
-            </a>
-          </li>
-
-          <li>
-            <a href="/about.html">
-              About Olly
-            </a>
-          </li>
-
-          <li>
-            <a href="/faq.html">
-              FAQ
-            </a>
-          </li>
-
-
-          <li class="nav-order">
-
-            <a
-              href="/order.html"
-              aria-current="page"
-            >
-              Order
-            </a>
-
-          </li>
-
-
-          <li class="nav-cart">
-
-            <button
-              class="cart-trigger"
-              type="button"
-              data-cart-open
-              aria-label="Open your cookie cart"
-              aria-expanded="false"
-            >
-
-              <span>
-                Cart
-              </span>
-
-              <span
-                class="cart-count"
-                data-cart-count
-                hidden
-              >
-                0
-              </span>
-
-            </button>
-
-          </li>
-
-        </ul>
-
-      </nav>
+      </button>
 
     </div>
 
-  </header>
 
+    <!-- MAIN NAV -->
+    <nav
+      class="main-nav"
+      aria-label="Main navigation"
+    >
+
+      <ul>
+
+        <li>
+          <a href="/">
+            Home
+          </a>
+        </li>
+
+        <li>
+          <a href="/menu.html">
+            Flavors
+          </a>
+        </li>
+
+        <li>
+          <a href="/gift-boxes.html">
+            Giraffe Packs
+          </a>
+        </li>
+
+        <li>
+          <a href="/pricing.html">
+            Pricing &amp; Ordering
+          </a>
+        </li>
+
+        <li>
+          <a href="/events.html">
+            Events
+          </a>
+        </li>
+
+        <li>
+          <a href="/reviews.html">
+            Reviews
+          </a>
+        </li>
+
+        <li>
+          <a href="/about.html">
+            About Olly
+          </a>
+        </li>
+
+        <li>
+          <a href="/faq.html">
+            FAQ
+          </a>
+        </li>
+
+
+        <!-- CURRENT PAGE -->
+        <li class="nav-order">
+
+          <a
+            href="/order.html"
+            aria-current="page"
+          >
+            Order
+          </a>
+
+        </li>
+
+
+        <!-- DESKTOP CART -->
+        <li class="nav-cart">
+
+          <button
+            class="cart-trigger"
+            type="button"
+            data-cart-open
+            aria-label="Open your cookie cart"
+            aria-expanded="false"
+          >
+
+            <span>
+              Cart
+            </span>
+
+            <span
+              class="cart-count"
+              data-cart-count
+              hidden
+            >
+              0
+            </span>
+
+          </button>
+
+        </li>
+
+      </ul>
+
+    </nav>
+
+  </div>
+
+</header>
 
 
   <main>
@@ -682,8 +685,10 @@
             Cookies Worth The Walk
           </span>
 
-          <h1>
-            Build Your Batch
+          <h1 class="order-hero-title">
+            <span class="order-title-white">Build</span>
+            <em class="order-title-pink">Your</em>
+            <em class="order-title-gold">Batch</em>
           </h1>
 
           <div class="hero-brand-banner">
