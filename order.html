@@ -145,84 +145,83 @@
 
   <!-- =========================================================
        ORDER PAGE STYLES
+       Hero intentionally uses the shared homepage component.
   ========================================================== -->
 
   <style>
-    .order-page { color: var(--brown-dark, #4d3026); }
-    .order-page *, .order-page *::before, .order-page *::after { box-sizing: border-box; }
-    .order-hero { position: relative; overflow: hidden; }
-    .order-hero .container { position: relative; z-index: 2; }
 
-    /* Match the established homepage/flavor-page hero rhythm:
-       eyebrow → heading → OBA banner → copy → CTAs */
-    .order-intro {
-      max-width: 900px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    .order-intro h1 { margin-bottom: 24px; }
-    
-    .order-intro .hero-brand-banner {
-      display: block;
-      width: min(100%, 860px);
-      margin: 0 auto 22px;
-      overflow: hidden;
-      border: 6px solid #fff;
-      border-radius: 24px;
-      box-shadow: 10px 10px 0 rgba(76, 42, 24, .38);
-    }
-    .order-intro .hero-brand-banner img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-    .order-intro .order-hero-copy {
-      max-width: 700px;
-      margin: 0 auto 20px;
-      color: #fff8ef;
-      font-size: 1rem;
-      line-height: 1.65;
-    }
-    .order-intro .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 0;
-    }
-    .order-intro .hero-actions .btn {
-      min-width: 190px;
-    }
-    .order-intro .order-cart-hero-button {
-      cursor: pointer;
+    .order-page {
+      color: var(--brown-dark, #4d3026);
     }
 
-    .order-section { padding: 64px 0 78px; }
+    .order-page *,
+    .order-page *::before,
+    .order-page *::after {
+      box-sizing: border-box;
+    }
+
+
+    /* =========================================================
+       ORDER AREA
+    ========================================================== */
+
+    .order-section {
+      padding: 64px 0 78px;
+    }
+
 
     /* DESKTOP COMMERCE GRID:
-       row 1 lineup + summary, row 2 pack + fresh, later steps full width */
+       row 1 lineup + summary
+       row 2 pack + fresh
+       later steps full width */
+
     .order-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.55fr) minmax(285px, .72fr);
+
+      grid-template-columns:
+        minmax(0, 1.55fr)
+        minmax(285px, .72fr);
+
       grid-template-areas:
         "cookies summary"
         "pack fresh"
         "fulfillment fulfillment"
         "customer customer"
         "checkout checkout";
+
       gap: 28px;
       align-items: stretch;
     }
-    .order-cookies-panel { grid-area: cookies; }
-    .order-summary-panel { grid-area: summary; }
-    .order-pack-panel { grid-area: pack; }
-    .order-fresh-panel { grid-area: fresh; }
-    .order-fulfillment-section { grid-area: fulfillment; }
-    .order-customer-section { grid-area: customer; }
-    .order-checkout-section { grid-area: checkout; }
 
-    /* Steps 2–4 truly occupy the entire commerce row.
-       Their inner forms stay intentionally constrained for readability. */
+    .order-cookies-panel {
+      grid-area: cookies;
+    }
+
+    .order-summary-panel {
+      grid-area: summary;
+    }
+
+    .order-pack-panel {
+      grid-area: pack;
+    }
+
+    .order-fresh-panel {
+      grid-area: fresh;
+    }
+
+    .order-fulfillment-section {
+      grid-area: fulfillment;
+    }
+
+    .order-customer-section {
+      grid-area: customer;
+    }
+
+    .order-checkout-section {
+      grid-area: checkout;
+    }
+
+
     .order-fulfillment-section,
     .order-customer-section,
     .order-checkout-section {
@@ -234,106 +233,602 @@
       justify-self: stretch;
     }
 
+
+    /* =========================================================
+       PANELS
+    ========================================================== */
+
     .order-panel {
-      position: relative; overflow: hidden; padding: 26px;
+      position: relative;
+      overflow: hidden;
+      padding: 26px;
+
       background: var(--cream, #fffaf1);
-      border: 2px solid rgba(88,55,42,.12); border-radius: 26px;
-      box-shadow: 0 10px 28px rgba(73,45,32,.07);
+
+      border: 2px solid rgba(88, 55, 42, .12);
+      border-radius: 26px;
+
+      box-shadow: 0 10px 28px rgba(73, 45, 32, .07);
     }
-    .order-panel h2, .order-panel h3, .order-panel p { color: var(--brown-dark,#4d3026); }
-    .order-panel-heading { margin-bottom: 22px; text-align: center; }
+
+    .order-panel h2,
+    .order-panel h3,
+    .order-panel p {
+      color: var(--brown-dark, #4d3026);
+    }
+
+    .order-panel-heading {
+      margin-bottom: 22px;
+      text-align: center;
+    }
+
     .order-step-label {
-      display: inline-flex; align-items: center; min-height: 28px; margin-bottom: 8px; padding: 5px 10px;
-      background: rgba(88,55,42,.07); border-radius: 999px; color: rgba(77,48,38,.72);
-      font-size: .72rem; font-weight: 900; letter-spacing: .09em; line-height: 1; text-transform: uppercase;
-    }
-    .order-panel-heading h2 { margin: 0 0 7px; font-size: clamp(1.55rem,2.2vw,2.05rem); }
-    .order-panel-heading p { max-width: 660px; margin: 0 auto; font-size: .94rem; line-height: 1.55; opacity: .78; }
+      display: inline-flex;
+      align-items: center;
 
-    /* COOKIE GRID */
-    .order-cookie-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 13px; }
+      min-height: 28px;
+      margin-bottom: 8px;
+      padding: 5px 10px;
+
+      background: rgba(88, 55, 42, .07);
+      border-radius: 999px;
+
+      color: rgba(77, 48, 38, .72);
+
+      font-size: .72rem;
+      font-weight: 900;
+      letter-spacing: .09em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .order-panel-heading h2 {
+      margin: 0 0 7px;
+      font-size: clamp(1.55rem, 2.2vw, 2.05rem);
+    }
+
+    .order-panel-heading p {
+      max-width: 660px;
+      margin: 0 auto;
+
+      font-size: .94rem;
+      line-height: 1.55;
+      opacity: .78;
+    }
+
+
+    /* =========================================================
+       COOKIE GRID
+    ========================================================== */
+
+    .order-cookie-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 13px;
+    }
+
     .order-cookie-card {
-      display: flex; flex-direction: column; min-width: 0; overflow: hidden; background: #fff;
-      border: 2px solid rgba(88,55,42,.11); border-radius: 18px;
-      box-shadow: 0 5px 16px rgba(73,45,32,.055);
-      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, opacity .16s ease;
+      display: flex;
+      flex-direction: column;
+
+      min-width: 0;
+      overflow: hidden;
+
+      background: #fff;
+
+      border: 2px solid rgba(88, 55, 42, .11);
+      border-radius: 18px;
+
+      box-shadow: 0 5px 16px rgba(73, 45, 32, .055);
+
+      transition:
+        transform .16s ease,
+        box-shadow .16s ease,
+        border-color .16s ease,
+        opacity .16s ease;
     }
-    .order-cookie-card:hover { transform: translateY(-2px); border-color: rgba(88,55,42,.22); box-shadow: 0 9px 22px rgba(73,45,32,.085); }
-    .order-cookie-card.is-sold-out { opacity: .72; }
-    .order-cookie-details-trigger { display: block; width: 100%; padding: 0; border: 0; background: transparent; text-align: inherit; cursor: pointer; }
-    .order-cookie-image { position: relative; width: 100%; aspect-ratio: 1/.82; overflow: hidden; background: rgba(88,55,42,.055); }
-    .order-cookie-image img { display: block; width: 100%; height: 100%; object-fit: cover; }
-    .order-cookie-image-fallback { display:none; position:absolute; inset:0; place-items:center; padding:18px; background:var(--cream,#fffaf1); color:rgba(77,48,38,.58); text-align:center; }
-    .order-cookie-image-fallback span { display:block; margin-bottom:5px; font-size:1.7rem; }
-    .order-cookie-image-fallback small { font-size:.7rem; font-weight:800; }
+
+    .order-cookie-card:hover {
+      transform: translateY(-2px);
+
+      border-color: rgba(88, 55, 42, .22);
+
+      box-shadow: 0 9px 22px rgba(73, 45, 32, .085);
+    }
+
+    .order-cookie-card.is-sold-out {
+      opacity: .72;
+    }
+
+    .order-cookie-details-trigger {
+      display: block;
+
+      width: 100%;
+      padding: 0;
+
+      border: 0;
+      background: transparent;
+
+      text-align: inherit;
+      cursor: pointer;
+    }
+
+    .order-cookie-image {
+      position: relative;
+
+      width: 100%;
+      aspect-ratio: 1 / .82;
+
+      overflow: hidden;
+
+      background: rgba(88, 55, 42, .055);
+    }
+
+    .order-cookie-image img {
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+    .order-cookie-image-fallback {
+      display: none;
+      position: absolute;
+      inset: 0;
+
+      place-items: center;
+
+      padding: 18px;
+
+      background: var(--cream, #fffaf1);
+      color: rgba(77, 48, 38, .58);
+
+      text-align: center;
+    }
+
+    .order-cookie-image-fallback span {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 1.7rem;
+    }
+
+    .order-cookie-image-fallback small {
+      font-size: .7rem;
+      font-weight: 800;
+    }
+
     .order-cookie-details-badge {
-      position:absolute; right:8px; bottom:8px; padding:5px 8px; background:rgba(255,250,241,.94);
-      border:1px solid rgba(88,55,42,.12); border-radius:999px; color:var(--brown-dark,#4d3026);
-      font-size:.64rem; font-weight:900; box-shadow:0 3px 10px rgba(73,45,32,.08);
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+
+      padding: 5px 8px;
+
+      background: rgba(255, 250, 241, .94);
+
+      border: 1px solid rgba(88, 55, 42, .12);
+      border-radius: 999px;
+
+      color: var(--brown-dark, #4d3026);
+
+      font-size: .64rem;
+      font-weight: 900;
+
+      box-shadow: 0 3px 10px rgba(73, 45, 32, .08);
     }
+
     .order-stock-badge {
-      position:absolute; left:8px; top:8px; z-index:2; display:none; padding:5px 8px; border-radius:999px;
-      background:#fff3c7; border:1px solid rgba(88,55,42,.14); color:var(--brown-dark,#4d3026);
-      font-size:.62rem; font-weight:900; box-shadow:0 3px 10px rgba(73,45,32,.08);
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      z-index: 2;
+
+      display: none;
+
+      padding: 5px 8px;
+
+      border-radius: 999px;
+
+      background: #fff3c7;
+      border: 1px solid rgba(88, 55, 42, .14);
+
+      color: var(--brown-dark, #4d3026);
+
+      font-size: .62rem;
+      font-weight: 900;
+
+      box-shadow: 0 3px 10px rgba(73, 45, 32, .08);
     }
-    .order-stock-badge.is-visible { display:inline-flex; }
-    .order-stock-badge.is-sold-out { background:var(--brown-dark,#4d3026); color:#fff; }
-    .order-cookie-card-body { display:flex; flex:1; flex-direction:column; padding:12px; }
-    .order-cookie-name { margin:0 0 4px; color:var(--brown-dark,#4d3026); font-size:.98rem; line-height:1.18; }
-    .order-cookie-price { display:block; margin-bottom:7px; color:var(--brown-dark,#4d3026); font-size:.91rem; font-weight:900; }
-    .order-cookie-description { display:-webkit-box; overflow:hidden; margin:0 0 11px; color:rgba(77,48,38,.75); font-size:.76rem; line-height:1.38; -webkit-box-orient:vertical; -webkit-line-clamp:3; }
-    .order-cookie-actions { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:auto; }
-    .order-cookie-qty-label { color:rgba(77,48,38,.63); font-size:.67rem; font-weight:900; text-transform:uppercase; letter-spacing:.045em; }
-    .order-quantity-control { display:inline-grid; grid-template-columns:31px 27px 31px; align-items:center; overflow:hidden; flex-shrink:0; background:var(--cream,#fffaf1); border:1.5px solid rgba(88,55,42,.16); border-radius:999px; }
-    .order-quantity-control button { display:grid; place-items:center; width:31px; height:31px; padding:0; border:0; background:transparent; color:var(--brown-dark,#4d3026); font:inherit; font-size:1rem; font-weight:900; cursor:pointer; }
-    .order-quantity-control button:hover:not(:disabled) { background:rgba(88,55,42,.08); }
-    .order-quantity-control button:disabled { opacity:.28; cursor:not-allowed; }
-    .order-quantity-value { min-width:27px; color:var(--brown-dark,#4d3026); text-align:center; font-size:.79rem; font-weight:900; }
 
-    /* ROW 2 */
-    .order-pack-panel, .order-fresh-panel { display:flex; align-items:stretch; }
-    .order-pack-cta { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:20px; width:100%; padding:20px; background:#fff; border:2px solid rgba(88,55,42,.11); border-radius:20px; }
-    .order-pack-cta-copy h3 { margin:0 0 6px; }
-    .order-pack-cta-copy p { margin:0; color:rgba(77,48,38,.76); font-size:.9rem; line-height:1.5; }
-    .order-pack-button { white-space:nowrap; }
-    .order-fresh-panel .order-bertha-note { width:100%; margin:0; align-self:stretch; align-items:center; }
+    .order-stock-badge.is-visible {
+      display: inline-flex;
+    }
 
-    /* FULFILLMENT / FORMS */
-    .order-fulfillment-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
-    .order-fulfillment-choice { position:relative; }
-    .order-fulfillment-choice input { position:absolute; opacity:0; pointer-events:none; }
-    .order-fulfillment-choice label { display:block; height:100%; padding:18px; background:#fff; border:2px solid rgba(88,55,42,.13); border-radius:19px; cursor:pointer; transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease; text-align:center; }
-    .order-fulfillment-choice label:hover { transform:translateY(-1px); }
-    .order-fulfillment-choice input:checked + label { border-color:var(--brown-dark,#4d3026); box-shadow:0 0 0 4px rgba(88,55,42,.055); }
-    .order-fulfillment-icon { display:block; margin-bottom:8px; font-size:1.7rem; }
-    .order-fulfillment-choice h3 { margin:0 0 5px; font-size:1.05rem; }
-    .order-fulfillment-choice p { margin:0; color:rgba(77,48,38,.76); font-size:.84rem; line-height:1.45; }
-    .order-fulfillment-panel { margin-top:16px; padding:18px; background:rgba(88,55,42,.045); border-radius:18px; }
-    .order-fulfillment-panel[hidden] { display:none; }
-    .order-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:15px; max-width:900px; margin:0 auto; }
-    .order-form-group { display:flex; flex-direction:column; gap:6px; }
-    .order-form-group.full { grid-column:1/-1; }
-    .order-form-group label { color:var(--brown-dark,#4d3026); font-size:.82rem; font-weight:900; }
-    .order-form-group input,.order-form-group select,.order-form-group textarea { width:100%; padding:12px 13px; background:#fff; border:2px solid rgba(88,55,42,.14); border-radius:13px; color:var(--brown-dark,#4d3026); font:inherit; }
-    .order-form-group textarea { min-height:100px; resize:vertical; }
-    .order-form-group input:focus,.order-form-group select:focus,.order-form-group textarea:focus { outline:none; border-color:var(--brown-dark,#4d3026); box-shadow:0 0 0 3px rgba(88,55,42,.07); }
-    .order-field-help { margin:11px auto 0; max-width:900px; color:rgba(77,48,38,.68); font-size:.78rem; line-height:1.45; }
-    .order-bertha-note { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:start; gap:12px; margin:16px auto 0; max-width:900px; padding:15px; background:#fff; border:1.5px solid rgba(88,55,42,.09); border-radius:15px; color:var(--brown-dark,#4d3026); }
-    .order-bertha-note-icon { font-size:1.6rem; line-height:1; }
-    .order-bertha-note h3 { margin:0 0 4px; font-size:.96rem; }
-    .order-bertha-note p { margin:0; color:rgba(77,48,38,.78); font-size:.82rem; line-height:1.5; }
+    .order-stock-badge.is-sold-out {
+      background: var(--brown-dark, #4d3026);
+      color: #fff;
+    }
 
-    /* SUMMARY: outer card stays in row 1, item list scrolls */
+    .order-cookie-card-body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+
+      padding: 12px;
+    }
+
+    .order-cookie-name {
+      margin: 0 0 4px;
+
+      color: var(--brown-dark, #4d3026);
+
+      font-size: .98rem;
+      line-height: 1.18;
+    }
+
+    .order-cookie-price {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: var(--brown-dark, #4d3026);
+
+      font-size: .91rem;
+      font-weight: 900;
+    }
+
+    .order-cookie-description {
+      display: -webkit-box;
+      overflow: hidden;
+
+      margin: 0 0 11px;
+
+      color: rgba(77, 48, 38, .75);
+
+      font-size: .76rem;
+      line-height: 1.38;
+
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+
+    .order-cookie-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .order-cookie-qty-label {
+      color: rgba(77, 48, 38, .63);
+
+      font-size: .67rem;
+      font-weight: 900;
+
+      text-transform: uppercase;
+      letter-spacing: .045em;
+    }
+
+    .order-quantity-control {
+      display: inline-grid;
+      grid-template-columns: 31px 27px 31px;
+      align-items: center;
+
+      overflow: hidden;
+      flex-shrink: 0;
+
+      background: var(--cream, #fffaf1);
+
+      border: 1.5px solid rgba(88, 55, 42, .16);
+      border-radius: 999px;
+    }
+
+    .order-quantity-control button {
+      display: grid;
+      place-items: center;
+
+      width: 31px;
+      height: 31px;
+      padding: 0;
+
+      border: 0;
+      background: transparent;
+
+      color: var(--brown-dark, #4d3026);
+
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 900;
+
+      cursor: pointer;
+    }
+
+    .order-quantity-control button:hover:not(:disabled) {
+      background: rgba(88, 55, 42, .08);
+    }
+
+    .order-quantity-control button:disabled {
+      opacity: .28;
+      cursor: not-allowed;
+    }
+
+    .order-quantity-value {
+      min-width: 27px;
+
+      color: var(--brown-dark, #4d3026);
+
+      text-align: center;
+
+      font-size: .79rem;
+      font-weight: 900;
+    }
+
+
+    /* =========================================================
+       ROW 2
+    ========================================================== */
+
+    .order-pack-panel,
+    .order-fresh-panel {
+      display: flex;
+      align-items: stretch;
+    }
+
+    .order-pack-cta {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+
+      gap: 20px;
+
+      width: 100%;
+      padding: 20px;
+
+      background: #fff;
+
+      border: 2px solid rgba(88, 55, 42, .11);
+      border-radius: 20px;
+    }
+
+    .order-pack-cta-copy h3 {
+      margin: 0 0 6px;
+    }
+
+    .order-pack-cta-copy p {
+      margin: 0;
+
+      color: rgba(77, 48, 38, .76);
+
+      font-size: .9rem;
+      line-height: 1.5;
+    }
+
+    .order-pack-button {
+      white-space: nowrap;
+    }
+
+    .order-fresh-panel .order-bertha-note {
+      width: 100%;
+      margin: 0;
+
+      align-self: stretch;
+      align-items: center;
+    }
+
+
+    /* =========================================================
+       FULFILLMENT / FORMS
+    ========================================================== */
+
+    .order-fulfillment-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .order-fulfillment-choice {
+      position: relative;
+    }
+
+    .order-fulfillment-choice input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .order-fulfillment-choice label {
+      display: block;
+
+      height: 100%;
+      padding: 18px;
+
+      background: #fff;
+
+      border: 2px solid rgba(88, 55, 42, .13);
+      border-radius: 19px;
+
+      cursor: pointer;
+
+      transition:
+        transform .15s ease,
+        border-color .15s ease,
+        box-shadow .15s ease;
+
+      text-align: center;
+    }
+
+    .order-fulfillment-choice label:hover {
+      transform: translateY(-1px);
+    }
+
+    .order-fulfillment-choice input:checked + label {
+      border-color: var(--brown-dark, #4d3026);
+      box-shadow: 0 0 0 4px rgba(88, 55, 42, .055);
+    }
+
+    .order-fulfillment-icon {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.7rem;
+    }
+
+    .order-fulfillment-choice h3 {
+      margin: 0 0 5px;
+      font-size: 1.05rem;
+    }
+
+    .order-fulfillment-choice p {
+      margin: 0;
+
+      color: rgba(77, 48, 38, .76);
+
+      font-size: .84rem;
+      line-height: 1.45;
+    }
+
+    .order-fulfillment-panel {
+      margin-top: 16px;
+      padding: 18px;
+
+      background: rgba(88, 55, 42, .045);
+
+      border-radius: 18px;
+    }
+
+    .order-fulfillment-panel[hidden] {
+      display: none;
+    }
+
+    .order-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+
+      gap: 15px;
+
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .order-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .order-form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .order-form-group label {
+      color: var(--brown-dark, #4d3026);
+
+      font-size: .82rem;
+      font-weight: 900;
+    }
+
+    .order-form-group input,
+    .order-form-group select,
+    .order-form-group textarea {
+      width: 100%;
+
+      padding: 12px 13px;
+
+      background: #fff;
+
+      border: 2px solid rgba(88, 55, 42, .14);
+      border-radius: 13px;
+
+      color: var(--brown-dark, #4d3026);
+
+      font: inherit;
+    }
+
+    .order-form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .order-form-group input:focus,
+    .order-form-group select:focus,
+    .order-form-group textarea:focus {
+      outline: none;
+
+      border-color: var(--brown-dark, #4d3026);
+
+      box-shadow: 0 0 0 3px rgba(88, 55, 42, .07);
+    }
+
+    .order-field-help {
+      max-width: 900px;
+      margin: 11px auto 0;
+
+      color: rgba(77, 48, 38, .68);
+
+      font-size: .78rem;
+      line-height: 1.45;
+    }
+
+    .order-bertha-note {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: start;
+
+      gap: 12px;
+
+      max-width: 900px;
+      margin: 16px auto 0;
+      padding: 15px;
+
+      background: #fff;
+
+      border: 1.5px solid rgba(88, 55, 42, .09);
+      border-radius: 15px;
+
+      color: var(--brown-dark, #4d3026);
+    }
+
+    .order-bertha-note-icon {
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+
+    .order-bertha-note h3 {
+      margin: 0 0 4px;
+      font-size: .96rem;
+    }
+
+    .order-bertha-note p {
+      margin: 0;
+
+      color: rgba(77, 48, 38, .78);
+
+      font-size: .82rem;
+      line-height: 1.5;
+    }
+
+
+    /* =========================================================
+       ORDER SUMMARY
+    ========================================================== */
+
     .order-summary-panel {
-      display:flex;
-      flex-direction:column;
-      min-height:0;
-      max-height:100%;
-      color:var(--brown-dark,#4d3026);
-    }
-    .order-summary-panel h2 { margin:0 0 10px; }
+      display: flex;
+      flex-direction: column;
 
-    /* Explicit contrast guard against global hero/footer/light-text rules. */
+      min-height: 0;
+      max-height: 100%;
+
+      color: var(--brown-dark, #4d3026);
+    }
+
+    .order-summary-panel h2 {
+      margin: 0 0 10px;
+    }
+
     .order-summary-panel,
     .order-summary-panel h2,
     .order-summary-panel span,
@@ -342,126 +837,691 @@
     .order-summary-panel .order-summary-item-price,
     .order-summary-panel .order-summary-line,
     .order-summary-panel .order-summary-total {
-      color:var(--brown-dark,#4d3026) !important;
+      color: var(--brown-dark, #4d3026) !important;
     }
+
     .order-summary-panel .order-summary-item-meta,
     .order-summary-panel .order-summary-empty {
-      color:rgba(77,48,38,.62) !important;
+      color: rgba(77, 48, 38, .62) !important;
     }
-    .order-summary-empty { margin:0; padding:16px 0 18px; color:rgba(77,48,38,.62); text-align:center; font-size:.88rem; line-height:1.5; }
-    .order-summary-scroll { flex:1 1 auto; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding-right:5px; scrollbar-width:thin; }
-    .order-summary-items { list-style:none; margin:0; padding:0; }
-    .order-summary-item { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 12px; padding:12px 0; border-bottom:1px solid rgba(88,55,42,.1); }
-    .order-summary-item-name { font-size:.88rem; font-weight:900; }
-    .order-summary-item-meta { color:rgba(77,48,38,.62); font-size:.74rem; }
-    .order-summary-item-price { grid-column:2; grid-row:1/span 2; align-self:center; font-size:.84rem; font-weight:900; }
-    .order-summary-footer { flex:0 0 auto; background:var(--cream,#fffaf1); }
-    .order-summary-lines { margin-top:14px; }
-    .order-summary-line { display:flex; align-items:center; justify-content:space-between; gap:15px; padding:6px 0; font-size:.84rem; }
-    .order-summary-total { margin-top:8px; padding-top:12px; border-top:2px solid rgba(88,55,42,.13); font-size:1rem; font-weight:900; }
-    .order-summary-checkout-link { width:100%; margin-top:16px; text-align:center; }
-    .order-clear-cart { width:100%; margin-top:10px; padding:5px; border:0; background:transparent; color:rgba(77,48,38,.58); font:inherit; font-size:.75rem; font-weight:800; text-decoration:underline; cursor:pointer; }
 
-    /* PAYMENT */
-    .order-square-placeholder { max-width:900px; margin:18px auto 0; padding:22px; background:rgba(255,255,255,.78); border:2px dashed rgba(88,55,42,.21); border-radius:17px; text-align:center; }
-    .order-square-placeholder strong { display:block; margin-bottom:5px; }
-    .order-square-placeholder span { display:block; color:rgba(77,48,38,.7); font-size:.85rem; line-height:1.5; }
-    .order-payment-note { max-width:900px; margin:12px auto 0; color:rgba(77,48,38,.65); font-size:.77rem; line-height:1.45; }
-    .order-checkout-button { display:block; width:min(900px,100%); margin:17px auto 0; }
-    .order-checkout-button[disabled] { opacity:.45; cursor:not-allowed; }
+    .order-summary-empty {
+      margin: 0;
+      padding: 16px 0 18px;
 
-    /* DETAIL DIALOG + CAROUSEL */
-    .cookie-detail-dialog { width:min(900px,calc(100% - 28px)); max-height:min(90vh,780px); margin:auto; padding:0; overflow:hidden; background:var(--cream,#fffaf1); border:0; border-radius:24px; color:var(--brown-dark,#4d3026); box-shadow:0 28px 80px rgba(35,20,15,.28); }
-    .cookie-detail-dialog::backdrop { background:rgba(46,30,24,.58); backdrop-filter:blur(3px); }
-    .cookie-detail-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); max-height:inherit; overflow:auto; }
-    .cookie-detail-media { position:relative; min-width:0; background:rgba(88,55,42,.06); }
-    .cookie-carousel-viewport { position:relative; width:100%; height:100%; min-height:460px; overflow:hidden; }
-    .cookie-carousel-track { display:flex; height:100%; transition:transform .28s ease; }
-    .cookie-carousel-slide { flex:0 0 100%; min-width:100%; height:100%; }
-    .cookie-carousel-slide img { display:block; width:100%; height:100%; min-height:460px; object-fit:cover; }
-    .cookie-carousel-button { position:absolute; top:50%; z-index:3; transform:translateY(-50%); display:grid; place-items:center; width:38px; height:38px; padding:0; border:1px solid rgba(88,55,42,.14); border-radius:50%; background:rgba(255,250,241,.94); color:var(--brown-dark,#4d3026); font:inherit; font-size:1.2rem; font-weight:900; cursor:pointer; box-shadow:0 4px 14px rgba(73,45,32,.12); }
-    .cookie-carousel-button.prev { left:12px; } .cookie-carousel-button.next { right:12px; }
-    .cookie-carousel-button[hidden] { display:none; }
-    .cookie-carousel-dots { position:absolute; left:50%; bottom:14px; z-index:3; transform:translateX(-50%); display:flex; gap:6px; padding:6px 8px; background:rgba(255,250,241,.88); border-radius:999px; }
-    .cookie-carousel-dot { width:8px; height:8px; padding:0; border:0; border-radius:50%; background:rgba(77,48,38,.28); cursor:pointer; }
-    .cookie-carousel-dot.is-active { background:var(--brown-dark,#4d3026); }
-    .cookie-detail-content { position:relative; display:flex; flex-direction:column; padding:28px; }
-    .cookie-detail-close { position:absolute; top:14px; right:14px; z-index:4; display:grid; place-items:center; width:34px; height:34px; padding:0; background:#fff; border:1.5px solid rgba(88,55,42,.12); border-radius:50%; color:var(--brown-dark,#4d3026); font:inherit; font-size:1.15rem; font-weight:900; cursor:pointer; }
-    .cookie-detail-eyebrow { display:block; margin-bottom:7px; color:rgba(77,48,38,.58); font-size:.67rem; font-weight:900; letter-spacing:.09em; text-transform:uppercase; }
-    .cookie-detail-name { padding-right:38px; margin:0 0 5px; font-size:clamp(1.6rem,3vw,2.2rem); line-height:1.05; }
-    .cookie-detail-price { display:block; margin-bottom:10px; font-size:1.05rem; font-weight:900; }
-    .cookie-detail-stock { display:none; width:max-content; margin-bottom:14px; padding:6px 9px; border-radius:999px; background:#fff3c7; font-size:.72rem; font-weight:900; }
-    .cookie-detail-stock.is-visible { display:inline-flex; }
-    .cookie-detail-stock.is-sold-out { background:var(--brown-dark,#4d3026); color:#fff; }
-    .cookie-detail-description { margin:0 0 18px; color:rgba(77,48,38,.78); font-size:.92rem; line-height:1.58; }
-    .cookie-detail-links { display:flex; flex-wrap:wrap; gap:8px; margin-top:auto; padding-top:16px; }
-    .cookie-detail-flavor-link { display:inline-flex; align-items:center; min-height:38px; padding:8px 12px; border:2px solid rgba(88,55,42,.14); border-radius:999px; color:var(--brown-dark,#4d3026); font-size:.78rem; font-weight:900; text-decoration:none; }
-    .cookie-detail-purchase-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:18px; padding-top:16px; border-top:1px solid rgba(88,55,42,.11); }
-    .cookie-detail-purchase-label { font-size:.75rem; font-weight:900; text-transform:uppercase; letter-spacing:.04em; color:rgba(77,48,38,.63); }
+      color: rgba(77, 48, 38, .62);
 
-    .order-faq-section { padding:0 0 72px; }
+      text-align: center;
 
-    @media (max-width:900px) {
+      font-size: .88rem;
+      line-height: 1.5;
+    }
+
+    .order-summary-scroll {
+      flex: 1 1 auto;
+
+      min-height: 0;
+      overflow-y: auto;
+
+      overscroll-behavior: contain;
+
+      padding-right: 5px;
+
+      scrollbar-width: thin;
+    }
+
+    .order-summary-items {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .order-summary-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+
+      gap: 4px 12px;
+
+      padding: 12px 0;
+
+      border-bottom: 1px solid rgba(88, 55, 42, .1);
+    }
+
+    .order-summary-item-name {
+      font-size: .88rem;
+      font-weight: 900;
+    }
+
+    .order-summary-item-meta {
+      color: rgba(77, 48, 38, .62);
+      font-size: .74rem;
+    }
+
+    .order-summary-item-price {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      align-self: center;
+
+      font-size: .84rem;
+      font-weight: 900;
+    }
+
+    .order-summary-footer {
+      flex: 0 0 auto;
+      background: var(--cream, #fffaf1);
+    }
+
+    .order-summary-lines {
+      margin-top: 14px;
+    }
+
+    .order-summary-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+      padding: 6px 0;
+
+      font-size: .84rem;
+    }
+
+    .order-summary-total {
+      margin-top: 8px;
+      padding-top: 12px;
+
+      border-top: 2px solid rgba(88, 55, 42, .13);
+
+      font-size: 1rem;
+      font-weight: 900;
+    }
+
+    .order-summary-checkout-link {
+      width: 100%;
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    .order-clear-cart {
+      width: 100%;
+      margin-top: 10px;
+      padding: 5px;
+
+      border: 0;
+      background: transparent;
+
+      color: rgba(77, 48, 38, .58);
+
+      font: inherit;
+      font-size: .75rem;
+      font-weight: 800;
+
+      text-decoration: underline;
+
+      cursor: pointer;
+    }
+
+
+    /* =========================================================
+       PAYMENT
+    ========================================================== */
+
+    .order-square-placeholder {
+      max-width: 900px;
+      margin: 18px auto 0;
+      padding: 22px;
+
+      background: rgba(255, 255, 255, .78);
+
+      border: 2px dashed rgba(88, 55, 42, .21);
+      border-radius: 17px;
+
+      text-align: center;
+    }
+
+    .order-square-placeholder strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .order-square-placeholder span {
+      display: block;
+
+      color: rgba(77, 48, 38, .7);
+
+      font-size: .85rem;
+      line-height: 1.5;
+    }
+
+    .order-payment-note {
+      max-width: 900px;
+      margin: 12px auto 0;
+
+      color: rgba(77, 48, 38, .65);
+
+      font-size: .77rem;
+      line-height: 1.45;
+    }
+
+    .order-checkout-button {
+      display: block;
+
+      width: min(900px, 100%);
+      margin: 17px auto 0;
+    }
+
+    .order-checkout-button[disabled] {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+
+    /* =========================================================
+       COOKIE DETAIL DIALOG + CAROUSEL
+    ========================================================== */
+
+    .cookie-detail-dialog {
+      width: min(900px, calc(100% - 28px));
+      max-height: min(90vh, 780px);
+
+      margin: auto;
+      padding: 0;
+
+      overflow: hidden;
+
+      background: var(--cream, #fffaf1);
+
+      border: 0;
+      border-radius: 24px;
+
+      color: var(--brown-dark, #4d3026);
+
+      box-shadow: 0 28px 80px rgba(35, 20, 15, .28);
+    }
+
+    .cookie-detail-dialog::backdrop {
+      background: rgba(46, 30, 24, .58);
+      backdrop-filter: blur(3px);
+    }
+
+    .cookie-detail-layout {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1.05fr);
+
+      max-height: inherit;
+      overflow: auto;
+    }
+
+    .cookie-detail-media {
+      position: relative;
+      min-width: 0;
+
+      background: rgba(88, 55, 42, .06);
+    }
+
+    .cookie-carousel-viewport {
+      position: relative;
+
+      width: 100%;
+      height: 100%;
+      min-height: 460px;
+
+      overflow: hidden;
+    }
+
+    .cookie-carousel-track {
+      display: flex;
+      height: 100%;
+
+      transition: transform .28s ease;
+    }
+
+    .cookie-carousel-slide {
+      flex: 0 0 100%;
+
+      min-width: 100%;
+      height: 100%;
+    }
+
+    .cookie-carousel-slide img {
+      display: block;
+
+      width: 100%;
+      height: 100%;
+      min-height: 460px;
+
+      object-fit: cover;
+    }
+
+    .cookie-carousel-button {
+      position: absolute;
+      top: 50%;
+      z-index: 3;
+
+      transform: translateY(-50%);
+
+      display: grid;
+      place-items: center;
+
+      width: 38px;
+      height: 38px;
+      padding: 0;
+
+      border: 1px solid rgba(88, 55, 42, .14);
+      border-radius: 50%;
+
+      background: rgba(255, 250, 241, .94);
+
+      color: var(--brown-dark, #4d3026);
+
+      font: inherit;
+      font-size: 1.2rem;
+      font-weight: 900;
+
+      cursor: pointer;
+
+      box-shadow: 0 4px 14px rgba(73, 45, 32, .12);
+    }
+
+    .cookie-carousel-button.prev {
+      left: 12px;
+    }
+
+    .cookie-carousel-button.next {
+      right: 12px;
+    }
+
+    .cookie-carousel-button[hidden] {
+      display: none;
+    }
+
+    .cookie-carousel-dots {
+      position: absolute;
+      left: 50%;
+      bottom: 14px;
+      z-index: 3;
+
+      transform: translateX(-50%);
+
+      display: flex;
+      gap: 6px;
+
+      padding: 6px 8px;
+
+      background: rgba(255, 250, 241, .88);
+
+      border-radius: 999px;
+    }
+
+    .cookie-carousel-dot {
+      width: 8px;
+      height: 8px;
+      padding: 0;
+
+      border: 0;
+      border-radius: 50%;
+
+      background: rgba(77, 48, 38, .28);
+
+      cursor: pointer;
+    }
+
+    .cookie-carousel-dot.is-active {
+      background: var(--brown-dark, #4d3026);
+    }
+
+    .cookie-detail-content {
+      position: relative;
+
+      display: flex;
+      flex-direction: column;
+
+      padding: 28px;
+    }
+
+    .cookie-detail-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 4;
+
+      display: grid;
+      place-items: center;
+
+      width: 34px;
+      height: 34px;
+      padding: 0;
+
+      background: #fff;
+
+      border: 1.5px solid rgba(88, 55, 42, .12);
+      border-radius: 50%;
+
+      color: var(--brown-dark, #4d3026);
+
+      font: inherit;
+      font-size: 1.15rem;
+      font-weight: 900;
+
+      cursor: pointer;
+    }
+
+    .cookie-detail-eyebrow {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: rgba(77, 48, 38, .58);
+
+      font-size: .67rem;
+      font-weight: 900;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    .cookie-detail-name {
+      padding-right: 38px;
+      margin: 0 0 5px;
+
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      line-height: 1.05;
+    }
+
+    .cookie-detail-price {
+      display: block;
+
+      margin-bottom: 10px;
+
+      font-size: 1.05rem;
+      font-weight: 900;
+    }
+
+    .cookie-detail-stock {
+      display: none;
+
+      width: max-content;
+      margin-bottom: 14px;
+      padding: 6px 9px;
+
+      border-radius: 999px;
+
+      background: #fff3c7;
+
+      font-size: .72rem;
+      font-weight: 900;
+    }
+
+    .cookie-detail-stock.is-visible {
+      display: inline-flex;
+    }
+
+    .cookie-detail-stock.is-sold-out {
+      background: var(--brown-dark, #4d3026);
+      color: #fff;
+    }
+
+    .cookie-detail-description {
+      margin: 0 0 18px;
+
+      color: rgba(77, 48, 38, .78);
+
+      font-size: .92rem;
+      line-height: 1.58;
+    }
+
+    .cookie-detail-links {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      margin-top: auto;
+      padding-top: 16px;
+    }
+
+    .cookie-detail-flavor-link {
+      display: inline-flex;
+      align-items: center;
+
+      min-height: 38px;
+      padding: 8px 12px;
+
+      border: 2px solid rgba(88, 55, 42, .14);
+      border-radius: 999px;
+
+      color: var(--brown-dark, #4d3026);
+
+      font-size: .78rem;
+      font-weight: 900;
+
+      text-decoration: none;
+    }
+
+    .cookie-detail-purchase-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 12px;
+
+      margin-top: 18px;
+      padding-top: 16px;
+
+      border-top: 1px solid rgba(88, 55, 42, .11);
+    }
+
+    .cookie-detail-purchase-label {
+      color: rgba(77, 48, 38, .63);
+
+      font-size: .75rem;
+      font-weight: 900;
+
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+
+    .order-faq-section {
+      padding: 0 0 72px;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE ORDER CONTENT
+       Hero responsiveness remains controlled by style.css.
+    ========================================================== */
+
+    @media (max-width: 900px) {
+
       .order-layout {
-        grid-template-columns:1fr;
-        grid-template-areas:"cookies" "summary" "pack" "fresh" "fulfillment" "customer" "checkout";
-        gap:20px;
+        grid-template-columns: 1fr;
+
+        grid-template-areas:
+          "cookies"
+          "summary"
+          "pack"
+          "fresh"
+          "fulfillment"
+          "customer"
+          "checkout";
+
+        gap: 20px;
       }
-      .order-summary-panel { max-height:560px; }
+
+      .order-summary-panel {
+        max-height: 560px;
+      }
+
     }
-    @media (max-width:680px) {
-      .order-intro h1 { margin-bottom: 18px; }
-      .order-intro .hero-brand-banner {
-        margin-bottom: 18px;
-        border-width: 4px;
-        border-radius: 18px;
-        box-shadow: 7px 7px 0 rgba(76,42,24,.34);
+
+
+    @media (max-width: 680px) {
+
+      .order-section {
+        padding: 46px 0 56px;
       }
-      .order-intro .order-hero-copy {
-        margin-bottom: 16px;
-        font-size: .92rem;
+
+      .order-panel {
+        padding: 18px;
+        border-radius: 21px;
       }
-      .order-intro .hero-actions {
-        gap: 10px;
+
+      .order-cookie-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
       }
-      .order-intro .hero-actions .btn {
-        min-width: 0;
-        flex: 1 1 150px;
+
+      .order-cookie-card {
+        border-radius: 15px;
       }
-      .order-section { padding:46px 0 56px; }
-      .order-panel { padding:18px; border-radius:21px; }
-      .order-cookie-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
-      .order-cookie-card { border-radius:15px; }
-      .order-cookie-details-badge { right:6px; bottom:6px; padding:4px 6px; font-size:.57rem; }
-      .order-stock-badge { left:6px; top:6px; padding:4px 6px; font-size:.56rem; }
-      .order-cookie-card-body { padding:9px; }
-      .order-cookie-name { font-size:.85rem; }
-      .order-cookie-price { margin-bottom:5px; font-size:.82rem; }
-      .order-cookie-description { margin-bottom:8px; font-size:.68rem; line-height:1.34; -webkit-line-clamp:2; }
-      .order-cookie-qty-label { display:none; }
-      .order-cookie-actions { justify-content:flex-end; }
-      .order-quantity-control { grid-template-columns:29px 24px 29px; }
-      .order-quantity-control button { width:29px; height:29px; }
-      .order-quantity-value { min-width:24px; font-size:.74rem; }
-      .order-pack-cta { grid-template-columns:1fr; gap:14px; }
-      .order-pack-button { width:100%; text-align:center; }
-      .order-fulfillment-grid,.order-form-grid { grid-template-columns:1fr; }
-      .order-form-group.full { grid-column:auto; }
-      .cookie-detail-dialog { width:min(94%,520px); max-height:92vh; border-radius:20px; }
-      .cookie-detail-layout { grid-template-columns:1fr; }
-      .cookie-carousel-viewport,.cookie-carousel-slide img { min-height:0; height:auto; aspect-ratio:16/10; }
-      .cookie-detail-content { padding:20px; }
-      .cookie-detail-name { padding-right:34px; }
-      .order-summary-panel { max-height:520px; }
+
+      .order-cookie-details-badge {
+        right: 6px;
+        bottom: 6px;
+
+        padding: 4px 6px;
+
+        font-size: .57rem;
+      }
+
+      .order-stock-badge {
+        left: 6px;
+        top: 6px;
+
+        padding: 4px 6px;
+
+        font-size: .56rem;
+      }
+
+      .order-cookie-card-body {
+        padding: 9px;
+      }
+
+      .order-cookie-name {
+        font-size: .85rem;
+      }
+
+      .order-cookie-price {
+        margin-bottom: 5px;
+        font-size: .82rem;
+      }
+
+      .order-cookie-description {
+        margin-bottom: 8px;
+
+        font-size: .68rem;
+        line-height: 1.34;
+
+        -webkit-line-clamp: 2;
+      }
+
+      .order-cookie-qty-label {
+        display: none;
+      }
+
+      .order-cookie-actions {
+        justify-content: flex-end;
+      }
+
+      .order-quantity-control {
+        grid-template-columns: 29px 24px 29px;
+      }
+
+      .order-quantity-control button {
+        width: 29px;
+        height: 29px;
+      }
+
+      .order-quantity-value {
+        min-width: 24px;
+        font-size: .74rem;
+      }
+
+      .order-pack-cta {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .order-pack-button {
+        width: 100%;
+        text-align: center;
+      }
+
+      .order-fulfillment-grid,
+      .order-form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .order-form-group.full {
+        grid-column: auto;
+      }
+
+      .cookie-detail-dialog {
+        width: min(94%, 520px);
+        max-height: 92vh;
+
+        border-radius: 20px;
+      }
+
+      .cookie-detail-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .cookie-carousel-viewport,
+      .cookie-carousel-slide img {
+        min-height: 0;
+        height: auto;
+
+        aspect-ratio: 16 / 10;
+      }
+
+      .cookie-detail-content {
+        padding: 20px;
+      }
+
+      .cookie-detail-name {
+        padding-right: 34px;
+      }
+
+      .order-summary-panel {
+        max-height: 520px;
+      }
+
     }
-    @media (max-width:390px) {
-      .order-panel { padding:14px; }
-      .order-cookie-grid { gap:7px; }
-      .order-cookie-card-body { padding:8px; }
-      .order-quantity-control { grid-template-columns:27px 22px 27px; }
-      .order-quantity-control button { width:27px; height:27px; }
-      .order-quantity-value { min-width:22px; }
+
+
+    @media (max-width: 390px) {
+
+      .order-panel {
+        padding: 14px;
+      }
+
+      .order-cookie-grid {
+        gap: 7px;
+      }
+
+      .order-cookie-card-body {
+        padding: 8px;
+      }
+
+      .order-quantity-control {
+        grid-template-columns: 27px 22px 27px;
+      }
+
+      .order-quantity-control button {
+        width: 27px;
+        height: 27px;
+      }
+
+      .order-quantity-value {
+        min-width: 22px;
+      }
+
     }
+
   </style>
 
 </head>
@@ -471,180 +1531,183 @@
 
 
   <!-- =========================================================
-     HEADER
-========================================================== -->
+       HEADER
+       Same shared header structure as homepage.
+       Order is the current page.
+  ========================================================== -->
 
-<header class="site-header">
+  <header class="site-header">
 
-  <div class="nav-wrap">
+    <div class="nav-wrap">
 
 
-    <!-- BRAND -->
-    <a
-      href="/"
-      class="logo"
-      aria-label="Olly's Baked Assortments home"
-    >
+      <!-- BRAND -->
 
-      <img
-        src="/images/brand/logo.png"
-        alt=""
-        class="logo-mark"
+      <a
+        href="/"
+        class="logo"
       >
 
-      <span>
-        Olly's Baked Assortments
-      </span>
-
-    </a>
-
-
-    <!-- MOBILE CART + MENU -->
-    <div class="mobile-header-actions">
-
-      <button
-        class="cart-trigger mobile-cart-trigger"
-        type="button"
-        data-cart-open
-        aria-label="Open your cookie cart"
-        aria-expanded="false"
-      >
-
-        <span class="mobile-cart-label">
-          Cart
-        </span>
-
-        <span
-          class="cart-count"
-          data-cart-count
-          hidden
+        <img
+          src="/images/brand/logo.png"
+          alt=""
+          class="logo-mark"
         >
-          0
+
+        <span>
+          Olly's Baked Assortments
         </span>
 
-      </button>
+      </a>
 
 
-      <button
-        class="nav-toggle"
-        type="button"
-        aria-label="Toggle menu"
-        aria-expanded="false"
+      <!-- MOBILE CART + MENU -->
+
+      <div class="mobile-header-actions">
+
+        <button
+          class="cart-trigger mobile-cart-trigger"
+          type="button"
+          data-cart-open
+          aria-label="Open your cookie cart"
+          aria-expanded="false"
+        >
+
+          <span class="mobile-cart-label">
+            Cart
+          </span>
+
+          <span
+            class="cart-count"
+            data-cart-count
+            hidden
+          >
+            0
+          </span>
+
+        </button>
+
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </button>
+
+      </div>
+
+
+      <!-- MAIN NAV -->
+
+      <nav
+        class="main-nav"
+        aria-label="Main navigation"
       >
 
-        <span></span>
-        <span></span>
-        <span></span>
+        <ul>
 
-      </button>
+          <li>
+            <a href="/">
+              Home
+            </a>
+          </li>
+
+          <li>
+            <a href="/menu.html">
+              Flavors
+            </a>
+          </li>
+
+          <li>
+            <a href="/gift-boxes.html">
+              Giraffe Packs
+            </a>
+          </li>
+
+          <li>
+            <a href="/pricing.html">
+              Pricing &amp; Ordering
+            </a>
+          </li>
+
+          <li>
+            <a href="/events.html">
+              Events
+            </a>
+          </li>
+
+          <li>
+            <a href="/reviews.html">
+              Reviews
+            </a>
+          </li>
+
+          <li>
+            <a href="/about.html">
+              About Olly
+            </a>
+          </li>
+
+          <li>
+            <a href="/faq.html">
+              FAQ
+            </a>
+          </li>
+
+
+          <li class="nav-order">
+
+            <a
+              href="/order.html"
+              aria-current="page"
+            >
+              Order
+            </a>
+
+          </li>
+
+
+          <li class="nav-cart">
+
+            <button
+              class="cart-trigger"
+              type="button"
+              data-cart-open
+              aria-label="Open your cookie cart"
+              aria-expanded="false"
+            >
+
+              <span>
+                Cart
+              </span>
+
+              <span
+                class="cart-count"
+                data-cart-count
+                hidden
+              >
+                0
+              </span>
+
+            </button>
+
+          </li>
+
+        </ul>
+
+      </nav>
 
     </div>
 
+  </header>
 
-    <!-- MAIN NAV -->
-    <nav
-      class="main-nav"
-      aria-label="Main navigation"
-    >
-
-      <ul>
-
-        <li>
-          <a href="/">
-            Home
-          </a>
-        </li>
-
-        <li>
-          <a href="/menu.html">
-            Flavors
-          </a>
-        </li>
-
-        <li>
-          <a href="/gift-boxes.html">
-            Giraffe Packs
-          </a>
-        </li>
-
-        <li>
-          <a href="/pricing.html">
-            Pricing &amp; Ordering
-          </a>
-        </li>
-
-        <li>
-          <a href="/events.html">
-            Events
-          </a>
-        </li>
-
-        <li>
-          <a href="/reviews.html">
-            Reviews
-          </a>
-        </li>
-
-        <li>
-          <a href="/about.html">
-            About Olly
-          </a>
-        </li>
-
-        <li>
-          <a href="/faq.html">
-            FAQ
-          </a>
-        </li>
-
-
-        <!-- CURRENT PAGE -->
-        <li class="nav-order">
-
-          <a
-            href="/order.html"
-            aria-current="page"
-          >
-            Order
-          </a>
-
-        </li>
-
-
-        <!-- DESKTOP CART -->
-        <li class="nav-cart">
-
-          <button
-            class="cart-trigger"
-            type="button"
-            data-cart-open
-            aria-label="Open your cookie cart"
-            aria-expanded="false"
-          >
-
-            <span>
-              Cart
-            </span>
-
-            <span
-              class="cart-count"
-              data-cart-count
-              hidden
-            >
-              0
-            </span>
-
-          </button>
-
-        </li>
-
-      </ul>
-
-    </nav>
-
-  </div>
-
-</header>
 
 
   <main>
@@ -652,83 +1715,134 @@
 
     <!-- =======================================================
          HERO
+         Homepage hero component with Order-page copy.
     ======================================================== -->
 
-    <section class="page-hero spot-field order-hero">
+    <section class="hero spot-field">
+
+
+      <!-- SAME HOMEPAGE DECORATIVE SPOTS -->
 
       <div
         class="spot spot--pink"
         style="
-          width:140px;
-          height:140px;
-          top:-30px;
-          right:9%;
+          width:160px;
+          height:160px;
+          top:-40px;
+          left:6%;
         "
       ></div>
+
 
       <div
         class="spot spot--gold"
         style="
-          width:95px;
-          height:95px;
-          bottom:-25px;
-          left:7%;
-          opacity:.45;
+          width:90px;
+          height:90px;
+          bottom:10%;
+          right:10%;
+          opacity:.5;
         "
       ></div>
 
+
+      <div
+        class="spot spot--outline"
+        style="
+          width:220px;
+          height:220px;
+          top:20%;
+          right:-60px;
+        "
+      ></div>
+
+
+
       <div class="container">
 
-        <div class="order-intro">
 
-          <span class="eyebrow">
-            Cookies Worth The Walk
-          </span>
+        <!-- SAME HOMEPAGE EYEBROW -->
 
-          <h1 class="order-hero-title">
-            <span class="order-title-white">Build</span>
-            <em class="order-title-pink">Your</em>
-            <em class="order-title-gold">Batch</em>
-          </h1>
+        <span class="eyebrow">
+          Small-batch cottage bakery · La Mesa, CA
+        </span>
 
-          <div class="hero-brand-banner">
-            <img
-              src="/images/brand/oba-banner.jpg"
-              alt="Olly's Baked Assortments — soft, gooey, handmade cookies made from scratch"
-            >
-          </div>
 
-          <p class="order-hero-copy">
-            Pick your favorites, choose pickup at Bertha or local delivery,
-            and we'll take care of the rest.
-          </p>
+        <!--
+          Homepage:
+          Cookies [Worth The] [Walk]
 
-          <div class="hero-actions">
+          Order:
+          Build [Your] [Batch]
 
-            <a
-              class="btn btn-pink"
-              href="#fulfillment"
-            >
-              Ready to Checkout?
-            </a>
+          "Your" inherits the pink italic <em> treatment.
+          "Batch" inherits the yellow .walk-yellow treatment.
+        -->
 
-            <button
-              class="btn btn-outline order-cart-hero-button"
-              type="button"
-              data-cart-open
-            >
-              Check My Cart
-            </button>
+        <h1 class="hero-headline">
+          Build
+          <em>
+            Your
+            <span class="walk-yellow">
+              Batch
+            </span>
+          </em>
+        </h1>
 
-          </div>
+
+        <!-- SAME HOMEPAGE BANNER -->
+
+        <a
+          class="hero-brand-banner"
+          href="#cookies"
+          aria-label="Start building your OBA cookie batch"
+        >
+
+          <img
+            src="/images/brand/oba-banner.jpg"
+            alt="Olly's Baked Assortments — soft, gooey, handmade cookies made from scratch"
+          >
+
+        </a>
+
+
+        <!-- ORDER-SPECIFIC COPY -->
+
+        <p class="lead">
+          Pick your favorites, choose pickup at Bertha or local delivery,
+          and we'll take care of the rest.
+        </p>
+
+
+        <!--
+          SAME HOMEPAGE BUTTON CLASSES:
+          btn-primary   = pink filled
+          btn-secondary = white outlined
+        -->
+
+        <div class="hero-actions">
+
+          <a
+            class="btn btn-primary"
+            href="#fulfillment"
+          >
+            Ready to Checkout?
+          </a>
+
+
+          <button
+            class="btn btn-secondary"
+            type="button"
+            data-cart-open
+          >
+            Check My Cart
+          </button>
 
         </div>
 
       </div>
 
     </section>
-
-
 
     <!-- =======================================================
          ORDER AREA
