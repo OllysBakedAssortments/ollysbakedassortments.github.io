@@ -2359,6 +2359,221 @@
 
                 </article>
 
+                <!-- =========================================
+     BISCOFF LAVA CRUNCH
+========================================== -->
+
+<article
+  class="order-cookie-card"
+  data-product-id="biscoff-lava-crunch"
+  data-product-name="Biscoff Lava Crunch"
+  data-product-price="4.00"
+  data-product-image="/images/biscoff-lava-crunch.jpg"
+  data-product-description="A soft Biscoff cookie stuffed with creamy cookie butter and topped with Biscoff drizzle, butterscotch chips, and crunchy cookie crumbles for a rich, caramelized cookie-butter bite."
+  data-product-url="/flavors/biscoff-lava-crunch.html"
+>
+
+  <button
+    class="order-cookie-details-trigger"
+    type="button"
+    aria-label="View Biscoff Lava Crunch details"
+  >
+
+    <div class="order-cookie-image">
+
+      <img
+        src="/images/biscoff-lava-crunch.jpg"
+        alt="Biscoff Lava Crunch cookie"
+        loading="lazy"
+      >
+
+      <div class="order-cookie-image-fallback">
+        <div>
+          <span aria-hidden="true">🍪</span>
+          <small>Biscoff Lava Crunch</small>
+        </div>
+      </div>
+
+      <span
+        class="order-stock-badge"
+        data-stock-badge
+      ></span>
+
+      <span class="order-cookie-details-badge">
+        Details
+      </span>
+
+    </div>
+
+  </button>
+
+
+  <div class="order-cookie-card-body">
+
+    <h3 class="order-cookie-name">
+      Biscoff Lava Crunch
+    </h3>
+
+    <span class="order-cookie-price">
+      $4.00
+    </span>
+
+    <p class="order-cookie-description">
+      Biscoff cookie stuffed with creamy cookie butter,
+      Biscoff drizzle, butterscotch chips, and cookie crumbles.
+    </p>
+
+
+    <div class="order-cookie-actions">
+
+      <span class="order-cookie-qty-label">
+        Qty
+      </span>
+
+      <div
+        class="order-quantity-control"
+        aria-label="Biscoff Lava Crunch quantity"
+      >
+
+        <button
+          type="button"
+          class="qty-minus"
+          aria-label="Remove one Biscoff Lava Crunch"
+        >
+          −
+        </button>
+
+        <span
+          class="order-quantity-value"
+          data-quantity
+        >
+          0
+        </span>
+
+        <button
+          type="button"
+          class="qty-plus"
+          aria-label="Add one Biscoff Lava Crunch"
+        >
+          +
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</article>
+
+
+
+<!-- =========================================
+     BIRTHDAY BASH
+========================================== -->
+
+<article
+  class="order-cookie-card"
+  data-product-id="birthday-bash"
+  data-product-name="Birthday Bash"
+  data-product-price="4.00"
+  data-product-image="/images/birthday-bash.jpg"
+  data-product-description="A soft vanilla birthday cookie loaded with creamy white chips and colorful rainbow sprinkles for a sweet, buttery, celebration-ready bite."
+  data-product-url="/flavors/birthday-bash.html"
+>
+
+  <button
+    class="order-cookie-details-trigger"
+    type="button"
+    aria-label="View Birthday Bash details"
+  >
+
+    <div class="order-cookie-image">
+
+      <img
+        src="/images/birthday-bash.jpg"
+        alt="Birthday Bash vanilla sprinkle cookie"
+        loading="lazy"
+      >
+
+      <div class="order-cookie-image-fallback">
+        <div>
+          <span aria-hidden="true">🍪</span>
+          <small>Birthday Bash</small>
+        </div>
+      </div>
+
+      <span
+        class="order-stock-badge"
+        data-stock-badge
+      ></span>
+
+      <span class="order-cookie-details-badge">
+        Details
+      </span>
+
+    </div>
+
+  </button>
+
+
+  <div class="order-cookie-card-body">
+
+    <h3 class="order-cookie-name">
+      Birthday Bash
+    </h3>
+
+    <span class="order-cookie-price">
+      $4.00
+    </span>
+
+    <p class="order-cookie-description">
+      Soft vanilla cookie loaded with creamy white chips
+      and colorful rainbow sprinkles.
+    </p>
+
+
+    <div class="order-cookie-actions">
+
+      <span class="order-cookie-qty-label">
+        Qty
+      </span>
+
+      <div
+        class="order-quantity-control"
+        aria-label="Birthday Bash quantity"
+      >
+
+        <button
+          type="button"
+          class="qty-minus"
+          aria-label="Remove one Birthday Bash"
+        >
+          −
+        </button>
+
+        <span
+          class="order-quantity-value"
+          data-quantity
+        >
+          0
+        </span>
+
+        <button
+          type="button"
+          class="qty-plus"
+          aria-label="Add one Birthday Bash"
+        >
+          +
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</article>
 
               </div>
 
@@ -3709,11 +3924,13 @@
       /* TEMPORARY DISPLAY INVENTORY.
          Later this must come from the backend and be revalidated at checkout. */
       const COOKIE_INVENTORY = {
-        'brown-butter-bliss': 12,
-        'plain-jane': 4,
-        'campfire-crunch': 2,
-        'blisscoff': 0
-      };
+  'brown-butter-bliss': 12,
+  'plain-jane': 4,
+  'campfire-crunch': 2,
+  'blisscoff': 0,
+  'biscoff-lava-crunch': 8,
+  'birthday-bash': 1
+};
       const LOW_STOCK_THRESHOLD = 5;
 
       /* Add more real image paths here as each cookie gallery grows.
