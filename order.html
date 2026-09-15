@@ -1008,32 +1008,45 @@
        PAYMENT
     ========================================================== */
 
-    .order-square-placeholder {
-      max-width: 900px;
-      margin: 18px auto 0;
-      padding: 22px;
+    .order-square-card {
+  width: min(900px, 100%);
+  min-height: 90px;
+  margin: 18px auto 0;
+}
 
-      background: rgba(255, 255, 255, .78);
+.order-payment-status {
+  display: none;
 
-      border: 2px dashed rgba(88, 55, 42, .21);
-      border-radius: 17px;
+  width: min(900px, 100%);
+  margin: 12px auto 0;
+  padding: 12px 14px;
 
-      text-align: center;
-    }
+  background: rgba(255, 255, 255, .78);
 
-    .order-square-placeholder strong {
-      display: block;
-      margin-bottom: 5px;
-    }
+  border: 1.5px solid rgba(88, 55, 42, .13);
+  border-radius: 13px;
 
-    .order-square-placeholder span {
-      display: block;
+  color: var(--brown-dark, #4d3026);
 
-      color: rgba(77, 48, 38, .7);
+  font-size: .82rem;
+  line-height: 1.45;
+}
 
-      font-size: .85rem;
-      line-height: 1.5;
-    }
+.order-payment-status.is-visible {
+  display: block;
+}
+
+.order-payment-status.is-error {
+  background: #fff4f2;
+  border-color: rgba(166, 58, 44, .28);
+  color: #8b3027;
+}
+
+.order-payment-status.is-success {
+  background: #f3f8ef;
+  border-color: rgba(65, 111, 57, .24);
+  color: #365f31;
+}
 
     .order-payment-note {
       max-width: 900px;
@@ -3260,21 +3273,19 @@
               </div>
 
 
+              <!-- Square securely mounts its card fields inside this container. -->
               <div
                 id="card-container"
-                class="order-square-placeholder"
-              >
-
-                <strong>
-                  Secure Square Checkout
-                </strong>
-
-                <span>
-                  Square payment fields will appear here once
-                  the secure payment integration is connected.
-                </span>
-
-              </div>
+                class="order-square-card"
+              ></div>
+              
+              <!-- Square initialization/tokenization messages appear here. -->
+              <div
+                id="payment-status-container"
+                class="order-payment-status"
+                role="status"
+                aria-live="polite"
+              ></div>
 
 
               <p class="order-payment-note">
