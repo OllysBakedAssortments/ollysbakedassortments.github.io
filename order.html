@@ -3959,6 +3959,18 @@
       
       const checkoutButton =
         document.getElementById('checkout-button');
+
+      const firstNameInput =
+        document.getElementById('first-name');
+      
+      const lastNameInput =
+        document.getElementById('last-name');
+      
+      const emailInput =
+        document.getElementById('email');
+      
+      const phoneInput =
+        document.getElementById('phone');
       
       let squarePayments = null;
       let squareCard = null;
@@ -4048,8 +4060,9 @@
 
     await squareCard.attach('#card-container');
 
-    checkoutButton.textContent = 'Continue With Payment';
-
+    checkoutButton.disabled = false;
+    checkoutButton.textContent = 'Test Secure Payment';
+    
     console.log('Square Sandbox card form initialized.');
   } catch (error) {
     console.error(
@@ -4065,6 +4078,57 @@
       'is-error'
     );
   }
+}
+
+      async function tokenizeSquareCard() {
+  if (!squareCard) {
+    throw new Error('Square card form is not ready.');
+  }
+
+  const amount =
+    Number(window.OBA_CART.subtotal()) || 0;
+
+  if (amount <= 0) {
+    throw new Error(
+      'Add at least one cookie before testing payment.'
+    );
+  }
+
+  const verificationDetails = {
+    amount: amount.toFixed(2),
+
+    billingContact: {
+      givenName: firstNameInput.value.trim(),
+      familyName: lastNameInput.value.trim(),
+      email: emailInput.value.trim(),
+      phone: phoneInput.value.trim(),
+      countryCode: 'US'
+    },
+
+    currencyCode: 'USD',
+    intent: 'CHARGE',
+    customerInitiated: true,
+    sellerKeyedIn: false
+  };
+
+  const tokenResult =
+    await squareCard.tokenize(verificationDetails);
+
+  if (tokenResult.status === 'OK') {
+    return tokenResult.token;
+  }
+
+  let errorMessage =
+    `Square tokenization failed: ${tokenResult.status}`;
+
+  if (tokenResult.errors?.length) {
+    errorMessage += ` — ${tokenResult.errors
+      .map(error => error.message)
+      .filter(Boolean)
+      .join(' ')}`;
+  }
+
+  throw new Error(errorMessage);
 }
       
       function formatMoney(value) {
@@ -4306,6 +4370,55 @@
       pickupRadio.addEventListener('change',updateFulfillmentPanels);
       deliveryRadio.addEventListener('change',updateFulfillmentPanels);
 
+      checkoutButton.addEventListener('click', async () => {
+  checkoutButton.disabled = true;
+  checkoutButton.textContent = 'Testing Secure Payment…';
+
+  paymentStatusContainer.textContent = '';
+  paymentStatusContainer.classList.remove(
+    'is-visible',
+    'is-error',
+    'is-success'
+  );
+
+  try {
+    await tokenizeSquareCard();
+
+    paymentStatusContainer.textContent =
+      'Square Sandbox test successful. Secure payment information was tokenized. No charge was made.';
+
+    paymentStatusContainer.classList.add(
+      'is-visible',
+      'is-success'
+    );
+
+    checkoutButton.textContent =
+      'Sandbox Test Successful';
+
+    console.log(
+      'Square Sandbox tokenization successful. No payment was created.'
+    );
+  } catch (error) {
+    console.error(
+      'Square Sandbox tokenization failed:',
+      error
+    );
+
+    paymentStatusContainer.textContent =
+      error.message ||
+      'Secure payment information could not be verified.';
+
+    paymentStatusContainer.classList.add(
+      'is-visible',
+      'is-error'
+    );
+
+    checkoutButton.disabled = false;
+    checkoutButton.textContent =
+      'Test Secure Payment';
+  }
+});
+      
       window.addEventListener('oba-cart-updated',()=>{
         updateProductCardQuantities();
         updateDialogQuantity();
