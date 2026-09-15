@@ -4367,53 +4367,172 @@
       deliveryRadio.addEventListener('change',updateFulfillmentPanels);
 
       checkoutButton.addEventListener('click', async () => {
-  checkoutButton.disabled = true;
-  checkoutButton.textContent = 'Testing Secure Payment…';
-
-  paymentStatusContainer.textContent = '';
-  paymentStatusContainer.classList.remove(
-    'is-visible',
-    'is-error',
-    'is-success'
-  );
-
-  try {
-    await tokenizeSquareCard();
-
-    paymentStatusContainer.textContent =
-      'Square Sandbox test successful. Secure payment information was tokenized. No charge was made.';
-
-    paymentStatusContainer.classList.add(
-      'is-visible',
-      'is-success'
-    );
-
-    checkoutButton.textContent =
-      'Sandbox Test Successful';
-
-    console.log(
-      'Square Sandbox tokenization successful. No payment was created.'
-    );
-  } catch (error) {
-    console.error(
-      'Square Sandbox tokenization failed:',
-      error
-    );
-
-    paymentStatusContainer.textContent =
-      error.message ||
-      'Secure payment information could not be verified.';
-
-    paymentStatusContainer.classList.add(
-      'is-visible',
-      'is-error'
-    );
-
-    checkoutButton.disabled = false;
-    checkoutButton.textContent =
-      'Test Secure Payment';
-  }
-});
+        checkoutButton.disabled = true;
+        checkoutButton.textContent = 'Processing Sandbox Payment…';
+      
+        paymentStatusContainer.textContent = '';
+        paymentStatusContainer.classList.remove(
+          'is-visible',
+          'is-error',
+          'is-success'
+        );
+      
+        try {
+          /* -----------------------------------------
+             1. Read the current OBA cart
+          ----------------------------------------- */
+      
+          const cart = window.OBA_CART.getCart();
+      
+          const items = Object.values(cart)
+            .filter(item => item && item.id)
+            .map(item => ({
+              id: item.id,
+              quantity: Number(item.quantity)
+            }))
+            .filter(item =>
+              Number.isInteger(item.quantity) &&
+              item.quantity > 0
+            );
+      
+          if (items.length === 0) {
+            throw new Error(
+              'Your batch is empty. Add at least one cookie before checkout.'
+            );
+          }
+      
+      
+          /* -----------------------------------------
+             2. Generate a fresh Square source token
+          ----------------------------------------- */
+      
+          const sourceId =
+            await tokenizeSquareCard();
+      
+      
+          /* -----------------------------------------
+             3. Send token + cart to OBA backend
+          ----------------------------------------- */
+      
+          paymentStatusContainer.textContent =
+            'Secure payment verified. Creating your Sandbox order…';
+      
+          paymentStatusContainer.classList.add(
+            'is-visible'
+          );
+      
+          const checkoutResponse = await fetch(
+            'https://oba-checkout.ollysbakedassortments.workers.dev/checkout',
+            {
+              method: 'POST',
+      
+              headers: {
+                'Content-Type': 'application/json'
+              },
+      
+              body: JSON.stringify({
+                sourceId,
+                items
+              })
+            }
+          );
+      
+      
+          /* -----------------------------------------
+             4. Read backend / Square response
+          ----------------------------------------- */
+      
+          const checkoutData =
+            await checkoutResponse.json();
+      
+          if (!checkoutResponse.ok || !checkoutData.ok) {
+            let message =
+              checkoutData.error ||
+              'Square could not process the Sandbox payment.';
+      
+            if (checkoutData.squareErrors?.length) {
+              const squareDetails = checkoutData.squareErrors
+                .map(error =>
+                  error.detail ||
+                  error.code ||
+                  ''
+                )
+                .filter(Boolean)
+                .join(' ');
+      
+              if (squareDetails) {
+                message += ` ${squareDetails}`;
+              }
+            }
+      
+            throw new Error(message);
+          }
+      
+      
+          /* -----------------------------------------
+             5. Require an actually completed payment
+          ----------------------------------------- */
+      
+          if (
+            checkoutData.paymentProcessed !== true ||
+            checkoutData.paymentStatus !== 'COMPLETED'
+          ) {
+            throw new Error(
+              `Square returned an unexpected payment status: ${
+                checkoutData.paymentStatus || 'unknown'
+              }.`
+            );
+          }
+      
+      
+          /* -----------------------------------------
+             6. Show Sandbox success
+          ----------------------------------------- */
+      
+          paymentStatusContainer.textContent =
+            `Sandbox payment completed successfully. Order ${checkoutData.orderId}.`;
+      
+          paymentStatusContainer.classList.remove(
+            'is-error'
+          );
+      
+          paymentStatusContainer.classList.add(
+            'is-visible',
+            'is-success'
+          );
+      
+          checkoutButton.textContent =
+            'Sandbox Payment Successful';
+      
+          console.log(
+            'Square Sandbox payment completed:',
+            checkoutData
+          );
+      
+        } catch (error) {
+          console.error(
+            'OBA Sandbox checkout failed:',
+            error
+          );
+      
+          paymentStatusContainer.textContent =
+            error.message ||
+            'The Sandbox payment could not be completed.';
+      
+          paymentStatusContainer.classList.remove(
+            'is-success'
+          );
+      
+          paymentStatusContainer.classList.add(
+            'is-visible',
+            'is-error'
+          );
+      
+          checkoutButton.disabled = false;
+          checkoutButton.textContent =
+            'Test Secure Payment';
+        }
+      });
       
       window.addEventListener('oba-cart-updated',()=>{
         updateProductCardQuantities();
