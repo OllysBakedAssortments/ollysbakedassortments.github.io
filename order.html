@@ -4109,7 +4109,7 @@
   };
 
   const tokenResult =
-    await squareCard.tokenize();
+    await squareCard.tokenize(verificationDetails);
   if (tokenResult.status === 'OK') {
     return tokenResult.token;
   }
