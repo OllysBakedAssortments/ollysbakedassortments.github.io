@@ -4094,27 +4094,6 @@
     );
   }
 
-  const verificationDetails = {
-    amount: amount.toFixed(2),
-
-    billingContact: {
-      givenName: 'John',
-      familyName: 'Doe',
-      email: 'john.doe@example.com',
-      phone: '3214563987',
-      addressLines: ['123 Main Street'],
-      city: 'Oakland',
-      state: 'CA',
-      postalCode: '94612',
-      countryCode: 'US'
-    },
-
-    currencyCode: 'USD',
-    intent: 'CHARGE',
-    customerInitiated: true,
-    sellerKeyedIn: false
-  };
-
   const tokenResult =
     await squareCard.tokenize();
 
