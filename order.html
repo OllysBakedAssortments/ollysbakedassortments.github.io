@@ -4387,7 +4387,14 @@
       
               body: JSON.stringify({
                 sourceId,
-                items
+                items,
+              
+                customer: {
+                  firstName: firstNameInput.value.trim(),
+                  lastName: lastNameInput.value.trim(),
+                  email: emailInput.value.trim(),
+                  phone: phoneInput.value.trim()
+                }
               })
             }
           );
