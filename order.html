@@ -3035,9 +3035,16 @@
                 </div>
 
 
+                <div
+                  id="delivery-quote-status"
+                  class="order-payment-status"
+                  role="status"
+                  aria-live="polite"
+                ></div>
+                
                 <p class="order-field-help">
-                  Delivery eligibility and any delivery fee
-                  will be validated before payment.
+                  Local delivery is available within 10 driving miles.
+                  Your delivery fee is calculated from the delivery address.
                 </p>
 
               </div>
@@ -3903,6 +3910,9 @@
       const deliveryNotesInput =
         document.getElementById('delivery-notes');
       
+      const deliveryQuoteStatus =
+        document.getElementById('delivery-quote-status');
+      
       let squarePayments = null;
       let squareCard = null;
 
@@ -4024,9 +4034,7 @@
     Number(window.OBA_CART.subtotal()) || 0;
 
   const deliveryFee =
-    getFulfillmentType() === 'delivery'
-      ? DELIVERY_FEE
-      : 0;
+    getDeliveryFee();
 
   const tax =
     subtotal * TAX_RATE;
@@ -4208,6 +4216,136 @@
 
   return Number(deliveryQuote.deliveryFeeCents || 0) / 100;
 }
+
+      async function requestDeliveryQuote() {
+        const address =
+          deliveryAddressInput.value.trim();
+      
+        const city =
+          deliveryCityInput.value.trim();
+      
+        const zip =
+          deliveryZipInput.value.trim();
+      
+        deliveryQuote = null;
+      
+        deliveryQuoteStatus.textContent = '';
+        deliveryQuoteStatus.classList.remove(
+          'is-visible',
+          'is-error',
+          'is-success'
+        );
+      
+        renderOrderSummary();
+      
+        if (
+          address.length < 3 ||
+          city.length < 2 ||
+          !/^\d{5}$/.test(zip)
+        ) {
+          return;
+        }
+      
+        deliveryQuoteLoading = true;
+      
+        deliveryQuoteStatus.textContent =
+          'Checking delivery distance and fee…';
+      
+        deliveryQuoteStatus.classList.add(
+          'is-visible'
+        );
+      
+        try {
+          const response = await fetch(
+            'https://oba-checkout.ollysbakedassortments.workers.dev/delivery-quote',
+            {
+              method: 'POST',
+      
+              headers: {
+                'Content-Type': 'application/json'
+              },
+      
+              body: JSON.stringify({
+                address,
+                city,
+                zip
+              })
+            }
+          );
+      
+          const data =
+            await response.json();
+      
+          if (!response.ok || !data.ok) {
+            throw new Error(
+              data.error ||
+              'Delivery could not be calculated.'
+            );
+          }
+      
+          deliveryQuote = data;
+      
+          if (data.available === true) {
+            const distance =
+              Number(data.distanceMiles).toFixed(2);
+      
+            const fee =
+              formatMoney(
+                Number(data.deliveryFeeCents || 0) / 100
+              );
+      
+            deliveryQuoteStatus.textContent =
+              `Delivery available — ${distance} driving miles · ${fee} delivery fee.`;
+      
+            deliveryQuoteStatus.classList.remove(
+              'is-error'
+            );
+      
+            deliveryQuoteStatus.classList.add(
+              'is-visible',
+              'is-success'
+            );
+          } else {
+            deliveryQuoteStatus.textContent =
+              data.message ||
+              'This address is outside OBA’s local delivery area.';
+      
+            deliveryQuoteStatus.classList.remove(
+              'is-success'
+            );
+      
+            deliveryQuoteStatus.classList.add(
+              'is-visible',
+              'is-error'
+            );
+          }
+      
+        } catch (error) {
+          console.error(
+            'OBA delivery quote failed:',
+            error
+          );
+      
+          deliveryQuote = null;
+      
+          deliveryQuoteStatus.textContent =
+            error.message ||
+            'Delivery could not be calculated. Please check the address and try again.';
+      
+          deliveryQuoteStatus.classList.remove(
+            'is-success'
+          );
+      
+          deliveryQuoteStatus.classList.add(
+            'is-visible',
+            'is-error'
+          );
+      
+        } finally {
+          deliveryQuoteLoading = false;
+          renderOrderSummary();
+        }
+      }
       
       function updateFulfillmentPanels() {
         const isPickup = pickupRadio.checked;
@@ -4324,10 +4462,31 @@
         const tax=subtotal*TAX_RATE;
         const total=subtotal+deliveryFee+tax;
 
-        subtotalElement.textContent=formatMoney(subtotal);
-        deliveryFeeElement.textContent=formatMoney(deliveryFee);
-        taxElement.textContent=formatMoney(tax);
-        totalElement.textContent=formatMoney(total);
+        subtotalElement.textContent =
+          formatMoney(subtotal);
+        
+        if (getFulfillmentType() === 'pickup') {
+          deliveryFeeElement.textContent =
+            '$0.00';
+        } else if (deliveryQuoteLoading) {
+          deliveryFeeElement.textContent =
+            'Checking…';
+        } else if (
+          deliveryQuote &&
+          deliveryQuote.available === true
+        ) {
+          deliveryFeeElement.textContent =
+            formatMoney(deliveryFee);
+        } else {
+          deliveryFeeElement.textContent =
+            '—';
+        }
+        
+        taxElement.textContent =
+          formatMoney(tax);
+        
+        totalElement.textContent =
+          formatMoney(total);
       }
 
       productCards.forEach(card=>{
@@ -4359,9 +4518,54 @@
         if(window.confirm('Clear your cookie batch?')) window.OBA_CART.clear();
       });
 
-      pickupRadio.addEventListener('change',updateFulfillmentPanels);
-      deliveryRadio.addEventListener('change',updateFulfillmentPanels);
+      pickupRadio.addEventListener('change', () => {
+        deliveryQuote = null;
+        updateFulfillmentPanels();
+      });
+      
+      deliveryRadio.addEventListener('change', () => {
+        deliveryQuote = null;
+        updateFulfillmentPanels();
+      
+        if (deliveryRadio.checked) {
+          requestDeliveryQuote();
+        }
+      });
 
+      [
+        deliveryAddressInput,
+        deliveryCityInput,
+        deliveryZipInput
+      ].forEach(input => {
+        input.addEventListener('input', () => {
+          deliveryQuote = null;
+      
+          deliveryQuoteStatus.textContent = '';
+          deliveryQuoteStatus.classList.remove(
+            'is-visible',
+            'is-error',
+            'is-success'
+          );
+      
+          renderOrderSummary();
+        });
+      });
+      
+      deliveryAddressInput.addEventListener(
+        'change',
+        requestDeliveryQuote
+      );
+      
+      deliveryCityInput.addEventListener(
+        'change',
+        requestDeliveryQuote
+      );
+      
+      deliveryZipInput.addEventListener(
+        'change',
+        requestDeliveryQuote
+      );
+      
       checkoutButton.addEventListener('click', async () => {
         checkoutButton.disabled = true;
         checkoutButton.textContent = 'Processing Sandbox Payment…';
@@ -4396,7 +4600,31 @@
               'Your batch is empty. Add at least one cookie before checkout.'
             );
           }
-      
+
+          /* -----------------------------------------
+             Require a valid delivery quote
+          ----------------------------------------- */
+          
+          if (getFulfillmentType() === 'delivery') {
+            if (deliveryQuoteLoading) {
+              throw new Error(
+                'Please wait while we finish checking your delivery address.'
+              );
+            }
+          
+            if (!deliveryQuote) {
+              throw new Error(
+                'Please enter a valid delivery address and wait for the delivery fee to be calculated.'
+              );
+            }
+          
+            if (deliveryQuote.available !== true) {
+              throw new Error(
+                deliveryQuote.message ||
+                'This address is outside OBA’s local delivery area.'
+              );
+            }
+          }
       
           /* -----------------------------------------
              2. Generate a fresh Square source token
