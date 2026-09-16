@@ -3987,20 +3987,60 @@
     throw new Error('Square card form is not ready.');
   }
 
+  /* -----------------------------------------
+     Use the actual current checkout total
+  ----------------------------------------- */
+
+  const subtotal =
+    Number(window.OBA_CART.subtotal()) || 0;
+
+  const deliveryFee =
+    getFulfillmentType() === 'delivery'
+      ? DELIVERY_FEE
+      : 0;
+
+  const tax =
+    subtotal * TAX_RATE;
+
+  const total =
+    subtotal + deliveryFee + tax;
+
+  if (total <= 0) {
+    throw new Error(
+      'Your order total must be greater than $0.00.'
+    );
+  }
+
+
+  /* -----------------------------------------
+     Use the actual customer information
+  ----------------------------------------- */
+
+  const givenName =
+    firstNameInput.value.trim();
+
+  const familyName =
+    lastNameInput.value.trim();
+
+  const email =
+    emailInput.value.trim();
+
+  const phone =
+    phoneInput.value.trim();
+
+
+  /* -----------------------------------------
+     Square verification details
+  ----------------------------------------- */
+
   const verificationDetails = {
-    amount: '1.00',
+    amount: total.toFixed(2),
 
     billingContact: {
-      givenName: 'John',
-      familyName: 'Doe',
-      email: 'john.doe@example.com',
-      phone: '3214563987',
-      addressLines: [
-        '123 Main Street',
-        'Apartment 1'
-      ],
-      city: 'Oakland',
-      state: 'CA',
+      givenName,
+      familyName,
+      email,
+      phone,
       countryCode: 'US'
     },
 
@@ -4010,11 +4050,24 @@
     sellerKeyedIn: false
   };
 
+
+  /* -----------------------------------------
+     Generate Square's single-use source token
+  ----------------------------------------- */
+
   const tokenResult =
-    await squareCard.tokenize(verificationDetails);
+    await squareCard.tokenize(
+      verificationDetails
+    );
+
   if (tokenResult.status === 'OK') {
     return tokenResult.token;
   }
+
+
+  /* -----------------------------------------
+     Surface Square tokenization errors
+  ----------------------------------------- */
 
   let errorMessage =
     `Square tokenization failed: ${tokenResult.status}`;
