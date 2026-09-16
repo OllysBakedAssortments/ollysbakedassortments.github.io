@@ -4197,6 +4197,18 @@
         return deliveryRadio.checked ? 'delivery' : 'pickup';
       }
 
+      function getDeliveryFee() {
+  if (getFulfillmentType() !== 'delivery') {
+    return 0;
+  }
+
+  if (!deliveryQuote || deliveryQuote.available !== true) {
+    return 0;
+  }
+
+  return Number(deliveryQuote.deliveryFeeCents || 0) / 100;
+}
+      
       function updateFulfillmentPanels() {
         const isPickup = pickupRadio.checked;
         pickupPanel.hidden = !isPickup;
@@ -4308,7 +4320,7 @@
         clearCartButton.hidden=count===0;
 
         const subtotal=Number(window.OBA_CART.subtotal())||0;
-        const deliveryFee=getFulfillmentType()==='delivery'?DELIVERY_FEE:0;
+        const deliveryFee = getDeliveryFee();
         const tax=subtotal*TAX_RATE;
         const total=subtotal+deliveryFee+tax;
 
