@@ -4979,12 +4979,9 @@
 
       window.addEventListener(
         'oba-google-places-ready',
-        initializeDeliveryAutocomplete
+        initializeDeliveryAutocomplete,
+        { once: true }
       );
-      
-      if (window.google?.maps) {
-        initializeDeliveryAutocomplete();
-      }
       
       initializeSquareCard();
     });
