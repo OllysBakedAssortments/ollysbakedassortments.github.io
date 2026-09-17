@@ -3943,9 +3943,145 @@
           const { PlaceAutocompleteElement } =
             await google.maps.importLibrary('places');
       
+          const autocomplete =
+            new PlaceAutocompleteElement();
+      
+          autocomplete.placeholder =
+            'Start typing your delivery address';
+      
+          autocomplete.includedRegionCodes = ['us'];
+      
+          autocomplete.locationBias = {
+            center: {
+              lat: 32.7678,
+              lng: -117.0231
+            },
+            radius: 25000
+          };
+      
+          deliveryAddressInput.insertAdjacentElement(
+            'afterend',
+            autocomplete
+          );
+      
+          deliveryAddressInput.hidden = true;
+      
+          autocomplete.addEventListener(
+            'gmp-select',
+            async event => {
+              try {
+                const place =
+                  event.placePrediction.toPlace();
+      
+                await place.fetchFields({
+                  fields: [
+                    'addressComponents',
+                    'formattedAddress'
+                  ]
+                });
+      
+                if (!place.addressComponents) {
+                  throw new Error(
+                    'No address details were returned.'
+                  );
+                }
+      
+                let streetNumber = '';
+                let route = '';
+                let city = '';
+                let zip = '';
+      
+                for (
+                  const component
+                  of place.addressComponents
+                ) {
+                  const types =
+                    component.types || [];
+      
+                  if (
+                    types.includes('street_number')
+                  ) {
+                    streetNumber =
+                      component.longText || '';
+                  }
+      
+                  if (
+                    types.includes('route')
+                  ) {
+                    route =
+                      component.longText || '';
+                  }
+      
+                  if (
+                    types.includes('locality')
+                  ) {
+                    city =
+                      component.longText || '';
+                  }
+      
+                  if (
+                    !city &&
+                    types.includes(
+                      'sublocality_level_1'
+                    )
+                  ) {
+                    city =
+                      component.longText || '';
+                  }
+      
+                  if (
+                    types.includes('postal_code')
+                  ) {
+                    zip =
+                      component.longText || '';
+                  }
+                }
+      
+                const streetAddress =
+                  `${streetNumber} ${route}`.trim();
+      
+                deliveryAddressInput.value =
+                  streetAddress;
+      
+                deliveryCityInput.value =
+                  city;
+      
+                deliveryZipInput.value =
+                  zip;
+      
+                deliveryQuote = null;
+      
+                renderOrderSummary();
+      
+                await requestDeliveryQuote();
+      
+              } catch (error) {
+                console.error(
+                  'Unable to use selected delivery address:',
+                  error
+                );
+      
+                deliveryQuote = null;
+      
+                deliveryQuoteStatus.textContent =
+                  'We could not read that address. Please try another address.';
+      
+                deliveryQuoteStatus.classList.remove(
+                  'is-success'
+                );
+      
+                deliveryQuoteStatus.classList.add(
+                  'is-visible',
+                  'is-error'
+                );
+      
+                renderOrderSummary();
+              }
+            }
+          );
+      
           console.log(
-            'Google Places autocomplete library loaded.',
-            PlaceAutocompleteElement
+            'Google Places delivery autocomplete initialized.'
           );
       
         } catch (error) {
