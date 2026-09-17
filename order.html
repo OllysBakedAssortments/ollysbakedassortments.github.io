@@ -3867,6 +3867,43 @@
     document.addEventListener('DOMContentLoaded', () => {
       const TAX_RATE = 0;
     
+      /* =========================================================
+         CHECKOUT ATTEMPT ID
+         Keeps one stable ID for retries of the same checkout.
+      ========================================================= */
+    
+      const CHECKOUT_ATTEMPT_STORAGE_KEY =
+        'oba_checkout_attempt_id';
+    
+      function createCheckoutAttemptId() {
+        return crypto.randomUUID();
+      }
+    
+      function getCheckoutAttemptId() {
+        let checkoutAttemptId =
+          sessionStorage.getItem(
+            CHECKOUT_ATTEMPT_STORAGE_KEY
+          );
+    
+        if (!checkoutAttemptId) {
+          checkoutAttemptId =
+            createCheckoutAttemptId();
+    
+          sessionStorage.setItem(
+            CHECKOUT_ATTEMPT_STORAGE_KEY,
+            checkoutAttemptId
+          );
+        }
+    
+        return checkoutAttemptId;
+      }
+    
+      function clearCheckoutAttemptId() {
+        sessionStorage.removeItem(
+          CHECKOUT_ATTEMPT_STORAGE_KEY
+        );
+      }
+    
       let deliveryQuote = null;
       let deliveryQuoteLoading = false;
 
@@ -4839,6 +4876,9 @@
               body: JSON.stringify({
                 sourceId,
                 items,
+              
+                checkoutAttemptId:
+                  getCheckoutAttemptId(),
               
                 customer: {
                   firstName: firstNameInput.value.trim(),
