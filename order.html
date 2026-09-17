@@ -157,9 +157,17 @@
      Browser-restricted key: Places API (New) only.
 ========================================================== -->
 
+  <script>
+  window.initializeOBAPlaces = function () {
+    window.dispatchEvent(
+      new CustomEvent('oba-google-places-ready')
+    );
+  };
+</script>
+  
 <script
   async
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvhXZl3PzA3Lz2-cFDuametnNrSPe2wvg&libraries=places&loading=async"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvhXZl3PzA3Lz2-cFDuametnNrSPe2wvg&libraries=places&loading=async&callback=initializeOBAPlaces"
 ></script>
   
   <!-- =========================================================
@@ -4827,7 +4835,15 @@
       renderOrderSummary();
       renderInventory();
 
-      initializeDeliveryAutocomplete();
+      window.addEventListener(
+        'oba-google-places-ready',
+        initializeDeliveryAutocomplete
+      );
+      
+      if (window.google?.maps) {
+        initializeDeliveryAutocomplete();
+      }
+      
       initializeSquareCard();
     });
   </script>
