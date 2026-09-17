@@ -4917,10 +4917,23 @@
             await checkoutResponse.json();
       
           if (!checkoutResponse.ok || !checkoutData.ok) {
+
+            /* -----------------------------------------
+               Definitive payment failure:
+               retire this checkout attempt so the next
+               payment submission receives a fresh UUID.
+            ----------------------------------------- */
+          
+            if (
+              checkoutData.retryableWithNewAttempt === true
+            ) {
+              clearCheckoutAttemptId();
+            }
+          
             let message =
               checkoutData.error ||
               'Square could not process the Sandbox payment.';
-      
+          
             if (checkoutData.squareErrors?.length) {
               const squareDetails = checkoutData.squareErrors
                 .map(error =>
@@ -4930,12 +4943,12 @@
                 )
                 .filter(Boolean)
                 .join(' ');
-      
+          
               if (squareDetails) {
                 message += ` ${squareDetails}`;
               }
             }
-      
+          
             throw new Error(message);
           }
       
