@@ -153,6 +153,16 @@
   ></script>
 
   <!-- =========================================================
+     GOOGLE MAPS — ADDRESS AUTOCOMPLETE
+     Browser-restricted key: Places API (New) only.
+========================================================== -->
+
+<script
+  async
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvhXZl3PzA3Lz2-cFDuametnNrSPe2wvg&libraries=places&loading=async"
+></script>
+  
+  <!-- =========================================================
        ORDER PAGE STYLES
        Hero intentionally uses the shared homepage component.
   ========================================================== -->
@@ -3915,6 +3925,28 @@
       
       let squarePayments = null;
       let squareCard = null;
+      
+      /* =========================================================
+         GOOGLE PLACES — DELIVERY ADDRESS AUTOCOMPLETE
+      ========================================================= */
+      
+      async function initializeDeliveryAutocomplete() {
+        try {
+          const { PlaceAutocompleteElement } =
+            await google.maps.importLibrary('places');
+      
+          console.log(
+            'Google Places autocomplete library loaded.',
+            PlaceAutocompleteElement
+          );
+      
+        } catch (error) {
+          console.error(
+            'Google Places autocomplete failed to initialize:',
+            error
+          );
+        }
+      }
 
       /* TEMPORARY DISPLAY INVENTORY.
          Later this must come from the backend and be revalidated at checkout. */
@@ -4795,6 +4827,7 @@
       renderOrderSummary();
       renderInventory();
 
+      initializeDeliveryAutocomplete();
       initializeSquareCard();
     });
   </script>
