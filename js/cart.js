@@ -32,7 +32,11 @@
 
   const STORAGE_KEY = 'oba-cart';
 
-  const CART_UPDATED_EVENT = 'oba-cart-updated';
+   const CART_ID_STORAGE_KEY =
+     'oba-cart-id';
+   
+   const CART_UPDATED_EVENT =
+     'oba-cart-updated';
 
 
 
@@ -149,7 +153,78 @@
 
   }
 
+/* =========================================================
+   CART ID
 
+   Anonymous browser identifier used to connect the
+   local cart with its server-side inventory reservation.
+
+   This ID persists independently from the cart contents.
+========================================================= */
+
+function createCartId() {
+
+  return crypto.randomUUID();
+
+}
+
+
+function getCartId() {
+
+  try {
+
+    let cartId =
+      localStorage.getItem(
+        CART_ID_STORAGE_KEY
+      );
+
+
+    if (!cartId) {
+
+      cartId =
+        createCartId();
+
+
+      localStorage.setItem(
+        CART_ID_STORAGE_KEY,
+        cartId
+      );
+
+    }
+
+
+    return cartId;
+
+  }
+
+  catch (error) {
+
+    console.error(
+      'OBA Cart: Could not access persistent cart ID.',
+      error
+    );
+
+
+    /*
+      Fallback for browsers where localStorage
+      is unavailable.
+
+      This ID will last only for the current page.
+    */
+
+    if (!getCartId.fallbackId) {
+
+      getCartId.fallbackId =
+        createCartId();
+
+    }
+
+
+    return getCartId.fallbackId;
+
+  }
+
+}
 
   /* =========================================================
      STORAGE
@@ -1258,6 +1333,8 @@
 
   window.OBA_CART = {
 
+   getCartId,
+     
     getCart,
 
     getItems,
