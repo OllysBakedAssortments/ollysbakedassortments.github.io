@@ -53,7 +53,24 @@
    const CART_RELEASE_ENDPOINT =
      `${RESERVATION_API_BASE}/cart-reservation/release`;
 
+/* =========================================================
+   RESERVATION STATE
 
+   Browser-side copy of the current server-authoritative
+   reservation timing.
+
+   D1 remains authoritative. This state exists only so the
+   frontend can later render the reservation countdown and
+   expiration UX.
+========================================================= */
+
+let reservationState = {
+  reservationId: null,
+  status: null,
+  expiresAt: null,
+  extensionCount: 0,
+  checkoutProtectionUsed: false
+};
 
   /* =========================================================
      HELPERS
@@ -276,6 +293,55 @@ function buildReservationPayload() {
 
 }
 
+function clearReservationState() {
+
+  reservationState = {
+    reservationId: null,
+    status: null,
+    expiresAt: null,
+    extensionCount: 0,
+    checkoutProtectionUsed: false
+  };
+
+}
+
+
+function updateReservationState(data) {
+
+  if (
+    !data ||
+    typeof data !== 'object'
+  ) {
+
+    return;
+
+  }
+
+
+  reservationState = {
+    reservationId:
+      data.reservationId || null,
+
+    status:
+      data.status || null,
+
+    expiresAt:
+      data.expiresAt || null,
+
+    extensionCount:
+      Number.isFinite(
+        Number(data.extensionCount)
+      )
+        ? Number(data.extensionCount)
+        : 0,
+
+    checkoutProtectionUsed:
+      data.checkoutProtectionUsed === true ||
+      data.checkoutProtectionUsed === 1
+  };
+
+}
+   
 /* =========================================================
    RESERVATION SYNC
 
@@ -365,11 +431,26 @@ async function syncCartReservation() {
       );
 
 
-      return {
-        ok: false,
-        status: response.status,
-        data
-      };
+      if (hasItems) {
+
+  updateReservationState(
+    data
+  );
+
+}
+
+else {
+
+  clearReservationState();
+
+}
+
+
+return {
+  ok: true,
+  status: response.status,
+  data
+};
 
     }
 
@@ -1546,6 +1627,14 @@ async function syncCartReservation() {
     buildReservationPayload,
 
    syncCartReservation,
+
+     getReservationState() {
+
+  return {
+    ...reservationState
+  };
+
+},
      
     getCart,
 
