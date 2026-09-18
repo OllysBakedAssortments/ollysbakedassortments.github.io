@@ -275,6 +275,130 @@ function buildReservationPayload() {
   };
 
 }
+
+/* =========================================================
+   RESERVATION SYNC
+
+   Synchronizes the browser cart with the authoritative
+   server-side inventory reservation.
+
+   Non-empty cart:
+   POST /cart-reservation
+
+   Empty cart:
+   POST /cart-reservation/release
+
+   This function does not modify the browser cart.
+========================================================= */
+
+async function syncCartReservation() {
+
+  const payload =
+    buildReservationPayload();
+
+
+  const hasItems =
+    payload.items.length > 0;
+
+
+  const endpoint =
+    hasItems
+      ? CART_RESERVATION_ENDPOINT
+      : CART_RELEASE_ENDPOINT;
+
+
+  const body =
+    hasItems
+      ? payload
+      : {
+          cartId: payload.cartId
+        };
+
+
+  try {
+
+    const response =
+      await fetch(
+        endpoint,
+        {
+          method: 'POST',
+
+          headers: {
+            'Content-Type':
+              'application/json'
+          },
+
+          body:
+            JSON.stringify(body)
+        }
+      );
+
+
+    let data = null;
+
+
+    try {
+
+      data =
+        await response.json();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        'OBA Cart: Reservation response was not valid JSON.',
+        error
+      );
+
+    }
+
+
+    if (!response.ok) {
+
+      console.error(
+        'OBA Cart: Reservation sync failed.',
+        {
+          status: response.status,
+          data
+        }
+      );
+
+
+      return {
+        ok: false,
+        status: response.status,
+        data
+      };
+
+    }
+
+
+    return {
+      ok: true,
+      status: response.status,
+      data
+    };
+
+  }
+
+  catch (error) {
+
+    console.error(
+      'OBA Cart: Could not reach reservation service.',
+      error
+    );
+
+
+    return {
+      ok: false,
+      status: 0,
+      error
+    };
+
+  }
+
+}
    
   /* =========================================================
      STORAGE
@@ -1386,6 +1510,8 @@ function buildReservationPayload() {
    getCartId,
 
     buildReservationPayload,
+
+   syncCartReservation,
      
     getCart,
 
