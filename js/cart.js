@@ -422,16 +422,25 @@ async function syncCartReservation() {
 
     if (!response.ok) {
 
-      console.error(
-        'OBA Cart: Reservation sync failed.',
-        {
-          status: response.status,
-          data
-        }
-      );
+  console.error(
+    'OBA Cart: Reservation sync failed.',
+    {
+      status: response.status,
+      data
+    }
+  );
 
 
-      if (hasItems) {
+  return {
+    ok: false,
+    status: response.status,
+    data
+  };
+
+}
+
+
+if (hasItems) {
 
   updateReservationState(
     data
@@ -451,15 +460,6 @@ return {
   status: response.status,
   data
 };
-
-    }
-
-
-    return {
-      ok: true,
-      status: response.status,
-      data
-    };
 
   }
 
