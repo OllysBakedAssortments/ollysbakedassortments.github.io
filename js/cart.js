@@ -443,7 +443,7 @@ async function syncCartReservation() {
 if (hasItems) {
 
   updateReservationState(
-    data
+    data.reservation
   );
 
 }
