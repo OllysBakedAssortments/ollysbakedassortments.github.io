@@ -30,13 +30,28 @@
      CONFIG
   ========================================================= */
 
-  const STORAGE_KEY = 'oba-cart';
+  const STORAGE_KEY =
+     'oba-cart';
+
 
    const CART_ID_STORAGE_KEY =
      'oba-cart-id';
    
+   
    const CART_UPDATED_EVENT =
      'oba-cart-updated';
+   
+   
+   const RESERVATION_API_BASE =
+     'https://oba-checkout.ollysbakedassortments.workers.dev';
+   
+   
+   const CART_RESERVATION_ENDPOINT =
+     `${RESERVATION_API_BASE}/cart-reservation`;
+   
+   
+   const CART_RELEASE_ENDPOINT =
+     `${RESERVATION_API_BASE}/cart-reservation/release`;
 
 
 
@@ -226,6 +241,41 @@ function getCartId() {
 
 }
 
+/* =========================================================
+   RESERVATION PAYLOAD
+
+   Converts the browser cart into the minimal inventory
+   payload expected by the reservation API.
+
+   Price and product name are intentionally excluded.
+   Inventory authority lives on the server.
+========================================================= */
+
+function buildReservationPayload() {
+
+  const items =
+    Object.values(
+      readCart()
+    )
+      .filter(
+        item =>
+          item.quantity > 0
+      )
+      .map(
+        item => ({
+          id: item.id,
+          quantity: item.quantity
+        })
+      );
+
+
+  return {
+    cartId: getCartId(),
+    items
+  };
+
+}
+   
   /* =========================================================
      STORAGE
   ========================================================= */
@@ -1334,6 +1384,8 @@ function getCartId() {
   window.OBA_CART = {
 
    getCartId,
+
+    buildReservationPayload,
      
     getCart,
 
