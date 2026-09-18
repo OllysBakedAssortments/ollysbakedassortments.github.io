@@ -1489,15 +1489,49 @@ async function syncCartReservation() {
   ========================================================= */
 
   window.addEventListener(
-    CART_UPDATED_EVENT,
-    () => {
-
-      renderCartCounts();
-
-      renderMiniCart();
-
-    }
-  );
+     CART_UPDATED_EVENT,
+     event => {
+   
+       renderCartCounts();
+   
+       renderMiniCart();
+   
+   
+       /*
+         A storage event means another browser tab
+         changed the shared cart.
+   
+         That originating tab performs the reservation
+         sync, so this tab only needs to re-render.
+       */
+   
+       if (
+         event.detail?.source === 'storage'
+       ) {
+   
+         return;
+   
+       }
+   
+   
+       syncCartReservation()
+         .then(
+           result => {
+   
+             if (!result.ok) {
+   
+               console.error(
+                 'OBA Cart: Automatic reservation sync failed.',
+                 result
+               );
+   
+             }
+   
+           }
+         );
+   
+     }
+   );
 
 
 
