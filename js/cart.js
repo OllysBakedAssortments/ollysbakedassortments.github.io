@@ -554,7 +554,6 @@ else {
 
 }
 
-  updateReservationState(
 
 
 return {
