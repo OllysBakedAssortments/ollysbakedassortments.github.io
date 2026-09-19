@@ -341,6 +341,106 @@ function updateReservationState(data) {
   };
 
 }
+
+/* =========================================================
+   RESERVATION COUNTDOWN
+
+   Calculates remaining hold time from the authoritative
+   server-provided expiresAt timestamp.
+
+   No independent browser timer is created here.
+   Refreshing the page therefore cannot reset the hold.
+========================================================= */
+
+function getReservationTimeRemaining() {
+
+  if (
+    !reservationState.expiresAt ||
+    reservationState.status !== 'active'
+  ) {
+
+    return {
+      active: false,
+      expired: false,
+      milliseconds: 0,
+      totalSeconds: 0,
+      minutes: 0,
+      seconds: 0,
+      formatted: '00:00'
+    };
+
+  }
+
+
+  const expiresAt =
+    Date.parse(
+      reservationState.expiresAt
+    );
+
+
+  if (!Number.isFinite(expiresAt)) {
+
+    return {
+      active: false,
+      expired: false,
+      milliseconds: 0,
+      totalSeconds: 0,
+      minutes: 0,
+      seconds: 0,
+      formatted: '00:00'
+    };
+
+  }
+
+
+  const milliseconds =
+    Math.max(
+      0,
+      expiresAt - Date.now()
+    );
+
+
+  const totalSeconds =
+    Math.ceil(
+      milliseconds / 1000
+    );
+
+
+  const minutes =
+    Math.floor(
+      totalSeconds / 60
+    );
+
+
+  const seconds =
+    totalSeconds % 60;
+
+
+  const formatted =
+    `${String(minutes).padStart(2, '0')}:${
+      String(seconds).padStart(2, '0')
+    }`;
+
+
+  return {
+    active:
+      milliseconds > 0,
+
+    expired:
+      milliseconds <= 0,
+
+    milliseconds,
+
+    totalSeconds,
+
+    minutes,
+
+    seconds,
+
+    formatted
+  };
+
+}
    
 /* =========================================================
    RESERVATION SYNC
@@ -1635,6 +1735,8 @@ return {
   };
 
 },
+
+     getReservationTimeRemaining,
      
     getCart,
 
