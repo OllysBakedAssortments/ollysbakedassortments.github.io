@@ -2568,8 +2568,37 @@
               <h2>
                 Order Summary
               </h2>
-
-
+              
+              
+              <div
+                class="order-reservation-timer"
+                id="reservation-timer"
+                role="status"
+                aria-live="polite"
+                hidden
+              >
+                <span
+                  class="order-reservation-timer-icon"
+                  aria-hidden="true"
+                >
+                  🍪
+                </span>
+              
+                <div class="order-reservation-timer-copy">
+                  <strong>
+                    Cookies held for
+                    <span id="reservation-timer-value">
+                      15:00
+                    </span>
+                  </strong>
+              
+                  <span>
+                    Your batch is temporarily reserved while you finish your order.
+                  </span>
+                </div>
+              </div>
+              
+              
               <div class="order-summary-scroll">
 
                 <p
@@ -4925,7 +4954,8 @@
             ----------------------------------------- */
           
             if (
-              checkoutData.retryableWithNewAttempt === true
+              checkoutData.retryableWithNewAttempt === true ||
+              checkoutData.checkoutChanged === true
             ) {
               clearCheckoutAttemptId();
             }
