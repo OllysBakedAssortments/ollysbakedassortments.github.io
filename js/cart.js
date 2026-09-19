@@ -555,6 +555,19 @@ else {
 }
 
 
+window.dispatchEvent(
+  new CustomEvent(
+    'oba-reservation-updated',
+    {
+      detail: {
+        reservation: {
+          ...reservationState
+        }
+      }
+    }
+  )
+);
+
 
 return {
   ok: true,
