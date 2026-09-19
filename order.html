@@ -5088,6 +5088,13 @@
         renderReservationTimer();
       });
 
+      window.addEventListener(
+        'oba-reservation-updated',
+        () => {
+          renderReservationTimer();
+        }
+      );
+      
       updateProductCardQuantities();
       updateDialogQuantity();
       updateFulfillmentPanels();
