@@ -4691,6 +4691,28 @@
         activeSlide=0;
       }
 
+      function renderReservationTimer() {
+        const cartCount =
+          window.OBA_CART.count();
+      
+        const remaining =
+          window.OBA_CART.getReservationTimeRemaining();
+      
+        if (
+          cartCount <= 0 ||
+          !remaining.active
+        ) {
+          reservationTimer.hidden = true;
+          reservationTimerValue.textContent = '00:00';
+          return;
+        }
+      
+        reservationTimerValue.textContent =
+          remaining.formatted;
+      
+        reservationTimer.hidden = false;
+      }
+      
       function renderOrderSummary() {
         const items=Object.values(window.OBA_CART.getCart());
         cartItemsElement.innerHTML='';
@@ -5069,6 +5091,7 @@
       updateDialogQuantity();
       updateFulfillmentPanels();
       renderOrderSummary();
+      renderReservationTimer();
       renderInventory();
 
       window.addEventListener(
