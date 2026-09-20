@@ -4788,6 +4788,8 @@ reservationCheckAvailability.addEventListener(
   'click',
   async () => {
 
+    reservationAvailabilityError = null;
+    
     reservationCheckAvailability.disabled = true;
 
     reservationCheckAvailability.textContent =
