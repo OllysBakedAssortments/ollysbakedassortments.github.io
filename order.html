@@ -2596,7 +2596,16 @@
                 <span id="reservation-timer-message">
                   Your batch is temporarily reserved while you finish your order.
                 </span>
-              
+
+                  <button
+                    type="button"
+                    class="order-reservation-check-button"
+                    id="reservation-check-availability"
+                    hidden
+                  >
+                    Check Availability
+                  </button>
+                  
               </div>
 
             </div>
@@ -4210,6 +4219,9 @@
       
       const reservationTimerMessage =
         document.getElementById('reservation-timer-message');
+
+      const reservationCheckAvailability =
+        document.getElementById('reservation-check-availability');
       
       const clearCartButton =
         document.getElementById('clear-cart');
@@ -4716,6 +4728,8 @@
       
           reservationTimerMessage.textContent =
             'Your batch is temporarily reserved while you finish your order.';
+
+          reservationCheckAvailability.hidden = true;
       
           return;
         }
@@ -4733,6 +4747,8 @@
       
           reservationTimerMessage.textContent =
             'Your batch is still here, but these cookies are no longer reserved.';
+
+          reservationCheckAvailability.hidden = false;
       
           return;
         }
@@ -4749,6 +4765,8 @@
       
         reservationTimerMessage.textContent =
           'Your batch is temporarily reserved while you finish your order.';
+
+        reservationCheckAvailability.hidden = true;
       }
 
 let reservationTimerIntervalId = null;
