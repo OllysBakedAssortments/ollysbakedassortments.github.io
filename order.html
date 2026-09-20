@@ -2585,17 +2585,18 @@
                 </span>
               
                 <div class="order-reservation-timer-copy">
-                  <strong>
-                    Cookies held for
-                    <span id="reservation-timer-value">
-                      15:00
-                    </span>
-                  </strong>
-              
-                  <span>
-                    Your batch is temporarily reserved while you finish your order.
+
+                <strong id="reservation-timer-heading">
+                  Cookies held for
+                  <span id="reservation-timer-value">
+                    15:00
                   </span>
-                </div>
+                </strong>
+              
+                <span id="reservation-timer-message">
+                  Your batch is temporarily reserved while you finish your order.
+                </span>
+              
               </div>
               
               
@@ -4205,6 +4206,12 @@
       
       const reservationTimerValue =
         document.getElementById('reservation-timer-value');
+
+      const reservationTimerHeading =
+        document.getElementById('reservation-timer-heading');
+      
+      const reservationTimerMessage =
+        document.getElementById('reservation-timer-message');
       
       const clearCartButton =
         document.getElementById('clear-cart');
@@ -4698,19 +4705,52 @@
         const remaining =
           window.OBA_CART.getReservationTimeRemaining();
       
-        if (
-          cartCount <= 0 ||
-          !remaining.active
-        ) {
+      
+        /* -----------------------------------------
+           Empty cart
+        ----------------------------------------- */
+      
+        if (cartCount <= 0) {
           reservationTimer.hidden = true;
-          reservationTimerValue.textContent = '00:00';
+      
+          reservationTimerHeading.innerHTML =
+            'Cookies held for <span id="reservation-timer-value">00:00</span>';
+      
+          reservationTimerMessage.textContent =
+            'Your batch is temporarily reserved while you finish your order.';
+      
           return;
         }
       
-        reservationTimerValue.textContent =
-          remaining.formatted;
+      
+        /* -----------------------------------------
+           Reservation expired
+        ----------------------------------------- */
+      
+        if (!remaining.active) {
+          reservationTimer.hidden = false;
+      
+          reservationTimerHeading.textContent =
+            'Your cookie hold has expired';
+      
+          reservationTimerMessage.textContent =
+            'Your batch is still here, but these cookies are no longer reserved.';
+      
+          return;
+        }
+      
+      
+        /* -----------------------------------------
+           Active reservation
+        ----------------------------------------- */
       
         reservationTimer.hidden = false;
+      
+        reservationTimerHeading.innerHTML =
+          `Cookies held for <span id="reservation-timer-value">${remaining.formatted}</span>`;
+      
+        reservationTimerMessage.textContent =
+          'Your batch is temporarily reserved while you finish your order.';
       }
 
 let reservationTimerIntervalId = null;
