@@ -4769,6 +4769,48 @@
         reservationCheckAvailability.hidden = true;
       }
 
+reservationCheckAvailability.addEventListener(
+  'click',
+  async () => {
+
+    reservationCheckAvailability.disabled = true;
+
+    reservationCheckAvailability.textContent =
+      'Checking...';
+
+
+    const result =
+      await window.OBA_CART.checkAvailability();
+
+
+    if (result.ok) {
+
+      reservationCheckAvailability.textContent =
+        'Check Availability';
+
+      reservationCheckAvailability.disabled = false;
+
+      return;
+
+    }
+
+
+    reservationCheckAvailability.textContent =
+      'Check Availability';
+
+    reservationCheckAvailability.disabled = false;
+
+
+    reservationTimerHeading.textContent =
+      'Some cookies are no longer available';
+
+    reservationTimerMessage.textContent =
+      result.data?.error ||
+      'Your batch could not be reserved. Please update your cart and try again.';
+
+  }
+);
+      
 let reservationTimerIntervalId = null;
 
 
