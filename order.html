@@ -4712,6 +4712,28 @@
       
         reservationTimer.hidden = false;
       }
+
+let reservationTimerIntervalId = null;
+
+
+function startReservationTimerDisplay() {
+
+  if (reservationTimerIntervalId !== null) {
+    return;
+  }
+
+
+  reservationTimerIntervalId =
+    window.setInterval(
+      () => {
+
+        renderReservationTimer();
+
+      },
+      1000
+    );
+
+}
       
       function renderOrderSummary() {
         const items=Object.values(window.OBA_CART.getCart());
@@ -5100,6 +5122,7 @@
       updateFulfillmentPanels();
       renderOrderSummary();
       renderReservationTimer();
+      startReservationTimerDisplay();
       renderInventory();
 
       window.addEventListener(
