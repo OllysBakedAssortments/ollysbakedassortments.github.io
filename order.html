@@ -4222,6 +4222,8 @@
 
       const reservationCheckAvailability =
         document.getElementById('reservation-check-availability');
+
+      let reservationAvailabilityError = null;
       
       const clearCartButton =
         document.getElementById('clear-cart');
@@ -4742,12 +4744,25 @@
         if (!remaining.active) {
           reservationTimer.hidden = false;
       
-          reservationTimerHeading.textContent =
-            'Your cookie hold has expired';
-      
-          reservationTimerMessage.textContent =
-            'Your batch is still here, but these cookies are no longer reserved.';
+          if (reservationAvailabilityError) {
 
+            reservationTimerHeading.textContent =
+              'Some cookies are no longer available';
+          
+            reservationTimerMessage.textContent =
+              reservationAvailabilityError;
+          
+          }
+          else {
+          
+            reservationTimerHeading.textContent =
+              'Your cookie hold has expired';
+          
+            reservationTimerMessage.textContent =
+              'Your batch is still here, but these cookies are no longer reserved.';
+          
+          }
+          
           reservationCheckAvailability.hidden = false;
       
           return;
@@ -4785,6 +4800,8 @@ reservationCheckAvailability.addEventListener(
 
     if (result.ok) {
 
+      reservationAvailabilityError = null;
+
       reservationCheckAvailability.textContent =
         'Check Availability';
 
@@ -4801,12 +4818,11 @@ reservationCheckAvailability.addEventListener(
     reservationCheckAvailability.disabled = false;
 
 
-    reservationTimerHeading.textContent =
-      'Some cookies are no longer available';
-
-    reservationTimerMessage.textContent =
+    reservationAvailabilityError =
       result.data?.error ||
       'Your batch could not be reserved. Please update your cart and try again.';
+    
+    renderReservationTimer();
 
   }
 );
