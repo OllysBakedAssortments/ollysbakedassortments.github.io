@@ -594,6 +594,41 @@ return {
   }
 
 }
+
+/* =========================================================
+   CHECK AVAILABILITY
+
+   Explicitly attempts to reserve the current cart again.
+
+   Intended for the customer-facing "Check Availability"
+   action after a reservation has expired.
+
+   This does not run automatically on page load or refresh.
+========================================================= */
+
+async function checkAvailability() {
+
+  const payload =
+    buildReservationPayload();
+
+
+  if (payload.items.length === 0) {
+
+    return {
+      ok: false,
+      status: 400,
+      data: {
+        error:
+          'Your cart is empty.'
+      }
+    };
+
+  }
+
+
+  return await syncCartReservation();
+
+}
    
   /* =========================================================
      STORAGE
@@ -1740,9 +1775,11 @@ return {
 
     buildReservationPayload,
 
-   syncCartReservation,
-
-     getReservationState() {
+      syncCartReservation,
+      
+      checkAvailability,
+      
+      getReservationState() {
 
   return {
     ...reservationState
