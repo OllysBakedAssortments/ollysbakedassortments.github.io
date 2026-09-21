@@ -2689,6 +2689,7 @@
 
               <a
                 class="btn btn-gold order-summary-checkout-link"
+                id="continue-to-checkout"
                 href="#checkout"
               >
                 Continue To Checkout
@@ -4222,7 +4223,10 @@
 
       const reservationCheckAvailability =
         document.getElementById('reservation-check-availability');
-
+      
+      const continueToCheckout =
+        document.getElementById('continue-to-checkout');
+      
       let reservationAvailabilityError = null;
       let reservationUnavailableItems = [];
       
@@ -4847,6 +4851,116 @@ reservationCheckAvailability.addEventListener(
         : [];
     
     renderReservationTimer();
+
+  }
+);
+
+continueToCheckout.addEventListener(
+  'click',
+  async event => {
+
+    /* -----------------------------------------
+       Stop the normal #checkout jump until
+       the server confirms checkout protection.
+    ----------------------------------------- */
+
+    event.preventDefault();
+
+
+    /* -----------------------------------------
+       Empty carts cannot enter checkout.
+    ----------------------------------------- */
+
+    if (window.OBA_CART.count() <= 0) {
+      return;
+    }
+
+
+    /* -----------------------------------------
+       Prevent duplicate clicks while the
+       protection request is running.
+    ----------------------------------------- */
+
+    continueToCheckout.setAttribute(
+      'aria-disabled',
+      'true'
+    );
+
+    const originalText =
+      continueToCheckout.textContent;
+
+    continueToCheckout.textContent =
+      'Securing Your Batch...';
+
+
+    try {
+
+      const result =
+        await window.OBA_CART
+          .protectReservationForCheckout();
+
+
+      /* -----------------------------------------
+         Protection failed.
+
+         Do NOT advance to checkout.
+         Show the reservation state instead.
+      ----------------------------------------- */
+
+      if (!result.ok) {
+
+        reservationAvailabilityError =
+          result.data?.error ||
+          'Your cookie hold is no longer active. Please check availability before continuing.';
+
+        reservationUnavailableItems =
+          Array.isArray(
+            result.data?.unavailableItems
+          )
+            ? result.data.unavailableItems
+            : [];
+
+        renderReservationTimer();
+
+        reservationTimer.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+
+        return;
+      }
+
+
+      /* -----------------------------------------
+         Protection succeeded.
+
+         Clear any old reservation error and
+         allow the customer into checkout.
+      ----------------------------------------- */
+
+      reservationAvailabilityError = null;
+      reservationUnavailableItems = [];
+
+      renderReservationTimer();
+
+      document
+        .getElementById('checkout')
+        .scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+
+    }
+    finally {
+
+      continueToCheckout.removeAttribute(
+        'aria-disabled'
+      );
+
+      continueToCheckout.textContent =
+        originalText;
+
+    }
 
   }
 );
