@@ -632,6 +632,146 @@ async function checkAvailability() {
   return await syncCartReservation();
 
 }
+
+/* =========================================================
+   CHECKOUT PROTECTION
+
+   Applies the reservation's one-time checkout protection
+   immediately before the customer enters checkout.
+
+   The server remains authoritative over whether protection
+   can be applied and how much time remains.
+========================================================= */
+
+async function protectReservationForCheckout() {
+
+  const payload =
+    buildReservationPayload();
+
+
+  if (payload.items.length === 0) {
+
+    return {
+      ok: false,
+      status: 400,
+      data: {
+        error:
+          'Your cart is empty.'
+      }
+    };
+
+  }
+
+
+  try {
+
+    const response =
+      await fetch(
+        CART_CHECKOUT_PROTECTION_ENDPOINT,
+        {
+          method: 'POST',
+
+          headers: {
+            'Content-Type':
+              'application/json'
+          },
+
+          body:
+            JSON.stringify({
+              cartId: payload.cartId
+            })
+        }
+      );
+
+
+    let data = null;
+
+
+    try {
+
+      data =
+        await response.json();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        'OBA Cart: Checkout protection response was not valid JSON.',
+        error
+      );
+
+    }
+
+
+    if (!response.ok) {
+
+      console.error(
+        'OBA Cart: Checkout protection failed.',
+        {
+          status: response.status,
+          data
+        }
+      );
+
+
+      return {
+        ok: false,
+        status: response.status,
+        data
+      };
+
+    }
+
+
+    if (data?.reservation) {
+
+      updateReservationState(
+        data.reservation
+      );
+
+
+      window.dispatchEvent(
+        new CustomEvent(
+          'oba-reservation-updated',
+          {
+            detail: {
+              reservation: {
+                ...reservationState
+              }
+            }
+          }
+        )
+      );
+
+    }
+
+
+    return {
+      ok: true,
+      status: response.status,
+      data
+    };
+
+  }
+
+  catch (error) {
+
+    console.error(
+      'OBA Cart: Could not reach checkout protection service.',
+      error
+    );
+
+
+    return {
+      ok: false,
+      status: 0,
+      error
+    };
+
+  }
+
+}
    
   /* =========================================================
      STORAGE
@@ -1781,6 +1921,8 @@ async function checkAvailability() {
       syncCartReservation,
       
       checkAvailability,
+
+      protectReservationForCheckout,
       
       getReservationState() {
 
