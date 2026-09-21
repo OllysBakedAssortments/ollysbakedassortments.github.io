@@ -53,6 +53,9 @@
    const CART_RELEASE_ENDPOINT =
      `${RESERVATION_API_BASE}/cart-reservation/release`;
 
+   const CART_CHECKOUT_PROTECTION_ENDPOINT =
+  `${RESERVATION_API_BASE}/cart-reservation/checkout-protection`;
+
 /* =========================================================
    RESERVATION STATE
 
