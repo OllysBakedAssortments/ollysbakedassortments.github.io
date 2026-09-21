@@ -4224,6 +4224,7 @@
         document.getElementById('reservation-check-availability');
 
       let reservationAvailabilityError = null;
+      let reservationUnavailableItems = [];
       
       const clearCartButton =
         document.getElementById('clear-cart');
@@ -4749,8 +4750,22 @@
             reservationTimerHeading.textContent =
               'Some cookies are no longer available';
           
-            reservationTimerMessage.textContent =
-              reservationAvailabilityError;
+            if (reservationUnavailableItems.length > 0) {
+          
+              reservationTimerMessage.textContent =
+                reservationUnavailableItems
+                  .map(item =>
+                    `${item.productName}: you have ${item.requested}, only ${item.available} available`
+                  )
+                  .join(' · ');
+          
+            }
+            else {
+          
+              reservationTimerMessage.textContent =
+                reservationAvailabilityError;
+          
+            }
           
           }
           else {
@@ -4789,6 +4804,7 @@ reservationCheckAvailability.addEventListener(
   async () => {
 
     reservationAvailabilityError = null;
+    reservationUnavailableItems = [];
     
     reservationCheckAvailability.disabled = true;
 
@@ -4803,6 +4819,7 @@ reservationCheckAvailability.addEventListener(
     if (result.ok) {
 
       reservationAvailabilityError = null;
+      reservationUnavailableItems = [];
 
       reservationCheckAvailability.textContent =
         'Check Availability';
@@ -4823,6 +4840,11 @@ reservationCheckAvailability.addEventListener(
     reservationAvailabilityError =
       result.data?.error ||
       'Your batch could not be reserved. Please update your cart and try again.';
+    
+    reservationUnavailableItems =
+      Array.isArray(result.data?.unavailableItems)
+        ? result.data.unavailableItems
+        : [];
     
     renderReservationTimer();
 
