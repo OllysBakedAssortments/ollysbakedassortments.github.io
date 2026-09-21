@@ -5189,37 +5189,74 @@ function startReservationTimerDisplay() {
              an expired or unavailable batch.
           ----------------------------------------- */
 
+          /* -----------------------------------------
+             Require an existing active reservation
+             at the actual payment boundary.
+          
+             Payment must NEVER silently create a new
+             reservation for an expired cart.
+          ----------------------------------------- */
+          
+          const reservationRemaining =
+            window.OBA_CART.getReservationTimeRemaining();
+          
+          if (!reservationRemaining.active) {
+          
+            reservationAvailabilityError =
+              'Your cookie hold has expired. Please check availability before paying.';
+          
+            reservationUnavailableItems = [];
+          
+            renderReservationTimer();
+          
+            reservationTimer.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center'
+            });
+          
+            throw new Error(
+              reservationAvailabilityError
+            );
+          }
+          
+          
+          /* -----------------------------------------
+             Protect the EXISTING active reservation
+             while Square payment is being completed.
+          ----------------------------------------- */
+          
           const reservationCheck =
-            await window.OBA_CART.checkAvailability();
-
+            await window.OBA_CART
+              .protectReservationForCheckout();
+          
           if (!reservationCheck.ok) {
-
+          
             reservationAvailabilityError =
               reservationCheck.data?.error ||
               'Your cookie hold is no longer active. Please check availability before paying.';
-
+          
             reservationUnavailableItems =
               Array.isArray(
                 reservationCheck.data?.unavailableItems
               )
                 ? reservationCheck.data.unavailableItems
                 : [];
-
+          
             renderReservationTimer();
-
+          
             reservationTimer.scrollIntoView({
               behavior: 'smooth',
               block: 'center'
             });
-
+          
             throw new Error(
               reservationAvailabilityError
             );
           }
-
+          
           reservationAvailabilityError = null;
           reservationUnavailableItems = [];
-
+          
           renderReservationTimer();
           
           /* -----------------------------------------
