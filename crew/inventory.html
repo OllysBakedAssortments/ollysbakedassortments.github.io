@@ -1369,8 +1369,8 @@
     </form>
   </dialog>
 
-  <!-- =========================================================
-       ADD BAKED — UI READY, BACKEND ROUTE STILL REQUIRED
+    <!-- =========================================================
+       ADD BAKED INVENTORY
   ========================================================== -->
 
   <dialog class="crew-dialog" id="baked-dialog">
@@ -1407,12 +1407,6 @@
             <input class="crew-input" id="baked-reason" type="text" maxlength="160" placeholder="Morning bake, second batch, replacement batch…">
           </div>
         </div>
-
-        <p class="backend-note">
-          This tool is intentionally not allowed to fake a local inventory change. It requires the
-          server-side <code>/inventory/baked</code> mutation so the master total, location allocation,
-          and movement ledger update atomically.
-        </p>
       </div>
 
       <div class="dialog-foot">
@@ -1423,7 +1417,7 @@
   </dialog>
 
   <!-- =========================================================
-       ADJUST — UI READY, BACKEND ROUTE STILL REQUIRED
+       INVENTORY ADJUSTMENT
   ========================================================== -->
 
   <dialog class="crew-dialog" id="adjust-dialog">
@@ -1469,11 +1463,6 @@
             <textarea class="crew-textarea" id="adjust-reason" required maxlength="240" placeholder="Broken during packing, count correction after physical recount…"></textarea>
           </div>
         </div>
-
-        <p class="backend-note">
-          Waste and corrections need a dedicated atomic server mutation. The UI is complete, but it
-          will not alter browser-only numbers because that would corrupt reconciliation and analytics.
-        </p>
       </div>
 
       <div class="dialog-foot">
@@ -1484,7 +1473,7 @@
   </dialog>
 
   <!-- =========================================================
-       EVENT LOCATION — UI READY, BACKEND ROUTE STILL REQUIRED
+       EVENT INVENTORY LOCATION
   ========================================================== -->
 
   <dialog class="crew-dialog" id="event-dialog">
@@ -1516,11 +1505,6 @@
             <input class="crew-input" id="event-reference" type="text" maxlength="80" placeholder="Optional event ID">
           </div>
         </div>
-
-        <p class="backend-note">
-          Creating an event location requires a protected server mutation for
-          <code>inventory_locations</code>. Once created, the normal Transfer tool can move cookies into it.
-        </p>
       </div>
 
       <div class="dialog-foot">
@@ -1540,18 +1524,10 @@
         'https://oba-checkout.ollysbakedassortments.workers.dev';
 
       /*
-       * IMPORTANT:
-       * Mutation endpoints must be protected by Crew authentication before
-       * this page is publicly deployed. Never place a Worker secret in this file.
-       *
-       * Existing:
-       *   GET  /crew/inventory
-       *   POST /inventory/transfer
-       *
-       * Required next:
-       *   POST /inventory/baked
-       *   POST /inventory/adjust
-       *   POST /inventory/location
+       * SECURITY:
+       * Crew inventory mutations must be protected by Crew authentication
+       * before this page is publicly deployed.
+       * Never place a Worker secret or privileged credential in browser code.
        */
 
       const state = {
@@ -2499,22 +2475,294 @@
               }
                         });
 
-      el('adjust-form').addEventListener('submit', event => {
-        event.preventDefault();
+            /* =======================================================
+         INVENTORY ADJUSTMENTS
+      ======================================================== */
 
-        showModalStatus(
-          'adjust-status',
-          'Inventory adjustments require the protected /inventory/adjust backend mutation so the location count, master total, and movement ledger stay synchronized.'
-        );
+      el('adjust-form').addEventListener('submit', async event => {
+        event.preventDefault();
+        clearModalStatus('adjust-status');
+
+        const inventoryItemId = number(el('adjust-item').value);
+        const locationId = el('adjust-location').value;
+        const quantity = number(el('adjust-quantity').value);
+        const reason = el('adjust-reason').value.trim();
+        const mode = el('adjust-mode').value;
+        const direction = el('adjust-direction').value;
+
+        if (!Number.isInteger(inventoryItemId) || inventoryItemId < 1) {
+          showModalStatus(
+            'adjust-status',
+            'Choose a cookie.'
+          );
+          return;
+        }
+
+        if (!locationId) {
+          showModalStatus(
+            'adjust-status',
+            'Choose an inventory location.'
+          );
+          return;
+        }
+
+        if (!Number.isInteger(quantity) || quantity <= 0) {
+          showModalStatus(
+            'adjust-status',
+            'Quantity must be a positive whole number.'
+          );
+          return;
+        }
+
+        if (!reason) {
+          showModalStatus(
+            'adjust-status',
+            'Enter a reason for this inventory adjustment.'
+          );
+          return;
+        }
+
+        const adjustmentType =
+          mode === 'waste'
+            ? 'waste'
+            : direction === 'add'
+              ? 'correction_add'
+              : 'correction_remove';
+
+        const item = findItem(inventoryItemId);
+
+        if (!item) {
+          showModalStatus(
+            'adjust-status',
+            'That cookie could not be found in the current inventory.'
+          );
+          return;
+        }
+
+        const locationAvailable =
+          locationQuantity(item, locationId);
+
+        if (
+          (
+            adjustmentType === 'waste' ||
+            adjustmentType === 'correction_remove'
+          ) &&
+          quantity > locationAvailable
+        ) {
+          showModalStatus(
+            'adjust-status',
+            `Only ${locationAvailable} cookies are currently at this location.`
+          );
+          return;
+        }
+
+        const submit = el('adjust-submit');
+        const originalText = submit.textContent;
+
+        submit.disabled = true;
+        submit.textContent =
+          adjustmentType === 'waste'
+            ? 'Recording…'
+            : 'Correcting…';
+
+        try {
+          const response = await fetch(
+            `${API_BASE}/inventory/adjust`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              body: JSON.stringify({
+                inventoryItemId,
+                locationId,
+                adjustmentType,
+                quantity,
+                reason
+              })
+            }
+          );
+
+          const data = await response.json();
+
+          if (!response.ok || data.ok !== true) {
+            throw new Error(
+              data.error ||
+              'Inventory adjustment failed.'
+            );
+          }
+
+          showModalStatus(
+            'adjust-status',
+            adjustmentType === 'waste'
+              ? 'Waste / damage recorded successfully.'
+              : 'Inventory correction recorded successfully.',
+            'success'
+          );
+
+          toast(
+            adjustmentType === 'waste'
+              ? 'Waste / damage recorded.'
+              : 'Inventory correction recorded.',
+            'success'
+          );
+
+          await loadInventory();
+
+          el('adjust-quantity').value = '1';
+          el('adjust-reason').value = '';
+
+          window.setTimeout(() => {
+            closeDialog(
+              el('adjust-dialog')
+            );
+          }, 650);
+
+        } catch (error) {
+          console.error(
+            'Inventory adjustment failed:',
+            error
+          );
+
+          showModalStatus(
+            'adjust-status',
+            error.message ||
+            'Inventory adjustment failed.'
+          );
+
+        } finally {
+          submit.disabled = false;
+          submit.textContent = originalText;
+        }
       });
 
-      el('event-form').addEventListener('submit', event => {
-        event.preventDefault();
+            /* =======================================================
+         EVENT INVENTORY LOCATIONS
+      ======================================================== */
 
-        showModalStatus(
-          'event-status',
-          'Event locations require the protected /inventory/location backend mutation before they can be created from the Crew site.'
-        );
+      function eventIdFromForm() {
+        const explicitReference =
+          el('event-reference').value.trim();
+
+        if (explicitReference) {
+          return explicitReference;
+        }
+
+        const name =
+          el('event-name').value.trim();
+
+        const date =
+          el('event-date').value.trim();
+
+        return `${date ? `${date}-` : ''}${name}`
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+      }
+
+      el('event-form').addEventListener('submit', async event => {
+        event.preventDefault();
+        clearModalStatus('event-status');
+
+        const name =
+          el('event-name').value.trim();
+
+        const eventId =
+          eventIdFromForm();
+
+        if (!name) {
+          showModalStatus(
+            'event-status',
+            'Enter an event / location name.'
+          );
+          return;
+        }
+
+        if (!eventId) {
+          showModalStatus(
+            'event-status',
+            'Enter an event reference or enough event information to create one.'
+          );
+          return;
+        }
+
+        const submit =
+          event.currentTarget.querySelector(
+            'button[type="submit"]'
+          );
+
+        const originalText =
+          submit.textContent;
+
+        submit.disabled = true;
+        submit.textContent = 'Creating…';
+
+        try {
+          const response = await fetch(
+            `${API_BASE}/inventory/location`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              body: JSON.stringify({
+                name,
+                eventId
+              })
+            }
+          );
+
+          const data =
+            await response.json();
+
+          if (!response.ok || data.ok !== true) {
+            throw new Error(
+              data.error ||
+              'Unable to create event inventory location.'
+            );
+          }
+
+          showModalStatus(
+            'event-status',
+            'Event inventory location created successfully.',
+            'success'
+          );
+
+          toast(
+            'Event inventory location created.',
+            'success'
+          );
+
+          await loadInventory();
+
+          el('event-name').value = '';
+          el('event-date').value = '';
+          el('event-reference').value = '';
+
+          window.setTimeout(() => {
+            closeDialog(
+              el('event-dialog')
+            );
+          }, 650);
+
+        } catch (error) {
+          console.error(
+            'Event inventory location creation failed:',
+            error
+          );
+
+          showModalStatus(
+            'event-status',
+            error.message ||
+            'Unable to create event inventory location.'
+          );
+
+        } finally {
+          submit.disabled = false;
+          submit.textContent = originalText;
+        }
       });
 
       /* =======================================================
