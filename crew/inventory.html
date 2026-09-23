@@ -2362,19 +2362,142 @@
         }
       });
 
-      /* =======================================================
-         FUTURE MUTATIONS
-         These deliberately refuse to create fake browser state.
-      ======================================================== */
-
-      el('baked-form').addEventListener('submit', event => {
-        event.preventDefault();
-
-        showModalStatus(
-          'baked-status',
-          'Add Baked is ready in the Crew UI, but the protected /inventory/baked backend mutation must be added before this button can safely change inventory.'
-        );
-      });
+            /* =======================================================
+               ADD BAKED INVENTORY
+            ======================================================== */
+      
+            el('baked-form').addEventListener('submit', async event => {
+              event.preventDefault();
+      
+              const inventoryItemId =
+                Number(el('baked-item').value);
+      
+              const locationId =
+                el('baked-location').value.trim();
+      
+              const quantity =
+                Number(el('baked-quantity').value);
+      
+              const reason =
+                el('baked-reason').value.trim();
+      
+              const submit =
+                event.currentTarget.querySelector(
+                  'button[type="submit"]'
+                );
+      
+              showModalStatus(
+                'baked-status',
+                '',
+                'success'
+              );
+      
+              if (
+                !Number.isInteger(inventoryItemId) ||
+                inventoryItemId < 1
+              ) {
+                showModalStatus(
+                  'baked-status',
+                  'Choose a cookie.'
+                );
+                return;
+              }
+      
+              if (!locationId) {
+                showModalStatus(
+                  'baked-status',
+                  'Choose where the baked cookies are going.'
+                );
+                return;
+              }
+      
+              if (
+                !Number.isInteger(quantity) ||
+                quantity < 1
+              ) {
+                showModalStatus(
+                  'baked-status',
+                  'Quantity must be a positive whole number.'
+                );
+                return;
+              }
+      
+              submit.disabled = true;
+              submit.textContent = 'Adding…';
+      
+              try {
+                const response = await fetch(
+                  `${API_BASE}/inventory/baked`,
+                  {
+                    method: 'POST',
+      
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+      
+                    body: JSON.stringify({
+                      inventoryItemId,
+                      locationId,
+                      quantity,
+                      reason
+                    })
+                  }
+                );
+      
+                const data = await response.json();
+      
+                if (
+                  !response.ok ||
+                  data.ok !== true
+                ) {
+                  throw new Error(
+                    data.error ||
+                    'Baked inventory could not be added.'
+                  );
+                }
+      
+                showModalStatus(
+                  'baked-status',
+                  `${quantity} ${
+                    quantity === 1 ? 'cookie' : 'cookies'
+                  } added successfully.`,
+                  'success'
+                );
+      
+                toast(
+                  'Baked inventory recorded.',
+                  'success'
+                );
+      
+                await loadInventory();
+      
+                el('baked-quantity').value = '1';
+                el('baked-reason').value = '';
+      
+                window.setTimeout(() => {
+                  closeDialog(
+                    el('baked-dialog')
+                  );
+                }, 650);
+      
+              } catch (error) {
+                console.error(
+                  'Add baked inventory failed:',
+                  error
+                );
+      
+                showModalStatus(
+                  'baked-status',
+                  error.message ||
+                  'Baked inventory could not be added.'
+                );
+      
+              } finally {
+                submit.disabled = false;
+                submit.textContent =
+                  'Add Baked Inventory';
+              }
+                        });
 
       el('adjust-form').addEventListener('submit', event => {
         event.preventDefault();
