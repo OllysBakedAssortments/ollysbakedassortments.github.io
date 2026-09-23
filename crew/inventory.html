@@ -1355,7 +1355,7 @@
             <input class="crew-input" id="transfer-quantity" type="number" min="1" step="1" value="1" required>
           </div>
 
-          <div class="form-group">
+                    <div class="form-group">
             <label for="transfer-reason">
               Reason <span aria-hidden="true">*</span>
             </label>
@@ -1369,11 +1369,169 @@
             >
           </div>
         </div>
+
+        <div id="transfer-review" hidden>
+          <div
+            style="
+              padding:16px;
+              border:1px solid var(--crew-line);
+              border-radius:14px;
+              background:#fff;
+            "
+          >
+            <div
+              style="
+                margin-bottom:14px;
+                font-size:.68rem;
+                font-weight:900;
+                letter-spacing:.06em;
+                text-transform:uppercase;
+                color:var(--crew-muted);
+              "
+            >
+              Confirm Inventory Transfer
+            </div>
+
+            <div
+              style="
+                display:grid;
+                gap:14px;
+              "
+            >
+              <div>
+                <strong
+                  id="transfer-review-item"
+                  style="display:block;font-size:1rem;"
+                ></strong>
+
+                <span
+                  id="transfer-review-quantity"
+                  style="
+                    display:block;
+                    margin-top:4px;
+                    color:var(--crew-muted);
+                    font-size:.72rem;
+                  "
+                ></span>
+              </div>
+
+              <div
+                style="
+                  display:grid;
+                  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+                  align-items:center;
+                  gap:12px;
+                  padding:13px;
+                  border-radius:12px;
+                  background:var(--crew-soft);
+                "
+              >
+                <div>
+                  <span
+                    style="
+                      display:block;
+                      margin-bottom:3px;
+                      color:var(--crew-muted);
+                      font-size:.6rem;
+                      font-weight:900;
+                      text-transform:uppercase;
+                    "
+                  >
+                    From
+                  </span>
+
+                  <strong
+                    id="transfer-review-from"
+                    style="font-size:.78rem;"
+                  ></strong>
+                </div>
+
+                <strong aria-hidden="true">→</strong>
+
+                <div>
+                  <span
+                    style="
+                      display:block;
+                      margin-bottom:3px;
+                      color:var(--crew-muted);
+                      font-size:.6rem;
+                      font-weight:900;
+                      text-transform:uppercase;
+                    "
+                  >
+                    To
+                  </span>
+
+                  <strong
+                    id="transfer-review-to"
+                    style="font-size:.78rem;"
+                  ></strong>
+                </div>
+              </div>
+
+              <div>
+                <span
+                  style="
+                    display:block;
+                    margin-bottom:4px;
+                    color:var(--crew-muted);
+                    font-size:.6rem;
+                    font-weight:900;
+                    text-transform:uppercase;
+                  "
+                >
+                  Reason
+                </span>
+
+                <span
+                  id="transfer-review-reason"
+                  style="font-size:.76rem;"
+                ></span>
+              </div>
+
+              <div
+                style="
+                  padding:10px 11px;
+                  border-radius:11px;
+                  background:var(--crew-green-bg);
+                  color:var(--crew-green);
+                  font-size:.67rem;
+                  font-weight:800;
+                "
+              >
+                Physical inventory does not change. This only moves cookies between locations.
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="dialog-foot">
-        <button class="crew-button" type="button" data-close-dialog>Cancel</button>
-        <button class="crew-button primary" type="submit" id="transfer-submit">Transfer Cookies</button>
+        <button
+          class="crew-button"
+          type="button"
+          id="transfer-cancel"
+          data-close-dialog
+        >
+          Cancel
+        </button>
+
+        <button
+          class="crew-button"
+          type="button"
+          id="transfer-back"
+          hidden
+        >
+          ← Back
+        </button>
+
+        <button
+          class="crew-button primary"
+          type="submit"
+          id="transfer-submit"
+        >
+          Review Transfer
+        </button>
       </div>
     </form>
   </dialog>
@@ -2249,9 +2407,80 @@
       el('transfer-item').addEventListener('change', updateTransferSourceHelp);
       el('transfer-from').addEventListener('change', updateTransferSourceHelp);
 
-      /* =======================================================
-         TRANSFER — LIVE EXISTING ROUTE
+            /* =======================================================
+         TRANSFER — REVIEW + CONFIRM
       ======================================================== */
+
+      let transferReviewMode = false;
+
+      function locationName(locationId) {
+        return state.locations.find(
+          location => location.locationId === locationId
+        )?.name || locationId;
+      }
+
+      function resetTransferReview() {
+        transferReviewMode = false;
+
+        el('transfer-review').hidden = true;
+        el('transfer-back').hidden = true;
+        el('transfer-cancel').hidden = false;
+
+        el('transfer-submit').disabled = false;
+        el('transfer-submit').textContent = 'Review Transfer';
+
+        el('transfer-item').disabled = false;
+        el('transfer-from').disabled = false;
+        el('transfer-to').disabled = false;
+        el('transfer-quantity').disabled = false;
+        el('transfer-reason').disabled = false;
+
+        el('transfer-dialog')
+          .querySelector('.form-grid')
+          .hidden = false;
+      }
+
+      function showTransferReview({
+        inventoryItemId,
+        fromLocationId,
+        toLocationId,
+        quantity,
+        reason
+      }) {
+        const item = findItem(inventoryItemId);
+
+        el('transfer-review-item').textContent =
+          item?.productName || 'Cookie';
+
+        el('transfer-review-quantity').textContent =
+          `${quantity} ${quantity === 1 ? 'cookie' : 'cookies'}`;
+
+        el('transfer-review-from').textContent =
+          locationName(fromLocationId);
+
+        el('transfer-review-to').textContent =
+          locationName(toLocationId);
+
+        el('transfer-review-reason').textContent =
+          reason;
+
+        el('transfer-dialog')
+          .querySelector('.form-grid')
+          .hidden = true;
+
+        el('transfer-review').hidden = false;
+        el('transfer-back').hidden = false;
+        el('transfer-cancel').hidden = true;
+
+        el('transfer-submit').textContent = 'Confirm Transfer';
+
+        transferReviewMode = true;
+      }
+
+      el('transfer-back').addEventListener('click', () => {
+        clearModalStatus('transfer-status');
+        resetTransferReview();
+      });
 
       el('transfer-form').addEventListener('submit', async event => {
         event.preventDefault();
@@ -2288,6 +2517,7 @@
         }
 
         const item = findItem(inventoryItemId);
+
         const sourceAvailable = item
           ? locationQuantity(item, fromLocationId)
           : 0;
@@ -2297,28 +2527,56 @@
             'transfer-status',
             `Only ${sourceAvailable} cookies are currently available at the source location.`
           );
+
+          if (transferReviewMode) {
+            resetTransferReview();
+          }
+
           return;
         }
 
+        /*
+         * First submit only enters review mode.
+         * Nothing is written to D1 yet.
+         */
+        if (!transferReviewMode) {
+          showTransferReview({
+            inventoryItemId,
+            fromLocationId,
+            toLocationId,
+            quantity,
+            reason
+          });
+
+          return;
+        }
+
+        /*
+         * Second submit is the explicit confirmation.
+         */
         const submit = el('transfer-submit');
+
         submit.disabled = true;
         submit.textContent = 'Transferring…';
 
         try {
-          const response = await fetch(`${API_BASE}/inventory/transfer`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-              inventoryItemId,
-              fromLocationId,
-              toLocationId,
-              quantity,
-              reason
-            })
-          });
+          const response = await fetch(
+            `${API_BASE}/inventory/transfer`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              body: JSON.stringify({
+                inventoryItemId,
+                fromLocationId,
+                toLocationId,
+                quantity,
+                reason
+              })
+            }
+          );
 
           const data = await response.json();
 
@@ -2334,24 +2592,37 @@
             'success'
           );
 
-          toast('Inventory transfer recorded.', 'success');
+          toast(
+            'Inventory transfer recorded.',
+            'success'
+          );
 
           await loadInventory();
 
           window.setTimeout(() => {
             closeDialog(el('transfer-dialog'));
+            resetTransferReview();
           }, 650);
 
         } catch (error) {
-          console.error('Inventory transfer failed:', error);
+          console.error(
+            'Inventory transfer failed:',
+            error
+          );
 
           showModalStatus(
             'transfer-status',
             error.message || 'Inventory transfer failed.'
           );
+
         } finally {
           submit.disabled = false;
-          submit.textContent = 'Transfer Cookies';
+
+          if (transferReviewMode) {
+            submit.textContent = 'Confirm Transfer';
+          } else {
+            submit.textContent = 'Review Transfer';
+          }
         }
       });
 
