@@ -1,0 +1,2406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cookie Crew Inventory | OBA Cookies</title>
+  <meta name="robots" content="noindex,nofollow">
+
+  <link rel="icon" type="image/png" href="/images/brand/logo.png">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+    :root {
+      --crew-brown: var(--brown-dark, #4d3026);
+      --crew-cream: var(--cream, #fffaf1);
+      --crew-white: #ffffff;
+      --crew-line: rgba(77, 48, 38, .13);
+      --crew-soft: rgba(77, 48, 38, .055);
+      --crew-muted: rgba(77, 48, 38, .66);
+      --crew-shadow: 0 10px 30px rgba(73, 45, 32, .07);
+      --crew-radius: 22px;
+      --crew-green-bg: #eef7eb;
+      --crew-green: #365f31;
+      --crew-yellow-bg: #fff3c7;
+      --crew-yellow: #705516;
+      --crew-red-bg: #fff0ed;
+      --crew-red: #8b3027;
+      --crew-blue-bg: #eef5fb;
+      --crew-blue: #315b78;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--crew-brown);
+      background:
+        radial-gradient(circle at 8% 6%, rgba(255, 214, 221, .34), transparent 24rem),
+        radial-gradient(circle at 93% 12%, rgba(255, 222, 122, .25), transparent 22rem),
+        #f9f4e9;
+      font-family: inherit;
+    }
+
+    button, input, select, textarea { font: inherit; }
+
+    button { color: inherit; }
+
+    [hidden] { display: none !important; }
+
+    .crew-app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+    }
+
+    /* =========================================================
+       SIDEBAR
+    ========================================================== */
+
+    .crew-sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 22px 16px;
+      overflow-y: auto;
+      background: rgba(255, 250, 241, .96);
+      border-right: 1px solid var(--crew-line);
+      backdrop-filter: blur(14px);
+      z-index: 20;
+    }
+
+    .crew-brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 6px 8px 22px;
+      color: var(--crew-brown);
+      text-decoration: none;
+    }
+
+    .crew-brand img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+
+    .crew-brand-copy strong,
+    .crew-brand-copy span {
+      display: block;
+    }
+
+    .crew-brand-copy strong {
+      font-size: .96rem;
+      line-height: 1.1;
+    }
+
+    .crew-brand-copy span {
+      margin-top: 3px;
+      color: var(--crew-muted);
+      font-size: .69rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .crew-nav-section-label {
+      margin: 14px 10px 7px;
+      color: rgba(77, 48, 38, .45);
+      font-size: .65rem;
+      font-weight: 900;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .crew-nav {
+      display: grid;
+      gap: 4px;
+    }
+
+    .crew-nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 42px;
+      padding: 9px 11px;
+      border-radius: 12px;
+      color: rgba(77, 48, 38, .75);
+      font-size: .84rem;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .crew-nav a:hover {
+      background: rgba(77, 48, 38, .055);
+    }
+
+    .crew-nav a[aria-current="page"] {
+      color: var(--crew-brown);
+      background: #fff;
+      box-shadow: 0 4px 14px rgba(73, 45, 32, .08);
+    }
+
+    .crew-nav-icon {
+      width: 24px;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .crew-sidebar-footer {
+      margin-top: 26px;
+      padding: 14px 10px 0;
+      border-top: 1px solid var(--crew-line);
+      color: var(--crew-muted);
+      font-size: .72rem;
+      line-height: 1.45;
+    }
+
+    /* =========================================================
+       MAIN
+    ========================================================== */
+
+    .crew-main {
+      min-width: 0;
+      padding: 30px;
+    }
+
+    .crew-mobile-bar { display: none; }
+
+    .crew-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      max-width: 1500px;
+      margin: 0 auto 22px;
+    }
+
+    .crew-eyebrow {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--crew-muted);
+      font-size: .7rem;
+      font-weight: 900;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .crew-header h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      line-height: 1.04;
+    }
+
+    .crew-header p {
+      max-width: 680px;
+      margin: 8px 0 0;
+      color: var(--crew-muted);
+      font-size: .9rem;
+      line-height: 1.5;
+    }
+
+    .crew-header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .crew-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 40px;
+      padding: 9px 13px;
+      border: 1.5px solid var(--crew-line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--crew-brown);
+      font-size: .78rem;
+      font-weight: 900;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform .14s ease, box-shadow .14s ease, opacity .14s ease;
+    }
+
+    .crew-button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 15px rgba(73, 45, 32, .08);
+    }
+
+    .crew-button.primary {
+      background: var(--crew-brown);
+      border-color: var(--crew-brown);
+      color: #fff;
+    }
+
+    .crew-button.soft {
+      background: rgba(255,255,255,.65);
+    }
+
+    .crew-button.danger {
+      color: var(--crew-red);
+      border-color: rgba(139, 48, 39, .2);
+      background: var(--crew-red-bg);
+    }
+
+    .crew-button:disabled {
+      opacity: .42;
+      cursor: not-allowed;
+    }
+
+    .crew-content {
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    /* =========================================================
+       STATUS / DROP BAR
+    ========================================================== */
+
+    .drop-bar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 16px;
+      padding: 15px 18px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--crew-line);
+      border-radius: 17px;
+      box-shadow: 0 5px 18px rgba(73,45,32,.04);
+    }
+
+    .drop-info {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 9px 13px;
+      min-width: 0;
+    }
+
+    .drop-name {
+      font-size: .9rem;
+      font-weight: 900;
+    }
+
+    .status-pill,
+    .mini-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      width: max-content;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: .64rem;
+      font-weight: 900;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .status-pill.active {
+      background: var(--crew-green-bg);
+      color: var(--crew-green);
+    }
+
+    .status-pill.loading {
+      background: var(--crew-blue-bg);
+      color: var(--crew-blue);
+    }
+
+    .status-pill.error {
+      background: var(--crew-red-bg);
+      color: var(--crew-red);
+    }
+
+    .drop-meta {
+      color: var(--crew-muted);
+      font-size: .72rem;
+    }
+
+    .sync-state {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--crew-muted);
+      font-size: .7rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .sync-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #78a56d;
+      box-shadow: 0 0 0 4px rgba(120,165,109,.13);
+    }
+
+    .sync-dot.loading { background: #d2a82e; }
+    .sync-dot.error { background: #a63a2c; }
+
+    /* =========================================================
+       KPI CARDS
+    ========================================================== */
+
+    .inventory-kpis {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .kpi-card {
+      min-width: 0;
+      padding: 17px;
+      background: rgba(255,255,255,.86);
+      border: 1px solid var(--crew-line);
+      border-radius: 18px;
+      box-shadow: 0 6px 20px rgba(73,45,32,.045);
+    }
+
+    .kpi-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--crew-muted);
+      font-size: .68rem;
+      font-weight: 900;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .kpi-value {
+      display: block;
+      margin-top: 8px;
+      font-size: clamp(1.55rem, 2.5vw, 2rem);
+      font-weight: 950;
+      line-height: 1;
+    }
+
+    .kpi-help {
+      display: block;
+      margin-top: 7px;
+      color: rgba(77,48,38,.55);
+      font-size: .68rem;
+      line-height: 1.35;
+    }
+
+    .kpi-card.alert .kpi-value { color: var(--crew-red); }
+    .kpi-card.good .kpi-value { color: var(--crew-green); }
+
+    /* =========================================================
+       OPERATIONS TOOLBAR
+    ========================================================== */
+
+    .operations-panel {
+      margin-bottom: 16px;
+      padding: 17px;
+      background: var(--crew-cream);
+      border: 1px solid var(--crew-line);
+      border-radius: var(--crew-radius);
+      box-shadow: var(--crew-shadow);
+    }
+
+    .operations-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 13px;
+    }
+
+    .operations-head h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .operations-head p {
+      margin: 3px 0 0;
+      color: var(--crew-muted);
+      font-size: .72rem;
+    }
+
+    .operation-buttons {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .operation-button {
+      display: grid;
+      grid-template-columns: auto minmax(0,1fr);
+      align-items: center;
+      gap: 9px;
+      min-height: 62px;
+      padding: 11px;
+      border: 1px solid var(--crew-line);
+      border-radius: 14px;
+      background: #fff;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .operation-button:hover {
+      border-color: rgba(77,48,38,.25);
+      box-shadow: 0 4px 13px rgba(73,45,32,.055);
+    }
+
+    .operation-button-icon {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--crew-soft);
+      font-size: 1rem;
+    }
+
+    .operation-button strong,
+    .operation-button small { display: block; }
+
+    .operation-button strong {
+      font-size: .76rem;
+      line-height: 1.15;
+    }
+
+    .operation-button small {
+      margin-top: 3px;
+      color: var(--crew-muted);
+      font-size: .62rem;
+      line-height: 1.25;
+    }
+
+    /* =========================================================
+       MAIN INVENTORY PANEL
+    ========================================================== */
+
+    .inventory-panel {
+      background: var(--crew-cream);
+      border: 1px solid var(--crew-line);
+      border-radius: var(--crew-radius);
+      box-shadow: var(--crew-shadow);
+      overflow: hidden;
+    }
+
+    .inventory-toolbar {
+      display: grid;
+      grid-template-columns: minmax(210px, 1fr) auto auto;
+      gap: 10px;
+      padding: 16px;
+      border-bottom: 1px solid var(--crew-line);
+    }
+
+    .search-wrap { position: relative; }
+
+    .search-wrap span {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: .55;
+      pointer-events: none;
+    }
+
+    .crew-input,
+    .crew-select,
+    .crew-textarea {
+      width: 100%;
+      border: 1.5px solid var(--crew-line);
+      border-radius: 11px;
+      background: #fff;
+      color: var(--crew-brown);
+      outline: none;
+    }
+
+    .crew-input,
+    .crew-select {
+      min-height: 40px;
+      padding: 9px 11px;
+    }
+
+    .search-wrap .crew-input { padding-left: 35px; }
+
+    .crew-input:focus,
+    .crew-select:focus,
+    .crew-textarea:focus {
+      border-color: rgba(77,48,38,.42);
+      box-shadow: 0 0 0 3px rgba(77,48,38,.055);
+    }
+
+    .crew-textarea {
+      min-height: 84px;
+      padding: 10px 11px;
+      resize: vertical;
+    }
+
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 0 16px 15px;
+      border-bottom: 1px solid var(--crew-line);
+    }
+
+    .filter-tab {
+      padding: 7px 10px;
+      border: 1px solid var(--crew-line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--crew-muted);
+      font-size: .67rem;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .filter-tab.is-active {
+      background: var(--crew-brown);
+      border-color: var(--crew-brown);
+      color: #fff;
+    }
+
+    .inventory-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .inventory-table {
+      width: 100%;
+      min-width: 1040px;
+      border-collapse: collapse;
+    }
+
+    .inventory-table th {
+      padding: 11px 10px;
+      background: rgba(77,48,38,.035);
+      border-bottom: 1px solid var(--crew-line);
+      color: rgba(77,48,38,.55);
+      font-size: .62rem;
+      font-weight: 950;
+      letter-spacing: .055em;
+      text-align: right;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .inventory-table th:first-child {
+      padding-left: 16px;
+      text-align: left;
+    }
+
+    .inventory-table td {
+      padding: 13px 10px;
+      border-bottom: 1px solid rgba(77,48,38,.08);
+      font-size: .78rem;
+      text-align: right;
+      vertical-align: middle;
+    }
+
+    .inventory-table td:first-child {
+      padding-left: 16px;
+      text-align: left;
+    }
+
+    .inventory-table tbody tr:hover {
+      background: rgba(255,255,255,.58);
+    }
+
+    .inventory-table tbody tr:last-child td { border-bottom: 0; }
+
+    .cookie-cell {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 220px;
+    }
+
+    .cookie-thumb {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      overflow: hidden;
+      border-radius: 11px;
+      background: #fff;
+      border: 1px solid var(--crew-line);
+    }
+
+    .cookie-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cookie-copy strong,
+    .cookie-copy small { display: block; }
+
+    .cookie-copy strong {
+      font-size: .78rem;
+      line-height: 1.2;
+    }
+
+    .cookie-copy small {
+      margin-top: 3px;
+      color: var(--crew-muted);
+      font-size: .61rem;
+    }
+
+    .number-cell {
+      font-variant-numeric: tabular-nums;
+      font-weight: 850;
+    }
+
+    .number-cell.online { color: var(--crew-blue); }
+    .number-cell.reserved { color: var(--crew-yellow); }
+    .number-cell.sold { color: var(--crew-green); }
+
+    .stock-health {
+      display: inline-flex;
+      min-width: 72px;
+      justify-content: center;
+      padding: 5px 7px;
+      border-radius: 999px;
+      font-size: .61rem;
+      font-weight: 900;
+    }
+
+    .stock-health.good {
+      background: var(--crew-green-bg);
+      color: var(--crew-green);
+    }
+
+    .stock-health.low {
+      background: var(--crew-yellow-bg);
+      color: var(--crew-yellow);
+    }
+
+    .stock-health.out,
+    .stock-health.issue {
+      background: var(--crew-red-bg);
+      color: var(--crew-red);
+    }
+
+    .row-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 5px;
+    }
+
+    .icon-button {
+      display: inline-grid;
+      place-items: center;
+      width: 31px;
+      height: 31px;
+      padding: 0;
+      border: 1px solid var(--crew-line);
+      border-radius: 9px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .icon-button:hover { background: var(--crew-soft); }
+
+    .inventory-empty,
+    .inventory-loading,
+    .inventory-error {
+      padding: 46px 20px;
+      text-align: center;
+      color: var(--crew-muted);
+    }
+
+    .inventory-error { color: var(--crew-red); }
+
+    /* =========================================================
+       INSIGHTS
+    ========================================================== */
+
+    .lower-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(300px, .65fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .crew-card {
+      padding: 18px;
+      background: var(--crew-cream);
+      border: 1px solid var(--crew-line);
+      border-radius: var(--crew-radius);
+      box-shadow: var(--crew-shadow);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .card-head h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .card-head p {
+      margin: 4px 0 0;
+      color: var(--crew-muted);
+      font-size: .7rem;
+      line-height: 1.4;
+    }
+
+    .location-bars {
+      display: grid;
+      gap: 12px;
+    }
+
+    .location-row {
+      display: grid;
+      grid-template-columns: 125px minmax(0, 1fr) 44px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .location-name {
+      overflow: hidden;
+      font-size: .7rem;
+      font-weight: 850;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .location-bar {
+      height: 9px;
+      overflow: hidden;
+      background: rgba(77,48,38,.08);
+      border-radius: 999px;
+    }
+
+    .location-bar > span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--crew-brown);
+    }
+
+    .location-total {
+      font-size: .72rem;
+      font-weight: 900;
+      text-align: right;
+    }
+
+    .alert-list,
+    .activity-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .alert-item,
+    .activity-item {
+      padding: 11px;
+      background: #fff;
+      border: 1px solid var(--crew-line);
+      border-radius: 12px;
+    }
+
+    .alert-item strong,
+    .activity-item strong {
+      display: block;
+      font-size: .72rem;
+    }
+
+    .alert-item span,
+    .activity-item span {
+      display: block;
+      margin-top: 3px;
+      color: var(--crew-muted);
+      font-size: .65rem;
+      line-height: 1.4;
+    }
+
+    .alert-item.warning {
+      background: var(--crew-yellow-bg);
+      border-color: rgba(112,85,22,.12);
+    }
+
+    .alert-item.error {
+      background: var(--crew-red-bg);
+      border-color: rgba(139,48,39,.12);
+    }
+
+    .alert-item.good {
+      background: var(--crew-green-bg);
+      border-color: rgba(54,95,49,.12);
+    }
+
+    .analytics-note {
+      margin-top: 13px;
+      padding: 11px;
+      border-radius: 12px;
+      background: rgba(77,48,38,.045);
+      color: var(--crew-muted);
+      font-size: .66rem;
+      line-height: 1.45;
+    }
+
+    /* =========================================================
+       MODALS
+    ========================================================== */
+
+    .crew-dialog {
+      width: min(560px, calc(100% - 28px));
+      max-height: 90vh;
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+      border-radius: 22px;
+      background: var(--crew-cream);
+      color: var(--crew-brown);
+      box-shadow: 0 28px 90px rgba(35,20,15,.28);
+    }
+
+    .crew-dialog::backdrop {
+      background: rgba(45,29,23,.58);
+      backdrop-filter: blur(3px);
+    }
+
+    .dialog-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 19px 20px 14px;
+      border-bottom: 1px solid var(--crew-line);
+    }
+
+    .dialog-head h2 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .dialog-head p {
+      margin: 4px 0 0;
+      color: var(--crew-muted);
+      font-size: .7rem;
+      line-height: 1.4;
+    }
+
+    .dialog-close {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      flex: 0 0 32px;
+      padding: 0;
+      border: 1px solid var(--crew-line);
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .dialog-body {
+      max-height: calc(90vh - 145px);
+      padding: 18px 20px;
+      overflow-y: auto;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full { grid-column: 1 / -1; }
+
+    .form-group label {
+      font-size: .69rem;
+      font-weight: 900;
+    }
+
+    .form-help {
+      color: var(--crew-muted);
+      font-size: .62rem;
+      line-height: 1.4;
+    }
+
+    .dialog-foot {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 14px 20px 18px;
+      border-top: 1px solid var(--crew-line);
+    }
+
+    .modal-status {
+      display: none;
+      margin: 0 0 13px;
+      padding: 10px 11px;
+      border-radius: 11px;
+      font-size: .69rem;
+      line-height: 1.4;
+    }
+
+    .modal-status.is-visible { display: block; }
+    .modal-status.error {
+      background: var(--crew-red-bg);
+      color: var(--crew-red);
+    }
+    .modal-status.success {
+      background: var(--crew-green-bg);
+      color: var(--crew-green);
+    }
+
+    .backend-note {
+      padding: 11px;
+      border: 1px dashed rgba(77,48,38,.22);
+      border-radius: 11px;
+      background: rgba(255,255,255,.5);
+      color: var(--crew-muted);
+      font-size: .64rem;
+      line-height: 1.45;
+    }
+
+    /* =========================================================
+       TOAST
+    ========================================================== */
+
+    .toast-stack {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 100;
+      display: grid;
+      gap: 8px;
+      width: min(360px, calc(100% - 36px));
+    }
+
+    .toast {
+      padding: 12px 14px;
+      border: 1px solid var(--crew-line);
+      border-radius: 13px;
+      background: #fff;
+      box-shadow: 0 12px 34px rgba(35,20,15,.16);
+      font-size: .72rem;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .toast.success { background: var(--crew-green-bg); color: var(--crew-green); }
+    .toast.error { background: var(--crew-red-bg); color: var(--crew-red); }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================== */
+
+    @media (max-width: 1180px) {
+      .inventory-kpis { grid-template-columns: repeat(3, minmax(0,1fr)); }
+      .operation-buttons { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    }
+
+    @media (max-width: 900px) {
+      .crew-app { display: block; }
+      .crew-sidebar { display: none; }
+
+      .crew-mobile-bar {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 58px;
+        padding: 8px 14px;
+        background: rgba(255,250,241,.95);
+        border-bottom: 1px solid var(--crew-line);
+        backdrop-filter: blur(14px);
+      }
+
+      .crew-mobile-brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: .8rem;
+        font-weight: 900;
+      }
+
+      .crew-mobile-brand img {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+      }
+
+      .crew-main { padding: 20px 14px 40px; }
+      .crew-header { align-items: stretch; flex-direction: column; }
+      .crew-header-actions { justify-content: flex-start; }
+      .lower-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      .inventory-kpis { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .operation-buttons { grid-template-columns: repeat(2, minmax(0,1fr)); }
+
+      .inventory-toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .drop-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .sync-state { white-space: normal; }
+
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: auto; }
+
+      .location-row {
+        grid-template-columns: 105px minmax(0,1fr) 36px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .inventory-kpis { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .kpi-card { padding: 13px; }
+      .operation-buttons { grid-template-columns: 1fr; }
+      .crew-header-actions .crew-button { flex: 1; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="crew-app">
+
+    <aside class="crew-sidebar">
+      <a class="crew-brand" href="/crew/dashboard.html">
+        <img src="/images/brand/logo.png" alt="">
+        <span class="crew-brand-copy">
+          <strong>OBA Cookie Crew</strong>
+          <span>Crew Operations</span>
+        </span>
+      </a>
+
+      <div class="crew-nav-section-label">Operations</div>
+      <nav class="crew-nav" aria-label="Crew operations">
+        <a href="/crew/dashboard.html"><span class="crew-nav-icon">⌂</span>Command Center</a>
+        <a href="/crew/inventory.html" aria-current="page"><span class="crew-nav-icon">▦</span>Inventory</a>
+        <a href="/crew/pickup.html"><span class="crew-nav-icon">◫</span>Pickups</a>
+        <a href="/crew/drops.html"><span class="crew-nav-icon">◉</span>Drops</a>
+        <a href="/crew/schedule.html"><span class="crew-nav-icon">▣</span>Crew Schedule</a>
+      </nav>
+
+      <div class="crew-nav-section-label">Longnecks</div>
+      <nav class="crew-nav" aria-label="Longneck tools">
+        <a href="/crew/bulletin.html"><span class="crew-nav-icon">✉</span>Bertha Bulletin</a>
+        <a href="/crew/longnecks.html"><span class="crew-nav-icon">♙</span>Longnecks</a>
+        <a href="/crew/polls.html"><span class="crew-nav-icon">✓</span>Polls</a>
+      </nav>
+
+      <div class="crew-nav-section-label">Business</div>
+      <nav class="crew-nav" aria-label="Business tools">
+        <a href="/crew/analytics.html"><span class="crew-nav-icon">↗</span>Analytics</a>
+        <a href="/crew/products.html"><span class="crew-nav-icon">◇</span>Products</a>
+        <a href="/crew/settings.html"><span class="crew-nav-icon">⚙</span>Settings</a>
+      </nav>
+
+      <div class="crew-sidebar-footer">
+        Exact inventory is Crew-only. Customer-facing stock should continue to expose only Sold Out / low-stock messaging.
+      </div>
+    </aside>
+
+    <div class="crew-mobile-bar">
+      <div class="crew-mobile-brand">
+        <img src="/images/brand/logo.png" alt="">
+        <span>Cookie Crew · Inventory</span>
+      </div>
+      <a class="crew-button" href="/crew/dashboard.html">Crew Menu</a>
+    </div>
+
+    <main class="crew-main">
+      <header class="crew-header">
+        <div>
+          <span class="crew-eyebrow">Cookie Crew · Operations</span>
+          <h1>Inventory</h1>
+          <p>
+            One source of truth for cookies in the Kitchen, Online Orders, Bertha,
+            and event-specific stock. Exact counts stay on the Crew side.
+          </p>
+        </div>
+
+        <div class="crew-header-actions">
+          <button class="crew-button soft" type="button" id="refresh-button">↻ Refresh</button>
+          <button class="crew-button" type="button" data-open-dialog="transfer-dialog">⇄ Transfer</button>
+          <button class="crew-button primary" type="button" data-open-dialog="baked-dialog">＋ Add Baked</button>
+        </div>
+      </header>
+
+      <div class="crew-content">
+
+        <section class="drop-bar" aria-label="Active inventory drop">
+          <div class="drop-info">
+            <span class="drop-name" id="drop-name">Loading active drop…</span>
+            <span class="status-pill loading" id="drop-status">Loading</span>
+            <span class="drop-meta" id="drop-dates"></span>
+          </div>
+          <div class="sync-state">
+            <span class="sync-dot loading" id="sync-dot"></span>
+            <span id="sync-text">Connecting to OBA inventory…</span>
+          </div>
+        </section>
+
+        <section class="inventory-kpis" aria-label="Inventory summary">
+          <article class="kpi-card">
+            <span class="kpi-label">Physical Cookies <span>🍪</span></span>
+            <strong class="kpi-value" id="kpi-physical">—</strong>
+            <span class="kpi-help">Unsold cookies across every active location.</span>
+          </article>
+
+          <article class="kpi-card">
+            <span class="kpi-label">Online Available <span>◉</span></span>
+            <strong class="kpi-value" id="kpi-online">—</strong>
+            <span class="kpi-help">Online allocation minus active cart reservations.</span>
+          </article>
+
+          <article class="kpi-card">
+            <span class="kpi-label">Reserved <span>⏱</span></span>
+            <strong class="kpi-value" id="kpi-reserved">—</strong>
+            <span class="kpi-help">Cookies temporarily held in active carts.</span>
+          </article>
+
+          <article class="kpi-card good">
+            <span class="kpi-label">Sold <span>✓</span></span>
+            <strong class="kpi-value" id="kpi-sold">—</strong>
+            <span class="kpi-help">Completed sales recorded for the active drop.</span>
+          </article>
+
+          <article class="kpi-card" id="kpi-reconcile-card">
+            <span class="kpi-label">Reconciliation <span>◎</span></span>
+            <strong class="kpi-value" id="kpi-reconcile">—</strong>
+            <span class="kpi-help" id="kpi-reconcile-help">Checking master totals against locations.</span>
+          </article>
+        </section>
+
+        <section class="operations-panel">
+          <div class="operations-head">
+            <div>
+              <h2>Inventory Tools</h2>
+              <p>Use a specific inventory action so every change has the correct accounting meaning.</p>
+            </div>
+          </div>
+
+          <div class="operation-buttons">
+            <button class="operation-button" type="button" data-open-dialog="baked-dialog">
+              <span class="operation-button-icon">＋</span>
+              <span><strong>Add Baked</strong><small>New cookies from the kitchen.</small></span>
+            </button>
+
+            <button class="operation-button" type="button" data-open-dialog="transfer-dialog">
+              <span class="operation-button-icon">⇄</span>
+              <span><strong>Transfer</strong><small>Move stock between locations.</small></span>
+            </button>
+
+            <button class="operation-button" type="button" data-open-dialog="adjust-dialog" data-adjust-mode="waste">
+              <span class="operation-button-icon">−</span>
+              <span><strong>Waste / Damage</strong><small>Remove unsellable cookies with a reason.</small></span>
+            </button>
+
+            <button class="operation-button" type="button" data-open-dialog="adjust-dialog" data-adjust-mode="correction">
+              <span class="operation-button-icon">±</span>
+              <span><strong>Count Correction</strong><small>Fix a physical count discrepancy.</small></span>
+            </button>
+
+            <button class="operation-button" type="button" data-open-dialog="event-dialog">
+              <span class="operation-button-icon">★</span>
+              <span><strong>Event Stock</strong><small>Create or prepare a market / popup location.</small></span>
+            </button>
+          </div>
+        </section>
+
+        <section class="inventory-panel">
+          <div class="inventory-toolbar">
+            <label class="search-wrap">
+              <span aria-hidden="true">⌕</span>
+              <input class="crew-input" id="inventory-search" type="search" placeholder="Search cookies…" aria-label="Search inventory">
+            </label>
+
+            <select class="crew-select" id="health-filter" aria-label="Filter by stock health">
+              <option value="all">All stock levels</option>
+              <option value="good">Healthy</option>
+              <option value="low">Low online stock</option>
+              <option value="out">Sold out online</option>
+              <option value="issue">Reconciliation issue</option>
+            </select>
+
+            <select class="crew-select" id="sort-select" aria-label="Sort inventory">
+              <option value="name">Sort: Cookie name</option>
+              <option value="physical-desc">Physical: high to low</option>
+              <option value="online-asc">Online: low to high</option>
+              <option value="sold-desc">Sold: high to low</option>
+            </select>
+          </div>
+
+          <div class="filter-tabs" id="location-tabs">
+            <button class="filter-tab is-active" type="button" data-location-filter="all">All Locations</button>
+            <button class="filter-tab" type="button" data-location-filter="kitchen">Kitchen</button>
+            <button class="filter-tab" type="button" data-location-filter="online">Online</button>
+            <button class="filter-tab" type="button" data-location-filter="bertha">Bertha</button>
+            <button class="filter-tab" type="button" data-location-filter="events">Events</button>
+          </div>
+
+          <div class="inventory-table-wrap">
+            <table class="inventory-table">
+              <thead>
+                <tr>
+                  <th>Cookie</th>
+                  <th>Kitchen</th>
+                  <th>Online</th>
+                  <th>Bertha</th>
+                  <th>Events</th>
+                  <th>Reserved</th>
+                  <th>Online Avail.</th>
+                  <th>Physical</th>
+                  <th>Sold</th>
+                  <th>Health</th>
+                  <th>Tools</th>
+                </tr>
+              </thead>
+              <tbody id="inventory-body">
+                <tr>
+                  <td colspan="11" class="inventory-loading">Loading live inventory…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="lower-grid">
+          <article class="crew-card">
+            <div class="card-head">
+              <div>
+                <h2>Stock by Location</h2>
+                <p>Current physical distribution for the active drop.</p>
+              </div>
+            </div>
+            <div class="location-bars" id="location-bars">
+              <div class="inventory-loading">Loading location totals…</div>
+            </div>
+          </article>
+
+          <article class="crew-card">
+            <div class="card-head">
+              <div>
+                <h2>Inventory Watch</h2>
+                <p>Operational conditions that deserve attention.</p>
+              </div>
+            </div>
+            <div class="alert-list" id="inventory-alerts">
+              <div class="inventory-loading">Checking inventory…</div>
+            </div>
+            <div class="analytics-note">
+              Sales velocity, sell-through, waste rate, bake forecasting, and flavor performance belong in
+              <strong>Analytics</strong>. This page preserves the inventory data those reports need rather than
+              inventing estimates in the browser.
+            </div>
+          </article>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- =========================================================
+       TRANSFER DIALOG — CURRENT BACKEND ROUTE EXISTS
+  ========================================================== -->
+
+  <dialog class="crew-dialog" id="transfer-dialog">
+    <form id="transfer-form">
+      <div class="dialog-head">
+        <div>
+          <h2>Transfer Inventory</h2>
+          <p>Move existing cookies between locations. Physical inventory does not increase.</p>
+        </div>
+        <button class="dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      </div>
+
+      <div class="dialog-body">
+        <div class="modal-status" id="transfer-status"></div>
+
+        <div class="form-grid">
+          <div class="form-group full">
+            <label for="transfer-item">Cookie</label>
+            <select class="crew-select" id="transfer-item" required></select>
+          </div>
+
+          <div class="form-group">
+            <label for="transfer-from">From</label>
+            <select class="crew-select" id="transfer-from" required></select>
+            <span class="form-help" id="transfer-source-help"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="transfer-to">To</label>
+            <select class="crew-select" id="transfer-to" required></select>
+          </div>
+
+          <div class="form-group">
+            <label for="transfer-quantity">Quantity</label>
+            <input class="crew-input" id="transfer-quantity" type="number" min="1" step="1" value="1" required>
+          </div>
+
+          <div class="form-group">
+            <label for="transfer-reason">Reason</label>
+            <input class="crew-input" id="transfer-reason" type="text" maxlength="160" placeholder="Restock Bertha, prep Friday popup…">
+          </div>
+        </div>
+      </div>
+
+      <div class="dialog-foot">
+        <button class="crew-button" type="button" data-close-dialog>Cancel</button>
+        <button class="crew-button primary" type="submit" id="transfer-submit">Transfer Cookies</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- =========================================================
+       ADD BAKED — UI READY, BACKEND ROUTE STILL REQUIRED
+  ========================================================== -->
+
+  <dialog class="crew-dialog" id="baked-dialog">
+    <form id="baked-form">
+      <div class="dialog-head">
+        <div>
+          <h2>Add Baked Inventory</h2>
+          <p>Record newly baked cookies and place them into a physical location.</p>
+        </div>
+        <button class="dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      </div>
+
+      <div class="dialog-body">
+        <div class="modal-status" id="baked-status"></div>
+
+        <div class="form-grid">
+          <div class="form-group full">
+            <label for="baked-item">Cookie</label>
+            <select class="crew-select" id="baked-item" required></select>
+          </div>
+
+          <div class="form-group">
+            <label for="baked-location">Add to</label>
+            <select class="crew-select" id="baked-location" required></select>
+          </div>
+
+          <div class="form-group">
+            <label for="baked-quantity">Quantity baked</label>
+            <input class="crew-input" id="baked-quantity" type="number" min="1" step="1" value="1" required>
+          </div>
+
+          <div class="form-group full">
+            <label for="baked-reason">Batch note</label>
+            <input class="crew-input" id="baked-reason" type="text" maxlength="160" placeholder="Morning bake, second batch, replacement batch…">
+          </div>
+        </div>
+
+        <p class="backend-note">
+          This tool is intentionally not allowed to fake a local inventory change. It requires the
+          server-side <code>/inventory/baked</code> mutation so the master total, location allocation,
+          and movement ledger update atomically.
+        </p>
+      </div>
+
+      <div class="dialog-foot">
+        <button class="crew-button" type="button" data-close-dialog>Cancel</button>
+        <button class="crew-button primary" type="submit">Add Baked Inventory</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- =========================================================
+       ADJUST — UI READY, BACKEND ROUTE STILL REQUIRED
+  ========================================================== -->
+
+  <dialog class="crew-dialog" id="adjust-dialog">
+    <form id="adjust-form">
+      <div class="dialog-head">
+        <div>
+          <h2 id="adjust-title">Adjust Inventory</h2>
+          <p id="adjust-description">Record a physical inventory adjustment with a reason.</p>
+        </div>
+        <button class="dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      </div>
+
+      <div class="dialog-body">
+        <div class="modal-status" id="adjust-status"></div>
+        <input id="adjust-mode" type="hidden" value="waste">
+
+        <div class="form-grid">
+          <div class="form-group full">
+            <label for="adjust-item">Cookie</label>
+            <select class="crew-select" id="adjust-item" required></select>
+          </div>
+
+          <div class="form-group">
+            <label for="adjust-location">Location</label>
+            <select class="crew-select" id="adjust-location" required></select>
+          </div>
+
+          <div class="form-group">
+            <label for="adjust-quantity">Quantity</label>
+            <input class="crew-input" id="adjust-quantity" type="number" min="1" step="1" value="1" required>
+          </div>
+
+          <div class="form-group full" id="correction-direction-group" hidden>
+            <label for="adjust-direction">Correction direction</label>
+            <select class="crew-select" id="adjust-direction">
+              <option value="remove">Count is lower — remove cookies</option>
+              <option value="add">Count is higher — add cookies</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+            <label for="adjust-reason">Reason <span aria-hidden="true">*</span></label>
+            <textarea class="crew-textarea" id="adjust-reason" required maxlength="240" placeholder="Broken during packing, count correction after physical recount…"></textarea>
+          </div>
+        </div>
+
+        <p class="backend-note">
+          Waste and corrections need a dedicated atomic server mutation. The UI is complete, but it
+          will not alter browser-only numbers because that would corrupt reconciliation and analytics.
+        </p>
+      </div>
+
+      <div class="dialog-foot">
+        <button class="crew-button" type="button" data-close-dialog>Cancel</button>
+        <button class="crew-button danger" type="submit" id="adjust-submit">Record Adjustment</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- =========================================================
+       EVENT LOCATION — UI READY, BACKEND ROUTE STILL REQUIRED
+  ========================================================== -->
+
+  <dialog class="crew-dialog" id="event-dialog">
+    <form id="event-form">
+      <div class="dialog-head">
+        <div>
+          <h2>Create Event Inventory Location</h2>
+          <p>Markets and popups should have their own stock bucket instead of sharing a generic event count.</p>
+        </div>
+        <button class="dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      </div>
+
+      <div class="dialog-body">
+        <div class="modal-status" id="event-status"></div>
+
+        <div class="form-grid">
+          <div class="form-group full">
+            <label for="event-name">Event / location name</label>
+            <input class="crew-input" id="event-name" type="text" required maxlength="100" placeholder="Friday Night Popup — La Mesa">
+          </div>
+
+          <div class="form-group">
+            <label for="event-date">Event date</label>
+            <input class="crew-input" id="event-date" type="date">
+          </div>
+
+          <div class="form-group">
+            <label for="event-reference">Event reference</label>
+            <input class="crew-input" id="event-reference" type="text" maxlength="80" placeholder="Optional event ID">
+          </div>
+        </div>
+
+        <p class="backend-note">
+          Creating an event location requires a protected server mutation for
+          <code>inventory_locations</code>. Once created, the normal Transfer tool can move cookies into it.
+        </p>
+      </div>
+
+      <div class="dialog-foot">
+        <button class="crew-button" type="button" data-close-dialog>Cancel</button>
+        <button class="crew-button primary" type="submit">Create Event Location</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const API_BASE =
+        'https://oba-checkout.ollysbakedassortments.workers.dev';
+
+      /*
+       * IMPORTANT:
+       * Mutation endpoints must be protected by Crew authentication before
+       * this page is publicly deployed. Never place a Worker secret in this file.
+       *
+       * Existing:
+       *   GET  /crew/inventory
+       *   POST /inventory/transfer
+       *
+       * Required next:
+       *   POST /inventory/baked
+       *   POST /inventory/adjust
+       *   POST /inventory/location
+       */
+
+      const state = {
+        drop: null,
+        locations: [],
+        items: [],
+        summary: null,
+        search: '',
+        health: 'all',
+        sort: 'name',
+        locationFilter: 'all',
+        loading: false,
+        lastLoadedAt: null
+      };
+
+      const el = id => document.getElementById(id);
+
+      const inventoryBody = el('inventory-body');
+      const refreshButton = el('refresh-button');
+      const searchInput = el('inventory-search');
+      const healthFilter = el('health-filter');
+      const sortSelect = el('sort-select');
+
+      function number(value) {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? parsed : 0;
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? '')
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#039;');
+      }
+
+      function toast(message, type = '') {
+        const node = document.createElement('div');
+        node.className = `toast ${type}`.trim();
+        node.textContent = message;
+        el('toast-stack').appendChild(node);
+
+        window.setTimeout(() => {
+          node.remove();
+        }, 4200);
+      }
+
+      function showModalStatus(id, message, type = 'error') {
+        const node = el(id);
+        node.textContent = message;
+        node.className = `modal-status is-visible ${type}`;
+      }
+
+      function clearModalStatus(id) {
+        const node = el(id);
+        node.textContent = '';
+        node.className = 'modal-status';
+      }
+
+      function formatDate(value) {
+        if (!value) return '';
+        const date = new Date(`${value}T12:00:00`);
+        if (Number.isNaN(date.getTime())) return value;
+        return new Intl.DateTimeFormat('en-US', {
+          month: 'short',
+          day: 'numeric'
+        }).format(date);
+      }
+
+      function locationQuantity(item, locationId) {
+        return number(item.locations?.[locationId]?.quantity);
+      }
+
+      function eventQuantity(item) {
+        return state.locations
+          .filter(location => location.locationType === 'event')
+          .reduce((sum, location) => {
+            return sum + locationQuantity(item, location.locationId);
+          }, 0);
+      }
+
+      function reconciliationDifference(item) {
+        return (number(item.total) - number(item.sold)) - number(item.physicalUnsold);
+      }
+
+      function stockHealth(item) {
+        const difference = reconciliationDifference(item);
+
+        if (difference !== 0) {
+          return {
+            key: 'issue',
+            label: 'Check Count'
+          };
+        }
+
+        const online = number(item.onlineAvailable);
+
+        if (online <= 0) {
+          return {
+            key: 'out',
+            label: 'Online Out'
+          };
+        }
+
+        if (online <= 5) {
+          return {
+            key: 'low',
+            label: `Low · ${online}`
+          };
+        }
+
+        return {
+          key: 'good',
+          label: 'Healthy'
+        };
+      }
+
+      function cookieImage(productId) {
+        return `/images/${encodeURIComponent(productId)}.jpg`;
+      }
+
+      function setLoadingState() {
+        state.loading = true;
+        refreshButton.disabled = true;
+        refreshButton.textContent = '↻ Loading…';
+
+        el('sync-dot').className = 'sync-dot loading';
+        el('sync-text').textContent = 'Refreshing live inventory…';
+      }
+
+      function setLoadedState() {
+        state.loading = false;
+        state.lastLoadedAt = new Date();
+
+        refreshButton.disabled = false;
+        refreshButton.textContent = '↻ Refresh';
+
+        el('sync-dot').className = 'sync-dot';
+        el('sync-text').textContent =
+          `Live · updated ${state.lastLoadedAt.toLocaleTimeString([], {
+            hour: 'numeric',
+            minute: '2-digit'
+          })}`;
+      }
+
+      function setErrorState(message) {
+        state.loading = false;
+        refreshButton.disabled = false;
+        refreshButton.textContent = '↻ Retry';
+
+        el('sync-dot').className = 'sync-dot error';
+        el('sync-text').textContent = 'Inventory connection error';
+
+        inventoryBody.innerHTML = `
+          <tr>
+            <td colspan="11" class="inventory-error">
+              ${escapeHtml(message)}
+            </td>
+          </tr>
+        `;
+      }
+
+      async function loadInventory() {
+        if (state.loading) return;
+
+        setLoadingState();
+
+        try {
+          const response = await fetch(`${API_BASE}/crew/inventory`, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+
+          const data = await response.json();
+
+          if (!response.ok || data.ok !== true) {
+            throw new Error(
+              data.error || 'Unable to load OBA inventory.'
+            );
+          }
+
+          state.drop = data.drop ?? null;
+          state.locations = Array.isArray(data.locations) ? data.locations : [];
+          state.items = Array.isArray(data.items) ? data.items : [];
+          state.summary = data.summary ?? {};
+
+          renderAll();
+          setLoadedState();
+
+        } catch (error) {
+          console.error('Crew inventory load failed:', error);
+          setErrorState(
+            error.message || 'Unable to load live inventory.'
+          );
+        }
+      }
+
+      function renderAll() {
+        renderDrop();
+        renderKpis();
+        renderInventoryTable();
+        renderLocationBars();
+        renderAlerts();
+        populateFormOptions();
+      }
+
+      function renderDrop() {
+        if (!state.drop) {
+          el('drop-name').textContent = 'No active drop';
+          el('drop-status').textContent = 'No Drop';
+          el('drop-status').className = 'status-pill error';
+          el('drop-dates').textContent = '';
+          return;
+        }
+
+        el('drop-name').textContent = state.drop.name || 'Active Drop';
+        el('drop-status').textContent = state.drop.status || 'Active';
+        el('drop-status').className = 'status-pill active';
+
+        const start = formatDate(state.drop.fulfillmentStartDate);
+        const end = formatDate(state.drop.fulfillmentEndDate);
+
+        el('drop-dates').textContent =
+          start && end
+            ? `Fulfillment ${start}–${end}`
+            : start
+              ? `Fulfillment ${start}`
+              : '';
+      }
+
+      function renderKpis() {
+        const summary = state.summary || {};
+
+        el('kpi-physical').textContent =
+          number(summary.totalPhysical);
+
+        el('kpi-online').textContent =
+          number(summary.totalOnlineAvailable);
+
+        el('kpi-reserved').textContent =
+          number(summary.totalReserved);
+
+        el('kpi-sold').textContent =
+          number(summary.totalSold);
+
+        const signedDifference =
+          state.items.reduce(
+            (sum, item) => sum + reconciliationDifference(item),
+            0
+          );
+
+        const issueCount =
+          state.items.filter(item => reconciliationDifference(item) !== 0).length;
+
+        const card = el('kpi-reconcile-card');
+
+        if (signedDifference === 0 && issueCount === 0) {
+          el('kpi-reconcile').textContent = 'Balanced';
+          el('kpi-reconcile-help').textContent =
+            'Master unsold inventory matches location allocations.';
+          card.classList.remove('alert');
+          card.classList.add('good');
+        } else {
+          el('kpi-reconcile').textContent = `${issueCount} issue${issueCount === 1 ? '' : 's'}`;
+          el('kpi-reconcile-help').textContent =
+            `Signed inventory difference: ${signedDifference}. Physical recount recommended.`;
+          card.classList.remove('good');
+          card.classList.add('alert');
+        }
+      }
+
+      function filteredItems() {
+        let items = [...state.items];
+
+        const search = state.search.trim().toLowerCase();
+
+        if (search) {
+          items = items.filter(item => {
+            return (
+              String(item.productName || '').toLowerCase().includes(search) ||
+              String(item.productId || '').toLowerCase().includes(search)
+            );
+          });
+        }
+
+        if (state.health !== 'all') {
+          items = items.filter(item => stockHealth(item).key === state.health);
+        }
+
+        if (state.locationFilter !== 'all') {
+          items = items.filter(item => {
+            if (state.locationFilter === 'events') {
+              return eventQuantity(item) > 0;
+            }
+
+            return locationQuantity(item, state.locationFilter) > 0;
+          });
+        }
+
+        items.sort((a, b) => {
+          switch (state.sort) {
+            case 'physical-desc':
+              return number(b.physicalUnsold) - number(a.physicalUnsold);
+
+            case 'online-asc':
+              return number(a.onlineAvailable) - number(b.onlineAvailable);
+
+            case 'sold-desc':
+              return number(b.sold) - number(a.sold);
+
+            case 'name':
+            default:
+              return String(a.productName || '')
+                .localeCompare(String(b.productName || ''));
+          }
+        });
+
+        return items;
+      }
+
+      function renderInventoryTable() {
+        const items = filteredItems();
+
+        if (!state.drop) {
+          inventoryBody.innerHTML = `
+            <tr>
+              <td colspan="11" class="inventory-empty">
+                There is no active inventory drop.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        if (!items.length) {
+          inventoryBody.innerHTML = `
+            <tr>
+              <td colspan="11" class="inventory-empty">
+                No cookies match the current inventory filters.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        inventoryBody.innerHTML = items.map(item => {
+          const health = stockHealth(item);
+          const kitchen = locationQuantity(item, 'kitchen');
+          const online = locationQuantity(item, 'online');
+          const bertha = locationQuantity(item, 'bertha');
+          const events = eventQuantity(item);
+
+          return `
+            <tr data-inventory-item-id="${number(item.inventoryItemId)}">
+              <td>
+                <div class="cookie-cell">
+                  <span class="cookie-thumb">
+                    <img
+                      src="${cookieImage(item.productId)}"
+                      alt=""
+                      onerror="this.src='/images/brand/logo.png';"
+                    >
+                  </span>
+
+                  <span class="cookie-copy">
+                    <strong>${escapeHtml(item.productName)}</strong>
+                    <small>${escapeHtml(item.productId)}</small>
+                  </span>
+                </div>
+              </td>
+
+              <td class="number-cell">${kitchen}</td>
+              <td class="number-cell online">${online}</td>
+              <td class="number-cell">${bertha}</td>
+              <td class="number-cell">${events}</td>
+              <td class="number-cell reserved">${number(item.reserved)}</td>
+              <td class="number-cell online">${number(item.onlineAvailable)}</td>
+              <td class="number-cell">${number(item.physicalUnsold)}</td>
+              <td class="number-cell sold">${number(item.sold)}</td>
+
+              <td>
+                <span class="stock-health ${health.key}">
+                  ${escapeHtml(health.label)}
+                </span>
+              </td>
+
+              <td>
+                <div class="row-actions">
+                  <button
+                    class="icon-button"
+                    type="button"
+                    title="Transfer ${escapeHtml(item.productName)}"
+                    aria-label="Transfer ${escapeHtml(item.productName)}"
+                    data-row-transfer="${number(item.inventoryItemId)}"
+                  >⇄</button>
+
+                  <button
+                    class="icon-button"
+                    type="button"
+                    title="Adjust ${escapeHtml(item.productName)}"
+                    aria-label="Adjust ${escapeHtml(item.productName)}"
+                    data-row-adjust="${number(item.inventoryItemId)}"
+                  >±</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      function renderLocationBars() {
+        const totals = state.locations.map(location => {
+          const total = state.items.reduce((sum, item) => {
+            return sum + locationQuantity(item, location.locationId);
+          }, 0);
+
+          return {
+            ...location,
+            total
+          };
+        });
+
+        if (!totals.length) {
+          el('location-bars').innerHTML =
+            '<div class="inventory-empty">No active inventory locations.</div>';
+          return;
+        }
+
+        const max = Math.max(...totals.map(location => location.total), 1);
+
+        el('location-bars').innerHTML = totals.map(location => {
+          const width = Math.max(0, Math.min(100, (location.total / max) * 100));
+
+          return `
+            <div class="location-row">
+              <span class="location-name" title="${escapeHtml(location.name)}">
+                ${escapeHtml(location.name)}
+              </span>
+              <span class="location-bar" aria-hidden="true">
+                <span style="width:${width}%"></span>
+              </span>
+              <strong class="location-total">${location.total}</strong>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function renderAlerts() {
+        const alerts = [];
+
+        state.items.forEach(item => {
+          const difference = reconciliationDifference(item);
+
+          if (difference !== 0) {
+            alerts.push({
+              type: 'error',
+              title: `${item.productName}: reconciliation mismatch`,
+              detail:
+                `Master unsold minus allocated physical inventory = ${difference}.`
+            });
+          }
+
+          if (number(item.onlineAvailable) === 0) {
+            alerts.push({
+              type: 'warning',
+              title: `${item.productName}: online sold out`,
+              detail:
+                `Online allocation ${number(item.onlineAllocated)}, reserved ${number(item.reserved)}.`
+            });
+          } else if (number(item.onlineAvailable) <= 5) {
+            alerts.push({
+              type: 'warning',
+              title: `${item.productName}: low online stock`,
+              detail:
+                `${number(item.onlineAvailable)} available online after active reservations.`
+            });
+          }
+        });
+
+        if (!alerts.length) {
+          alerts.push({
+            type: 'good',
+            title: 'Inventory looks balanced',
+            detail:
+              'No reconciliation problems or low online stock conditions are currently visible.'
+          });
+        }
+
+        el('inventory-alerts').innerHTML =
+          alerts.slice(0, 8).map(alert => `
+            <div class="alert-item ${alert.type}">
+              <strong>${escapeHtml(alert.title)}</strong>
+              <span>${escapeHtml(alert.detail)}</span>
+            </div>
+          `).join('');
+      }
+
+      function itemOptions() {
+        return state.items.map(item => `
+          <option value="${number(item.inventoryItemId)}">
+            ${escapeHtml(item.productName)}
+          </option>
+        `).join('');
+      }
+
+      function locationOptions() {
+        return state.locations.map(location => `
+          <option value="${escapeHtml(location.locationId)}">
+            ${escapeHtml(location.name)}
+          </option>
+        `).join('');
+      }
+
+      function populateFormOptions() {
+        const items = itemOptions();
+        const locations = locationOptions();
+
+        ['transfer-item', 'baked-item', 'adjust-item']
+          .forEach(id => {
+            const node = el(id);
+            const current = node.value;
+            node.innerHTML = items;
+
+            if ([...node.options].some(option => option.value === current)) {
+              node.value = current;
+            }
+          });
+
+        [
+          'transfer-from',
+          'transfer-to',
+          'baked-location',
+          'adjust-location'
+        ].forEach(id => {
+          const node = el(id);
+          const current = node.value;
+          node.innerHTML = locations;
+
+          if ([...node.options].some(option => option.value === current)) {
+            node.value = current;
+          }
+        });
+
+        if (el('transfer-from').querySelector('option[value="kitchen"]')) {
+          el('transfer-from').value = 'kitchen';
+        }
+
+        if (el('transfer-to').querySelector('option[value="online"]')) {
+          el('transfer-to').value = 'online';
+        }
+
+        if (el('baked-location').querySelector('option[value="kitchen"]')) {
+          el('baked-location').value = 'kitchen';
+        }
+
+        updateTransferSourceHelp();
+      }
+
+      function findItem(inventoryItemId) {
+        return state.items.find(
+          item => number(item.inventoryItemId) === number(inventoryItemId)
+        ) || null;
+      }
+
+      function updateTransferSourceHelp() {
+        const item = findItem(el('transfer-item').value);
+        const from = el('transfer-from').value;
+
+        if (!item || !from) {
+          el('transfer-source-help').textContent = '';
+          return;
+        }
+
+        el('transfer-source-help').textContent =
+          `${locationQuantity(item, from)} currently at this location.`;
+      }
+
+      function openDialog(dialogId) {
+        const dialog = el(dialogId);
+
+        if (!dialog) return;
+
+        [
+          'transfer-status',
+          'baked-status',
+          'adjust-status',
+          'event-status'
+        ].forEach(clearModalStatus);
+
+        if (typeof dialog.showModal === 'function') {
+          dialog.showModal();
+        }
+      }
+
+      function closeDialog(dialog) {
+        if (dialog?.open) {
+          dialog.close();
+        }
+      }
+
+      document.addEventListener('click', event => {
+        const openButton = event.target.closest('[data-open-dialog]');
+
+        if (openButton) {
+          const dialogId = openButton.dataset.openDialog;
+
+          if (dialogId === 'adjust-dialog') {
+            setAdjustmentMode(
+              openButton.dataset.adjustMode || 'correction'
+            );
+          }
+
+          openDialog(dialogId);
+          return;
+        }
+
+        const closeButton = event.target.closest('[data-close-dialog]');
+
+        if (closeButton) {
+          closeDialog(closeButton.closest('dialog'));
+          return;
+        }
+
+        const transferButton = event.target.closest('[data-row-transfer]');
+
+        if (transferButton) {
+          el('transfer-item').value = transferButton.dataset.rowTransfer;
+          updateTransferSourceHelp();
+          openDialog('transfer-dialog');
+          return;
+        }
+
+        const adjustButton = event.target.closest('[data-row-adjust]');
+
+        if (adjustButton) {
+          setAdjustmentMode('correction');
+          el('adjust-item').value = adjustButton.dataset.rowAdjust;
+          openDialog('adjust-dialog');
+        }
+      });
+
+      document.querySelectorAll('.crew-dialog').forEach(dialog => {
+        dialog.addEventListener('click', event => {
+          if (event.target === dialog) {
+            closeDialog(dialog);
+          }
+        });
+      });
+
+      function setAdjustmentMode(mode) {
+        const isWaste = mode === 'waste';
+
+        el('adjust-mode').value = isWaste ? 'waste' : 'correction';
+        el('adjust-title').textContent =
+          isWaste ? 'Record Waste / Damage' : 'Correct Physical Count';
+
+        el('adjust-description').textContent =
+          isWaste
+            ? 'Remove cookies that can no longer be sold and preserve the reason for reporting.'
+            : 'Correct a verified physical count without disguising it as a sale or transfer.';
+
+        el('correction-direction-group').hidden = isWaste;
+        el('adjust-submit').textContent =
+          isWaste ? 'Record Waste' : 'Record Correction';
+      }
+
+      /* =======================================================
+         FILTERS
+      ======================================================== */
+
+      searchInput.addEventListener('input', () => {
+        state.search = searchInput.value;
+        renderInventoryTable();
+      });
+
+      healthFilter.addEventListener('change', () => {
+        state.health = healthFilter.value;
+        renderInventoryTable();
+      });
+
+      sortSelect.addEventListener('change', () => {
+        state.sort = sortSelect.value;
+        renderInventoryTable();
+      });
+
+      el('location-tabs').addEventListener('click', event => {
+        const button = event.target.closest('[data-location-filter]');
+
+        if (!button) return;
+
+        state.locationFilter = button.dataset.locationFilter;
+
+        el('location-tabs')
+          .querySelectorAll('[data-location-filter]')
+          .forEach(tab => {
+            tab.classList.toggle(
+              'is-active',
+              tab === button
+            );
+          });
+
+        renderInventoryTable();
+      });
+
+      refreshButton.addEventListener('click', loadInventory);
+
+      el('transfer-item').addEventListener('change', updateTransferSourceHelp);
+      el('transfer-from').addEventListener('change', updateTransferSourceHelp);
+
+      /* =======================================================
+         TRANSFER — LIVE EXISTING ROUTE
+      ======================================================== */
+
+      el('transfer-form').addEventListener('submit', async event => {
+        event.preventDefault();
+        clearModalStatus('transfer-status');
+
+        const inventoryItemId = number(el('transfer-item').value);
+        const fromLocationId = el('transfer-from').value;
+        const toLocationId = el('transfer-to').value;
+        const quantity = number(el('transfer-quantity').value);
+        const reason = el('transfer-reason').value.trim();
+
+        if (!Number.isInteger(quantity) || quantity <= 0) {
+          showModalStatus(
+            'transfer-status',
+            'Enter a whole-number quantity greater than zero.'
+          );
+          return;
+        }
+
+        if (fromLocationId === toLocationId) {
+          showModalStatus(
+            'transfer-status',
+            'The source and destination must be different locations.'
+          );
+          return;
+        }
+
+        const item = findItem(inventoryItemId);
+        const sourceAvailable = item
+          ? locationQuantity(item, fromLocationId)
+          : 0;
+
+        if (quantity > sourceAvailable) {
+          showModalStatus(
+            'transfer-status',
+            `Only ${sourceAvailable} cookies are currently available at the source location.`
+          );
+          return;
+        }
+
+        const submit = el('transfer-submit');
+        submit.disabled = true;
+        submit.textContent = 'Transferring…';
+
+        try {
+          const response = await fetch(`${API_BASE}/inventory/transfer`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              inventoryItemId,
+              fromLocationId,
+              toLocationId,
+              quantity,
+              reason
+            })
+          });
+
+          const data = await response.json();
+
+          if (!response.ok || data.ok !== true) {
+            throw new Error(
+              data.error || 'Inventory transfer failed.'
+            );
+          }
+
+          showModalStatus(
+            'transfer-status',
+            'Inventory transferred successfully.',
+            'success'
+          );
+
+          toast('Inventory transfer recorded.', 'success');
+
+          await loadInventory();
+
+          window.setTimeout(() => {
+            closeDialog(el('transfer-dialog'));
+          }, 650);
+
+        } catch (error) {
+          console.error('Inventory transfer failed:', error);
+
+          showModalStatus(
+            'transfer-status',
+            error.message || 'Inventory transfer failed.'
+          );
+        } finally {
+          submit.disabled = false;
+          submit.textContent = 'Transfer Cookies';
+        }
+      });
+
+      /* =======================================================
+         FUTURE MUTATIONS
+         These deliberately refuse to create fake browser state.
+      ======================================================== */
+
+      el('baked-form').addEventListener('submit', event => {
+        event.preventDefault();
+
+        showModalStatus(
+          'baked-status',
+          'Add Baked is ready in the Crew UI, but the protected /inventory/baked backend mutation must be added before this button can safely change inventory.'
+        );
+      });
+
+      el('adjust-form').addEventListener('submit', event => {
+        event.preventDefault();
+
+        showModalStatus(
+          'adjust-status',
+          'Inventory adjustments require the protected /inventory/adjust backend mutation so the location count, master total, and movement ledger stay synchronized.'
+        );
+      });
+
+      el('event-form').addEventListener('submit', event => {
+        event.preventDefault();
+
+        showModalStatus(
+          'event-status',
+          'Event locations require the protected /inventory/location backend mutation before they can be created from the Crew site.'
+        );
+      });
+
+      /* =======================================================
+         INITIAL LOAD
+      ======================================================== */
+
+      loadInventory();
+
+    })();
+  </script>
+</body>
+</html>
