@@ -1356,8 +1356,17 @@
           </div>
 
           <div class="form-group">
-            <label for="transfer-reason">Reason</label>
-            <input class="crew-input" id="transfer-reason" type="text" maxlength="160" placeholder="Restock Bertha, prep Friday popup…">
+            <label for="transfer-reason">
+              Reason <span aria-hidden="true">*</span>
+            </label>
+            <input
+              class="crew-input"
+              id="transfer-reason"
+              type="text"
+              required
+              maxlength="160"
+              placeholder="Restock Bertha, prep Friday popup…"
+            >
           </div>
         </div>
       </div>
@@ -2253,6 +2262,14 @@
         const toLocationId = el('transfer-to').value;
         const quantity = number(el('transfer-quantity').value);
         const reason = el('transfer-reason').value.trim();
+
+        if (!reason) {
+          showModalStatus(
+            'transfer-status',
+            'Enter a reason for this inventory transfer.'
+          );
+          return;
+        }
 
         if (!Number.isInteger(quantity) || quantity <= 0) {
           showModalStatus(
