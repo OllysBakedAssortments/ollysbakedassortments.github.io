@@ -5,7 +5,7 @@
     'https://api.ollysbakedassortments.com';
 
   const LOGIN_PAGE =
-    '/crew/login.html';
+    '/crew/crew-login.html';
 
   async function getCrewSession() {
     try {
