@@ -625,7 +625,7 @@
       'use strict';
 
       const API_BASE =
-        'https://oba-checkout.ollysbakedassortments.workers.dev';
+        'https://api.ollysbakedassortments.com';
 
       /*
        * SECURITY:
@@ -803,6 +803,7 @@
         try {
           const response = await fetch(`${API_BASE}/crew/inventory`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
               'Accept': 'application/json'
             }
@@ -1501,6 +1502,7 @@
             `${API_BASE}/inventory/transfer`,
             {
               method: 'POST',
+              credentials: 'include',
               headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -1631,11 +1633,12 @@
                   `${API_BASE}/inventory/baked`,
                   {
                     method: 'POST',
-      
+                    credentials: 'include',
+                
                     headers: {
                       'Content-Type': 'application/json'
                     },
-      
+                
                     body: JSON.stringify({
                       inventoryItemId,
                       locationId,
@@ -1795,6 +1798,7 @@
             `${API_BASE}/inventory/adjust`,
             {
               method: 'POST',
+              credentials: 'include',
               headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -1928,6 +1932,7 @@
             `${API_BASE}/inventory/location`,
             {
               method: 'POST',
+              credentials: 'include',
               headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
