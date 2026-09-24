@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cookie Crew Login | OBA Cookies</title>
+  <meta name="robots" content="noindex,nofollow">
+
+  <link rel="icon" type="image/png" href="/images/brand/logo.png">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/crew/crew.css">
+</head>
+
+<body class="crew-login-page">
+
+  <main class="crew-login-shell">
+
+    <section class="crew-login-card">
+
+      <div class="crew-login-brand">
+        <img
+          src="/images/brand/logo.png"
+          alt="OBA Cookies"
+        >
+
+        <div>
+          <span class="crew-eyebrow">OBA Cookies</span>
+          <h1>Cookie Crew</h1>
+          <p>Crew Operations</p>
+        </div>
+      </div>
+
+      <div class="crew-login-heading">
+        <h2>Sign in</h2>
+        <p>
+          Use your Cookie Crew account to access OBA operations.
+        </p>
+      </div>
+
+      <form id="crew-login-form">
+
+        <div
+          class="modal-status"
+          id="login-status"
+          aria-live="polite"
+        ></div>
+
+        <div class="form-group">
+          <label for="crew-email">Email</label>
+
+          <input
+            class="crew-input"
+            id="crew-email"
+            name="email"
+            type="email"
+            autocomplete="username"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="crew-password">Password</label>
+
+          <input
+            class="crew-input"
+            id="crew-password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <button
+          class="crew-button primary crew-login-submit"
+          id="crew-login-submit"
+          type="submit"
+        >
+          Sign In
+        </button>
+
+      </form>
+
+      <p class="crew-login-note">
+        Cookie Crew access is restricted to authorized OBA staff.
+      </p>
+
+    </section>
+
+  </main>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const API_BASE =
+        'https://api.ollysbakedassortments.com';
+
+      const form =
+        document.getElementById('crew-login-form');
+
+      const emailInput =
+        document.getElementById('crew-email');
+
+      const passwordInput =
+        document.getElementById('crew-password');
+
+      const submit =
+        document.getElementById('crew-login-submit');
+
+      const status =
+        document.getElementById('login-status');
+
+      function showStatus(message, type = 'error') {
+        status.textContent = message;
+        status.className =
+          `modal-status is-visible ${type}`;
+      }
+
+      function clearStatus() {
+        status.textContent = '';
+        status.className = 'modal-status';
+      }
+
+      async function checkExistingSession() {
+        try {
+          const response = await fetch(
+            `${API_BASE}/crew/session`,
+            {
+              method: 'GET',
+              credentials: 'include',
+              headers: {
+                'Accept': 'application/json'
+              }
+            }
+          );
+
+          const data = await response.json();
+
+          if (
+            response.ok &&
+            data.ok === true &&
+            data.authenticated === true
+          ) {
+            window.location.replace(
+              '/crew/dashboard.html'
+            );
+          }
+
+        } catch (error) {
+          console.error(
+            'Crew session check failed:',
+            error
+          );
+        }
+      }
+
+      form.addEventListener(
+        'submit',
+        async event => {
+          event.preventDefault();
+          clearStatus();
+
+          const email =
+            emailInput.value.trim();
+
+          const password =
+            passwordInput.value;
+
+          if (!email || !password) {
+            showStatus(
+              'Enter your Crew email and password.'
+            );
+            return;
+          }
+
+          submit.disabled = true;
+          submit.textContent = 'Signing In…';
+
+          try {
+            const response = await fetch(
+              `${API_BASE}/crew/login`,
+              {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                  'Content-Type':
+                    'application/json',
+                  'Accept':
+                    'application/json'
+                },
+                body: JSON.stringify({
+                  email,
+                  password
+                })
+              }
+            );
+
+            const data = await response.json();
+
+            if (
+              !response.ok ||
+              data.ok !== true ||
+              data.authenticated !== true
+            ) {
+              throw new Error(
+                data.error ||
+                'Unable to sign in.'
+              );
+            }
+
+            showStatus(
+              'Signed in. Opening Crew Operations…',
+              'success'
+            );
+
+            passwordInput.value = '';
+
+            window.location.replace(
+              '/crew/dashboard.html'
+            );
+
+          } catch (error) {
+            console.error(
+              'Crew login failed:',
+              error
+            );
+
+            showStatus(
+              error.message ||
+              'Unable to sign in.'
+            );
+
+          } finally {
+            submit.disabled = false;
+            submit.textContent = 'Sign In';
+          }
+        }
+      );
+
+      checkExistingSession();
+
+    })();
+  </script>
+
+</body>
+</html>
