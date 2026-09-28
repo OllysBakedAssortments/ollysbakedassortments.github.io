@@ -1175,12 +1175,32 @@
         }
       }
 
-      async function initializeDashboard() {
-        /*
-         * Unlike the current Inventory page, Command Center
-         * explicitly waits for authentication before requesting
-         * protected operational data.
-         */
+      /* =======================================================
+         DASHBOARD READY + INITIAL LOAD
+      ======================================================== */
+
+      document.addEventListener(
+        'oba:crew-dashboard-ready',
+        event => {
+          const session =
+            event.detail;
+
+          renderCrewUser(session);
+
+          loadDashboard();
+        },
+        {
+          once: true
+        }
+      );
+
+      el('dashboard-refresh')
+        .addEventListener(
+          'click',
+          loadDashboard
+        );
+
+      (async () => {
         const session =
           await window.OBA_CREW_AUTH
             .requireCrewSession();
@@ -1197,18 +1217,15 @@
           session
         );
 
-        renderCrewUser(session);
-
-        await loadDashboard();
-      }
-
-      el('dashboard-refresh')
-        .addEventListener(
-          'click',
-          loadDashboard
+        document.dispatchEvent(
+          new CustomEvent(
+            'oba:crew-dashboard-ready',
+            {
+              detail: session
+            }
+          )
         );
-
-      initializeDashboard();
+      })();
 
     })();
   </script>
