@@ -1754,3 +1754,51 @@ body.crew-login-page {
   }
 
 }
+
+/* =========================================
+   CREW LOGIN — PASSWORD RECOVERY
+========================================= */
+
+.crew-login-recovery {
+  margin-top: 12px;
+}
+
+.crew-login-recovery-link {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0;
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+
+  color: var(--crew-brown, #6f2d0b);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.4;
+
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.crew-login-recovery-link:hover {
+  text-decoration-thickness: 2px;
+}
+
+.crew-login-recovery-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+#crew-recovery-form .crew-login-heading {
+  margin-top: 0;
+}
+
+#crew-recovery-cancel {
+  margin-top: 14px;
+}
