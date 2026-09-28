@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Account Settings | OBA Cookie Crew</title>
+
+  <link
+    rel="stylesheet"
+    href="/css/style.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/crew/crew.css"
+  >
+</head>
+
+<body class="crew-body">
+
+  <div class="crew-shell">
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <aside class="crew-sidebar">
+
+      <div class="crew-sidebar-brand">
+        <a href="/crew/dashboard.html">
+          OBA
+        </a>
+
+        <span>COOKIE CREW</span>
+      </div>
+
+      <nav
+        class="crew-nav"
+        aria-label="Cookie Crew navigation"
+      >
+
+        <a href="/crew/dashboard.html">
+          Command Center
+        </a>
+
+        <a href="/crew/inventory.html">
+          Inventory
+        </a>
+
+        <a href="/crew/pickup.html">
+          Pickups
+        </a>
+
+        <a href="/crew/drops.html">
+          Drops
+        </a>
+
+        <a href="/crew/schedule.html">
+          Schedule
+        </a>
+
+        <a href="/crew/bulletin.html">
+          Bertha Bulletin
+        </a>
+
+        <a href="/crew/analytics.html">
+          Analytics
+        </a>
+
+        <a href="/crew/polls.html">
+          Longneck Pulse
+        </a>
+
+        <a href="/crew/longnecks.html">
+          Longnecks
+        </a>
+
+        <a href="/crew/products.html">
+          Products
+        </a>
+
+        <a href="/crew/settings.html">
+          Settings
+        </a>
+
+      </nav>
+
+
+      <!-- ACCOUNT CONTROL -->
+
+      <div class="crew-sidebar-account">
+
+        <a
+          href="/crew/account.html"
+          class="crew-account-link active"
+          aria-current="page"
+        >
+          <strong id="sidebarAccountName">
+            Crew Account
+          </strong>
+
+          <span id="sidebarAccountRole">
+            Loading...
+          </span>
+        </a>
+
+      </div>
+
+    </aside>
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="crew-main">
+
+      <!-- PAGE HEADER -->
+
+      <header class="crew-page-header">
+
+        <div>
+          <p class="crew-eyebrow">
+            COOKIE CREW
+          </p>
+
+          <h1>
+            Account Settings
+          </h1>
+
+          <p class="crew-page-description">
+            Manage your Crew profile, password,
+            and active session.
+          </p>
+        </div>
+
+        <div class="crew-page-actions">
+
+          <a
+            href="/crew/dashboard.html"
+            class="crew-button crew-button-secondary"
+          >
+            Command Center
+          </a>
+
+        </div>
+
+      </header>
+
+
+      <!-- =========================================
+           PAGE STATUS
+      ========================================== -->
+
+      <div
+        id="accountStatus"
+        class="crew-status-message"
+        hidden
+        role="status"
+        aria-live="polite"
+      ></div>
+
+
+      <!-- =========================================
+           PROFILE
+      ========================================== -->
+
+      <section class="crew-card">
+
+        <div class="crew-card-header">
+
+          <div>
+            <p class="crew-eyebrow">
+              PROFILE
+            </p>
+
+            <h2>
+              Crew Account
+            </h2>
+
+            <p>
+              Your identity and access level
+              within OBA Cookie Crew.
+            </p>
+          </div>
+
+          <span
+            id="profileRoleBadge"
+            class="crew-badge"
+          >
+            —
+          </span>
+
+        </div>
+
+
+        <div class="crew-account-profile-grid">
+
+          <div class="crew-account-field">
+
+            <span class="crew-account-label">
+              Name
+            </span>
+
+            <strong id="profileName">
+              Loading...
+            </strong>
+
+          </div>
+
+
+          <div class="crew-account-field">
+
+            <span class="crew-account-label">
+              Email
+            </span>
+
+            <strong id="profileEmail">
+              Loading...
+            </strong>
+
+          </div>
+
+
+          <div class="crew-account-field">
+
+            <span class="crew-account-label">
+              Role
+            </span>
+
+            <strong id="profileRole">
+              Loading...
+            </strong>
+
+          </div>
+
+
+          <div class="crew-account-field">
+
+            <span class="crew-account-label">
+              Crew ID
+            </span>
+
+            <strong id="profileCrewId">
+              —
+            </strong>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================================
+           SECURITY
+      ========================================== -->
+
+      <section class="crew-card">
+
+        <div class="crew-card-header">
+
+          <div>
+            <p class="crew-eyebrow">
+              SECURITY
+            </p>
+
+            <h2>
+              Change Password
+            </h2>
+
+            <p>
+              Changing your password signs this
+              account out everywhere.
+            </p>
+          </div>
+
+        </div>
+
+
+        <form
+          id="passwordForm"
+          autocomplete="off"
+        >
+
+          <div class="crew-account-form-grid">
+
+            <div class="crew-form-group">
+
+              <label for="currentPassword">
+                Current Password
+              </label>
+
+              <input
+                id="currentPassword"
+                name="currentPassword"
+                type="password"
+                autocomplete="current-password"
+                required
+              >
+
+            </div>
+
+
+            <div class="crew-form-group">
+
+              <label for="newPassword">
+                New Password
+              </label>
+
+              <input
+                id="newPassword"
+                name="newPassword"
+                type="password"
+                autocomplete="new-password"
+                minlength="12"
+                required
+              >
+
+              <small>
+                Minimum 12 characters.
+              </small>
+
+            </div>
+
+
+            <div class="crew-form-group">
+
+              <label for="confirmPassword">
+                Confirm New Password
+              </label>
+
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                autocomplete="new-password"
+                minlength="12"
+                required
+              >
+
+            </div>
+
+          </div>
+
+
+          <div class="crew-account-form-actions">
+
+            <button
+              id="changePasswordButton"
+              type="submit"
+              class="crew-button crew-button-primary"
+            >
+              Change Password
+            </button>
+
+          </div>
+
+
+          <div
+            id="passwordMessage"
+            class="crew-account-message"
+            hidden
+            role="status"
+            aria-live="polite"
+          ></div>
+
+        </form>
+
+      </section>
+
+
+      <!-- =========================================
+           SESSION
+      ========================================== -->
+
+      <section class="crew-card">
+
+        <div class="crew-card-header">
+
+          <div>
+            <p class="crew-eyebrow">
+              SESSION
+            </p>
+
+            <h2>
+              Current Sign-In
+            </h2>
+
+            <p>
+              Crew sessions expire after inactivity
+              or when their absolute session lifetime
+              is reached.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="crew-account-profile-grid">
+
+          <div class="crew-account-field">
+
+            <span class="crew-account-label">
+              Status
+            </span>
+
+            <strong>
+              Active
+            </strong>
+
+          </div>
+
+
+          <div class="crew-account-field">
+
+            <span class="crew-account-label">
+              Session Expires
+            </span>
+
+            <strong id="sessionExpires">
+              Loading...
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="crew-account-session-actions">
+
+          <div>
+            <strong>
+              Sign out of Cookie Crew
+            </strong>
+
+            <p>
+              You'll need your Crew email and
+              password to sign back in.
+            </p>
+          </div>
+
+          <button
+            id="logoutButton"
+            type="button"
+            class="crew-button crew-button-danger"
+          >
+            Log Out
+          </button>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <!-- =========================================
+       CREW AUTH
+  ========================================== -->
+
+  <script src="/crew/crew-auth.js"></script>
+
+
+  <script>
+    (() => {
+      'use strict';
+
+      const API_BASE =
+        'https://api.ollysbakedassortments.com';
+
+      const LOGIN_PAGE =
+        '/crew/crew-login.html';
+
+
+      /* =========================================
+         ELEMENTS
+      ========================================== */
+
+      const sidebarAccountName =
+        document.getElementById(
+          'sidebarAccountName'
+        );
+
+      const sidebarAccountRole =
+        document.getElementById(
+          'sidebarAccountRole'
+        );
+
+      const profileRoleBadge =
+        document.getElementById(
+          'profileRoleBadge'
+        );
+
+      const profileName =
+        document.getElementById(
+          'profileName'
+        );
+
+      const profileEmail =
+        document.getElementById(
+          'profileEmail'
+        );
+
+      const profileRole =
+        document.getElementById(
+          'profileRole'
+        );
+
+      const profileCrewId =
+        document.getElementById(
+          'profileCrewId'
+        );
+
+      const sessionExpires =
+        document.getElementById(
+          'sessionExpires'
+        );
+
+      const passwordForm =
+        document.getElementById(
+          'passwordForm'
+        );
+
+      const currentPassword =
+        document.getElementById(
+          'currentPassword'
+        );
+
+      const newPassword =
+        document.getElementById(
+          'newPassword'
+        );
+
+      const confirmPassword =
+        document.getElementById(
+          'confirmPassword'
+        );
+
+      const changePasswordButton =
+        document.getElementById(
+          'changePasswordButton'
+        );
+
+      const passwordMessage =
+        document.getElementById(
+          'passwordMessage'
+        );
+
+      const accountStatus =
+        document.getElementById(
+          'accountStatus'
+        );
+
+      const logoutButton =
+        document.getElementById(
+          'logoutButton'
+        );
+
+
+      /* =========================================
+         HELPERS
+      ========================================== */
+
+      function formatRole(role) {
+        if (!role) {
+          return 'Crew';
+        }
+
+        return (
+          role.charAt(0).toUpperCase() +
+          role.slice(1)
+        );
+      }
+
+
+      function formatDateTime(value) {
+        if (!value) {
+          return '—';
+        }
+
+        const date =
+          new Date(value);
+
+        if (
+          Number.isNaN(
+            date.getTime()
+          )
+        ) {
+          return '—';
+        }
+
+        return date.toLocaleString(
+          undefined,
+          {
+            dateStyle: 'medium',
+            timeStyle: 'short'
+          }
+        );
+      }
+
+
+      function showPasswordMessage(
+        message,
+        type = 'error'
+      ) {
+        passwordMessage.hidden = false;
+        passwordMessage.textContent = message;
+
+        passwordMessage.classList.remove(
+          'is-success',
+          'is-error'
+        );
+
+        passwordMessage.classList.add(
+          type === 'success'
+            ? 'is-success'
+            : 'is-error'
+        );
+      }
+
+
+      function clearPasswordMessage() {
+        passwordMessage.hidden = true;
+        passwordMessage.textContent = '';
+
+        passwordMessage.classList.remove(
+          'is-success',
+          'is-error'
+        );
+      }
+
+
+      function setPasswordFormBusy(
+        busy
+      ) {
+        currentPassword.disabled = busy;
+        newPassword.disabled = busy;
+        confirmPassword.disabled = busy;
+
+        changePasswordButton.disabled =
+          busy;
+
+        changePasswordButton.textContent =
+          busy
+            ? 'Changing Password...'
+            : 'Change Password';
+      }
+
+
+      /* =========================================
+         RENDER SESSION
+      ========================================== */
+
+      function renderSession(sessionData) {
+
+        const user =
+          sessionData?.user ?? {};
+
+        const session =
+          sessionData?.session ?? {};
+
+        const firstName =
+          user.firstName ?? '';
+
+        const lastName =
+          user.lastName ?? '';
+
+        const fullName =
+          `${firstName} ${lastName}`
+            .trim() ||
+          'Crew Account';
+
+        const role =
+          formatRole(
+            user.role
+          );
+
+
+        sidebarAccountName.textContent =
+          fullName;
+
+        sidebarAccountRole.textContent =
+          role;
+
+
+        profileName.textContent =
+          fullName;
+
+        profileEmail.textContent =
+          user.email ?? '—';
+
+        profileRole.textContent =
+          role;
+
+        profileRoleBadge.textContent =
+          role;
+
+        profileCrewId.textContent =
+          user.crewUserId ?? '—';
+
+        sessionExpires.textContent =
+          formatDateTime(
+            session.expiresAt
+          );
+      }
+
+
+      /* =========================================
+         INITIALIZE ACCOUNT
+      ========================================== */
+
+      async function initializeAccount() {
+
+        accountStatus.hidden = false;
+        accountStatus.textContent =
+          'Loading account...';
+
+        const sessionData =
+          await window
+            .OBA_CREW_AUTH
+            .requireCrewSession();
+
+        if (!sessionData) {
+          return;
+        }
+
+        renderSession(
+          sessionData
+        );
+
+        accountStatus.hidden = true;
+      }
+
+
+      /* =========================================
+         CHANGE PASSWORD
+      ========================================== */
+
+      passwordForm.addEventListener(
+        'submit',
+        async event => {
+
+          event.preventDefault();
+
+          clearPasswordMessage();
+
+
+          const currentValue =
+            currentPassword.value;
+
+          const newValue =
+            newPassword.value;
+
+          const confirmValue =
+            confirmPassword.value;
+
+
+          if (!currentValue) {
+            showPasswordMessage(
+              'Enter your current password.'
+            );
+
+            currentPassword.focus();
+            return;
+          }
+
+
+          if (newValue.length < 12) {
+            showPasswordMessage(
+              'New password must be at least 12 characters.'
+            );
+
+            newPassword.focus();
+            return;
+          }
+
+
+          if (
+            newValue !==
+            confirmValue
+          ) {
+            showPasswordMessage(
+              'New passwords do not match.'
+            );
+
+            confirmPassword.focus();
+            return;
+          }
+
+
+          if (
+            currentValue ===
+            newValue
+          ) {
+            showPasswordMessage(
+              'New password must be different from your current password.'
+            );
+
+            newPassword.focus();
+            return;
+          }
+
+
+          setPasswordFormBusy(true);
+
+
+          try {
+
+            const response =
+              await fetch(
+                `${API_BASE}/crew/change-password`,
+                {
+                  method: 'POST',
+
+                  credentials:
+                    'include',
+
+                  headers: {
+                    'Accept':
+                      'application/json',
+
+                    'Content-Type':
+                      'application/json'
+                  },
+
+                  body:
+                    JSON.stringify({
+                      currentPassword:
+                        currentValue,
+
+                      newPassword:
+                        newValue
+                    })
+                }
+              );
+
+
+            let data = {};
+
+            try {
+              data =
+                await response.json();
+            } catch {
+              data = {};
+            }
+
+
+            if (
+              !response.ok ||
+              data.ok !== true
+            ) {
+
+              if (
+                response.status === 401 &&
+                data.authenticated === false
+              ) {
+                window.location.replace(
+                  LOGIN_PAGE
+                );
+
+                return;
+              }
+
+
+              throw new Error(
+                data.error ||
+                'Unable to change password.'
+              );
+            }
+
+
+            passwordForm.reset();
+
+            showPasswordMessage(
+              'Password changed. Sign in again with your new password.',
+              'success'
+            );
+
+
+            setTimeout(
+              () => {
+                window.location.replace(
+                  LOGIN_PAGE
+                );
+              },
+              1200
+            );
+
+
+          } catch (error) {
+
+            showPasswordMessage(
+              error instanceof Error
+                ? error.message
+                : 'Unable to change password.'
+            );
+
+            setPasswordFormBusy(
+              false
+            );
+          }
+
+        }
+      );
+
+
+      /* =========================================
+         LOG OUT
+      ========================================== */
+
+      logoutButton.addEventListener(
+        'click',
+        async () => {
+
+          logoutButton.disabled = true;
+          logoutButton.textContent =
+            'Logging Out...';
+
+
+          try {
+
+            await fetch(
+              `${API_BASE}/crew/logout`,
+              {
+                method: 'POST',
+
+                credentials:
+                  'include',
+
+                headers: {
+                  'Accept':
+                    'application/json'
+                }
+              }
+            );
+
+          } catch (error) {
+
+            console.error(
+              'Crew logout failed:',
+              error
+            );
+
+          } finally {
+
+            window.location.replace(
+              LOGIN_PAGE
+            );
+
+          }
+
+        }
+      );
+
+
+      /* =========================================
+         START
+      ========================================== */
+
+      initializeAccount();
+
+    })();
+  </script>
+
+</body>
+</html>
