@@ -402,130 +402,17 @@
 
   <div class="crew-app">
 
-    <!-- =========================================================
-         SIDEBAR
-    ========================================================== -->
-
-    <aside class="crew-sidebar">
-
-      <a class="crew-brand" href="/crew/dashboard.html">
-        <img src="/images/brand/logo.png" alt="">
-        <span class="crew-brand-copy">
-          <strong>OBA Cookie Crew</strong>
-          <span>Crew Operations</span>
-        </span>
-      </a>
-
-      <div class="crew-nav-section-label">Operations</div>
-
-      <nav class="crew-nav" aria-label="Crew operations">
-        <a
-          href="/crew/dashboard.html"
-          aria-current="page"
-        >
-          <span class="crew-nav-icon">⌂</span>
-          Command Center
-        </a>
-
-        <a href="/crew/inventory.html">
-          <span class="crew-nav-icon">▦</span>
-          Inventory
-        </a>
-
-        <a href="/crew/pickup.html">
-          <span class="crew-nav-icon">◫</span>
-          Pickups
-        </a>
-
-        <a href="/crew/drops.html">
-          <span class="crew-nav-icon">◉</span>
-          Drops
-        </a>
-
-        <a href="/crew/schedule.html">
-          <span class="crew-nav-icon">▣</span>
-          Crew Schedule
-        </a>
-      </nav>
-
-      <div class="crew-nav-section-label">Longnecks</div>
-
-      <nav class="crew-nav" aria-label="Longneck tools">
-        <a href="/crew/bulletin.html">
-          <span class="crew-nav-icon">✉</span>
-          Bertha Bulletin
-        </a>
-
-        <a href="/crew/longnecks.html">
-          <span class="crew-nav-icon">♙</span>
-          Longnecks
-        </a>
-
-        <a href="/crew/polls.html">
-          <span class="crew-nav-icon">✓</span>
-          Polls
-        </a>
-      </nav>
-
-      <div class="crew-nav-section-label">Business</div>
-
-      <nav class="crew-nav" aria-label="Business tools">
-        <a href="/crew/analytics.html">
-          <span class="crew-nav-icon">↗</span>
-          Analytics
-        </a>
-
-        <a href="/crew/products.html">
-          <span class="crew-nav-icon">◇</span>
-          Products
-        </a>
-
-        <a href="/crew/settings.html">
-          <span class="crew-nav-icon">⚙</span>
-          Settings
-        </a>
-      </nav>
-
-      <div class="crew-sidebar-footer">
-
-        <a
-          href="/crew/account.html"
-          class="crew-account-link"
-        >
-          <strong id="sidebar-user-name">
-            Cookie Crew
-          </strong>
-      
-          <span id="sidebar-user-role">
-            Authenticated Crew Operations
-          </span>
-        </a>
-      
-      </div>
-
-    </aside>
-
-    <!-- =========================================================
-         MOBILE BAR
-    ========================================================== -->
-
-    <div class="crew-mobile-bar">
-      <div class="crew-mobile-brand">
-        <img src="/images/brand/logo.png" alt="">
-        <span>Cookie Crew · Command Center</span>
-      </div>
-
-      <a
-        class="crew-button"
-        href="/crew/inventory.html"
-      >
-        Inventory
-      </a>
-    </div>
-
-    <!-- =========================================================
-         MAIN
-    ========================================================== -->
+        <!-- =========================================================
+             SHARED CREW SHELL
+        ========================================================== -->
+    
+        <div data-crew-sidebar></div>
+    
+        <div data-crew-mobile-bar></div>
+    
+        <!-- =========================================================
+             MAIN
+        ========================================================== -->
 
     <main class="crew-main">
 
@@ -919,6 +806,7 @@
   ========================================================== -->
 
   <script src="/crew/crew-auth.js"></script>
+  <script src="/crew/crew-shell.js"></script>
 
   <script>
     (() => {
@@ -1300,6 +1188,14 @@
         if (!session) {
           return;
         }
+
+        window.OBA_CREW_SHELL.mount({
+          activePage: 'dashboard'
+        });
+
+        window.OBA_CREW_SHELL.renderCrewIdentity(
+          session
+        );
 
         renderCrewUser(session);
 
