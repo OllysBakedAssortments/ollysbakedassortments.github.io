@@ -16,50 +16,13 @@
 <body>
   <div class="crew-app">
 
-    <aside class="crew-sidebar">
-      <a class="crew-brand" href="/crew/dashboard.html">
-        <img src="/images/brand/logo.png" alt="">
-        <span class="crew-brand-copy">
-          <strong>OBA Cookie Crew</strong>
-          <span>Crew Operations</span>
-        </span>
-      </a>
+    <!-- =========================================================
+         SHARED CREW SHELL
+    ========================================================== -->
 
-      <div class="crew-nav-section-label">Operations</div>
-      <nav class="crew-nav" aria-label="Crew operations">
-        <a href="/crew/dashboard.html"><span class="crew-nav-icon">⌂</span>Command Center</a>
-        <a href="/crew/inventory.html" aria-current="page"><span class="crew-nav-icon">▦</span>Inventory</a>
-        <a href="/crew/pickup.html"><span class="crew-nav-icon">◫</span>Pickups</a>
-        <a href="/crew/drops.html"><span class="crew-nav-icon">◉</span>Drops</a>
-        <a href="/crew/schedule.html"><span class="crew-nav-icon">▣</span>Crew Schedule</a>
-      </nav>
+    <div data-crew-sidebar></div>
 
-      <div class="crew-nav-section-label">Longnecks</div>
-      <nav class="crew-nav" aria-label="Longneck tools">
-        <a href="/crew/bulletin.html"><span class="crew-nav-icon">✉</span>Bertha Bulletin</a>
-        <a href="/crew/longnecks.html"><span class="crew-nav-icon">♙</span>Longnecks</a>
-        <a href="/crew/polls.html"><span class="crew-nav-icon">✓</span>Polls</a>
-      </nav>
-
-      <div class="crew-nav-section-label">Business</div>
-      <nav class="crew-nav" aria-label="Business tools">
-        <a href="/crew/analytics.html"><span class="crew-nav-icon">↗</span>Analytics</a>
-        <a href="/crew/products.html"><span class="crew-nav-icon">◇</span>Products</a>
-        <a href="/crew/settings.html"><span class="crew-nav-icon">⚙</span>Settings</a>
-      </nav>
-
-      <div class="crew-sidebar-footer">
-        Exact inventory is Crew-only. Customer-facing stock should continue to expose only Sold Out / low-stock messaging.
-      </div>
-    </aside>
-
-    <div class="crew-mobile-bar">
-      <div class="crew-mobile-brand">
-        <img src="/images/brand/logo.png" alt="">
-        <span>Cookie Crew · Inventory</span>
-      </div>
-      <a class="crew-button" href="/crew/dashboard.html">Crew Menu</a>
-    </div>
+    <div data-crew-mobile-bar></div>
 
     <main class="crew-main">
       <header class="crew-header">
@@ -621,9 +584,33 @@
   <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
 
   <script src="/crew/crew-auth.js"></script>
-  
+  <script src="/crew/crew-shell.js"></script>
+
   <script>
-    window.OBA_CREW_AUTH.requireCrewSession();
+    (async () => {
+      'use strict';
+
+      const session =
+        await window.OBA_CREW_AUTH
+          .requireCrewSession();
+
+      if (!session) {
+        return;
+      }
+
+      window.OBA_CREW_SHELL.mount({
+        activePage: 'inventory'
+      });
+
+      window.OBA_CREW_SHELL
+        .renderCrewIdentity(session);
+
+      document.dispatchEvent(
+        new CustomEvent(
+          'oba:crew-inventory-ready'
+        )
+      );
+    })();
   </script>
   
   <script>
@@ -2005,7 +1992,15 @@
          INITIAL LOAD
       ======================================================== */
 
-      loadInventory();
+      document.addEventListener(
+        'oba:crew-inventory-ready',
+        () => {
+          loadInventory();
+        },
+        {
+          once: true
+        }
+      );
 
     })();
   </script>
