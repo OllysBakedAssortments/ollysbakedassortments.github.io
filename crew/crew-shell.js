@@ -391,57 +391,327 @@
 
 
   /* =========================================================
-     MOBILE BAR
+     MOBILE NAVIGATION
   ========================================================= */
+
+  function buildMobileNavigation(activePage) {
+    return NAV_GROUPS
+      .map(group => {
+
+        const items =
+          group.items
+            .map(item => {
+
+              const config =
+                PAGE_CONFIG[item.page];
+
+              const isActive =
+                item.page === activePage;
+
+              return `
+                <a
+                  href="${config.href}"
+                  class="crew-mobile-nav-link"
+                  ${
+                    isActive
+                      ? 'aria-current="page"'
+                      : ''
+                  }
+                >
+                  <span class="crew-nav-icon">
+                    ${escapeHtml(item.icon)}
+                  </span>
+
+                  <span>
+                    ${escapeHtml(item.label)}
+                  </span>
+                </a>
+              `;
+            })
+            .join('');
+
+
+        return `
+          <div class="crew-mobile-nav-group">
+
+            <div class="crew-nav-section-label">
+              ${escapeHtml(group.label)}
+            </div>
+
+            <nav
+              class="crew-mobile-nav-links"
+              aria-label="${escapeHtml(
+                group.ariaLabel
+              )}"
+            >
+              ${items}
+            </nav>
+
+          </div>
+        `;
+      })
+      .join('');
+  }
+
 
   function buildMobileBar(activePage) {
     const config =
       PAGE_CONFIG[activePage] ||
       PAGE_CONFIG.dashboard;
 
+    const accountIsActive =
+      activePage === 'account';
+
     return `
-      <div class="crew-mobile-bar">
+      <div class="crew-mobile-shell">
 
-        <a
-          class="crew-mobile-brand"
-          href="/crew/dashboard.html"
-        >
-          <img
-            src="/images/brand/logo.png"
-            alt=""
+        <div class="crew-mobile-bar">
+
+          <a
+            class="crew-mobile-brand"
+            href="/crew/dashboard.html"
           >
+            <img
+              src="/images/brand/logo.png"
+              alt=""
+            >
 
-          <span>
-            Cookie Crew ·
-            ${escapeHtml(
-              config.mobileLabel
-            )}
-          </span>
-        </a>
+            <span>
+              Cookie Crew ·
+              ${escapeHtml(
+                config.mobileLabel
+              )}
+            </span>
+          </a>
 
 
-        ${
-          activePage === 'account'
-            ? `
-              <a
-                class="crew-button"
-                href="/crew/dashboard.html"
+          <button
+            type="button"
+            class="crew-button crew-mobile-menu-button"
+            data-crew-menu-button
+            aria-expanded="false"
+            aria-controls="crew-mobile-drawer"
+          >
+            Crew Menu
+          </button>
+
+        </div>
+
+
+        <div
+          class="crew-mobile-overlay"
+          data-crew-menu-overlay
+          hidden
+        ></div>
+
+
+        <aside
+          class="crew-mobile-drawer"
+          id="crew-mobile-drawer"
+          data-crew-menu-drawer
+          aria-hidden="true"
+        >
+
+          <div class="crew-mobile-drawer-header">
+
+            <a
+              class="crew-brand"
+              href="/crew/dashboard.html"
+            >
+              <img
+                src="/images/brand/logo.png"
+                alt=""
               >
-                Command Center
-              </a>
-            `
-            : `
-              <a
-                class="crew-button"
-                href="/crew/account.html"
-              >
-                Account
-              </a>
-            `
-        }
+
+              <span class="crew-brand-copy">
+                <strong>
+                  OBA Cookie Crew
+                </strong>
+
+                <span>
+                  Crew Operations
+                </span>
+              </span>
+            </a>
+
+
+            <button
+              type="button"
+              class="crew-mobile-menu-close"
+              data-crew-menu-close
+              aria-label="Close Crew menu"
+            >
+              ×
+            </button>
+
+          </div>
+
+
+          <div class="crew-mobile-drawer-content">
+
+            ${buildMobileNavigation(activePage)}
+
+          </div>
+
+
+          <div class="crew-mobile-drawer-footer">
+
+            <a
+              href="/crew/account.html"
+              class="crew-account-link"
+              ${
+                accountIsActive
+                  ? 'aria-current="page"'
+                  : ''
+              }
+            >
+              <strong data-crew-user-name>
+                Cookie Crew
+              </strong>
+
+              <span data-crew-user-role>
+                Authenticated Crew Operations
+              </span>
+            </a>
+
+          </div>
+
+        </aside>
 
       </div>
     `;
+  }
+
+
+  function initializeMobileMenu() {
+    const button =
+      document.querySelector(
+        '[data-crew-menu-button]'
+      );
+
+    const drawer =
+      document.querySelector(
+        '[data-crew-menu-drawer]'
+      );
+
+    const overlay =
+      document.querySelector(
+        '[data-crew-menu-overlay]'
+      );
+
+    const closeButton =
+      document.querySelector(
+        '[data-crew-menu-close]'
+      );
+
+
+    if (
+      !button ||
+      !drawer ||
+      !overlay ||
+      !closeButton
+    ) {
+      return;
+    }
+
+
+    function openMenu() {
+      drawer.classList.add('is-open');
+
+      overlay.hidden = false;
+
+      requestAnimationFrame(() => {
+        overlay.classList.add('is-open');
+      });
+
+      drawer.setAttribute(
+        'aria-hidden',
+        'false'
+      );
+
+      button.setAttribute(
+        'aria-expanded',
+        'true'
+      );
+
+      document.body.classList.add(
+        'crew-menu-open'
+      );
+    }
+
+
+    function closeMenu() {
+      drawer.classList.remove('is-open');
+
+      overlay.classList.remove('is-open');
+
+      drawer.setAttribute(
+        'aria-hidden',
+        'true'
+      );
+
+      button.setAttribute(
+        'aria-expanded',
+        'false'
+      );
+
+      document.body.classList.remove(
+        'crew-menu-open'
+      );
+
+      window.setTimeout(() => {
+        if (
+          !overlay.classList.contains(
+            'is-open'
+          )
+        ) {
+          overlay.hidden = true;
+        }
+      }, 180);
+    }
+
+
+    button.addEventListener(
+      'click',
+      openMenu
+    );
+
+    closeButton.addEventListener(
+      'click',
+      closeMenu
+    );
+
+    overlay.addEventListener(
+      'click',
+      closeMenu
+    );
+
+
+    drawer
+      .querySelectorAll('a')
+      .forEach(link => {
+        link.addEventListener(
+          'click',
+          closeMenu
+        );
+      });
+
+
+    document.addEventListener(
+      'keydown',
+      event => {
+        if (
+          event.key === 'Escape' &&
+          drawer.classList.contains(
+            'is-open'
+          )
+        ) {
+          closeMenu();
+
+          button.focus();
+        }
+      }
+    );
   }
 
 
@@ -528,6 +798,8 @@
     } else {
       mobileMount.outerHTML =
         buildMobileBar(activePage);
+
+      initializeMobileMenu();
     }
 
 
