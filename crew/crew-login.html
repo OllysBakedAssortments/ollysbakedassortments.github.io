@@ -2,15 +2,101 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Cookie Crew Login | OBA Cookies</title>
-  <meta name="robots" content="noindex,nofollow">
 
-  <link rel="icon" type="image/png" href="/images/brand/logo.png">
-    <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/crew/crew.css">
+  <meta
+    name="robots"
+    content="noindex,nofollow"
+  >
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="/images/brand/logo.png"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/css/style.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/crew/crew.css"
+  >
+
+  <style>
+    /* =========================================
+       LOGIN / RECOVERY PAGE-SPECIFIC CONTROLS
+    ========================================= */
+
+    .crew-login-recovery {
+      margin-top: 14px;
+    }
+
+    .crew-login-recovery-link {
+      appearance: none;
+      -webkit-appearance: none;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      margin: 0;
+      padding: 0;
+
+      border: 0;
+      border-radius: 0;
+
+      background: transparent;
+
+      color: #6f2d0b;
+
+      font: inherit;
+      font-weight: 700;
+      line-height: 1.4;
+
+      cursor: pointer;
+
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .crew-login-recovery-link:hover {
+      text-decoration-thickness: 2px;
+    }
+
+    .crew-login-recovery-link:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 4px;
+      border-radius: 3px;
+    }
+
+    .crew-login-recovery-link:disabled {
+      cursor: default;
+      opacity: 0.6;
+    }
+
+    #crew-recovery-cancel {
+      margin-top: 16px;
+    }
+
+    #crew-recovery-form .crew-login-heading {
+      margin-top: 0;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+  </style>
 </head>
+
 
 <body class="crew-login-page">
 
@@ -18,25 +104,51 @@
 
     <section class="crew-login-card">
 
+      <!-- =====================================
+           BRAND
+      ====================================== -->
+
       <div class="crew-login-brand">
+
         <img
           src="/images/brand/logo.png"
           alt="OBA Cookies"
         >
 
         <div>
-          <span class="crew-eyebrow">OBA Cookies</span>
-          <h1>Cookie Crew</h1>
-          <p>Crew Operations</p>
+          <span class="crew-eyebrow">
+            OBA Cookies
+          </span>
+
+          <h1>
+            Cookie Crew
+          </h1>
+
+          <p>
+            Crew Operations
+          </p>
         </div>
+
       </div>
 
-      <div class="crew-login-heading">
-        <h2>Sign in</h2>
+
+      <!-- =====================================
+           SIGN IN
+      ====================================== -->
+
+      <div
+        class="crew-login-heading"
+        id="crew-login-heading"
+      >
+        <h2>
+          Sign in
+        </h2>
+
         <p>
           Use your Cookie Crew account to access OBA operations.
         </p>
       </div>
+
 
       <form id="crew-login-form">
 
@@ -46,8 +158,12 @@
           aria-live="polite"
         ></div>
 
+
         <div class="form-group">
-          <label for="crew-email">Email</label>
+
+          <label for="crew-email">
+            Email
+          </label>
 
           <input
             class="crew-input"
@@ -57,10 +173,15 @@
             autocomplete="username"
             required
           >
+
         </div>
 
+
         <div class="form-group">
-          <label for="crew-password">Password</label>
+
+          <label for="crew-password">
+            Password
+          </label>
 
           <input
             class="crew-input"
@@ -70,7 +191,9 @@
             autocomplete="current-password"
             required
           >
+
         </div>
+
 
         <button
           class="crew-button primary crew-login-submit"
@@ -84,7 +207,7 @@
 
 
       <!-- =====================================
-           FORGOT PASSWORD
+           PASSWORD RECOVERY
       ====================================== -->
 
       <div class="crew-login-recovery">
@@ -111,11 +234,15 @@
 
 
           <div class="crew-login-heading">
-            <h2>Reset password</h2>
+
+            <h2>
+              Reset password
+            </h2>
 
             <p>
               Enter your Cookie Crew email and we'll send you a password reset link.
             </p>
+
           </div>
 
 
@@ -167,28 +294,58 @@
 
   </main>
 
+
   <script>
     (() => {
       'use strict';
 
+
+      /* =====================================
+         CONFIG
+      ====================================== */
+
       const API_BASE =
         'https://api.ollysbakedassortments.com';
 
+
+      /* =====================================
+         SIGN-IN ELEMENTS
+      ====================================== */
+
       const form =
-        document.getElementById('crew-login-form');
+        document.getElementById(
+          'crew-login-form'
+        );
+
+      const loginHeading =
+        document.getElementById(
+          'crew-login-heading'
+        );
 
       const emailInput =
-        document.getElementById('crew-email');
+        document.getElementById(
+          'crew-email'
+        );
 
       const passwordInput =
-        document.getElementById('crew-password');
+        document.getElementById(
+          'crew-password'
+        );
 
       const submit =
-        document.getElementById('crew-login-submit');
+        document.getElementById(
+          'crew-login-submit'
+        );
 
       const status =
-        document.getElementById('login-status');
+        document.getElementById(
+          'login-status'
+        );
 
+
+      /* =====================================
+         RECOVERY ELEMENTS
+      ====================================== */
 
       const forgotPasswordButton =
         document.getElementById(
@@ -221,136 +378,29 @@
         );
 
 
-      function showStatus(message, type = 'error') {
-        status.textContent = message;
+      /* =====================================
+         STATUS HELPERS
+      ====================================== */
+
+      function showStatus(
+        message,
+        type = 'error'
+      ) {
+        status.textContent =
+          message;
+
         status.className =
           `modal-status is-visible ${type}`;
       }
 
+
       function clearStatus() {
         status.textContent = '';
-        status.className = 'modal-status';
+
+        status.className =
+          'modal-status';
       }
 
-      async function checkExistingSession() {
-        try {
-          const response = await fetch(
-            `${API_BASE}/crew/session`,
-            {
-              method: 'GET',
-              credentials: 'include',
-              headers: {
-                'Accept': 'application/json'
-              }
-            }
-          );
-
-          const data = await response.json();
-
-          if (
-            response.ok &&
-            data.ok === true &&
-            data.authenticated === true
-          ) {
-            window.location.replace(
-              '/crew/dashboard.html'
-            );
-          }
-
-        } catch (error) {
-          console.error(
-            'Crew session check failed:',
-            error
-          );
-        }
-      }
-
-      form.addEventListener(
-        'submit',
-        async event => {
-          event.preventDefault();
-          clearStatus();
-
-          const email =
-            emailInput.value.trim();
-
-          const password =
-            passwordInput.value;
-
-          if (!email || !password) {
-            showStatus(
-              'Enter your Crew email and password.'
-            );
-            return;
-          }
-
-          submit.disabled = true;
-          submit.textContent = 'Signing In…';
-
-          try {
-            const response = await fetch(
-              `${API_BASE}/crew/login`,
-              {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                  'Content-Type':
-                    'application/json',
-                  'Accept':
-                    'application/json'
-                },
-                body: JSON.stringify({
-                  email,
-                  password
-                })
-              }
-            );
-
-            const data = await response.json();
-
-            if (
-              !response.ok ||
-              data.ok !== true ||
-              data.authenticated !== true
-            ) {
-              throw new Error(
-                data.error ||
-                'Unable to sign in.'
-              );
-            }
-
-            showStatus(
-              'Signed in. Opening Crew Operations…',
-              'success'
-            );
-
-            passwordInput.value = '';
-
-            window.location.replace(
-              '/crew/dashboard.html'
-            );
-
-          } catch (error) {
-            console.error(
-              'Crew login failed:',
-              error
-            );
-
-            showStatus(
-              error.message ||
-              'Unable to sign in.'
-            );
-
-          } finally {
-            submit.disabled = false;
-            submit.textContent = 'Sign In';
-          }
-        }
-      );
-
-      /* =====================================
-         PASSWORD RECOVERY UI
-      ====================================== */
 
       function showRecoveryStatus(
         message,
@@ -372,6 +422,176 @@
       }
 
 
+      /* =====================================
+         SESSION CHECK
+      ====================================== */
+
+      async function checkExistingSession() {
+
+        try {
+
+          const response =
+            await fetch(
+              `${API_BASE}/crew/session`,
+              {
+                method: 'GET',
+
+                credentials: 'include',
+
+                headers: {
+                  'Accept':
+                    'application/json'
+                }
+              }
+            );
+
+
+          const data =
+            await response.json();
+
+
+          if (
+            response.ok &&
+            data.ok === true &&
+            data.authenticated === true
+          ) {
+            window.location.replace(
+              '/crew/dashboard.html'
+            );
+          }
+
+
+        } catch (error) {
+
+          console.error(
+            'Crew session check failed:',
+            error
+          );
+        }
+      }
+
+
+      /* =====================================
+         SIGN IN
+      ====================================== */
+
+      form.addEventListener(
+        'submit',
+        async event => {
+
+          event.preventDefault();
+
+          clearStatus();
+
+
+          const email =
+            emailInput.value.trim();
+
+          const password =
+            passwordInput.value;
+
+
+          if (!email || !password) {
+
+            showStatus(
+              'Enter your Crew email and password.'
+            );
+
+            return;
+          }
+
+
+          submit.disabled = true;
+
+          submit.textContent =
+            'Signing In…';
+
+
+          try {
+
+            const response =
+              await fetch(
+                `${API_BASE}/crew/login`,
+                {
+                  method: 'POST',
+
+                  credentials: 'include',
+
+                  headers: {
+                    'Content-Type':
+                      'application/json',
+
+                    'Accept':
+                      'application/json'
+                  },
+
+                  body: JSON.stringify({
+                    email,
+                    password
+                  })
+                }
+              );
+
+
+            const data =
+              await response.json();
+
+
+            if (
+              !response.ok ||
+              data.ok !== true ||
+              data.authenticated !== true
+            ) {
+              throw new Error(
+                data.error ||
+                'Unable to sign in.'
+              );
+            }
+
+
+            showStatus(
+              'Signed in. Opening Crew Operations…',
+              'success'
+            );
+
+
+            passwordInput.value = '';
+
+
+            window.location.replace(
+              '/crew/dashboard.html'
+            );
+
+
+          } catch (error) {
+
+            console.error(
+              'Crew login failed:',
+              error
+            );
+
+
+            showStatus(
+              error.message ||
+              'Unable to sign in.'
+            );
+
+
+          } finally {
+
+            submit.disabled = false;
+
+            submit.textContent =
+              'Sign In';
+          }
+        }
+      );
+
+
+      /* =====================================
+         OPEN PASSWORD RECOVERY
+      ====================================== */
+
       forgotPasswordButton.addEventListener(
         'click',
         () => {
@@ -379,21 +599,33 @@
           clearStatus();
           clearRecoveryStatus();
 
+
           /*
-           * Carry the email from the sign-in
-           * form into recovery when available.
+           * Carry an already-entered email into
+           * the recovery form.
            */
           recoveryEmailInput.value =
             emailInput.value.trim();
 
+
+          loginHeading.hidden = true;
+
           form.hidden = true;
-          forgotPasswordButton.hidden = true;
+
+          forgotPasswordButton.hidden =
+            true;
+
           recoveryForm.hidden = false;
+
 
           recoveryEmailInput.focus();
         }
       );
 
+
+      /* =====================================
+         RETURN TO SIGN IN
+      ====================================== */
 
       recoveryCancel.addEventListener(
         'click',
@@ -401,20 +633,61 @@
 
           clearRecoveryStatus();
 
+
+          /*
+           * Carry the recovery email back into
+           * the normal sign-in form.
+           */
+          if (
+            recoveryEmailInput.value.trim()
+          ) {
+            emailInput.value =
+              recoveryEmailInput.value.trim();
+          }
+
+
           recoveryForm.hidden = true;
+
+          loginHeading.hidden = false;
+
           form.hidden = false;
-          forgotPasswordButton.hidden = false;
+
+          forgotPasswordButton.hidden =
+            false;
+
+
+          /*
+           * Restore recovery controls in case
+           * this screen was previously submitted.
+           */
+          recoveryEmailInput.disabled =
+            false;
+
+          recoverySubmit.hidden =
+            false;
+
+          recoverySubmit.disabled =
+            false;
+
+          recoverySubmit.textContent =
+            'Send Reset Link';
+
 
           emailInput.focus();
         }
       );
 
 
+      /* =====================================
+         REQUEST PASSWORD RESET
+      ====================================== */
+
       recoveryForm.addEventListener(
         'submit',
         async event => {
 
           event.preventDefault();
+
           clearRecoveryStatus();
 
 
@@ -423,6 +696,7 @@
 
 
           if (!email) {
+
             showRecoveryStatus(
               'Enter your Cookie Crew email.',
               'error'
@@ -479,9 +753,9 @@
 
 
             /*
-             * The Worker deliberately returns
-             * the same public response whether
-             * the account exists or not.
+             * The API deliberately returns the
+             * same public response regardless of
+             * whether an account exists.
              */
             showRecoveryStatus(
               data.message ||
@@ -493,7 +767,8 @@
             recoveryEmailInput.disabled =
               true;
 
-            recoverySubmit.hidden = true;
+            recoverySubmit.hidden =
+              true;
 
 
           } catch (error) {
@@ -502,6 +777,7 @@
               'Crew password recovery failed:',
               error
             );
+
 
             showRecoveryStatus(
               error.message ||
@@ -512,19 +788,24 @@
 
           } finally {
 
-            recoverySubmit.disabled = false;
+            if (
+              !recoverySubmit.hidden
+            ) {
+              recoverySubmit.disabled =
+                false;
 
-            recoverySubmit.textContent =
-              'Send Reset Link';
+              recoverySubmit.textContent =
+                'Send Reset Link';
+            }
           }
         }
       );
 
 
-      /*
-       * Show confirmation when arriving here
-       * after a successful password reset.
-       */
+      /* =====================================
+         SUCCESSFUL RESET RETURN
+      ====================================== */
+
       const pageParams =
         new URLSearchParams(
           window.location.search
@@ -532,8 +813,9 @@
 
 
       if (
-        pageParams.get('password-reset') ===
-        'success'
+        pageParams.get(
+          'password-reset'
+        ) === 'success'
       ) {
 
         showStatus(
@@ -549,6 +831,10 @@
         );
       }
 
+
+      /* =====================================
+         INITIALIZE
+      ====================================== */
 
       checkExistingSession();
 
