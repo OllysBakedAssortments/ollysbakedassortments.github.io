@@ -17,151 +17,17 @@
 
   <div class="crew-app">
 
-    <!-- =========================================
-         SIDEBAR
-    ========================================== -->
+        <!-- =========================================
+             SHARED CREW SHELL
+        ========================================== -->
+    
+        <div data-crew-sidebar></div>
+    
+        <div data-crew-mobile-bar></div>
 
-    <aside class="crew-sidebar">
-
-      <a
-        class="crew-brand"
-        href="/crew/dashboard.html"
-      >
-        <img
-          src="/images/Untitled_Artwork.png"
-          alt="OBA Cookies"
-        >
-
-        <div class="crew-brand-copy">
-          <strong>OBA Cookies</strong>
-          <span>Cookie Crew</span>
-        </div>
-      </a>
-
-
-      <div class="crew-nav-section-label">
-        Operations
-      </div>
-
-      <nav
-        class="crew-nav"
-        aria-label="Cookie Crew navigation"
-      >
-
-        <a href="/crew/dashboard.html">
-          <span class="crew-nav-icon">⌂</span>
-          <span>Command Center</span>
-        </a>
-
-        <a href="/crew/inventory.html">
-          <span class="crew-nav-icon">◫</span>
-          <span>Inventory</span>
-        </a>
-
-        <a href="/crew/pickup.html">
-          <span class="crew-nav-icon">✓</span>
-          <span>Pickups</span>
-        </a>
-
-        <a href="/crew/drops.html">
-          <span class="crew-nav-icon">▦</span>
-          <span>Drops</span>
-        </a>
-
-        <a href="/crew/schedule.html">
-          <span class="crew-nav-icon">◷</span>
-          <span>Schedule</span>
-        </a>
-
-        <a href="/crew/bulletin.html">
-          <span class="crew-nav-icon">☰</span>
-          <span>Bertha Bulletin</span>
-        </a>
-
-
-        <div class="crew-nav-section-label">
-          Business
-        </div>
-
-        <a href="/crew/analytics.html">
-          <span class="crew-nav-icon">↗</span>
-          <span>Analytics</span>
-        </a>
-
-        <a href="/crew/polls.html">
-          <span class="crew-nav-icon">◉</span>
-          <span>Longneck Pulse</span>
-        </a>
-
-        <a href="/crew/longnecks.html">
-          <span class="crew-nav-icon">♙</span>
-          <span>Longnecks</span>
-        </a>
-
-        <a href="/crew/products.html">
-          <span class="crew-nav-icon">◇</span>
-          <span>Products</span>
-        </a>
-
-        <a href="/crew/settings.html">
-          <span class="crew-nav-icon">⚙</span>
-          <span>Settings</span>
-        </a>
-
-      </nav>
-
-
-      <!-- ACCOUNT -->
-
-      <div class="crew-sidebar-footer">
-
-        <a
-          href="/crew/account.html"
-          class="crew-account-link"
-          aria-current="page"
-        >
-          <strong id="sidebarAccountName">
-            Crew Account
-          </strong>
-
-          <span id="sidebarAccountRole">
-            Loading...
-          </span>
-        </a>
-
-      </div>
-
-    </aside>
-
-
-    <!-- =========================================
-         MOBILE BAR
-    ========================================== -->
-
-    <div class="crew-mobile-bar">
-
-      <div class="crew-mobile-brand">
-        <img
-          src="/images/Untitled_Artwork.png"
-          alt=""
-        >
-
-        <span>Cookie Crew</span>
-      </div>
-
-      <a
-        href="/crew/account.html"
-        class="crew-button soft"
-      >
-        Account
-      </a>
-
-    </div>
-
-
-    <!-- =========================================
-         MAIN
-    ========================================== -->
+        <!-- =========================================
+             MAIN
+        ========================================== -->
 
     <main class="crew-main">
 
@@ -494,6 +360,7 @@
   ========================================== -->
 
   <script src="/crew/crew-auth.js"></script>
+  <script src="/crew/crew-shell.js"></script>
 
 
   <script>
@@ -510,16 +377,6 @@
       /* =========================================
          ELEMENTS
       ========================================== */
-
-      const sidebarAccountName =
-        document.getElementById(
-          'sidebarAccountName'
-        );
-
-      const sidebarAccountRole =
-        document.getElementById(
-          'sidebarAccountRole'
-        );
 
       const profileRoleBadge =
         document.getElementById(
@@ -706,11 +563,6 @@
           );
 
 
-        sidebarAccountName.textContent =
-          fullName;
-
-        sidebarAccountRole.textContent =
-          role;
 
         profileName.textContent =
           fullName;
@@ -752,6 +604,14 @@
         if (!sessionData) {
           return;
         }
+
+        window.OBA_CREW_SHELL.mount({
+          activePage: 'account'
+        });
+
+        window.OBA_CREW_SHELL.renderCrewIdentity(
+          sessionData
+        );
 
         renderSession(
           sessionData
