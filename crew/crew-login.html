@@ -82,6 +82,83 @@
 
       </form>
 
+
+      <!-- =====================================
+           FORGOT PASSWORD
+      ====================================== -->
+
+      <div class="crew-login-recovery">
+
+        <button
+          id="crew-forgot-password"
+          type="button"
+          class="crew-login-recovery-link"
+        >
+          Forgot password?
+        </button>
+
+
+        <form
+          id="crew-recovery-form"
+          hidden
+        >
+
+          <div
+            class="modal-status"
+            id="recovery-status"
+            aria-live="polite"
+          ></div>
+
+
+          <div class="crew-login-heading">
+            <h2>Reset password</h2>
+
+            <p>
+              Enter your Cookie Crew email and we'll send you a password reset link.
+            </p>
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="crew-recovery-email">
+              Email
+            </label>
+
+            <input
+              class="crew-input"
+              id="crew-recovery-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+            >
+
+          </div>
+
+
+          <button
+            class="crew-button primary crew-login-submit"
+            id="crew-recovery-submit"
+            type="submit"
+          >
+            Send Reset Link
+          </button>
+
+
+          <button
+            id="crew-recovery-cancel"
+            type="button"
+            class="crew-login-recovery-link"
+          >
+            Back to sign in
+          </button>
+
+        </form>
+
+      </div>
+
+
       <p class="crew-login-note">
         Cookie Crew access is restricted to authorized OBA staff.
       </p>
@@ -111,6 +188,38 @@
 
       const status =
         document.getElementById('login-status');
+
+
+      const forgotPasswordButton =
+        document.getElementById(
+          'crew-forgot-password'
+        );
+
+      const recoveryForm =
+        document.getElementById(
+          'crew-recovery-form'
+        );
+
+      const recoveryEmailInput =
+        document.getElementById(
+          'crew-recovery-email'
+        );
+
+      const recoverySubmit =
+        document.getElementById(
+          'crew-recovery-submit'
+        );
+
+      const recoveryCancel =
+        document.getElementById(
+          'crew-recovery-cancel'
+        );
+
+      const recoveryStatus =
+        document.getElementById(
+          'recovery-status'
+        );
+
 
       function showStatus(message, type = 'error') {
         status.textContent = message;
@@ -238,6 +347,208 @@
           }
         }
       );
+
+      /* =====================================
+         PASSWORD RECOVERY UI
+      ====================================== */
+
+      function showRecoveryStatus(
+        message,
+        type = 'success'
+      ) {
+        recoveryStatus.textContent =
+          message;
+
+        recoveryStatus.className =
+          `modal-status is-visible ${type}`;
+      }
+
+
+      function clearRecoveryStatus() {
+        recoveryStatus.textContent = '';
+
+        recoveryStatus.className =
+          'modal-status';
+      }
+
+
+      forgotPasswordButton.addEventListener(
+        'click',
+        () => {
+
+          clearStatus();
+          clearRecoveryStatus();
+
+          /*
+           * Carry the email from the sign-in
+           * form into recovery when available.
+           */
+          recoveryEmailInput.value =
+            emailInput.value.trim();
+
+          form.hidden = true;
+          forgotPasswordButton.hidden = true;
+          recoveryForm.hidden = false;
+
+          recoveryEmailInput.focus();
+        }
+      );
+
+
+      recoveryCancel.addEventListener(
+        'click',
+        () => {
+
+          clearRecoveryStatus();
+
+          recoveryForm.hidden = true;
+          form.hidden = false;
+          forgotPasswordButton.hidden = false;
+
+          emailInput.focus();
+        }
+      );
+
+
+      recoveryForm.addEventListener(
+        'submit',
+        async event => {
+
+          event.preventDefault();
+          clearRecoveryStatus();
+
+
+          const email =
+            recoveryEmailInput.value.trim();
+
+
+          if (!email) {
+            showRecoveryStatus(
+              'Enter your Cookie Crew email.',
+              'error'
+            );
+
+            return;
+          }
+
+
+          recoverySubmit.disabled = true;
+
+          recoverySubmit.textContent =
+            'Sending…';
+
+
+          try {
+
+            const response =
+              await fetch(
+                `${API_BASE}/crew/forgot-password`,
+                {
+                  method: 'POST',
+
+                  credentials: 'include',
+
+                  headers: {
+                    'Content-Type':
+                      'application/json',
+
+                    'Accept':
+                      'application/json'
+                  },
+
+                  body: JSON.stringify({
+                    email
+                  })
+                }
+              );
+
+
+            const data =
+              await response.json();
+
+
+            if (
+              !response.ok ||
+              data.ok !== true
+            ) {
+              throw new Error(
+                data.error ||
+                'Unable to request a password reset.'
+              );
+            }
+
+
+            /*
+             * The Worker deliberately returns
+             * the same public response whether
+             * the account exists or not.
+             */
+            showRecoveryStatus(
+              data.message ||
+                'If that email belongs to an active Cookie Crew account, password reset instructions will be sent.',
+              'success'
+            );
+
+
+            recoveryEmailInput.disabled =
+              true;
+
+            recoverySubmit.hidden = true;
+
+
+          } catch (error) {
+
+            console.error(
+              'Crew password recovery failed:',
+              error
+            );
+
+            showRecoveryStatus(
+              error.message ||
+                'Unable to request a password reset.',
+              'error'
+            );
+
+
+          } finally {
+
+            recoverySubmit.disabled = false;
+
+            recoverySubmit.textContent =
+              'Send Reset Link';
+          }
+        }
+      );
+
+
+      /*
+       * Show confirmation when arriving here
+       * after a successful password reset.
+       */
+      const pageParams =
+        new URLSearchParams(
+          window.location.search
+        );
+
+
+      if (
+        pageParams.get('password-reset') ===
+        'success'
+      ) {
+
+        showStatus(
+          'Password reset successfully. Sign in with your new password.',
+          'success'
+        );
+
+
+        window.history.replaceState(
+          {},
+          document.title,
+          '/crew/crew-login.html'
+        );
+      }
+
 
       checkExistingSession();
 
