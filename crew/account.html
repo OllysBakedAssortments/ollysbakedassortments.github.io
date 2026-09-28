@@ -9,20 +9,13 @@
 
   <title>Account Settings | OBA Cookie Crew</title>
 
-  <link
-    rel="stylesheet"
-    href="/css/style.css"
-  >
-
-  <link
-    rel="stylesheet"
-    href="/crew/crew.css"
-  >
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/crew/crew.css">
 </head>
 
-<body class="crew-body">
+<body>
 
-  <div class="crew-shell">
+  <div class="crew-app">
 
     <!-- =========================================
          SIDEBAR
@@ -30,12 +23,24 @@
 
     <aside class="crew-sidebar">
 
-      <div class="crew-sidebar-brand">
-        <a href="/crew/dashboard.html">
-          OBA
-        </a>
+      <a
+        class="crew-brand"
+        href="/crew/dashboard.html"
+      >
+        <img
+          src="/images/Untitled_Artwork.png"
+          alt="OBA Cookies"
+        >
 
-        <span>COOKIE CREW</span>
+        <div class="crew-brand-copy">
+          <strong>OBA Cookies</strong>
+          <span>Cookie Crew</span>
+        </div>
+      </a>
+
+
+      <div class="crew-nav-section-label">
+        Operations
       </div>
 
       <nav
@@ -44,59 +49,75 @@
       >
 
         <a href="/crew/dashboard.html">
-          Command Center
+          <span class="crew-nav-icon">⌂</span>
+          <span>Command Center</span>
         </a>
 
         <a href="/crew/inventory.html">
-          Inventory
+          <span class="crew-nav-icon">◫</span>
+          <span>Inventory</span>
         </a>
 
         <a href="/crew/pickup.html">
-          Pickups
+          <span class="crew-nav-icon">✓</span>
+          <span>Pickups</span>
         </a>
 
         <a href="/crew/drops.html">
-          Drops
+          <span class="crew-nav-icon">▦</span>
+          <span>Drops</span>
         </a>
 
         <a href="/crew/schedule.html">
-          Schedule
+          <span class="crew-nav-icon">◷</span>
+          <span>Schedule</span>
         </a>
 
         <a href="/crew/bulletin.html">
-          Bertha Bulletin
+          <span class="crew-nav-icon">☰</span>
+          <span>Bertha Bulletin</span>
         </a>
 
+
+        <div class="crew-nav-section-label">
+          Business
+        </div>
+
         <a href="/crew/analytics.html">
-          Analytics
+          <span class="crew-nav-icon">↗</span>
+          <span>Analytics</span>
         </a>
 
         <a href="/crew/polls.html">
-          Longneck Pulse
+          <span class="crew-nav-icon">◉</span>
+          <span>Longneck Pulse</span>
         </a>
 
         <a href="/crew/longnecks.html">
-          Longnecks
+          <span class="crew-nav-icon">♙</span>
+          <span>Longnecks</span>
         </a>
 
         <a href="/crew/products.html">
-          Products
+          <span class="crew-nav-icon">◇</span>
+          <span>Products</span>
         </a>
 
         <a href="/crew/settings.html">
-          Settings
+          <span class="crew-nav-icon">⚙</span>
+          <span>Settings</span>
         </a>
 
       </nav>
 
 
-      <!-- ACCOUNT CONTROL -->
+      <!-- ACCOUNT -->
 
-      <div class="crew-sidebar-account">
+      <div class="crew-sidebar-footer">
 
         <a
           href="/crew/account.html"
-          class="crew-account-link active"
+          class="crew-account-link"
           aria-current="page"
         >
           <strong id="sidebarAccountName">
@@ -114,35 +135,56 @@
 
 
     <!-- =========================================
+         MOBILE BAR
+    ========================================== -->
+
+    <div class="crew-mobile-bar">
+
+      <div class="crew-mobile-brand">
+        <img
+          src="/images/Untitled_Artwork.png"
+          alt=""
+        >
+
+        <span>Cookie Crew</span>
+      </div>
+
+      <a
+        href="/crew/account.html"
+        class="crew-button soft"
+      >
+        Account
+      </a>
+
+    </div>
+
+
+    <!-- =========================================
          MAIN
     ========================================== -->
 
     <main class="crew-main">
 
-      <!-- PAGE HEADER -->
-
-      <header class="crew-page-header">
+      <header class="crew-header">
 
         <div>
-          <p class="crew-eyebrow">
-            COOKIE CREW
-          </p>
+          <span class="crew-eyebrow">
+            Cookie Crew
+          </span>
 
-          <h1>
-            Account Settings
-          </h1>
+          <h1>Account Settings</h1>
 
-          <p class="crew-page-description">
-            Manage your Crew profile, password,
-            and active session.
+          <p>
+            Manage your Crew identity, password,
+            and current sign-in session.
           </p>
         </div>
 
-        <div class="crew-page-actions">
+        <div class="crew-header-actions">
 
           <a
             href="/crew/dashboard.html"
-            class="crew-button crew-button-secondary"
+            class="crew-button soft"
           >
             Command Center
           </a>
@@ -152,309 +194,295 @@
       </header>
 
 
-      <!-- =========================================
-           PAGE STATUS
-      ========================================== -->
+      <div class="crew-content">
 
-      <div
-        id="accountStatus"
-        class="crew-status-message"
-        hidden
-        role="status"
-        aria-live="polite"
-      ></div>
+        <div
+          id="accountStatus"
+          class="account-message"
+          hidden
+          role="status"
+          aria-live="polite"
+        ></div>
 
 
-      <!-- =========================================
-           PROFILE
-      ========================================== -->
+        <!-- =====================================
+             PROFILE
+        ====================================== -->
 
-      <section class="crew-card">
+        <section class="crew-card account-card">
 
-        <div class="crew-card-header">
+          <div class="card-head">
 
-          <div>
-            <p class="crew-eyebrow">
-              PROFILE
-            </p>
+            <div>
+              <span class="crew-eyebrow">
+                Profile
+              </span>
 
-            <h2>
-              Crew Account
-            </h2>
+              <h2>Crew Account</h2>
 
-            <p>
-              Your identity and access level
-              within OBA Cookie Crew.
-            </p>
-          </div>
+              <p>
+                Your identity and access level
+                within OBA Cookie Crew.
+              </p>
+            </div>
 
-          <span
-            id="profileRoleBadge"
-            class="crew-badge"
-          >
-            —
-          </span>
-
-        </div>
-
-
-        <div class="crew-account-profile-grid">
-
-          <div class="crew-account-field">
-
-            <span class="crew-account-label">
-              Name
-            </span>
-
-            <strong id="profileName">
-              Loading...
-            </strong>
-
-          </div>
-
-
-          <div class="crew-account-field">
-
-            <span class="crew-account-label">
-              Email
-            </span>
-
-            <strong id="profileEmail">
-              Loading...
-            </strong>
-
-          </div>
-
-
-          <div class="crew-account-field">
-
-            <span class="crew-account-label">
-              Role
-            </span>
-
-            <strong id="profileRole">
-              Loading...
-            </strong>
-
-          </div>
-
-
-          <div class="crew-account-field">
-
-            <span class="crew-account-label">
-              Crew ID
-            </span>
-
-            <strong id="profileCrewId">
+            <span
+              id="profileRoleBadge"
+              class="status-pill active"
+            >
               —
-            </strong>
+            </span>
 
           </div>
 
-        </div>
 
-      </section>
+          <div class="account-profile-grid">
+
+            <div class="account-field">
+              <span class="account-label">
+                Name
+              </span>
+
+              <strong id="profileName">
+                Loading...
+              </strong>
+            </div>
 
 
-      <!-- =========================================
-           SECURITY
-      ========================================== -->
+            <div class="account-field">
+              <span class="account-label">
+                Email
+              </span>
 
-      <section class="crew-card">
+              <strong id="profileEmail">
+                Loading...
+              </strong>
+            </div>
 
-        <div class="crew-card-header">
 
-          <div>
-            <p class="crew-eyebrow">
-              SECURITY
-            </p>
+            <div class="account-field">
+              <span class="account-label">
+                Role
+              </span>
 
-            <h2>
-              Change Password
-            </h2>
+              <strong id="profileRole">
+                Loading...
+              </strong>
+            </div>
 
-            <p>
-              Changing your password signs this
-              account out everywhere.
-            </p>
+
+            <div class="account-field">
+              <span class="account-label">
+                Crew ID
+              </span>
+
+              <strong id="profileCrewId">
+                —
+              </strong>
+            </div>
+
           </div>
 
-        </div>
+        </section>
 
 
-        <form
-          id="passwordForm"
-          autocomplete="off"
-        >
+        <!-- =====================================
+             SECURITY
+        ====================================== -->
 
-          <div class="crew-account-form-grid">
+        <section class="crew-card account-card">
 
-            <div class="crew-form-group">
+          <div class="card-head">
 
-              <label for="currentPassword">
-                Current Password
-              </label>
+            <div>
+              <span class="crew-eyebrow">
+                Security
+              </span>
 
-              <input
-                id="currentPassword"
-                name="currentPassword"
-                type="password"
-                autocomplete="current-password"
-                required
-              >
+              <h2>Change Password</h2>
 
-            </div>
-
-
-            <div class="crew-form-group">
-
-              <label for="newPassword">
-                New Password
-              </label>
-
-              <input
-                id="newPassword"
-                name="newPassword"
-                type="password"
-                autocomplete="new-password"
-                minlength="12"
-                required
-              >
-
-              <small>
-                Minimum 12 characters.
-              </small>
-
-            </div>
-
-
-            <div class="crew-form-group">
-
-              <label for="confirmPassword">
-                Confirm New Password
-              </label>
-
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                autocomplete="new-password"
-                minlength="12"
-                required
-              >
-
+              <p>
+                Changing your password signs this
+                Crew account out on every device.
+              </p>
             </div>
 
           </div>
 
 
-          <div class="crew-account-form-actions">
+          <form
+            id="passwordForm"
+            autocomplete="off"
+          >
+
+            <div class="account-form-grid">
+
+              <div class="form-group full">
+
+                <label for="currentPassword">
+                  Current Password
+                </label>
+
+                <input
+                  class="crew-input"
+                  id="currentPassword"
+                  name="currentPassword"
+                  type="password"
+                  autocomplete="current-password"
+                  required
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="newPassword">
+                  New Password
+                </label>
+
+                <input
+                  class="crew-input"
+                  id="newPassword"
+                  name="newPassword"
+                  type="password"
+                  autocomplete="new-password"
+                  minlength="12"
+                  required
+                >
+
+                <span class="form-help">
+                  Minimum 12 characters.
+                </span>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="confirmPassword">
+                  Confirm New Password
+                </label>
+
+                <input
+                  class="crew-input"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  autocomplete="new-password"
+                  minlength="12"
+                  required
+                >
+
+              </div>
+
+            </div>
+
+
+            <div class="account-form-actions">
+
+              <button
+                id="changePasswordButton"
+                type="submit"
+                class="crew-button primary"
+              >
+                Change Password
+              </button>
+
+            </div>
+
+
+            <div
+              id="passwordMessage"
+              class="account-message"
+              hidden
+              role="status"
+              aria-live="polite"
+            ></div>
+
+          </form>
+
+        </section>
+
+
+        <!-- =====================================
+             SESSION
+        ====================================== -->
+
+        <section class="crew-card account-card">
+
+          <div class="card-head">
+
+            <div>
+              <span class="crew-eyebrow">
+                Session
+              </span>
+
+              <h2>Current Sign-In</h2>
+
+              <p>
+                Review your current Crew session
+                or securely sign out.
+              </p>
+            </div>
+
+            <span class="status-pill active">
+              Active
+            </span>
+
+          </div>
+
+
+          <div class="account-profile-grid">
+
+            <div class="account-field">
+              <span class="account-label">
+                Session Status
+              </span>
+
+              <strong>Authenticated</strong>
+            </div>
+
+
+            <div class="account-field">
+              <span class="account-label">
+                Session Expires
+              </span>
+
+              <strong id="sessionExpires">
+                Loading...
+              </strong>
+            </div>
+
+          </div>
+
+
+          <div class="account-session-actions">
+
+            <div>
+              <strong>
+                Sign out of Cookie Crew
+              </strong>
+
+              <p>
+                You'll need your Crew email and
+                password to sign back in.
+              </p>
+            </div>
 
             <button
-              id="changePasswordButton"
-              type="submit"
-              class="crew-button crew-button-primary"
+              id="logoutButton"
+              type="button"
+              class="crew-button danger"
             >
-              Change Password
+              Log Out
             </button>
 
           </div>
 
+        </section>
 
-          <div
-            id="passwordMessage"
-            class="crew-account-message"
-            hidden
-            role="status"
-            aria-live="polite"
-          ></div>
-
-        </form>
-
-      </section>
-
-
-      <!-- =========================================
-           SESSION
-      ========================================== -->
-
-      <section class="crew-card">
-
-        <div class="crew-card-header">
-
-          <div>
-            <p class="crew-eyebrow">
-              SESSION
-            </p>
-
-            <h2>
-              Current Sign-In
-            </h2>
-
-            <p>
-              Crew sessions expire after inactivity
-              or when their absolute session lifetime
-              is reached.
-            </p>
-          </div>
-
-        </div>
-
-
-        <div class="crew-account-profile-grid">
-
-          <div class="crew-account-field">
-
-            <span class="crew-account-label">
-              Status
-            </span>
-
-            <strong>
-              Active
-            </strong>
-
-          </div>
-
-
-          <div class="crew-account-field">
-
-            <span class="crew-account-label">
-              Session Expires
-            </span>
-
-            <strong id="sessionExpires">
-              Loading...
-            </strong>
-
-          </div>
-
-        </div>
-
-
-        <div class="crew-account-session-actions">
-
-          <div>
-            <strong>
-              Sign out of Cookie Crew
-            </strong>
-
-            <p>
-              You'll need your Crew email and
-              password to sign back in.
-            </p>
-          </div>
-
-          <button
-            id="logoutButton"
-            type="button"
-            class="crew-button crew-button-danger"
-          >
-            Log Out
-          </button>
-
-        </div>
-
-      </section>
+      </div>
 
     </main>
 
@@ -462,7 +490,7 @@
 
 
   <!-- =========================================
-       CREW AUTH
+       AUTH
   ========================================== -->
 
   <script src="/crew/crew-auth.js"></script>
@@ -611,17 +639,18 @@
         type = 'error'
       ) {
         passwordMessage.hidden = false;
-        passwordMessage.textContent = message;
+        passwordMessage.textContent =
+          message;
 
         passwordMessage.classList.remove(
-          'is-success',
-          'is-error'
+          'success',
+          'error'
         );
 
         passwordMessage.classList.add(
           type === 'success'
-            ? 'is-success'
-            : 'is-error'
+            ? 'success'
+            : 'error'
         );
       }
 
@@ -631,8 +660,8 @@
         passwordMessage.textContent = '';
 
         passwordMessage.classList.remove(
-          'is-success',
-          'is-error'
+          'success',
+          'error'
         );
       }
 
@@ -666,14 +695,8 @@
         const session =
           sessionData?.session ?? {};
 
-        const firstName =
-          user.firstName ?? '';
-
-        const lastName =
-          user.lastName ?? '';
-
         const fullName =
-          `${firstName} ${lastName}`
+          `${user.firstName ?? ''} ${user.lastName ?? ''}`
             .trim() ||
           'Crew Account';
 
@@ -688,7 +711,6 @@
 
         sidebarAccountRole.textContent =
           role;
-
 
         profileName.textContent =
           fullName;
@@ -713,7 +735,7 @@
 
 
       /* =========================================
-         INITIALIZE ACCOUNT
+         INITIALIZE
       ========================================== */
 
       async function initializeAccount() {
