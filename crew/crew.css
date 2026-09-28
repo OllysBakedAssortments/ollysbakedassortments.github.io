@@ -1458,3 +1458,299 @@ body.crew-login-page {
   }
 
 }
+
+/* =========================================================
+   CREW MOBILE NAVIGATION DRAWER
+========================================================= */
+
+.crew-mobile-shell {
+  display: none;
+}
+
+.crew-mobile-overlay,
+.crew-mobile-drawer {
+  display: none;
+}
+
+
+/* =========================================================
+   MOBILE CREW SHELL
+========================================================= */
+
+@media (max-width: 900px) {
+
+  body.crew-menu-open {
+    overflow: hidden;
+  }
+
+  .crew-mobile-shell {
+    display: block;
+  }
+
+  .crew-mobile-shell .crew-mobile-bar {
+    position: sticky;
+    top: 0;
+    z-index: 70;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 64px;
+    padding: 9px 14px;
+    background: rgba(255, 250, 241, .97);
+    border-bottom: 1px solid var(--crew-line);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .crew-mobile-shell .crew-mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+    color: var(--crew-brown);
+    font-size: .8rem;
+    font-weight: 900;
+    text-decoration: none;
+  }
+
+  .crew-mobile-shell .crew-mobile-brand img {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    object-fit: contain;
+  }
+
+  .crew-mobile-shell .crew-mobile-brand span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .crew-mobile-menu-button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+
+  /* =======================================================
+     OVERLAY
+  ======================================================= */
+
+  .crew-mobile-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: block;
+    background: rgba(45, 29, 23, .38);
+    opacity: 0;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    transition: opacity .18s ease;
+  }
+
+  .crew-mobile-overlay.is-open {
+    opacity: 1;
+  }
+
+
+  /* =======================================================
+     DRAWER
+  ======================================================= */
+
+  .crew-mobile-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 90;
+
+    display: grid;
+    grid-template-rows:
+      auto minmax(0, 1fr) auto;
+
+    width: min(86vw, 360px);
+    height: 100dvh;
+    overflow: hidden;
+
+    background: rgba(255, 250, 241, .99);
+    border-left: 1px solid var(--crew-line);
+
+    box-shadow:
+      -18px 0 50px rgba(35, 20, 15, .16);
+
+    transform: translateX(105%);
+
+    transition:
+      transform .2s ease;
+  }
+
+  .crew-mobile-drawer.is-open {
+    transform: translateX(0);
+  }
+
+
+  /* =======================================================
+     DRAWER HEADER
+  ======================================================= */
+
+  .crew-mobile-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 72px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--crew-line);
+  }
+
+  .crew-mobile-drawer-header .crew-brand {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding: 5px 0;
+    border-bottom: 0;
+  }
+
+  .crew-mobile-drawer-header .crew-brand img {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+  }
+
+  .crew-mobile-drawer-header
+  .crew-brand-copy strong {
+    font-size: .84rem;
+  }
+
+  .crew-mobile-drawer-header
+  .crew-brand-copy span {
+    font-size: .58rem;
+  }
+
+  .crew-mobile-menu-close {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    padding: 0;
+    border: 1px solid var(--crew-line);
+    border-radius: 11px;
+    background: #fff;
+    color: var(--crew-brown);
+    font-size: 1.45rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+
+  /* =======================================================
+     DRAWER NAVIGATION
+  ======================================================= */
+
+  .crew-mobile-drawer-content {
+    min-height: 0;
+    padding: 10px 12px 18px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .crew-mobile-nav-group + .crew-mobile-nav-group {
+    margin-top: 8px;
+  }
+
+  .crew-mobile-nav-group
+  .crew-nav-section-label {
+    margin: 12px 9px 6px;
+  }
+
+  .crew-mobile-nav-links {
+    display: grid;
+    gap: 4px;
+  }
+
+  .crew-mobile-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 46px;
+    padding: 10px 11px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    color: rgba(77, 48, 38, .76);
+    font-size: .82rem;
+    font-weight: 850;
+    text-decoration: none;
+  }
+
+  .crew-mobile-nav-link:hover {
+    background: var(--crew-soft);
+  }
+
+  .crew-mobile-nav-link[aria-current="page"] {
+    color: var(--crew-brown);
+    background: #fff;
+    border-color: rgba(77, 48, 38, .08);
+    box-shadow:
+      0 4px 14px rgba(73, 45, 32, .08);
+  }
+
+  .crew-mobile-nav-link
+  .crew-nav-icon {
+    width: 25px;
+    flex: 0 0 25px;
+    text-align: center;
+  }
+
+
+  /* =======================================================
+     DRAWER ACCOUNT
+  ======================================================= */
+
+  .crew-mobile-drawer-footer {
+    padding:
+      12px
+      12px
+      max(12px, env(safe-area-inset-bottom));
+
+    background: rgba(255, 250, 241, .98);
+    border-top: 1px solid var(--crew-line);
+  }
+
+  .crew-mobile-drawer-footer
+  .crew-account-link {
+    background: #fff;
+    border-color: rgba(77, 48, 38, .08);
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 430px) {
+
+  .crew-mobile-shell .crew-mobile-bar {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .crew-mobile-shell .crew-mobile-brand {
+    font-size: .74rem;
+  }
+
+  .crew-mobile-menu-button {
+    min-height: 38px;
+    padding-left: 11px;
+    padding-right: 11px;
+    font-size: .72rem;
+  }
+
+  .crew-mobile-drawer {
+    width: min(90vw, 350px);
+  }
+
+}
