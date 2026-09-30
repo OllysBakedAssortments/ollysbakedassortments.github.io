@@ -4872,12 +4872,12 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
   gap: 14px;
 
-  margin-top: 7px;
+  margin-top: 14px;
   padding-left: 0;
 }
 
 .footer-map-links a {
-  font-size: .95rem;
+  font-size: .85rem;
   line-height: 1.4;
   white-space: nowrap;
 }
