@@ -638,7 +638,14 @@
 <label for="help-search">What can we help you with?</label>
 <div class="help-search-box">
 <span aria-hidden="true" class="help-search-icon">⌕</span>
-<input aria-autocomplete="list" aria-controls="help-search-results" aria-expanded="false" autocomplete="off" id="help-search" inputmode="search" placeholder="Search OBA Help..." type="search"/>
+<input
+  id="help-search"
+  type="search"
+  inputmode="search"
+  autocomplete="off"
+  placeholder="Search OBA Help..."
+  aria-label="Search OBA Help"
+/>
 <button aria-label="Clear help search" class="help-search-clear" data-help-search-clear="" hidden="" type="button">×</button>
 </div>
 <div aria-label="Help search results" class="help-search-results" hidden="" id="help-search-results" role="listbox"></div>
