@@ -8870,5 +8870,41 @@ svg {
 }
 
 /* =========================================================
+   FOOTER — GET IN TOUCH ALIGNMENT
+========================================================= */
+
+.footer-contact > ul {
+  margin: 0;
+  padding: 0;
+}
+
+.footer-contact > ul > li {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.footer-location {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.footer-map-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 14px;
+
+  margin: 0;
+  padding: 0;
+}
+
+.footer-map-links a {
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+/* =========================================================
    END OF OLLY'S BAKED ASSORTMENTS STYLESHEET
    ========================================================= */
