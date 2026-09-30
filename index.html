@@ -3,15 +3,38 @@
 
 <head>
 
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-77G7LQ1ZXP"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-77G7LQ1ZXP');
-</script>
+  <!-- Google Analytics — delayed until after initial page render -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+  
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+  
+    function loadGoogleAnalytics() {
+      if (window.__obaGaLoaded) return;
+      window.__obaGaLoaded = true;
+  
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=G-77G7LQ1ZXP';
+  
+      script.onload = function () {
+        gtag('js', new Date());
+        gtag('config', 'G-77G7LQ1ZXP');
+      };
+  
+      document.head.appendChild(script);
+    }
+  
+    window.addEventListener('load', function () {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadGoogleAnalytics, { timeout: 3000 });
+      } else {
+        setTimeout(loadGoogleAnalytics, 1500);
+      }
+    });
+  </script>
   
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
