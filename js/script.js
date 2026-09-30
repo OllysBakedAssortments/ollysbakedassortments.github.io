@@ -550,17 +550,41 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
 
-      // Accessibility
+      // =======================================================
+      // REVIEW SLIDE ACCESSIBILITY
+      // =======================================================
+      //
+      // Only the currently visible review should be available
+      // to keyboard users and assistive technology.
+      //
+      // Inactive review slides are links, so aria-hidden alone
+      // is not enough — they must also be removed from the
+      // keyboard tab order.
+      // =======================================================
+      
       reviewSlides.forEach(function (slide, index) {
-
+      
         var isCurrent =
           index === reviewCurrentIndex;
-
+      
         slide.setAttribute(
           'aria-hidden',
           isCurrent ? 'false' : 'true'
         );
-
+      
+        if (isCurrent) {
+      
+          slide.removeAttribute('tabindex');
+      
+        } else {
+      
+          slide.setAttribute(
+            'tabindex',
+            '-1'
+          );
+      
+        }
+      
       });
 
     }
