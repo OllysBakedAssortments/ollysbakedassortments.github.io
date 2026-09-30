@@ -101,20 +101,29 @@
        OBA FONTS + STYLES
   ====================================================== -->
   
-  <!-- Early connection to Google Fonts -->
+  <!-- Early connections for Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   
-  <!-- OBA brand fonts -->
+  <!-- OBA brand fonts: non-render-blocking -->
   <link
-    rel="stylesheet"
+    rel="preload"
+    as="style"
     href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'"
   >
+  
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap"
+    >
+  </noscript>
   
   <!-- Main site styles: required for initial page render -->
   <link rel="stylesheet" href="/css/style.css">
   
-  <!-- Cart styles: load without blocking initial page render -->
+  <!-- Cart styles: non-render-blocking -->
   <link
     rel="preload"
     href="/css/cart.css"
