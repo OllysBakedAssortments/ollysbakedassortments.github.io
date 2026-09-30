@@ -894,7 +894,7 @@ section {
 }
 
 .cookie-card.dog::before {
-  content: "ðŸ¾ for pups";
+  content: "\1F43E  for pups";
 
   position: absolute;
 
@@ -3206,7 +3206,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 }
 
 /* =========================================================
-   FLAVOR CATALOG â€” TABLET
+   FLAVOR CATALOG — TABLET
    ========================================================= */
 
 @media (max-width: 1000px) {
@@ -3219,7 +3219,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 }
 
 /* =========================================================
-   ORGANIZER â€” TABLET
+   ORGANIZER — TABLET
    ========================================================= */
 
 @media (max-width: 700px) {
@@ -3236,7 +3236,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   ORGANIZER â€” MOBILE
+   ORGANIZER — MOBILE
    ========================================================= */
 
 @media (max-width: 560px) {
@@ -3289,7 +3289,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 }
 
 /* =========================================================
-   22. CUSTOMER REVIEWS â€” HOMEPAGE
+   22. CUSTOMER REVIEWS — HOMEPAGE
    VERTICAL CLICKABLE CAROUSEL
    ========================================================= */
 
@@ -4413,7 +4413,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   HOMEPAGE REVIEWS â€” TABLET
+   HOMEPAGE REVIEWS — TABLET
    ========================================================= */
 
 @media (max-width: 860px) {
@@ -4440,7 +4440,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   HOMEPAGE REVIEWS â€” MOBILE
+   HOMEPAGE REVIEWS — MOBILE
    ========================================================= */
 
 @media (max-width: 560px) {
@@ -4605,7 +4605,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   HOMEPAGE REVIEWS â€” VERY SMALL PHONES
+   HOMEPAGE REVIEWS — VERY SMALL PHONES
    ========================================================= */
 
 @media (max-width: 380px) {
@@ -4642,7 +4642,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   FULL REVIEWS PAGE â€” TABLET
+   FULL REVIEWS PAGE — TABLET
    ========================================================= */
 
 @media (max-width: 900px) {
@@ -4655,7 +4655,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   FULL REVIEWS PAGE â€” MOBILE
+   FULL REVIEWS PAGE — MOBILE
    ========================================================= */
 
 @media (max-width: 620px) {
@@ -4936,7 +4936,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 }
 
 /* ---------------------------------------------------------
-   Footer â€” responsive
+   Footer — responsive
    --------------------------------------------------------- */
 
 @media (max-width: 950px) {
@@ -5047,7 +5047,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   26. RESPONSIVE â€” LARGE TABLET / SMALL DESKTOP
+   26. RESPONSIVE — LARGE TABLET / SMALL DESKTOP
    ========================================================= */
 
 @media (max-width: 1000px) {
@@ -5107,7 +5107,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   27. RESPONSIVE â€” TABLET
+   27. RESPONSIVE — TABLET
    ========================================================= */
 
 @media (max-width: 860px) {
@@ -5373,7 +5373,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   28. RESPONSIVE â€” MOBILE
+   28. RESPONSIVE — MOBILE
    ========================================================= */
 
 @media (max-width: 700px) {
@@ -5682,7 +5682,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 }
 
 /* =========================================================
-   29. RESPONSIVE â€” SMALL MOBILE
+   29. RESPONSIVE — SMALL MOBILE
    ========================================================= */
 
 @media (max-width: 520px) {
@@ -5832,7 +5832,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   30. RESPONSIVE â€” VERY SMALL MOBILE
+   30. RESPONSIVE — VERY SMALL MOBILE
    ========================================================= */
 
 @media (max-width: 390px) {
@@ -6527,7 +6527,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   BERTHA COLLAPSIBLE â€” TABLET
+   BERTHA COLLAPSIBLE — TABLET
    ========================================================= */
 
 @media (max-width: 860px) {
@@ -6573,7 +6573,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   BERTHA COLLAPSIBLE â€” MOBILE
+   BERTHA COLLAPSIBLE — MOBILE
    ========================================================= */
 
 @media (max-width: 700px) {
@@ -6667,7 +6667,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   BERTHA COLLAPSIBLE â€” SMALL MOBILE
+   BERTHA COLLAPSIBLE — SMALL MOBILE
    ========================================================= */
 
 @media (max-width: 520px) {
@@ -6714,7 +6714,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   BERTHA COLLAPSIBLE â€” VERY SMALL MOBILE
+   BERTHA COLLAPSIBLE — VERY SMALL MOBILE
    ========================================================= */
 
 @media (max-width: 390px) {
@@ -6806,7 +6806,7 @@ svg {
 
 
 /* =========================================================
-   COOKIE PAGE â€” BASE
+   COOKIE PAGE — BASE
    ========================================================= */
 
 .cookie-profile-page {
@@ -7207,7 +7207,7 @@ svg {
 
 
 /* =========================================================
-   MEET THE COOKIE â€” HERO CONTENT
+   MEET THE COOKIE — HERO CONTENT
    ========================================================= */
 
 .cookie-hero-content {
@@ -7387,7 +7387,7 @@ svg {
 
 
 /* =========================================================
-   FLAVOR & TEXTURE â€” BROWN
+   FLAVOR & TEXTURE — BROWN
    ========================================================= */
 
 .cookie-flavor-notes {
@@ -7535,7 +7535,7 @@ svg {
 }
 
 /* =========================================================
-   COOKIE DETAILS â€” PINK
+   COOKIE DETAILS — PINK
    ========================================================= */
 
 .cookie-stats-section {
@@ -7910,7 +7910,7 @@ svg {
 }
 
 /* =========================================================
-   COOKIE REVIEWS â€” HOMEPAGE-STYLE SHELL
+   COOKIE REVIEWS — HOMEPAGE-STYLE SHELL
    ========================================================= */
 
 .cookie-reviews-section {
@@ -8255,7 +8255,7 @@ svg {
 }
 
 /* =========================================================
-   REVIEW â†’ RELATED COOKIES SPACING
+   REVIEW → RELATED COOKIES SPACING
    ========================================================= */
 
 .cookie-reviews-section {
@@ -8291,7 +8291,7 @@ svg {
 
 
 /* =========================================================
-   INDIVIDUAL COOKIE PAGE â€” TABLET
+   INDIVIDUAL COOKIE PAGE — TABLET
    ========================================================= */
 
 @media (max-width: 900px) {
@@ -8371,7 +8371,7 @@ svg {
 
 
 /* =========================================================
-   INDIVIDUAL COOKIE PAGE â€” MOBILE
+   INDIVIDUAL COOKIE PAGE — MOBILE
    ========================================================= */
 
 @media (max-width: 640px) {
@@ -8694,7 +8694,7 @@ svg {
 }
 
 /* =========================================================
-   INDIVIDUAL COOKIE PAGE â€” VERY SMALL MOBILE
+   INDIVIDUAL COOKIE PAGE — VERY SMALL MOBILE
    ========================================================= */
 
 @media (max-width: 390px) {
@@ -8735,7 +8735,7 @@ svg {
 }
 
 /* =========================================================
-   HOMEPAGE REVIEWS â€” FINAL SPACING CLEANUP
+   HOMEPAGE REVIEWS — FINAL SPACING CLEANUP
    ========================================================= */
 
 /* Less empty space above/below entire review section */
