@@ -4733,11 +4733,23 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 .footer-grid {
   display: grid;
 
-  grid-template-columns: 1.4fr 1fr 1fr;
+  grid-template-columns:
+    minmax(240px, 1.55fr)
+    minmax(135px, .8fr)
+    minmax(150px, .9fr)
+    minmax(210px, 1.15fr);
 
-  gap: 40px;
+  align-items: start;
+
+  gap: 44px;
 
   margin-bottom: 38px;
+}
+
+.footer-brand,
+.footer-links,
+.footer-contact {
+  min-width: 0;
 }
 
 .footer-logo {
@@ -4788,6 +4800,83 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
   color: var(--pink);
 
   opacity: 1;
+}
+
+.footer-contact ul,
+.footer-links ul {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.footer-cart-trigger {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 0;
+
+  background: transparent;
+  color: var(--off-white);
+
+  border: 0;
+
+  font: inherit;
+  font-size: .9rem;
+
+  opacity: .85;
+
+  cursor: pointer;
+
+  transition:
+    color .15s ease,
+    opacity .15s ease;
+}
+
+.footer-cart-trigger:hover,
+.footer-cart-trigger:focus-visible {
+  color: var(--pink);
+
+  opacity: 1;
+}
+
+.footer-cart-trigger:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+
+  border-radius: 4px;
+}
+
+.footer-cart-trigger .cart-count {
+  margin-left: 1px;
+}
+
+.footer-location > span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: var(--off-white);
+
+  font-size: .9rem;
+
+  opacity: .85;
+}
+
+.footer-map-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 5px 12px;
+
+  padding-left: 20px;
+}
+
+.footer-map-links a {
+  font-size: .82rem;
 }
 
 .social-row {
