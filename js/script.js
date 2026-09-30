@@ -412,22 +412,12 @@ document.addEventListener('DOMContentLoaded', function () {
     );
 
     // =======================================================
-    // GET CURRENT REVIEW SLIDE HEIGHT
+    // REVIEW CAROUSEL POSITION
     // =======================================================
-
-    function getReviewSlideHeight() {
-
-      if (reviewSlides.length === 0) {
-        return 0;
-      }
-
-      return reviewSlides[0].getBoundingClientRect().height;
-
-    }
-
-
-    // =======================================================
-    // UPDATE REVIEW CAROUSEL
+    //
+    // Each review slide occupies one full carousel viewport.
+    // Moving by percentages avoids synchronous layout reads
+    // such as getBoundingClientRect(), which can force reflow.
     // =======================================================
 
     function updateReviewsCarousel() {
@@ -440,15 +430,16 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
 
-      var slideHeight = getReviewSlideHeight();
+      // Move vertically one complete review at a time.
+      // Percentage translation is based on the track itself,
+      // so divide by the number of slides.
+      var movePercent =
+        reviewCurrentIndex *
+        (100 / reviewSlides.length);
 
-      var moveAmount =
-        reviewCurrentIndex * slideHeight;
 
-
-      // Move vertically exactly one review at a time
       reviewsTrack.style.transform =
-        'translateY(-' + moveAmount + 'px)';
+        'translateY(-' + movePercent + '%)';
 
 
       // Update optional review counter
@@ -464,12 +455,14 @@ document.addEventListener('DOMContentLoaded', function () {
             '.reviews-carousel-total'
           );
 
+
         if (currentCounter) {
 
           currentCounter.textContent =
             reviewCurrentIndex + 1;
 
         }
+
 
         if (totalCounter) {
 
@@ -481,41 +474,42 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
 
-      // =======================================================
+      // =====================================================
       // REVIEW SLIDE ACCESSIBILITY
-      // =======================================================
+      // =====================================================
       //
       // Only the currently visible review should be available
       // to keyboard users and assistive technology.
       //
-      // Inactive review slides are links, so aria-hidden alone
-      // is not enough — they must also be removed from the
-      // keyboard tab order.
-      // =======================================================
-      
+      // Inactive review slides are removed from the keyboard
+      // tab order as well as hidden from assistive technology.
+      // =====================================================
+
       reviewSlides.forEach(function (slide, index) {
-      
+
         var isCurrent =
           index === reviewCurrentIndex;
-      
+
+
         slide.setAttribute(
           'aria-hidden',
           isCurrent ? 'false' : 'true'
         );
-      
+
+
         if (isCurrent) {
-      
+
           slide.removeAttribute('tabindex');
-      
+
         } else {
-      
+
           slide.setAttribute(
             'tabindex',
             '-1'
           );
-      
+
         }
-      
+
       });
 
     }
