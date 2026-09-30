@@ -3692,7 +3692,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 }
 
 .reviews-carousel .review-card blockquote::before {
-  content: "â€œ";
+  content: "\201C";
 
   position: absolute;
 
