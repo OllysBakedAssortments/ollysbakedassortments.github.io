@@ -4868,15 +4868,18 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 .footer-map-links {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 
-  gap: 5px 12px;
+  gap: 14px;
 
-  padding-left: 20px;
+  margin-top: 7px;
+  padding-left: 0;
 }
 
 .footer-map-links a {
-  font-size: .82rem;
+  font-size: .95rem;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
 .social-row {
