@@ -894,7 +894,7 @@ section {
 }
 
 .cookie-card.dog::before {
-  content: "ðŸ¾ for pups";
+  content: "🐾 for pups";
 
   position: absolute;
 
@@ -3206,7 +3206,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 }
 
 /* =========================================================
-   FLAVOR CATALOG â€” TABLET
+   FLAVOR CATALOG — TABLET
    ========================================================= */
 
 @media (max-width: 1000px) {
@@ -3219,7 +3219,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 }
 
 /* =========================================================
-   ORGANIZER â€” TABLET
+   ORGANIZER — TABLET
    ========================================================= */
 
 @media (max-width: 700px) {
@@ -3236,7 +3236,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   ORGANIZER â€” MOBILE
+   ORGANIZER — MOBILE
    ========================================================= */
 
 @media (max-width: 560px) {
@@ -3289,7 +3289,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 }
 
 /* =========================================================
-   22. CUSTOMER REVIEWS â€” HOMEPAGE
+   22. CUSTOMER REVIEWS — HOMEPAGE
    VERTICAL CLICKABLE CAROUSEL
    ========================================================= */
 
@@ -3692,7 +3692,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 }
 
 .reviews-carousel .review-card blockquote::before {
-  content: "â€œ";
+  content: "“";
 
   position: absolute;
 
@@ -4413,7 +4413,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   HOMEPAGE REVIEWS â€” TABLET
+   HOMEPAGE REVIEWS — TABLET
    ========================================================= */
 
 @media (max-width: 860px) {
@@ -4440,7 +4440,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   HOMEPAGE REVIEWS â€” MOBILE
+   HOMEPAGE REVIEWS — MOBILE
    ========================================================= */
 
 @media (max-width: 560px) {
@@ -4605,7 +4605,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   HOMEPAGE REVIEWS â€” VERY SMALL PHONES
+   HOMEPAGE REVIEWS — VERY SMALL PHONES
    ========================================================= */
 
 @media (max-width: 380px) {
@@ -4642,7 +4642,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   FULL REVIEWS PAGE â€” TABLET
+   FULL REVIEWS PAGE — TABLET
    ========================================================= */
 
 @media (max-width: 900px) {
@@ -4655,7 +4655,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   FULL REVIEWS PAGE â€” MOBILE
+   FULL REVIEWS PAGE — MOBILE
    ========================================================= */
 
 @media (max-width: 620px) {
@@ -4733,23 +4733,11 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 .footer-grid {
   display: grid;
 
-  grid-template-columns:
-    minmax(240px, 1.55fr)
-    minmax(135px, .8fr)
-    minmax(150px, .9fr)
-    minmax(210px, 1.15fr);
+  grid-template-columns: 1.4fr 1fr 1fr;
 
-  align-items: start;
-
-  gap: 44px;
+  gap: 40px;
 
   margin-bottom: 38px;
-}
-
-.footer-brand,
-.footer-links,
-.footer-contact {
-  min-width: 0;
 }
 
 .footer-logo {
@@ -4800,83 +4788,6 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
   color: var(--pink);
 
   opacity: 1;
-}
-
-.footer-contact ul,
-.footer-links ul {
-  margin: 0;
-  padding: 0;
-
-  list-style: none;
-}
-
-.footer-cart-trigger {
-  display: inline-flex;
-  align-items: center;
-
-  gap: 6px;
-
-  padding: 0;
-
-  background: transparent;
-  color: var(--off-white);
-
-  border: 0;
-
-  font: inherit;
-  font-size: .9rem;
-
-  opacity: .85;
-
-  cursor: pointer;
-
-  transition:
-    color .15s ease,
-    opacity .15s ease;
-}
-
-.footer-cart-trigger:hover,
-.footer-cart-trigger:focus-visible {
-  color: var(--pink);
-
-  opacity: 1;
-}
-
-.footer-cart-trigger:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 4px;
-
-  border-radius: 4px;
-}
-
-.footer-cart-trigger .cart-count {
-  margin-left: 1px;
-}
-
-.footer-location > span {
-  display: block;
-
-  margin-bottom: 7px;
-
-  color: var(--off-white);
-
-  font-size: .9rem;
-
-  opacity: .85;
-}
-
-.footer-map-links {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-
-  gap: 5px 12px;
-
-  padding-left: 20px;
-}
-
-.footer-map-links a {
-  font-size: .82rem;
 }
 
 .social-row {
@@ -4932,76 +4843,6 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
   font-size: .78rem;
 }
 
-/* ---------------------------------------------------------
-   Footer â€” responsive
-   --------------------------------------------------------- */
-
-@media (max-width: 950px) {
-
-  .footer-grid {
-    grid-template-columns:
-      minmax(0, 1.35fr)
-      minmax(140px, .8fr)
-      minmax(180px, 1fr);
-
-    gap: 38px 32px;
-  }
-
-  .footer-brand {
-    grid-column: 1 / -1;
-  }
-
-}
-
-
-@media (max-width: 640px) {
-
-  .site-footer {
-    padding-top: 44px;
-  }
-
-  .footer-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    gap: 34px 24px;
-
-    margin-bottom: 32px;
-  }
-
-  .footer-brand {
-    grid-column: 1 / -1;
-  }
-
-  .footer-map-links {
-    padding-left: 0;
-  }
-
-  .footer-bottom {
-    flex-direction: column;
-
-    gap: 8px;
-  }
-
-}
-
-
-@media (max-width: 420px) {
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-
-    gap: 30px;
-  }
-
-  .footer-brand {
-    grid-column: auto;
-  }
-
-  .footer-map-links {
-    gap: 6px 12px;
-  }
-
-}
 
 /* =========================================================
    25. UTILITIES
@@ -5036,7 +4877,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   26. RESPONSIVE â€” LARGE TABLET / SMALL DESKTOP
+   26. RESPONSIVE — LARGE TABLET / SMALL DESKTOP
    ========================================================= */
 
 @media (max-width: 1000px) {
@@ -5096,7 +4937,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   27. RESPONSIVE â€” TABLET
+   27. RESPONSIVE — TABLET
    ========================================================= */
 
 @media (max-width: 860px) {
@@ -5362,7 +5203,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   28. RESPONSIVE â€” MOBILE
+   28. RESPONSIVE — MOBILE
    ========================================================= */
 
 @media (max-width: 700px) {
@@ -5668,10 +5509,28 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
   margin-right: auto;
 }
 
+
+  /* -------------------------------------------------------
+     Footer
+     ------------------------------------------------------- */
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+
+    gap: 30px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+
+    gap: 8px;
+  }
+
 }
 
+
 /* =========================================================
-   29. RESPONSIVE â€” SMALL MOBILE
+   29. RESPONSIVE — SMALL MOBILE
    ========================================================= */
 
 @media (max-width: 520px) {
@@ -5821,7 +5680,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   30. RESPONSIVE â€” VERY SMALL MOBILE
+   30. RESPONSIVE — VERY SMALL MOBILE
    ========================================================= */
 
 @media (max-width: 390px) {
@@ -6108,7 +5967,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
    ========================================================= */
 
 .bertha-dropdown-summary::after {
-  content: "âŒ„";
+  content: "⌄";
 
   position: absolute;
 
@@ -6516,7 +6375,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   BERTHA COLLAPSIBLE â€” TABLET
+   BERTHA COLLAPSIBLE — TABLET
    ========================================================= */
 
 @media (max-width: 860px) {
@@ -6562,7 +6421,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   BERTHA COLLAPSIBLE â€” MOBILE
+   BERTHA COLLAPSIBLE — MOBILE
    ========================================================= */
 
 @media (max-width: 700px) {
@@ -6656,7 +6515,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   BERTHA COLLAPSIBLE â€” SMALL MOBILE
+   BERTHA COLLAPSIBLE — SMALL MOBILE
    ========================================================= */
 
 @media (max-width: 520px) {
@@ -6703,7 +6562,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 
 /* =========================================================
-   BERTHA COLLAPSIBLE â€” VERY SMALL MOBILE
+   BERTHA COLLAPSIBLE — VERY SMALL MOBILE
    ========================================================= */
 
 @media (max-width: 390px) {
@@ -6795,7 +6654,7 @@ svg {
 
 
 /* =========================================================
-   COOKIE PAGE â€” BASE
+   COOKIE PAGE — BASE
    ========================================================= */
 
 .cookie-profile-page {
@@ -7196,7 +7055,7 @@ svg {
 
 
 /* =========================================================
-   MEET THE COOKIE â€” HERO CONTENT
+   MEET THE COOKIE — HERO CONTENT
    ========================================================= */
 
 .cookie-hero-content {
@@ -7376,7 +7235,7 @@ svg {
 
 
 /* =========================================================
-   FLAVOR & TEXTURE â€” BROWN
+   FLAVOR & TEXTURE — BROWN
    ========================================================= */
 
 .cookie-flavor-notes {
@@ -7524,7 +7383,7 @@ svg {
 }
 
 /* =========================================================
-   COOKIE DETAILS â€” PINK
+   COOKIE DETAILS — PINK
    ========================================================= */
 
 .cookie-stats-section {
@@ -7899,7 +7758,7 @@ svg {
 }
 
 /* =========================================================
-   COOKIE REVIEWS â€” HOMEPAGE-STYLE SHELL
+   COOKIE REVIEWS — HOMEPAGE-STYLE SHELL
    ========================================================= */
 
 .cookie-reviews-section {
@@ -8244,7 +8103,7 @@ svg {
 }
 
 /* =========================================================
-   REVIEW â†’ RELATED COOKIES SPACING
+   REVIEW → RELATED COOKIES SPACING
    ========================================================= */
 
 .cookie-reviews-section {
@@ -8280,7 +8139,7 @@ svg {
 
 
 /* =========================================================
-   INDIVIDUAL COOKIE PAGE â€” TABLET
+   INDIVIDUAL COOKIE PAGE — TABLET
    ========================================================= */
 
 @media (max-width: 900px) {
@@ -8360,7 +8219,7 @@ svg {
 
 
 /* =========================================================
-   INDIVIDUAL COOKIE PAGE â€” MOBILE
+   INDIVIDUAL COOKIE PAGE — MOBILE
    ========================================================= */
 
 @media (max-width: 640px) {
@@ -8683,7 +8542,7 @@ svg {
 }
 
 /* =========================================================
-   INDIVIDUAL COOKIE PAGE â€” VERY SMALL MOBILE
+   INDIVIDUAL COOKIE PAGE — VERY SMALL MOBILE
    ========================================================= */
 
 @media (max-width: 390px) {
@@ -8724,7 +8583,7 @@ svg {
 }
 
 /* =========================================================
-   HOMEPAGE REVIEWS â€” FINAL SPACING CLEANUP
+   HOMEPAGE REVIEWS — FINAL SPACING CLEANUP
    ========================================================= */
 
 /* Less empty space above/below entire review section */
