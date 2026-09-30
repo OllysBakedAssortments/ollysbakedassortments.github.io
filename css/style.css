@@ -8862,5 +8862,15 @@ svg {
 }
 
 /* =========================================================
+   REMOVE CORRUPTED GENERATED GLYPHS
+   ========================================================= */
+
+.reviews-carousel .review-card blockquote::before,
+.bertha-dropdown-summary::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* =========================================================
    END OF OLLY'S BAKED ASSORTMENTS STYLESHEET
    ========================================================= */
