@@ -820,6 +820,12 @@ section {
   font-size: 1.55rem;
   font-weight: 600;
   line-height: 1.15;
+
+  -webkit-text-stroke: 1px rgba(255, 250, 240, 0.9);
+  paint-order: stroke fill;
+
+  text-shadow:
+    0 1px 1px rgba(255, 250, 240, 0.7);
 }
 
 .cookie-card-overlay p {
