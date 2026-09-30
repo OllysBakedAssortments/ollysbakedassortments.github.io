@@ -389,10 +389,6 @@ document.addEventListener('DOMContentLoaded', function () {
       '.reviews-carousel-next'
     );
 
-    var reviewsDotsContainer = reviewsCarousel.querySelector(
-      '.reviews-carousel-dots'
-    );
-
     var reviewsCounter = reviewsCarousel.querySelector(
       '.reviews-carousel-counter'
     );
@@ -414,52 +410,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var reviewReduceMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     );
-
-
-    // =======================================================
-    // CREATE REVIEW DOTS
-    // =======================================================
-
-    if (reviewsDotsContainer) {
-
-      reviewsDotsContainer.innerHTML = '';
-
-      reviewSlides.forEach(function (_, index) {
-
-        var reviewDot = document.createElement('button');
-
-        reviewDot.className = 'reviews-carousel-dot';
-        reviewDot.type = 'button';
-
-        reviewDot.setAttribute(
-          'aria-label',
-          'Show review ' + (index + 1)
-        );
-
-        reviewDot.addEventListener('click', function () {
-
-          reviewCurrentIndex = index;
-
-          updateReviewsCarousel();
-          restartReviewAutoplay();
-
-        });
-
-        reviewsDotsContainer.appendChild(reviewDot);
-
-      });
-
-    }
-
-
-    var reviewDots = reviewsDotsContainer
-      ? Array.from(
-          reviewsDotsContainer.querySelectorAll(
-            '.reviews-carousel-dot'
-          )
-        )
-      : [];
-
 
     // =======================================================
     // GET CURRENT REVIEW SLIDE HEIGHT
@@ -499,25 +449,6 @@ document.addEventListener('DOMContentLoaded', function () {
       // Move vertically exactly one review at a time
       reviewsTrack.style.transform =
         'translateY(-' + moveAmount + 'px)';
-
-
-      // Update review dots
-      reviewDots.forEach(function (dot, index) {
-
-        var isActive =
-          index === reviewCurrentIndex;
-
-        dot.classList.toggle(
-          'active',
-          isActive
-        );
-
-        dot.setAttribute(
-          'aria-current',
-          isActive ? 'true' : 'false'
-        );
-
-      });
 
 
       // Update optional review counter
