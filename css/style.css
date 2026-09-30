@@ -6119,7 +6119,7 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
    ========================================================= */
 
 .bertha-dropdown-summary::after {
-  content: "âŒ„";
+  content: "";
 
   position: absolute;
 
@@ -8797,7 +8797,7 @@ svg {
 /* ---------------------------------------------------------
    Bertha dropdown arrow
    Use CSS geometry instead of a font glyph.
-   This prevents the corrupted âŒ„ character.
+   This prevents the corrupted legacy character.
    --------------------------------------------------------- */
 
 .bertha-dropdown-summary::after {
