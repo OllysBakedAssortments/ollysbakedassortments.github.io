@@ -5003,6 +5003,34 @@ a.flavor-catalog-card.flavor-catalog-card-dog {
 
 }
 
+/* Footer location links */
+
+.footer-location {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.footer-location-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 400;
+}
+
+.footer-map-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  padding-left: 24px;
+}
+
+.footer-map-links a {
+  white-space: nowrap;
+}
+
 /* =========================================================
    25. UTILITIES
    ========================================================= */
