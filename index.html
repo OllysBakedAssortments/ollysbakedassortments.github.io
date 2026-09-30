@@ -204,8 +204,23 @@
     >
   </noscript>
   
-  <!-- Main site styles: required for initial page render -->
-  <link rel="stylesheet" href="/css/style.css">
+    <!-- =====================================================
+         HERO LCP IMAGE
+         Preload the responsive hero banner as early as possible.
+    ====================================================== -->
+    <link
+      rel="preload"
+      as="image"
+      href="/images/optimized/oba-banner-700.webp"
+      imagesrcset="/images/optimized/oba-banner-700.webp 700w,
+                   /images/optimized/oba-banner-1000.webp 1000w,
+                   /images/optimized/oba-banner.webp 1520w"
+      imagesizes="(max-width: 760px) calc(100vw - 40px), 760px"
+      fetchpriority="high"
+    >
+  
+    <!-- Main site styles: required for initial page render -->
+    <link rel="stylesheet" href="/css/style.css">
   
   <!-- Cart styles: non-render-blocking -->
   <link
