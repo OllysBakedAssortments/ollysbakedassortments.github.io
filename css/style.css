@@ -1533,7 +1533,7 @@ section {
   display: flex;
   justify-content: center;
 
-  gap: 0;
+  gap: 8px;
 
   margin-top: 14px;
 }
