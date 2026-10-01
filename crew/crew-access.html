@@ -129,6 +129,32 @@
     .access-modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:5px}
 
 
+
+    /* Website access matrix */
+    .access-site-card{overflow:hidden}
+    .access-site-heading{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}
+    .access-site-legend{display:flex;gap:18px;flex-wrap:wrap;margin:0 0 14px;color:var(--access-muted);font-size:.82rem}
+    .access-site-legend strong{color:var(--access-ink)}
+    .access-site-table-wrap{overflow-x:auto;border:1px solid var(--access-line);border-radius:15px;background:#fff}
+    .access-site-table{width:100%;border-collapse:collapse;min-width:720px}
+    .access-site-table th,.access-site-table td{padding:12px 14px;border-bottom:1px solid rgba(91,58,41,.09);text-align:left;vertical-align:middle}
+    .access-site-table th{font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;color:var(--access-muted);background:#fbf7f2}
+    .access-site-table tbody tr:last-child td{border-bottom:0}
+    .access-site-area strong{display:block;color:var(--access-ink);font-size:.92rem;margin-bottom:3px}
+    .access-site-area span{display:block;color:var(--access-muted);font-size:.78rem}
+    .access-level{
+      display:inline-flex;align-items:center;justify-content:center;min-width:84px;
+      padding:7px 10px;border:1px solid var(--access-line);border-radius:10px;
+      background:#fff;color:var(--access-ink);font:inherit;font-size:.82rem
+    }
+    select.access-level{cursor:not-allowed}
+    .access-level.owner{background:var(--access-green-bg);color:var(--access-green);border-color:rgba(49,92,45,.16);font-weight:700}
+    .access-site-note{margin-top:14px}
+    @media(max-width:720px){
+      .access-site-heading{flex-direction:column}
+      .access-site-legend{display:grid;gap:5px}
+    }
+
     /* Crew Access v2 */
     @media(min-width:1051px){
       .access-grid{align-items:start}
@@ -200,11 +226,11 @@
     <div data-crew-mobile-bar></div>
 
     <main class="crew-main">
-      <header class="crew-page-header">
+      <header class="crew-header">
         <div>
           <p class="crew-eyebrow">COOKIE CREW · ACCESS CONTROL</p>
           <h1>Crew Access</h1>
-          <p>Manage staff accounts, roles, capabilities, invitations, and account recovery.</p>
+          <p>Manage Crew website access, staff accounts, roles, capabilities, invitations, and account recovery.</p>
         </div>
 
         <div class="crew-header-actions access-toolbar">
@@ -215,6 +241,7 @@
 
       <div id="accessStatus" class="access-message" role="status" aria-live="polite" hidden></div>
 
+      <div class="crew-content">
       <section class="access-stack" aria-label="Crew access overview">
         <div class="access-summary">
           <article class="access-stat"><strong id="totalCrewCount">—</strong><span>Active Crew Accounts</span></article>
@@ -222,6 +249,41 @@
           <article class="access-stat"><strong id="pendingCount">—</strong><span>Pending Invitations</span></article>
           <article class="access-stat"><strong id="overrideCount">—</strong><span>Custom Access</span></article>
         </div>
+
+        <section class="crew-card access-site-card" aria-labelledby="websiteAccessTitle">
+          <div class="crew-card-heading access-site-heading">
+            <div>
+              <p class="crew-eyebrow">CREW WEBSITE ACCESS</p>
+              <h2 id="websiteAccessTitle">Website Access</h2>
+              <p>Set the default access level for each Crew Console area. Owner / Admin always retains full access.</p>
+            </div>
+            <span class="access-badge info">Owner Controlled</span>
+          </div>
+
+          <div class="access-site-legend" aria-label="Website access levels">
+            <span><strong>Hidden</strong> — no navigation or page access</span>
+            <span><strong>View</strong> — can open and read the area</span>
+            <span><strong>Manage</strong> — can perform normal operational actions</span>
+          </div>
+
+          <div class="access-site-table-wrap">
+            <table class="access-site-table">
+              <thead>
+                <tr>
+                  <th scope="col">Crew Console Area</th>
+                  <th scope="col">Crew</th>
+                  <th scope="col">Manager</th>
+                  <th scope="col">Owner / Admin</th>
+                </tr>
+              </thead>
+              <tbody id="websiteAccessRows"></tbody>
+            </table>
+          </div>
+
+          <div class="access-note access-site-note">
+            <strong>Settings:</strong> authenticated Crew can view normal operational settings by default. Permission to change settings is controlled separately by capabilities.
+          </div>
+        </section>
 
         <div class="access-grid">
           <section class="crew-card" aria-labelledby="directoryTitle">
@@ -273,6 +335,7 @@
           </div>
         </section>
       </section>
+      </div>
     </main>
   </div>
 
@@ -431,6 +494,21 @@
         owner: new Set(CAPABILITY_GROUPS.flatMap(group => group.capabilities.map(item => item[0])))
       };
 
+      const WEBSITE_ACCESS = [
+        ['dashboard', 'Command Center', 'Overview and operational command center.', 'view', 'manage'],
+        ['inventory', 'Inventory', 'Stock, locations, transfers, and adjustments.', 'view', 'manage'],
+        ['pickups', 'Pickups', 'Customer pickup orders and fulfillment.', 'manage', 'manage'],
+        ['drops', 'Drops', 'Drop configuration and publishing.', 'view', 'manage'],
+        ['schedule', 'Crew Schedule', 'Operational schedule and task calendar.', 'view', 'manage'],
+        ['bulletin', 'Bertha Bulletin', 'Customer communications and alerts.', 'view', 'manage'],
+        ['longnecks', 'Longnecks', 'Customer and Longneck account information.', 'view', 'manage'],
+        ['polls', 'Polls', 'Customer research and voting tools.', 'view', 'manage'],
+        ['analytics', 'Analytics', 'Business performance and reporting.', 'view', 'view'],
+        ['products', 'Products', 'Product catalog and availability.', 'view', 'manage'],
+        ['settings', 'Settings', 'Crew website operational configuration.', 'view', 'view'],
+        ['crew_access', 'Crew Access', 'Staff accounts, roles, permissions, and recovery.', 'hidden', 'view']
+      ];
+
       let session = null;
       let users = [];
       let selectedUserId = null;
@@ -476,6 +554,35 @@
         const normalized = value.includes('T') ? value : value.replace(' ', 'T') + 'Z';
         const date = new Date(normalized);
         return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+      }
+
+      function renderWebsiteAccess() {
+        const tbody = document.getElementById('websiteAccessRows');
+        if (!tbody) return;
+
+        const options = (selected) => ['hidden','view','manage'].map(value =>
+          `<option value="${value}" ${selected === value ? 'selected' : ''}>${value === 'hidden' ? 'Hidden' : value === 'view' ? 'View' : 'Manage'}</option>`
+        ).join('');
+
+        tbody.innerHTML = WEBSITE_ACCESS.map(([key, label, description, crewLevel, managerLevel]) => `
+          <tr>
+            <td class="access-site-area">
+              <strong>${esc(label)}</strong>
+              <span>${esc(description)}</span>
+            </td>
+            <td>
+              <select class="access-level" aria-label="${esc(label)} default access for Crew" disabled>
+                ${options(crewLevel)}
+              </select>
+            </td>
+            <td>
+              <select class="access-level" aria-label="${esc(label)} default access for Managers" disabled>
+                ${options(managerLevel)}
+              </select>
+            </td>
+            <td><span class="access-level owner">Full Access</span></td>
+          </tr>
+        `).join('');
       }
 
       function renderSummary() {
@@ -765,6 +872,7 @@ ${String(user.role || '').toLowerCase() === 'owner'
 
           window.OBA_CREW_SHELL.mount({activePage:'crewAccess'});
           window.OBA_CREW_SHELL.renderCrewIdentity(session);
+          renderWebsiteAccess();
 
           await loadUsers();
         } catch (error) {
