@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Join OBA Cookie Crew</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/crew/crew.css">
+  <style>
+    body{min-height:100vh;background:#f7f1e7;color:#5b2a12}.invite-wrap{min-height:100vh;display:grid;place-items:center;padding:28px 18px}.invite-card{width:min(560px,100%);background:#fff;border:1px solid rgba(91,58,41,.15);border-radius:22px;padding:28px;box-shadow:0 20px 60px rgba(91,42,18,.12)}.invite-brand{display:flex;align-items:center;gap:12px;margin-bottom:24px}.invite-brand img{width:54px;height:54px;object-fit:contain}.invite-brand strong{display:block;font-size:1.05rem}.invite-brand span{display:block;color:#806b5e;font-size:.82rem;margin-top:2px}.invite-card h1{margin:0 0 8px}.invite-copy{color:#806b5e;line-height:1.55;margin:0 0 20px}.invite-meta{padding:14px;border-radius:14px;background:#fff8ef;border:1px solid rgba(91,58,41,.12);margin-bottom:18px}.invite-meta strong{display:block}.invite-meta span{display:block;color:#806b5e;font-size:.86rem;margin-top:4px}.invite-form{display:grid;gap:14px}.invite-field{display:grid;gap:6px}.invite-field label{font-weight:800;font-size:.86rem}.invite-field input{width:100%;padding:12px;border:1px solid rgba(91,58,41,.2);border-radius:11px;font:inherit}.invite-help{font-size:.78rem;color:#806b5e;line-height:1.45}.invite-message{padding:12px 14px;border-radius:12px;margin-bottom:16px;background:#edf7e9;color:#315c2d}.invite-message.error{background:#fff0ed;color:#8b2f25}.invite-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.invite-actions .crew-button{justify-content:center}.invite-loading{text-align:center;color:#806b5e;padding:20px 0}
+  </style>
+</head>
+<body>
+  <main class="invite-wrap">
+    <section class="invite-card">
+      <a class="invite-brand" href="/">
+        <img src="/images/brand/logo.png" alt="">
+        <span><strong>OBA Cookie Crew</strong><span>Crew Operations</span></span>
+      </a>
+      <div id="loading" class="invite-loading">Checking your invitation…</div>
+      <div id="content" hidden>
+        <p class="crew-eyebrow">CREW INVITATION</p>
+        <h1>Create your Crew account</h1>
+        <p class="invite-copy">Set your password to activate your OBA Cookie Crew account.</p>
+        <div id="message" class="invite-message" hidden role="status" aria-live="polite"></div>
+        <div id="inviteMeta" class="invite-meta"></div>
+        <form id="acceptForm" class="invite-form">
+          <div class="invite-field"><label for="password">Password</label><input id="password" type="password" minlength="12" autocomplete="new-password" required><span class="invite-help">Use at least 12 characters.</span></div>
+          <div class="invite-field"><label for="confirmPassword">Confirm password</label><input id="confirmPassword" type="password" minlength="12" autocomplete="new-password" required></div>
+          <div class="invite-actions"><button class="crew-button" type="submit">Create Crew Account</button><a class="crew-button soft" href="/crew/crew-login.html">Crew Login</a></div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <script>
+  (()=>{
+    'use strict';
+    const API='https://api.ollysbakedassortments.com';
+    const token=new URLSearchParams(location.search).get('token')||'';
+    const loading=document.getElementById('loading'),content=document.getElementById('content'),meta=document.getElementById('inviteMeta'),form=document.getElementById('acceptForm'),message=document.getElementById('message');
+    const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    function show(text,error=false){message.hidden=false;message.className='invite-message'+(error?' error':'');message.textContent=text;}
+    async function request(path,options={}){const r=await fetch(API+path,{headers:{Accept:'application/json',...(options.body?{'Content-Type':'application/json'}:{})},...options});let d={};try{d=await r.json()}catch{}if(!r.ok||d.ok!==true)throw new Error(d.error||'Unable to process this invitation.');return d;}
+    async function init(){if(!token){loading.textContent='This invitation link is incomplete.';return;}try{const d=await request('/crew/invitation?token='+encodeURIComponent(token));const i=d.invitation;meta.innerHTML=`<strong>${esc(i.firstName)} ${esc(i.lastName)}</strong><span>${esc(i.email)} · ${i.role==='manager'?'Manager':'Crew'}</span>`;loading.hidden=true;content.hidden=false;}catch(e){loading.textContent=e.message;}}
+    form.addEventListener('submit',async e=>{e.preventDefault();const password=document.getElementById('password').value,confirm=document.getElementById('confirmPassword').value,button=e.submitter;if(password.length<12){show('Password must be at least 12 characters.',true);return;}if(password!==confirm){show('Passwords do not match.',true);return;}button.disabled=true;try{await request('/crew/invitation/accept',{method:'POST',body:JSON.stringify({token,password})});form.hidden=true;show('Your Crew account is active. You can now sign in.');setTimeout(()=>{location.href='/crew/crew-login.html';},1800);}catch(err){show(err.message,true);button.disabled=false;}});
+    init();
+  })();
+  </script>
+</body>
+</html>
