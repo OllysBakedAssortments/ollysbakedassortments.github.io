@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Account Settings | OBA Cookie Crew</title>
+
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/crew/crew.css">
+</head>
+
+<body>
+
+  <div class="crew-app">
+
+        <!-- =========================================
+             SHARED CREW SHELL
+        ========================================== -->
+    
+        <div data-crew-sidebar></div>
+    
+        <div data-crew-mobile-bar></div>
+
+        <!-- =========================================
+             MAIN
+        ========================================== -->
+
+    <main class="crew-main">
+
+      <header class="crew-header">
+
+        <div>
+          <span class="crew-eyebrow">
+            Cookie Crew
+          </span>
+
+          <h1>Account Settings</h1>
+
+          <p>
+            Manage your Crew identity, password,
+            and current sign-in session.
+          </p>
+        </div>
+
+        <div class="crew-header-actions">
+
+          <a
+            href="/crew/dashboard.html"
+            class="crew-button soft"
+          >
+            Command Center
+          </a>
+
+        </div>
+
+      </header>
+
+
+      <div class="crew-content">
+
+        <div
+          id="accountStatus"
+          class="account-message"
+          hidden
+          role="status"
+          aria-live="polite"
+        ></div>
+
+
+        <!-- =====================================
+             PROFILE
+        ====================================== -->
+
+        <section class="crew-card account-card">
+
+          <div class="card-head">
+
+            <div>
+              <span class="crew-eyebrow">
+                Profile
+              </span>
+
+              <h2>Crew Account</h2>
+
+              <p>
+                Your identity and access level
+                within OBA Cookie Crew.
+              </p>
+            </div>
+
+            <span
+              id="profileRoleBadge"
+              class="status-pill active"
+            >
+              —
+            </span>
+
+          </div>
+
+
+          <div class="account-profile-grid">
+
+            <div class="account-field">
+              <span class="account-label">
+                Name
+              </span>
+
+              <strong id="profileName">
+                Loading...
+              </strong>
+            </div>
+
+
+            <div class="account-field">
+              <span class="account-label">
+                Email
+              </span>
+
+              <strong id="profileEmail">
+                Loading...
+              </strong>
+            </div>
+
+
+            <div class="account-field">
+              <span class="account-label">
+                Role
+              </span>
+
+              <strong id="profileRole">
+                Loading...
+              </strong>
+            </div>
+
+
+            <div class="account-field">
+              <span class="account-label">
+                Crew ID
+              </span>
+
+              <strong id="profileCrewId">
+                —
+              </strong>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =====================================
+             SECURITY
+        ====================================== -->
+
+        <section class="crew-card account-card">
+
+          <div class="card-head">
+
+            <div>
+              <span class="crew-eyebrow">
+                Security
+              </span>
+
+              <h2>Change Password</h2>
+
+              <p>
+                Changing your password signs this
+                Crew account out on every device.
+              </p>
+            </div>
+
+          </div>
+
+
+          <form
+            id="passwordForm"
+            autocomplete="off"
+          >
+
+            <div class="account-form-grid">
+
+              <div class="form-group full">
+
+                <label for="currentPassword">
+                  Current Password
+                </label>
+
+                <input
+                  class="crew-input"
+                  id="currentPassword"
+                  name="currentPassword"
+                  type="password"
+                  autocomplete="current-password"
+                  required
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="newPassword">
+                  New Password
+                </label>
+
+                <input
+                  class="crew-input"
+                  id="newPassword"
+                  name="newPassword"
+                  type="password"
+                  autocomplete="new-password"
+                  minlength="12"
+                  required
+                >
+
+                <span class="form-help">
+                  Minimum 12 characters.
+                </span>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="confirmPassword">
+                  Confirm New Password
+                </label>
+
+                <input
+                  class="crew-input"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  autocomplete="new-password"
+                  minlength="12"
+                  required
+                >
+
+              </div>
+
+            </div>
+
+
+            <div class="account-form-actions">
+
+              <button
+                id="changePasswordButton"
+                type="submit"
+                class="crew-button primary"
+              >
+                Change Password
+              </button>
+
+            </div>
+
+
+            <div
+              id="passwordMessage"
+              class="account-message"
+              hidden
+              role="status"
+              aria-live="polite"
+            ></div>
+
+          </form>
+
+        </section>
+
+
+        <!-- =====================================
+             BACKUP RECOVERY EMAIL
+        ====================================== -->
+
+        <section class="crew-card account-card">
+
+          <div class="card-head">
+            <div>
+              <span class="crew-eyebrow">Account Recovery</span>
+              <h2>Backup Recovery Email</h2>
+              <p>
+                Add a verified backup email that can be used if you lose
+                access to your primary Crew email.
+              </p>
+            </div>
+
+            <span id="recoveryEmailStatus" class="status-pill">
+              Loading...
+            </span>
+          </div>
+
+          <div class="account-recovery-panel">
+            <div>
+              <strong id="recoveryEmailDisplay">No backup email set</strong>
+              <p id="recoveryEmailDetail">
+                Verification is required before a backup address becomes trusted.
+              </p>
+            </div>
+
+            <div class="account-recovery-generate">
+              <label for="backupRecoveryEmail">Backup Email</label>
+              <input
+                class="crew-input"
+                id="backupRecoveryEmail"
+                type="email"
+                autocomplete="email"
+                maxlength="254"
+              >
+
+              <label for="recoveryEmailCurrentPassword">Current Password</label>
+              <input
+                class="crew-input"
+                id="recoveryEmailCurrentPassword"
+                type="password"
+                autocomplete="current-password"
+              >
+
+              <button
+                id="sendRecoveryEmailVerificationButton"
+                type="button"
+                class="crew-button soft"
+              >
+                Send Verification
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="recoveryEmailMessage"
+            class="account-message"
+            hidden
+            role="status"
+            aria-live="polite"
+          ></div>
+
+        </section>
+
+
+        <!-- =====================================
+             RECOVERY CODES
+        ====================================== -->
+
+        <section class="crew-card account-card">
+
+          <div class="card-head">
+            <div>
+              <span class="crew-eyebrow">Account Recovery</span>
+              <h2>Recovery Codes</h2>
+              <p>
+                Recovery codes are one-time emergency credentials for
+                regaining access when email password reset is unavailable.
+              </p>
+            </div>
+
+            <span
+              id="recoveryCodeStatus"
+              class="status-pill"
+            >
+              Loading...
+            </span>
+          </div>
+
+          <div class="account-recovery-panel">
+            <div>
+              <strong>Generate a new recovery-code set</strong>
+              <p>
+                Enter your current password. Generating a new set immediately
+                revokes every older unused recovery code.
+              </p>
+            </div>
+
+            <div class="account-recovery-generate">
+              <label for="recoveryCurrentPassword">
+                Current Password
+              </label>
+
+              <input
+                class="crew-input"
+                id="recoveryCurrentPassword"
+                type="password"
+                autocomplete="current-password"
+              >
+
+              <button
+                id="generateRecoveryCodesButton"
+                type="button"
+                class="crew-button soft"
+              >
+                Generate Codes
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="recoveryCodeMessage"
+            class="account-message"
+            hidden
+            role="status"
+            aria-live="polite"
+          ></div>
+
+          <div
+            id="recoveryCodesResult"
+            class="account-recovery-result"
+            hidden
+          >
+            <div class="account-recovery-warning">
+              <strong>Save these now.</strong>
+              These codes are shown only once. OBA cannot display them again.
+            </div>
+
+            <div
+              id="recoveryCodesList"
+              class="account-recovery-codes"
+            ></div>
+
+            <div class="account-form-actions recovery-code-actions">
+              <button
+                id="copyRecoveryCodesButton"
+                type="button"
+                class="crew-button soft"
+              >
+                Copy Codes
+              </button>
+
+              <button
+                id="downloadRecoveryCodesButton"
+                type="button"
+                class="crew-button primary"
+              >
+                Download .txt
+              </button>
+            </div>
+          </div>
+
+        </section>
+
+
+        <!-- =====================================
+             SESSION
+        ====================================== -->
+
+        <section class="crew-card account-card">
+
+          <div class="card-head">
+
+            <div>
+              <span class="crew-eyebrow">
+                Session
+              </span>
+
+              <h2>Current Sign-In</h2>
+
+              <p>
+                Review your current Crew session
+                or securely sign out.
+              </p>
+            </div>
+
+            <span class="status-pill active">
+              Active
+            </span>
+
+          </div>
+
+
+          <div class="account-profile-grid">
+
+            <div class="account-field">
+              <span class="account-label">
+                Session Status
+              </span>
+
+              <strong>Authenticated</strong>
+            </div>
+
+
+            <div class="account-field">
+              <span class="account-label">
+                Session Expires
+              </span>
+
+              <strong id="sessionExpires">
+                Loading...
+              </strong>
+            </div>
+
+          </div>
+
+
+          <div class="account-session-actions">
+
+            <div>
+              <strong>
+                Sign out of Cookie Crew
+              </strong>
+
+              <p>
+                You'll need your Crew email and
+                password to sign back in.
+              </p>
+            </div>
+
+            <button
+              id="logoutButton"
+              type="button"
+              class="crew-button danger"
+            >
+              Log Out
+            </button>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </main>
+
+  </div>
+
+
+  <!-- =========================================
+       AUTH
+  ========================================== -->
+
+  <script src="/crew/crew-auth.js"></script>
+  <script src="/crew/crew-shell.js"></script>
+
+
+  <script>
+    (() => {
+      'use strict';
+
+      const API_BASE =
+        'https://api.ollysbakedassortments.com';
+
+      const LOGIN_PAGE =
+        '/crew/crew-login.html';
+
+
+      /* =========================================
+         ELEMENTS
+      ========================================== */
+
+      const profileRoleBadge =
+        document.getElementById(
+          'profileRoleBadge'
+        );
+
+      const profileName =
+        document.getElementById(
+          'profileName'
+        );
+
+      const profileEmail =
+        document.getElementById(
+          'profileEmail'
+        );
+
+      const profileRole =
+        document.getElementById(
+          'profileRole'
+        );
+
+      const profileCrewId =
+        document.getElementById(
+          'profileCrewId'
+        );
+
+      const sessionExpires =
+        document.getElementById(
+          'sessionExpires'
+        );
+
+      const passwordForm =
+        document.getElementById(
+          'passwordForm'
+        );
+
+      const currentPassword =
+        document.getElementById(
+          'currentPassword'
+        );
+
+      const newPassword =
+        document.getElementById(
+          'newPassword'
+        );
+
+      const confirmPassword =
+        document.getElementById(
+          'confirmPassword'
+        );
+
+      const changePasswordButton =
+        document.getElementById(
+          'changePasswordButton'
+        );
+
+      const passwordMessage =
+        document.getElementById(
+          'passwordMessage'
+        );
+
+      const recoveryEmailStatus =
+        document.getElementById(
+          'recoveryEmailStatus'
+        );
+
+      const recoveryEmailDisplay =
+        document.getElementById(
+          'recoveryEmailDisplay'
+        );
+
+      const recoveryEmailDetail =
+        document.getElementById(
+          'recoveryEmailDetail'
+        );
+
+      const backupRecoveryEmail =
+        document.getElementById(
+          'backupRecoveryEmail'
+        );
+
+      const recoveryEmailCurrentPassword =
+        document.getElementById(
+          'recoveryEmailCurrentPassword'
+        );
+
+      const sendRecoveryEmailVerificationButton =
+        document.getElementById(
+          'sendRecoveryEmailVerificationButton'
+        );
+
+      const recoveryEmailMessage =
+        document.getElementById(
+          'recoveryEmailMessage'
+        );
+
+      const recoveryCodeStatus =
+        document.getElementById(
+          'recoveryCodeStatus'
+        );
+
+      const recoveryCurrentPassword =
+        document.getElementById(
+          'recoveryCurrentPassword'
+        );
+
+      const generateRecoveryCodesButton =
+        document.getElementById(
+          'generateRecoveryCodesButton'
+        );
+
+      const recoveryCodeMessage =
+        document.getElementById(
+          'recoveryCodeMessage'
+        );
+
+      const recoveryCodesResult =
+        document.getElementById(
+          'recoveryCodesResult'
+        );
+
+      const recoveryCodesList =
+        document.getElementById(
+          'recoveryCodesList'
+        );
+
+      const copyRecoveryCodesButton =
+        document.getElementById(
+          'copyRecoveryCodesButton'
+        );
+
+      const downloadRecoveryCodesButton =
+        document.getElementById(
+          'downloadRecoveryCodesButton'
+        );
+
+      let currentRecoveryCodes = [];
+
+
+      const accountStatus =
+        document.getElementById(
+          'accountStatus'
+        );
+
+      const logoutButton =
+        document.getElementById(
+          'logoutButton'
+        );
+
+
+      /* =========================================
+         HELPERS
+      ========================================== */
+
+      function formatRole(role) {
+        if (!role) {
+          return 'Crew';
+        }
+
+        return (
+          role.charAt(0).toUpperCase() +
+          role.slice(1)
+        );
+      }
+
+
+      function formatDateTime(value) {
+        if (!value) {
+          return '—';
+        }
+
+        const date =
+          new Date(value);
+
+        if (
+          Number.isNaN(
+            date.getTime()
+          )
+        ) {
+          return '—';
+        }
+
+        return date.toLocaleString(
+          undefined,
+          {
+            dateStyle: 'medium',
+            timeStyle: 'short'
+          }
+        );
+      }
+
+
+      function showPasswordMessage(
+        message,
+        type = 'error'
+      ) {
+        passwordMessage.hidden = false;
+        passwordMessage.textContent =
+          message;
+
+        passwordMessage.classList.remove(
+          'success',
+          'error'
+        );
+
+        passwordMessage.classList.add(
+          type === 'success'
+            ? 'success'
+            : 'error'
+        );
+      }
+
+
+      function clearPasswordMessage() {
+        passwordMessage.hidden = true;
+        passwordMessage.textContent = '';
+
+        passwordMessage.classList.remove(
+          'success',
+          'error'
+        );
+      }
+
+
+      function setPasswordFormBusy(
+        busy
+      ) {
+        currentPassword.disabled = busy;
+        newPassword.disabled = busy;
+        confirmPassword.disabled = busy;
+
+        changePasswordButton.disabled =
+          busy;
+
+        changePasswordButton.textContent =
+          busy
+            ? 'Changing Password...'
+            : 'Change Password';
+      }
+
+
+      function showRecoveryEmailMessage(
+        message,
+        type = 'error'
+      ) {
+        recoveryEmailMessage.hidden = false;
+        recoveryEmailMessage.textContent = message;
+        recoveryEmailMessage.classList.remove(
+          'success',
+          'error'
+        );
+        recoveryEmailMessage.classList.add(
+          type === 'success' ? 'success' : 'error'
+        );
+      }
+
+      function clearRecoveryEmailMessage() {
+        recoveryEmailMessage.hidden = true;
+        recoveryEmailMessage.textContent = '';
+        recoveryEmailMessage.classList.remove(
+          'success',
+          'error'
+        );
+      }
+
+      function renderRecoveryEmailStatus(data) {
+        const verified = data?.recoveryEmail ?? null;
+        const pending = data?.pendingVerification ?? null;
+
+        if (verified) {
+          recoveryEmailStatus.textContent = 'Verified';
+          recoveryEmailStatus.classList.add('active');
+          recoveryEmailDisplay.textContent = verified.email;
+          recoveryEmailDetail.textContent =
+            `Verified ${formatDateTime(verified.verifiedAt)}.`;
+          backupRecoveryEmail.value = verified.email;
+          return;
+        }
+
+        recoveryEmailStatus.classList.remove('active');
+
+        if (pending) {
+          recoveryEmailStatus.textContent = 'Pending';
+          recoveryEmailDisplay.textContent = pending.email;
+          recoveryEmailDetail.textContent =
+            `Verification pending. Link expires ${formatDateTime(pending.expiresAt)}.`;
+          backupRecoveryEmail.value = pending.email;
+          return;
+        }
+
+        recoveryEmailStatus.textContent = 'Not Set Up';
+        recoveryEmailDisplay.textContent = 'No backup email set';
+        recoveryEmailDetail.textContent =
+          'Verification is required before a backup address becomes trusted.';
+      }
+
+      async function loadRecoveryEmailStatus() {
+        try {
+          const response = await fetch(
+            `${API_BASE}/crew/recovery-email`,
+            {
+              method: 'GET',
+              credentials: 'include',
+              headers: { 'Accept': 'application/json' }
+            }
+          );
+
+          const data = await response.json();
+
+          if (
+            response.status === 401 &&
+            data.authenticated === false
+          ) {
+            window.location.replace(LOGIN_PAGE);
+            return;
+          }
+
+          if (!response.ok || data.ok !== true) {
+            throw new Error('Unable to load recovery-email status.');
+          }
+
+          renderRecoveryEmailStatus(data);
+        } catch {
+          recoveryEmailStatus.textContent = 'Unavailable';
+          recoveryEmailStatus.classList.remove('active');
+        }
+      }
+
+      async function consumeRecoveryEmailVerificationFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('verifyRecoveryEmail');
+
+        if (!token) {
+          return;
+        }
+
+        clearRecoveryEmailMessage();
+        showRecoveryEmailMessage(
+          'Verifying backup recovery email...',
+          'success'
+        );
+
+        try {
+          const response = await fetch(
+            `${API_BASE}/crew/recovery-email/verify`,
+            {
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ token })
+            }
+          );
+
+          let data = {};
+          try {
+            data = await response.json();
+          } catch {
+            data = {};
+          }
+
+          if (
+            response.status === 401 &&
+            data.authenticated === false
+          ) {
+            window.location.replace(LOGIN_PAGE);
+            return;
+          }
+
+          if (!response.ok || data.ok !== true) {
+            throw new Error(
+              data.error || 'Unable to verify the backup recovery email.'
+            );
+          }
+
+          history.replaceState(
+            {},
+            document.title,
+            window.location.pathname
+          );
+
+          showRecoveryEmailMessage(
+            'Backup recovery email verified successfully.',
+            'success'
+          );
+
+          await loadRecoveryEmailStatus();
+        } catch (error) {
+          history.replaceState(
+            {},
+            document.title,
+            window.location.pathname
+          );
+
+          showRecoveryEmailMessage(
+            error instanceof Error
+              ? error.message
+              : 'Unable to verify the backup recovery email.'
+          );
+        }
+      }
+
+      function showRecoveryCodeMessage(
+        message,
+        type = 'error'
+      ) {
+        recoveryCodeMessage.hidden = false;
+        recoveryCodeMessage.textContent = message;
+        recoveryCodeMessage.classList.remove(
+          'success',
+          'error'
+        );
+        recoveryCodeMessage.classList.add(
+          type === 'success' ? 'success' : 'error'
+        );
+      }
+
+      function clearRecoveryCodeMessage() {
+        recoveryCodeMessage.hidden = true;
+        recoveryCodeMessage.textContent = '';
+        recoveryCodeMessage.classList.remove(
+          'success',
+          'error'
+        );
+      }
+
+      function renderRecoveryCodeCount(count) {
+        const activeCount = Number(count || 0);
+        recoveryCodeStatus.textContent =
+          activeCount > 0
+            ? `${activeCount} Active`
+            : 'Not Set Up';
+        recoveryCodeStatus.classList.toggle(
+          'active',
+          activeCount > 0
+        );
+      }
+
+      async function loadRecoveryCodeStatus() {
+        try {
+          const response = await fetch(
+            `${API_BASE}/crew/recovery-codes`,
+            {
+              method: 'GET',
+              credentials: 'include',
+              headers: { 'Accept': 'application/json' }
+            }
+          );
+
+          const data = await response.json();
+
+          if (response.status === 401) {
+            window.location.replace(LOGIN_PAGE);
+            return;
+          }
+
+          if (!response.ok || data.ok !== true) {
+            throw new Error('Unable to load recovery-code status.');
+          }
+
+          renderRecoveryCodeCount(data.activeCount);
+        } catch (error) {
+          recoveryCodeStatus.textContent = 'Unavailable';
+        }
+      }
+
+
+      /* =========================================
+         RENDER SESSION
+      ========================================== */
+
+      function renderSession(sessionData) {
+
+        const user =
+          sessionData?.user ?? {};
+
+        const session =
+          sessionData?.session ?? {};
+
+        const fullName =
+          `${user.firstName ?? ''} ${user.lastName ?? ''}`
+            .trim() ||
+          'Crew Account';
+
+        const role =
+          formatRole(
+            user.role
+          );
+
+
+
+        profileName.textContent =
+          fullName;
+
+        profileEmail.textContent =
+          user.email ?? '—';
+
+        profileRole.textContent =
+          role;
+
+        profileRoleBadge.textContent =
+          role;
+
+        profileCrewId.textContent =
+          user.crewUserId ?? '—';
+
+        sessionExpires.textContent =
+          formatDateTime(
+            session.expiresAt
+          );
+      }
+
+
+      /* =========================================
+         INITIALIZE
+      ========================================== */
+
+      async function initializeAccount() {
+
+        accountStatus.hidden = false;
+        accountStatus.textContent =
+          'Loading account...';
+
+        const sessionData =
+          await window
+            .OBA_CREW_AUTH
+            .requireCrewSession();
+
+        if (!sessionData) {
+          return;
+        }
+
+        window.OBA_CREW_SHELL.mount({
+          activePage: 'account'
+        });
+
+        window.OBA_CREW_SHELL.renderCrewIdentity(
+          sessionData
+        );
+
+        renderSession(
+          sessionData
+        );
+
+        await loadRecoveryEmailStatus();
+        await consumeRecoveryEmailVerificationFromUrl();
+        await loadRecoveryCodeStatus();
+
+        accountStatus.hidden = true;
+      }
+
+
+      /* =========================================
+         CHANGE PASSWORD
+      ========================================== */
+
+      passwordForm.addEventListener(
+        'submit',
+        async event => {
+
+          event.preventDefault();
+
+          clearPasswordMessage();
+
+
+          const currentValue =
+            currentPassword.value;
+
+          const newValue =
+            newPassword.value;
+
+          const confirmValue =
+            confirmPassword.value;
+
+
+          if (!currentValue) {
+            showPasswordMessage(
+              'Enter your current password.'
+            );
+
+            currentPassword.focus();
+            return;
+          }
+
+
+          if (newValue.length < 12) {
+            showPasswordMessage(
+              'New password must be at least 12 characters.'
+            );
+
+            newPassword.focus();
+            return;
+          }
+
+
+          if (
+            newValue !==
+            confirmValue
+          ) {
+            showPasswordMessage(
+              'New passwords do not match.'
+            );
+
+            confirmPassword.focus();
+            return;
+          }
+
+
+          if (
+            currentValue ===
+            newValue
+          ) {
+            showPasswordMessage(
+              'New password must be different from your current password.'
+            );
+
+            newPassword.focus();
+            return;
+          }
+
+
+          setPasswordFormBusy(true);
+
+
+          try {
+
+            const response =
+              await fetch(
+                `${API_BASE}/crew/change-password`,
+                {
+                  method: 'POST',
+
+                  credentials:
+                    'include',
+
+                  headers: {
+                    'Accept':
+                      'application/json',
+
+                    'Content-Type':
+                      'application/json'
+                  },
+
+                  body:
+                    JSON.stringify({
+                      currentPassword:
+                        currentValue,
+
+                      newPassword:
+                        newValue
+                    })
+                }
+              );
+
+
+            let data = {};
+
+            try {
+              data =
+                await response.json();
+            } catch {
+              data = {};
+            }
+
+
+            if (
+              !response.ok ||
+              data.ok !== true
+            ) {
+
+              if (
+                response.status === 401 &&
+                data.authenticated === false
+              ) {
+                window.location.replace(
+                  LOGIN_PAGE
+                );
+
+                return;
+              }
+
+
+              throw new Error(
+                data.error ||
+                'Unable to change password.'
+              );
+            }
+
+
+            passwordForm.reset();
+
+            showPasswordMessage(
+              'Password changed. Sign in again with your new password.',
+              'success'
+            );
+
+
+            setTimeout(
+              () => {
+                window.location.replace(
+                  LOGIN_PAGE
+                );
+              },
+              1200
+            );
+
+
+          } catch (error) {
+
+            showPasswordMessage(
+              error instanceof Error
+                ? error.message
+                : 'Unable to change password.'
+            );
+
+            setPasswordFormBusy(
+              false
+            );
+          }
+
+        }
+      );
+
+
+      /* =========================================
+         BACKUP RECOVERY EMAIL
+      ========================================== */
+
+      sendRecoveryEmailVerificationButton.addEventListener(
+        'click',
+        async () => {
+          clearRecoveryEmailMessage();
+
+          const recoveryEmailValue =
+            backupRecoveryEmail.value.trim();
+
+          const currentPasswordValue =
+            recoveryEmailCurrentPassword.value;
+
+          if (!recoveryEmailValue) {
+            showRecoveryEmailMessage(
+              'Enter a backup recovery email.'
+            );
+            backupRecoveryEmail.focus();
+            return;
+          }
+
+          if (!currentPasswordValue) {
+            showRecoveryEmailMessage(
+              'Enter your current password to change the backup recovery email.'
+            );
+            recoveryEmailCurrentPassword.focus();
+            return;
+          }
+
+          sendRecoveryEmailVerificationButton.disabled = true;
+          sendRecoveryEmailVerificationButton.textContent = 'Sending...';
+          backupRecoveryEmail.disabled = true;
+          recoveryEmailCurrentPassword.disabled = true;
+
+          try {
+            const response = await fetch(
+              `${API_BASE}/crew/recovery-email/request`,
+              {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  recoveryEmail: recoveryEmailValue,
+                  currentPassword: currentPasswordValue
+                })
+              }
+            );
+
+            let data = {};
+            try {
+              data = await response.json();
+            } catch {
+              data = {};
+            }
+
+            if (
+              response.status === 401 &&
+              data.authenticated === false
+            ) {
+              window.location.replace(LOGIN_PAGE);
+              return;
+            }
+
+            if (!response.ok || data.ok !== true) {
+              throw new Error(
+                data.error || 'Unable to send recovery-email verification.'
+              );
+            }
+
+            recoveryEmailCurrentPassword.value = '';
+            showRecoveryEmailMessage(
+              'Verification email sent. Open the link in that inbox to finish setup.',
+              'success'
+            );
+            await loadRecoveryEmailStatus();
+          } catch (error) {
+            showRecoveryEmailMessage(
+              error instanceof Error
+                ? error.message
+                : 'Unable to send recovery-email verification.'
+            );
+          } finally {
+            sendRecoveryEmailVerificationButton.disabled = false;
+            sendRecoveryEmailVerificationButton.textContent = 'Send Verification';
+            backupRecoveryEmail.disabled = false;
+            recoveryEmailCurrentPassword.disabled = false;
+          }
+        }
+      );
+
+
+      /* =========================================
+         RECOVERY CODES
+      ========================================== */
+
+      generateRecoveryCodesButton.addEventListener(
+        'click',
+        async () => {
+          clearRecoveryCodeMessage();
+          recoveryCodesResult.hidden = true;
+          currentRecoveryCodes = [];
+
+          const currentPasswordValue =
+            recoveryCurrentPassword.value;
+
+          if (!currentPasswordValue) {
+            showRecoveryCodeMessage(
+              'Enter your current password to generate recovery codes.'
+            );
+            recoveryCurrentPassword.focus();
+            return;
+          }
+
+          generateRecoveryCodesButton.disabled = true;
+          generateRecoveryCodesButton.textContent =
+            'Generating...';
+          recoveryCurrentPassword.disabled = true;
+
+          try {
+            const response = await fetch(
+              `${API_BASE}/crew/recovery-codes`,
+              {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  currentPassword: currentPasswordValue
+                })
+              }
+            );
+
+            let data = {};
+            try {
+              data = await response.json();
+            } catch {
+              data = {};
+            }
+
+            if (
+              response.status === 401 &&
+              data.authenticated === false
+            ) {
+              window.location.replace(LOGIN_PAGE);
+              return;
+            }
+
+            if (!response.ok || data.ok !== true) {
+              throw new Error(
+                data.error || 'Unable to generate recovery codes.'
+              );
+            }
+
+            currentRecoveryCodes =
+              Array.isArray(data.codes)
+                ? data.codes
+                : [];
+
+            recoveryCodesList.replaceChildren();
+
+            for (const code of currentRecoveryCodes) {
+              const codeElement =
+                document.createElement('code');
+              codeElement.textContent = code;
+              recoveryCodesList.appendChild(codeElement);
+            }
+
+            recoveryCurrentPassword.value = '';
+            recoveryCodesResult.hidden = false;
+            renderRecoveryCodeCount(data.activeCount);
+            showRecoveryCodeMessage(
+              'New recovery codes generated. Save them before leaving this page.',
+              'success'
+            );
+          } catch (error) {
+            showRecoveryCodeMessage(
+              error instanceof Error
+                ? error.message
+                : 'Unable to generate recovery codes.'
+            );
+          } finally {
+            generateRecoveryCodesButton.disabled = false;
+            generateRecoveryCodesButton.textContent =
+              'Generate Codes';
+            recoveryCurrentPassword.disabled = false;
+          }
+        }
+      );
+
+      copyRecoveryCodesButton.addEventListener(
+        'click',
+        async () => {
+          if (!currentRecoveryCodes.length) {
+            return;
+          }
+
+          try {
+            await navigator.clipboard.writeText(
+              currentRecoveryCodes.join('\n')
+            );
+            copyRecoveryCodesButton.textContent = 'Copied';
+            setTimeout(() => {
+              copyRecoveryCodesButton.textContent = 'Copy Codes';
+            }, 1400);
+          } catch {
+            showRecoveryCodeMessage(
+              'Unable to copy automatically. Save the displayed codes manually.'
+            );
+          }
+        }
+      );
+
+      downloadRecoveryCodesButton.addEventListener(
+        'click',
+        () => {
+          if (!currentRecoveryCodes.length) {
+            return;
+          }
+
+          const contents = [
+            'OBA Cookie Crew Recovery Codes',
+            '',
+            'Each code can be used once.',
+            'Store these somewhere private and secure.',
+            '',
+            ...currentRecoveryCodes
+          ].join('\n');
+
+          const blob = new Blob(
+            [contents],
+            { type: 'text/plain;charset=utf-8' }
+          );
+          const url = URL.createObjectURL(blob);
+          const anchor = document.createElement('a');
+          anchor.href = url;
+          anchor.download = 'oba-cookie-crew-recovery-codes.txt';
+          document.body.appendChild(anchor);
+          anchor.click();
+          anchor.remove();
+          URL.revokeObjectURL(url);
+        }
+      );
+
+
+      /* =========================================
+         LOG OUT
+      ========================================== */
+
+      logoutButton.addEventListener(
+        'click',
+        async () => {
+
+          logoutButton.disabled = true;
+          logoutButton.textContent =
+            'Logging Out...';
+
+
+          try {
+
+            await fetch(
+              `${API_BASE}/crew/logout`,
+              {
+                method: 'POST',
+
+                credentials:
+                  'include',
+
+                headers: {
+                  'Accept':
+                    'application/json'
+                }
+              }
+            );
+
+          } catch (error) {
+
+            console.error(
+              'Crew logout failed:',
+              error
+            );
+
+          } finally {
+
+            window.location.replace(
+              LOGIN_PAGE
+            );
+
+          }
+
+        }
+      );
+
+
+      /* =========================================
+         START
+      ========================================== */
+
+      initializeAccount();
+
+    })();
+  </script>
+
+</body>
+</html>
