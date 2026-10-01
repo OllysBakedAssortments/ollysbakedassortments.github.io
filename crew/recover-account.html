@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Recover Account | OBA Cookie Crew</title>
+  <link rel="icon" type="image/png" href="/images/brand/logo.png">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/crew/crew.css">
+</head>
+<body class="crew-login-page">
+  <main class="crew-login-shell">
+    <section class="crew-login-card" aria-labelledby="recover-account-title">
+      <div class="crew-login-brand">
+        <img src="/images/brand/logo.png" alt="OBA Cookies">
+        <div>
+          <span class="crew-eyebrow">OBA Cookies</span>
+          <h1>Cookie Crew</h1>
+          <p>Crew Operations</p>
+        </div>
+      </div>
+
+      <div class="crew-login-heading">
+        <h2 id="recover-account-title">Use a recovery code</h2>
+        <p>Use one of your saved one-time recovery codes to choose a new Cookie Crew password.</p>
+      </div>
+
+      <div id="recovery-status" class="modal-status" role="status" aria-live="polite"></div>
+
+      <form id="recover-account-form">
+        <div class="form-group">
+          <label for="recovery-email">Email</label>
+          <input class="crew-input" id="recovery-email" name="email" type="email" autocomplete="username" required>
+        </div>
+
+        <div class="form-group">
+          <label for="recovery-code">Recovery code</label>
+          <input class="crew-input" id="recovery-code" name="recoveryCode" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="OBA-XXXX-XXXX-XXXX-XXXX" required>
+        </div>
+
+        <div class="form-group">
+          <label for="new-password">New password</label>
+          <input class="crew-input" id="new-password" name="newPassword" type="password" minlength="12" autocomplete="new-password" required>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm new password</label>
+          <input class="crew-input" id="confirm-password" name="confirmPassword" type="password" minlength="12" autocomplete="new-password" required>
+        </div>
+
+        <p class="crew-reset-help">Passwords must be at least 12 characters.</p>
+
+        <button id="recover-account-button" type="submit" class="crew-button primary crew-login-submit">Recover Account</button>
+      </form>
+
+      <div class="crew-login-recovery">
+        <a href="/crew/crew-login.html" class="crew-login-recovery-link">Back to sign in</a>
+      </div>
+
+      <p class="crew-login-note">Cookie Crew access is restricted to authorized OBA staff.</p>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const API_BASE = 'https://api.ollysbakedassortments.com';
+      const LOGIN_PAGE = '/crew/crew-login.html';
+      const form = document.getElementById('recover-account-form');
+      const emailInput = document.getElementById('recovery-email');
+      const codeInput = document.getElementById('recovery-code');
+      const newPasswordInput = document.getElementById('new-password');
+      const confirmPasswordInput = document.getElementById('confirm-password');
+      const submitButton = document.getElementById('recover-account-button');
+      const status = document.getElementById('recovery-status');
+
+      function showStatus(message, type = 'error') {
+        status.textContent = message;
+        status.className = `modal-status is-visible ${type}`;
+      }
+
+      function clearStatus() {
+        status.textContent = '';
+        status.className = 'modal-status';
+      }
+
+      function setBusy(busy) {
+        emailInput.disabled = busy;
+        codeInput.disabled = busy;
+        newPasswordInput.disabled = busy;
+        confirmPasswordInput.disabled = busy;
+        submitButton.disabled = busy;
+        submitButton.textContent = busy ? 'Recovering...' : 'Recover Account';
+      }
+
+      codeInput.addEventListener('input', () => {
+        codeInput.value = codeInput.value.toUpperCase();
+      });
+
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        clearStatus();
+
+        const email = emailInput.value.trim();
+        const recoveryCode = codeInput.value.trim();
+        const newPassword = newPasswordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+
+        if (!email || !recoveryCode) {
+          showStatus('Enter your Crew email and recovery code.');
+          return;
+        }
+
+        if (newPassword.length < 12) {
+          showStatus('New password must be at least 12 characters.');
+          newPasswordInput.focus();
+          return;
+        }
+
+        if (newPassword !== confirmPassword) {
+          showStatus('New passwords do not match.');
+          confirmPasswordInput.focus();
+          return;
+        }
+
+        setBusy(true);
+
+        try {
+          const response = await fetch(`${API_BASE}/crew/recover-account`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, recoveryCode, newPassword })
+          });
+
+          let data = {};
+          try {
+            data = await response.json();
+          } catch {
+            data = {};
+          }
+
+          if (!response.ok || data.ok !== true) {
+            throw new Error(data.error || 'Unable to recover this account.');
+          }
+
+          form.reset();
+          showStatus('Account recovered. Sign in with your new password.', 'success');
+
+          setTimeout(() => {
+            window.location.replace(`${LOGIN_PAGE}?account-recovered=success`);
+          }, 1400);
+        } catch (error) {
+          showStatus(
+            error instanceof Error
+              ? error.message
+              : 'Unable to recover this account.'
+          );
+          setBusy(false);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
