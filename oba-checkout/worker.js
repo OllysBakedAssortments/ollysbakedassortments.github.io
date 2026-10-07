@@ -4636,7 +4636,107 @@ if (url.pathname === '/crew/member-permission') {
   await recordCrewSecurityEvent(env,{eventType:'crew_member_permission_changed',crewUserId:targetId,details:{initiatedByCrewUserId:Number(crewSession.crewUserId),permissionKey:key,overrideValue:value}});
   return Response.json({ok:true,crewUserId:targetId,permissionKey:key,overrideValue:value},{status:200,headers:{...corsHeaders,'Cache-Control':'no-store'}});
 }
-if (url.pathname === '/crew/member-role') {
+if (url.pathname === '/crew/scoped-access') {
+  if(request.method==='OPTIONS') return new Response(null,{status:204,headers:corsHeaders});
+  const crewSession=await getCrewSession(request,env);
+  if(!crewSession) return Response.json({ok:false,error:'Authentication required.'},{status:401,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  if(request.method==='GET'){
+    const denied=await requireCrewAccessPermission(env,crewSession,'crew_access.view',corsHeaders); if(denied)return denied;
+    const targetId=Number(url.searchParams.get('crewUserId'));
+    if(!Number.isInteger(targetId)||targetId<1) return Response.json({ok:false,error:'A valid Crew member is required.'},{status:400,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+    const rows=await env.OBA_DB.prepare(`SELECT assignment_id,crew_user_id,permission_key,manager_key,record_type,record_id,section_key,action_key,effect,reason,granted_by_crew_user_id,starts_at,expires_at,revoked_at,created_at,updated_at FROM crew_access_assignments WHERE crew_user_id=? ORDER BY created_at DESC`).bind(targetId).all();
+    return Response.json({ok:true,assignments:rows.results||[]},{status:200,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  }
+  if(request.method!=='POST') return Response.json({ok:false,error:'Method Not Allowed'},{status:405,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const denied=await requireCrewAccessPermission(env,crewSession,'crew.permissions',corsHeaders); if(denied)return denied;
+  let body;try{body=await request.json();}catch{return Response.json({ok:false,error:'Invalid request.'},{status:400,headers:{...corsHeaders,'Cache-Control':'no-store'}})}
+  const targetId=Number(body?.crewUserId),permissionKey=String(body?.permissionKey||'').trim(),effect=String(body?.effect||'').toLowerCase(),reason=cleanContactText(body?.reason,500),scope=normalizeCrewAccessScope(body);
+  if(!Number.isInteger(targetId)||targetId<1||!CREW_PERMISSION_KEY_SET.has(permissionKey)||!['allow','deny'].includes(effect)||!reason||!validCrewAccessScope(scope)) return Response.json({ok:false,error:'Invalid scoped access assignment.'},{status:400,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const target=await loadCrewTarget(env,targetId); if(!canAdministerCrewTarget(crewSession,target)) return Response.json({ok:false,error:'You cannot change access for that account.'},{status:403,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  if(!(await canCrewGrantPermission(env,crewSession,permissionKey,scope.managerKey,effect))) return Response.json({ok:false,error:'You do not have authority to grant that scoped access.'},{status:403,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  let expiresAt=null;if(body?.expiresAt){const d=new Date(body.expiresAt);if(Number.isNaN(d.getTime())||d.getTime()<=Date.now())return Response.json({ok:false,error:'Expiration must be in the future.'},{status:400,headers:{...corsHeaders,'Cache-Control':'no-store'}});expiresAt=d.toISOString();}
+  const assignmentId=crypto.randomUUID();
+  await env.OBA_DB.prepare(`INSERT INTO crew_access_assignments(assignment_id,crew_user_id,permission_key,manager_key,record_type,record_id,section_key,action_key,effect,reason,granted_by_crew_user_id,expires_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`).bind(assignmentId,targetId,permissionKey,scope.managerKey,scope.recordType,scope.recordId,scope.sectionKey,scope.actionKey,effect,reason,Number(crewSession.crewUserId),expiresAt).run();
+  await recordCanonicalAuditEvent(env,{objectType:'crew_access_assignment',objectId:assignmentId,actorId:Number(crewSession.crewUserId),action:'created',reason,newState:{crewUserId:targetId,permissionKey,effect,...scope,expiresAt}});
+  return Response.json({ok:true,assignmentId},{status:201,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+}
+
+if (url.pathname === '/crew/scoped-access/revoke') {
+  if(request.method==='OPTIONS') return new Response(null,{status:204,headers:corsHeaders});
+  if(request.method!=='POST') return Response.json({ok:false,error:'Method Not Allowed'},{status:405,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const crewSession=await getCrewSession(request,env);if(!crewSession)return Response.json({ok:false,error:'Authentication required.'},{status:401,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const denied=await requireCrewAccessPermission(env,crewSession,'crew.permissions',corsHeaders);if(denied)return denied;
+  let body;try{body=await request.json();}catch{return Response.json({ok:false,error:'Invalid request.'},{status:400,headers:{...corsHeaders,'Cache-Control':'no-store'}})}
+  const assignmentId=String(body?.assignmentId||'').trim(),reason=cleanContactText(body?.reason,500);if(!assignmentId||!reason)return Response.json({ok:false,error:'Assignment and reason are required.'},{status:400,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const row=await env.OBA_DB.prepare(`SELECT * FROM crew_access_assignments WHERE assignment_id=? AND revoked_at IS NULL LIMIT 1`).bind(assignmentId).first();if(!row)return Response.json({ok:false,error:'Active assignment not found.'},{status:404,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const target=await loadCrewTarget(env,Number(row.crew_user_id));if(!canAdministerCrewTarget(crewSession,target)||!(await canCrewGrantPermission(env,crewSession,row.permission_key,row.manager_key,'deny')))return Response.json({ok:false,error:'You do not have authority to revoke that assignment.'},{status:403,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  await env.OBA_DB.prepare(`UPDATE crew_access_assignments SET revoked_at=CURRENT_TIMESTAMP,revoked_by_crew_user_id=?,revoke_reason=?,updated_at=CURRENT_TIMESTAMP WHERE assignment_id=? AND revoked_at IS NULL`).bind(Number(crewSession.crewUserId),reason,assignmentId).run();
+  await recordCanonicalAuditEvent(env,{objectType:'crew_access_assignment',objectId:assignmentId,actorId:Number(crewSession.crewUserId),action:'revoked',reason,previousState:row});
+  return Response.json({ok:true,assignmentId},{status:200,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+}
+
+if (url.pathname === '/crew/access-request') {
+  if(request.method==='OPTIONS') return new Response(null,{status:204,headers:corsHeaders});
+  if(request.method!=='POST') return Response.json({ok:false,error:'Method Not Allowed'},{status:405,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const crewSession=await getCrewSession(request,env);if(!crewSession)return Response.json({ok:false,error:'Authentication required.'},{status:401,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  let body;try{body=await request.json();}catch{return Response.json({ok:false,error:'Invalid request.'},{status:400,headers:{...corsHeaders,'Cache-Control':'no-store'}})}
+  const permissionKey=String(body?.permissionKey||'').trim(),reason=cleanContactText(body?.reason,500),scope=normalizeCrewAccessScope(body);
+  if(!CREW_PERMISSION_KEY_SET.has(permissionKey)||!reason||!validCrewAccessScope(scope))return Response.json({ok:false,error:'Invalid access request.'},{status:400,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  let requestedUntil=null;if(body?.requestedUntil){const d=new Date(body.requestedUntil);if(Number.isNaN(d.getTime())||d.getTime()<=Date.now())return Response.json({ok:false,error:'Requested expiration must be in the future.'},{status:400,headers:{...corsHeaders,'Cache-Control':'no-store'}});requestedUntil=d.toISOString();}
+  const requestId=crypto.randomUUID();
+  await env.OBA_DB.prepare(`INSERT INTO crew_access_requests(request_id,crew_user_id,permission_key,manager_key,record_type,record_id,section_key,action_key,requested_effect,reason,requested_until) VALUES(?,?,?,?,?,?,?,?,?,?,?)`).bind(requestId,Number(crewSession.crewUserId),permissionKey,scope.managerKey,scope.recordType,scope.recordId,scope.sectionKey,scope.actionKey,'allow',reason,requestedUntil).run();
+  await recordCanonicalAuditEvent(env,{objectType:'crew_access_request',objectId:requestId,actorId:Number(crewSession.crewUserId),action:'requested',reason,newState:{permissionKey,...scope,requestedUntil}});
+  return Response.json({ok:true,requestId,status:'pending'},{status:201,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+}
+
+if (url.pathname === '/crew/access-requests') {
+  if(request.method==='OPTIONS')return new Response(null,{status:204,headers:corsHeaders});
+  if(request.method!=='GET')return Response.json({ok:false,error:'Method Not Allowed'},{status:405,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const crewSession=await getCrewSession(request,env);if(!crewSession)return Response.json({ok:false,error:'Authentication required.'},{status:401,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const denied=await requireCrewAccessPermission(env,crewSession,'crew_access.view',corsHeaders);if(denied)return denied;
+  const rows=await env.OBA_DB.prepare(`SELECT * FROM crew_access_requests ORDER BY CASE status WHEN 'pending' THEN 0 ELSE 1 END, created_at DESC LIMIT 250`).all();
+  return Response.json({ok:true,requests:rows.results||[]},{status:200,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+}
+
+if (url.pathname === '/crew/access-request/resolve') {
+  if(request.method==='OPTIONS')return new Response(null,{status:204,headers:corsHeaders});
+  if(request.method!=='POST')return Response.json({ok:false,error:'Method Not Allowed'},{status:405,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const crewSession=await getCrewSession(request,env);if(!crewSession)return Response.json({ok:false,error:'Authentication required.'},{status:401,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const denied=await requireCrewAccessPermission(env,crewSession,'crew.permissions',corsHeaders);if(denied)return denied;
+  let body;try{body=await request.json();}catch{return Response.json({ok:false,error:'Invalid request.'},{status:400,headers:{...corsHeaders,'Cache-Control':'no-store'}})}
+  const requestId=String(body?.requestId||'').trim(),decision=String(body?.decision||'').toLowerCase(),resolutionReason=cleanContactText(body?.reason,500);if(!requestId||!['approved','denied'].includes(decision)||!resolutionReason)return Response.json({ok:false,error:'Request, decision, and reason are required.'},{status:400,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const row=await env.OBA_DB.prepare(`SELECT * FROM crew_access_requests WHERE request_id=? AND status='pending' LIMIT 1`).bind(requestId).first();if(!row)return Response.json({ok:false,error:'Pending access request not found.'},{status:404,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const target=await loadCrewTarget(env,Number(row.crew_user_id));if(!canAdministerCrewTarget(crewSession,target))return Response.json({ok:false,error:'You cannot administer that Crew account.'},{status:403,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  if(decision==='approved'&&!(await canCrewGrantPermission(env,crewSession,row.permission_key,row.manager_key,'allow')))return Response.json({ok:false,error:'You do not have authority to approve that access.'},{status:403,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  let assignmentId=null;if(decision==='approved'){assignmentId=crypto.randomUUID();await env.OBA_DB.prepare(`INSERT INTO crew_access_assignments(assignment_id,crew_user_id,permission_key,manager_key,record_type,record_id,section_key,action_key,effect,reason,granted_by_crew_user_id,expires_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`).bind(assignmentId,Number(row.crew_user_id),row.permission_key,row.manager_key,row.record_type,row.record_id,row.section_key,row.action_key,'allow',`Approved access request ${requestId}: ${resolutionReason}`,Number(crewSession.crewUserId),row.requested_until).run();}
+  await env.OBA_DB.prepare(`UPDATE crew_access_requests SET status=?,resolved_by_crew_user_id=?,resolution_reason=?,resolved_at=CURRENT_TIMESTAMP,updated_at=CURRENT_TIMESTAMP WHERE request_id=? AND status='pending'`).bind(decision,Number(crewSession.crewUserId),resolutionReason,requestId).run();
+  await recordCanonicalAuditEvent(env,{objectType:'crew_access_request',objectId:requestId,actorId:Number(crewSession.crewUserId),action:decision,reason:resolutionReason,previousState:row,newState:{status:decision,assignmentId}});
+  return Response.json({ok:true,requestId,status:decision,assignmentId},{status:200,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+}
+
+if (url.pathname === '/crew/grant-authority') {
+  if(request.method==='OPTIONS')return new Response(null,{status:204,headers:corsHeaders});
+  if(request.method!=='POST')return Response.json({ok:false,error:'Method Not Allowed'},{status:405,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const crewSession=await getCrewSession(request,env);if(!crewSession)return Response.json({ok:false,error:'Authentication required.'},{status:401,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  if(String(crewSession.role).toLowerCase()!=='owner')return Response.json({ok:false,error:'Owner access is required to configure granting authority.'},{status:403,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  let body;try{body=await request.json();}catch{return Response.json({ok:false,error:'Invalid request.'},{status:400,headers:{...corsHeaders,'Cache-Control':'no-store'}})}
+  const targetId=Number(body?.crewUserId),permissionKey=String(body?.permissionKey||'').trim(),managerKey=crewAccessContextValue(body?.managerKey),reason=cleanContactText(body?.reason,500);if(!Number.isInteger(targetId)||targetId<1||!CREW_PERMISSION_KEY_SET.has(permissionKey)||!reason)return Response.json({ok:false,error:'Invalid grant authority.'},{status:400,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const target=await loadCrewTarget(env,targetId);if(!target||!['crew','manager'].includes(String(target.role).toLowerCase()))return Response.json({ok:false,error:'Eligible Crew account not found.'},{status:404,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  let expiresAt=null;if(body?.expiresAt){const d=new Date(body.expiresAt);if(Number.isNaN(d.getTime())||d.getTime()<=Date.now())return Response.json({ok:false,error:'Expiration must be in the future.'},{status:400,headers:{...corsHeaders,'Cache-Control':'no-store'}});expiresAt=d.toISOString();}
+  const authorityId=crypto.randomUUID();await env.OBA_DB.prepare(`INSERT INTO crew_grant_authorities(authority_id,crew_user_id,permission_key,manager_key,may_grant_allow,may_grant_deny,reason,granted_by_crew_user_id,expires_at) VALUES(?,?,?,?,?,?,?,?,?)`).bind(authorityId,targetId,permissionKey,managerKey,body?.mayGrantAllow===false?0:1,body?.mayGrantDeny===false?0:1,reason,Number(crewSession.crewUserId),expiresAt).run();
+  await recordCanonicalAuditEvent(env,{objectType:'crew_grant_authority',objectId:authorityId,actorId:Number(crewSession.crewUserId),action:'created',reason,newState:{crewUserId:targetId,permissionKey,managerKey,expiresAt}});
+  return Response.json({ok:true,authorityId},{status:201,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+}
+
+if (url.pathname === '/crew/access-audit') {
+  if(request.method==='OPTIONS')return new Response(null,{status:204,headers:corsHeaders});
+  if(request.method!=='GET')return Response.json({ok:false,error:'Method Not Allowed'},{status:405,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const crewSession=await getCrewSession(request,env);if(!crewSession)return Response.json({ok:false,error:'Authentication required.'},{status:401,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+  const denied=await requireCrewAccessPermission(env,crewSession,'crew_access.view',corsHeaders);if(denied)return denied;
+  const rows=await env.OBA_DB.prepare(`SELECT * FROM canonical_audit_events WHERE object_type IN ('crew_access_assignment','crew_access_request','crew_grant_authority') ORDER BY created_at DESC LIMIT 250`).all();
+  return Response.json({ok:true,events:rows.results||[]},{status:200,headers:{...corsHeaders,'Cache-Control':'no-store'}});
+}
+    if (url.pathname === '/crew/member-role') {
   if(request.method==='OPTIONS')return new Response(null,{status:204,headers:corsHeaders});
   if(request.method!=='POST')return Response.json({ok:false,error:'Method Not Allowed'},{status:405,headers:{...corsHeaders,'Cache-Control':'no-store'}});
   const crewSession=await getCrewSession(request,env); if(!crewSession)return Response.json({ok:false,error:'Authentication required.'},{status:401,headers:{...corsHeaders,'Cache-Control':'no-store'}});
