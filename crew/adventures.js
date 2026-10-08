@@ -1,0 +1,180 @@
+document.addEventListener('DOMContentLoaded',async()=>{
+  const session=await OBA_CREW_AUTH.requireCrewSession();if(!session)return;
+  OBA_CREW_SHELL.mount({activePage:'adventureHub'});OBA_CREW_SHELL.renderCrewIdentity(session);
+  const $=id=>document.getElementById(id),esc=OBA_CREW_CORE.esc,api=OBA_CREW_CORE.api;
+  const post=(path,body)=>api(path,{method:'POST',body:JSON.stringify(body)});
+  const f=$('detailsForm'),recap=$('recapForm'),update=$('updateForm');let current=null,all=[],detail=null,can={};let savedSnapshot=null,opening=false,saveBusy=false,returnFocus=null,setupBase=null,syncBusy=false,conflictFields=new Set(),conflictVersions=new Map();
+  const allowed={draft:['upcoming','cancelled'],upcoming:['event_day','live','postponed','rescheduled','cancelled'],event_day:['live','postponed','cancelled'],live:['recap_pending','ended_early'],ended_early:['recap_pending'],recap_pending:['past'],postponed:['upcoming','rescheduled','cancelled'],rescheduled:['upcoming','cancelled'],past:[],cancelled:[]};
+  const label=s=>String(s||'').replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase());
+  const date=s=>s?new Date(s).toLocaleString('en-US',{timeZone:'America/Los_Angeles',dateStyle:'medium',timeStyle:'short'}):'—';
+  const local=s=>{if(!s)return '';const d=new Date(s),parts=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(d);const v=Object.fromEntries(parts.map(x=>[x.type,x.value]));return `${v.year}-${v.month}-${v.day}T${v.hour}:${v.minute}`};
+  const localISO=s=>s?new Date(s).toISOString():'';
+  const banner=(id,message,kind='success')=>{const e=$(id);e.hidden=!message;e.className='adv-alert '+kind;e.textContent=message||''};
+  const notify=(message,kind='success')=>banner('message',message,kind);
+  const setFields=(form,record,keys)=>keys.forEach(k=>{const e=form.elements.namedItem(k);if(e)e.type==='checkbox'?e.checked=!!record[k]:e.value=record[k]??''});
+  const fieldData=(form,keys)=>Object.fromEntries(keys.map(k=>[k,form.elements.namedItem(k)?.value??'']));
+  const fields=['title','slug','event_type','summary','description','timezone'];
+  const actionTitles={adventure_created:'Adventure created',adventure_updated:'Adventure updated',adventure_lifecycle_changed:'Adventure lifecycle changed',lifecycle_changed:'Adventure lifecycle changed',adventure_schedule_updated:'Schedule updated',adventure_recap_updated:'Recap updated'};
+  function readableActor(h){if(h.actor_name||h.actor_display_name)return h.actor_name||h.actor_display_name;const type=String(h.actor_type||'system').toLowerCase();return type==='system'?'System automation':type==='crew'?'Crew member'+(h.actor_id?' #'+h.actor_id:''):type==='longneck'?'Longneck'+(h.actor_id?' #'+h.actor_id:''):label(type)}
+  const historyFields={title:'Title',slug:'URL slug',event_type:'Adventure type',summary:'Short summary',description:'Full description',timezone:'Timezone',starts_at:'Start date',ends_at:'End date',location_name:'Location name',location_address:'Address / meeting details',lifecycle_status:'Lifecycle',recap_status:'Recap status',recap_title:'Recap title',recap_body:'Recap body',crowd_report:'Crowd report'};
+  function parseAuditState(value){if(value===null||value===undefined||value==='')return null;if(typeof value==='object')return value;try{const parsed=JSON.parse(value);return typeof parsed==='string'?parseAuditState(parsed):parsed}catch{return null}}
+  function auditValue(key,value){if(value===null||value===undefined||value==='')return 'Not set';if(['starts_at','ends_at'].includes(key)){const d=new Date(value);return Number.isNaN(d.getTime())?String(value):date(value)}if(['event_type','lifecycle_status','recap_status','crowd_report'].includes(key))return label(value);return String(value)}
+  function fmtHistory(items){return items.map(h=>{
+    const previous=parseAuditState(h.previous_state_json),next=parseAuditState(h.new_state_json);
+    const changes=[];
+    if(previous&&next&&typeof previous==='object'&&typeof next==='object'){
+      for(const key of Object.keys(historyFields)){
+        if(!Object.prototype.hasOwnProperty.call(previous,key)&&!Object.prototype.hasOwnProperty.call(next,key))continue;
+        const before=previous[key],after=next[key];
+        if(auditValue(key,before)===auditValue(key,after))continue;
+        changes.push(`<div class="adv-history-change"><strong>${esc(historyFields[key])}</strong><div>${esc(auditValue(key,before))} <span aria-label="changed to">→</span> ${esc(auditValue(key,after))}</div></div>`);
+      }
+      if(!changes.length&&typeof previous.status==='string'&&typeof next.status==='string'&&previous.status!==next.status)changes.push(`<div class="adv-history-change"><strong>Lifecycle</strong><div>${esc(label(previous.status))} → ${esc(label(next.status))}</div></div>`);
+    }
+    if(!changes.length){const before=h.old_status??h.from_status??h.old_value,after=h.new_status??h.to_status??h.new_value;if(before!==undefined&&after!==undefined&&before!==after)changes.push(`<div class="adv-history-change"><strong>Lifecycle</strong><div>${esc(label(before))} → ${esc(label(after))}</div></div>`)}
+    const title=(h.action==='adventure_updated'&&changes.length&&previous&&next&&(previous.starts_at!==next.starts_at||previous.ends_at!==next.ends_at))?'Adventure schedule updated':actionTitles[h.action]||label(h.action||h.new_status||'Record changed');
+    return `<details class="adv-history"><summary class="adv-history-heading"><span><strong>${esc(title)}</strong><small>${esc(date(h.created_at))} · ${esc(readableActor(h))}</small></span></summary><div class="adv-history-content">${changes.join('')}${h.reason?`<p><strong>Reason:</strong> ${esc(h.reason)}</p>`:''}<details class="adv-history-technical"><summary>Technical details</summary><pre>${esc(JSON.stringify(h,null,2))}</pre></details></div></details>`;
+  }).join('')||'<p class="adv-muted">No history yet.</p>'}
+  function renderHistory(target,items){const root=$(target);const records=items||[];root.innerHTML=records.length?`<div class="adv-history-toolbar"><button type="button" class="crew-button" data-history-expand="all">Expand all</button><button type="button" class="crew-button" data-history-expand="none">Collapse all</button></div>${fmtHistory(records)}`:fmtHistory(records);}
+  for(const id of ['statusHistory','auditList'])$(id).addEventListener('click',e=>{const button=e.target.closest('[data-history-expand]');if(!button)return;const expand=button.dataset.historyExpand==='all';$(id).querySelectorAll('details.adv-history').forEach(item=>{item.open=expand;if(!expand)item.querySelectorAll('details').forEach(n=>n.open=false)});});
+  const categories={adventure:['overview','setup','relationships','future'],operations:['lifecycle','updates','recap','crew','history']};
+  let activeTab='overview';
+  function tab(name){if(name==='details'||name==='schedule'||name==='location')name='setup';if(!document.querySelector(`#tabs button[data-tab="${name}"]`))name='overview';activeTab=name;if(name!=='setup'&&$('message').classList.contains('warning'))notify('');const group=categories.operations.includes(name)?'operations':'adventure';document.querySelectorAll('#categories button').forEach(b=>{const selected=b.dataset.category===group;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected))});document.querySelectorAll('#tabs button').forEach(b=>{b.hidden=b.dataset.group!==group;b.classList.toggle('active',b.dataset.tab===name);b.setAttribute('aria-current',b.dataset.tab===name?'page':'false')});document.querySelectorAll('.adv-section').forEach(x=>x.classList.toggle('active',x.dataset.section===name));document.querySelector('.adv-dialog-body').scrollTop=0;}
+  $('tabs').onclick=e=>{const b=e.target.closest('button[data-tab]');if(b)tab(b.dataset.tab)};
+  $('categories').onclick=e=>{const b=e.target.closest('button[data-category]');if(b)tab(categories[b.dataset.category][0])};
+  function snapshot(){return JSON.stringify({setup:formPayload(),recap:fieldData(recap,['recap_status','recap_title','recap_body','crowd_report']),update:{...fieldData(update,['update_id','title','body','status']),pinned:update.elements.namedItem('pinned').checked},reason:$('transitionReason').value})}
+  function dirty(){return savedSnapshot!==null&&snapshot()!==savedSnapshot}
+  function markSaved(){savedSnapshot=snapshot();updateDirty()}
+  function updateDirty(){const d=dirty();$('dirtyNotice').hidden=!d;$('formSaveState').textContent=d?'Unsaved changes':'';return d}
+  function allowDiscard(){return !dirty()||window.confirm('Discard unsaved Adventure changes?')}
+  function safeClose(){if(saveBusy||!allowDiscard())return false;savedSnapshot=null;$('editor').close();return true}
+  $('editor').addEventListener('cancel',e=>{e.preventDefault();safeClose()});
+  $('editor').addEventListener('input',updateDirty);$('editor').addEventListener('change',updateDirty);
+  function currentSetup(){const v=formPayload();delete v.adventure_id;return v}
+  function sameField(a,b){return String(a??'')===String(b??'')}
+  function baseSetup(a){return Object.fromEntries(['title','slug','event_type','summary','description','timezone','starts_at','ends_at','location_name','location_address'].map(k=>[k,a[k]??null]))}
+  function setupChanges(){const v=currentSetup(),changes={};for(const [k,value] of Object.entries(v))if(!sameField(value,setupBase?.[k]))changes[k]=value;return changes}
+  // Field-level resolution: the existing Worker compare-and-swap remains authoritative.
+  const conflictPanel=document.createElement('section');
+  conflictPanel.id='adventureConflictPanel';
+  conflictPanel.setAttribute('aria-live','polite');
+  conflictPanel.style.cssText='display:none;margin:12px 0;padding:16px;border:1px solid #d8a64a;border-radius:12px;background:#fff8e8;color:#4d2817';
+  f.parentNode.insertBefore(conflictPanel,f);
+  function setSetupField(k,value){
+    if(k==='starts_at')$('startAt').value=local(value);
+    else if(k==='ends_at')$('endAt').value=local(value);
+    else if(k==='location_name')$('locationName').value=value||'';
+    else if(k==='location_address')$('locationAddress').value=value||'';
+    else {const el=f.elements.namedItem(k);if(el)el.value=value??''}
+  }
+  function renderConflicts(){
+    conflictPanel.replaceChildren();conflictPanel.style.display=conflictFields.size?'block':'none';
+    if(!conflictFields.size)return;
+    const heading=document.createElement('h3');heading.textContent='Resolve concurrent edits';conflictPanel.append(heading);
+    const help=document.createElement('p');help.textContent='Compare the latest saved value with your draft. Resolve each field before saving. Your selection will still be checked against the server when you save.';conflictPanel.append(help);
+    for(const k of conflictFields){
+      const versions=conflictVersions.get(k);if(!versions)continue;
+      const wrap=document.createElement('div');wrap.style.cssText='border-top:1px solid #e5d2ae;padding:12px 0';
+      const heading=document.createElement('strong');heading.textContent=historyFields[k]||label(k);wrap.append(heading);
+      for(const [title,value] of [['Latest saved',versions.latest],['Your draft',versions.draft]]){
+        const text=document.createElement('p');text.style.margin='8px 0 3px';text.textContent=title+':';
+        const pre=document.createElement('pre');pre.style.cssText='white-space:pre-wrap;overflow-wrap:anywhere;background:white;border:1px solid #e9d9c5;border-radius:6px;padding:8px;max-height:140px;overflow:auto';pre.textContent=value==null||value===''?'(empty)':['starts_at','ends_at'].includes(k)?date(value):String(value);wrap.append(text,pre);
+      }
+      const merge=document.createElement('textarea');merge.setAttribute('aria-label','Merged value for '+(historyFields[k]||k));merge.value=versions.draft??'';merge.rows=3;merge.style.cssText='width:100%;box-sizing:border-box;margin:8px 0';
+      if(['starts_at','ends_at','event_type','timezone'].includes(k)){merge.style.display='none'}
+      const controls=document.createElement('div');controls.style.cssText='display:flex;gap:8px;flex-wrap:wrap';
+      for(const [title,mode] of [['Use latest','latest'],['Keep my draft','draft'],['Use merged text','merge']]){
+        if(mode==='merge'&&merge.style.display==='none')continue;
+        const button=document.createElement('button');button.type='button';button.className='crew-button';button.textContent=title;
+        button.onclick=()=>{
+          if(!conflictFields.has(k))return;
+          const value=mode==='latest'?versions.latest:mode==='draft'?versions.draft:merge.value;
+          setSetupField(k,value);conflictFields.delete(k);conflictVersions.delete(k);
+          renderConflicts();updateDirty();
+          if(!conflictFields.size)notify('Conflicts resolved. Review the Adventure and save to confirm your choices.','warning');
+        };controls.append(button);
+      }
+      wrap.append(merge,controls);conflictPanel.append(wrap);
+    }
+  }
+  async function syncOpen(){
+    if(syncBusy||opening||saveBusy||!$('editor').open||!current?.adventure_id)return;
+    syncBusy=true;
+    try{
+      const fresh=await api('/crew/adventures/detail?id='+encodeURIComponent(current.adventure_id));
+      if(!$('editor').open||fresh.adventure.adventure_id!==current?.adventure_id)return;
+      const oldBase=setupBase||baseSetup(current),draft=currentSetup(),latest=baseSetup(fresh.adventure),conflicts=[];
+      for(const k of Object.keys(latest)){
+        if(!sameField(draft[k],oldBase[k])){
+          if(!sameField(latest[k],oldBase[k])&&!sameField(latest[k],draft[k]))conflicts.push(k);
+          continue;
+        }
+        if(k==='starts_at')$('startAt').value=local(latest[k]);
+        else if(k==='ends_at')$('endAt').value=local(latest[k]);
+        else if(k==='location_name')$('locationName').value=latest[k]||'';
+        else if(k==='location_address')$('locationAddress').value=latest[k]||'';
+        else {const el=f.elements.namedItem(k);if(el)el.value=latest[k]||''}
+      }
+      conflicts.forEach(k=>{conflictFields.add(k);conflictVersions.set(k,{draft:draft[k],latest:latest[k]})});
+      // If another remote edit arrives while resolving, refresh the latest comparison.
+      for(const k of conflictFields){if(!conflicts.includes(k)&&conflictVersions.has(k)){
+        const prior=conflictVersions.get(k);
+        if(!sameField(prior.latest,latest[k]))conflictVersions.set(k,{draft:currentSetup()[k],latest:latest[k]});
+      }}
+      setupBase=latest;renderConflicts();current=fresh.adventure;detail=fresh;
+      $('formTitle').textContent=current.title;
+      $('formMeta').textContent=current.adventure_id+' · '+label(current.lifecycle_status);
+      $('lifecycleCurrent').textContent=label(current.lifecycle_status);
+      $('overview').innerHTML=`<p><strong>${esc(current.title)}</strong> · ${esc(label(current.event_type))}</p><p>${esc(current.summary||'No summary yet.')}</p><p><strong>When:</strong> ${esc(date(current.starts_at))} – ${esc(date(current.ends_at))}</p><p><strong>Where:</strong> ${esc(current.location_name||'Not set')}</p><p><strong>Lifecycle:</strong> ${esc(label(current.lifecycle_status))}</p><p><strong>Recap:</strong> ${esc(label(current.recap_status))}</p>`;
+      $('nextStatus').innerHTML=(allowed[current.lifecycle_status]||[]).map(x=>`<option value="${x}">${label(x)}</option>`).join('');
+      $('applyTransition').disabled=!fresh.access.publish||!$('nextStatus').options.length;
+      $('liveControlHint').hidden=current.lifecycle_status!=='live';
+      const editable=!!fresh.access.edit&&!['live','past','cancelled'].includes(current.lifecycle_status);
+      f.querySelectorAll('input,textarea,select,button').forEach(el=>el.disabled=!editable);
+      ['startAt','endAt','locationName','locationAddress','saveSetup'].forEach(k=>$(k).disabled=!editable);
+      renderHistory('statusHistory',fresh.statusHistory||[]);renderHistory('auditList',fresh.audit||[]);
+      if(conflicts.length)notify('Another Crew member changed: '+conflicts.join(', ')+'. Your draft is preserved. Review before saving.','warning');
+      updateDirty();
+    }catch(e){$('formSaveState').textContent='Sync unavailable — your draft is preserved.'}
+    finally{syncBusy=false}
+  }
+  function formPayload(){return {...fieldData(f,fields),starts_at:localISO($('startAt').value),ends_at:localISO($('endAt').value),location_name:$('locationName').value,location_address:$('locationAddress').value,adventure_id:current?.adventure_id||null}}
+  async function list(){try{const d=await api('/crew/adventures?q='+encodeURIComponent($('search').value)+'&status='+encodeURIComponent($('filter').value));all=d.adventures||[];can=d.access||{};$('newAdventure').hidden=!can.create;const count=s=>all.filter(x=>x.lifecycle_status===s).length;$('stats').innerHTML=[['All',all.length],['Upcoming',count('upcoming')],['Live',count('live')],['Recap Pending',count('recap_pending')]].map(([k,v])=>`<div class="adv-stat"><strong>${v}</strong>${k}</div>`).join('');$('rows').innerHTML=all.map(a=>`<tr data-id="${esc(a.adventure_id)}"><td><strong>${esc(a.title)}</strong><br><small>${esc(a.slug)}</small></td><td>${esc(label(a.event_type))}</td><td>${esc(date(a.starts_at))}</td><td>${esc(a.location_name||'TBD')}</td><td><span class="adv-pill">${esc(label(a.lifecycle_status))}</span></td><td>${esc(label(a.recap_status))}</td></tr>`).join('')||'<tr><td colspan="6">No Adventures found.</td></tr>';banner('listMessage','')}catch(e){banner('listMessage',e.message,'error')}}
+  $('rows').onclick=e=>{const row=e.target.closest('tr[data-id]');if(row)open(row.dataset.id)};
+  async function open(id,preferredTab='overview'){if(opening||saveBusy||($('editor').open&&!allowDiscard()))return;opening=true;try{detail=id?await api('/crew/adventures/detail?id='+encodeURIComponent(id)):null;current=detail?.adventure||null;const a=current||{title:'',slug:'',event_type:'oba_popup',timezone:'America/Los_Angeles',starts_at:'',ends_at:''};setFields(f,a,fields);setupBase=current?baseSetup(a):null;conflictFields.clear();conflictVersions.clear();renderConflicts();$('startAt').value=local(a.starts_at);$('endAt').value=local(a.ends_at);$('locationName').value=a.location_name||'';$('locationAddress').value=a.location_address||'';setFields(recap,a,['recap_status','recap_title','recap_body','crowd_report']);$('formTitle').textContent=a.title||'New Adventure';$('formMeta').textContent=current?`${a.adventure_id} · ${label(a.lifecycle_status)}`:'Draft · Not yet saved';const access=detail?.access||{edit:can.create};$('overview').innerHTML=current?`<p><strong>${esc(a.title)}</strong> · ${esc(label(a.event_type))}</p><p>${esc(a.summary||'No summary yet.')}</p><p><strong>When:</strong> ${esc(date(a.starts_at))} – ${esc(date(a.ends_at))}</p><p><strong>Where:</strong> ${esc(a.location_name||'Not set')}</p><p><strong>Lifecycle:</strong> ${esc(label(a.lifecycle_status))}</p><p><strong>Recap:</strong> ${esc(label(a.recap_status))}</p>`:'<p>Complete the Details, Schedule and Location tabs to create an Adventure.</p>';
+  const edit=!!(current?access.edit:can.create)&&!['live','past','cancelled'].includes(a.lifecycle_status);f.querySelectorAll('input,textarea,select,button').forEach(e=>e.disabled=!edit);['startAt','endAt','locationName','locationAddress','saveSetup'].forEach(k=>$(k).disabled=!edit);$('lifecycleCurrent').textContent=label(a.lifecycle_status||'draft');$('checkinStationLink').hidden=!current;$('openCheckinStation').href=current?'/crew/adventure-live.html?id='+encodeURIComponent(current.adventure_id):'#';$('nextStatus').innerHTML=(allowed[a.lifecycle_status]||[]).map(s=>`<option value="${s}">${label(s)}</option>`).join('');$('applyTransition').disabled=!current||!access.publish||!$('nextStatus').options.length;$('liveControlHint').hidden=a.lifecycle_status!=='live';
+  renderHistory('statusHistory',detail?.statusHistory||[]);renderHistory('auditList',detail?.audit||[]);$('updatesList').innerHTML=(detail?.updates||[]).map(u=>`<article class="adv-update"><strong>${esc(u.title)}</strong> <span class="adv-pill">${esc(u.status)}</span> ${u.pinned?'📌':''}<p>${esc(u.body)}</p><small>${esc(date(u.published_at||u.created_at))}</small> <button class="crew-button" data-update="${esc(u.update_id)}">Edit</button></article>`).join('')||'<p class="adv-muted">No official updates.</p>';
+  $('relationshipsList').innerHTML=(detail?.relationships||[]).map(x=>`<article class="adv-update">${esc(x.related_title)} · ${esc(label(x.relationship_type))} <button class="crew-button" data-remove="${esc(x.related_adventure_id)}" data-kind="${esc(x.relationship_type)}">Remove</button></article>`).join('')||'<p class="adv-muted">No related Adventures.</p>';
+  $('relatedSelect').innerHTML='<option value="">Choose Adventure</option>'+all.filter(x=>x.adventure_id!==a.adventure_id).map(x=>`<option value="${esc(x.adventure_id)}">${esc(x.title)}</option>`).join('');$('accessList').innerHTML=Object.entries(access).map(([k,v])=>`<p>${esc(label(k))}: <strong>${v?'Allowed':'Restricted'}</strong></p>`).join('');update.querySelectorAll('input,textarea,select,button').forEach(e=>e.disabled=!current||!access.updates);recap.querySelectorAll('input,textarea,select,button').forEach(e=>e.disabled=!current||!access.recap);$('relationshipForm').querySelectorAll('input,select,button').forEach(e=>e.disabled=!current||!access.relationships);$('transitionReason').value='';resetUpdate();notify('');tab('overview');if(!$('editor').open){returnFocus=document.activeElement;$('editor').showModal()}tab(preferredTab);markSaved();}catch(e){banner('listMessage',e.message,'error')}finally{opening=false}}
+  async function reload(message,section=activeTab){const id=current?.adventure_id;await list();if(id){savedSnapshot=null;await open(id,section);notify(message)}}
+  async function action(run){if(saveBusy)return;saveBusy=true;try{await run()}catch(e){notify(e.message,'error')}finally{saveBusy=false;updateDirty()}}
+  $('newAdventure').onclick=()=>open(null);$('closeEditor').onclick=safeClose;$('refresh').onclick=list;$('search').oninput=()=>{clearTimeout(window.advSearchTimer);window.advSearchTimer=setTimeout(list,250)};$('filter').onchange=list;
+  f.onsubmit=e=>{e.preventDefault();if(conflictFields.size)return notify('Conflicting fields: '+[...conflictFields].join(', ')+'. Resolve them in the comparison panel before saving.','error');if(!f.reportValidity())return;const start=$('startAt').value,end=$('endAt').value;if(start&&end&&end<=start)return notify('The end time must be later than the start time.','warning');action(async()=>{const changes=current?setupChanges():null;
+    // A no-op save must not submit an artificial full-form update.
+    if(current&&!Object.keys(changes).length){markSaved();notify('Adventure setup is already up to date.');return}
+    // Include the visible canonical identity in an actual edit. This repairs legacy
+    // records with a missing/stale event_type and lets the server validate the
+    // values the Crew member actually sees, while preserving compare-and-swap.
+    if(current)for(const k of ['title','slug','event_type'])changes[k]=f.elements.namedItem(k).value;
+    const payload=current?{adventure_id:current.adventure_id,changes,base:Object.fromEntries(Object.keys(changes).map(k=>[k,setupBase[k]]))}:formPayload();const d=await post('/crew/adventures/save',payload);current={adventure_id:d.adventure_id};await reload('Adventure setup saved.','setup')})};
+  $('applyTransition').onclick=()=>{if(dirty()&&!allowDiscard())return;action(async()=>{
+    const next=$('nextStatus').value;
+    if(!next)return notify('Select a valid next lifecycle state.','warning');
+    const reason=$('transitionReason').value.trim();
+    if(['postponed','rescheduled','cancelled','ended_early'].includes(next)&&!reason)return notify('Enter an operational reason before applying this exception.','warning');
+    if(next==='ended_early'&&!window.confirm('End this Live Adventure early? This stops its Live lifecycle and requires a reason.'))return;
+    if(next==='recap_pending'&&current.lifecycle_status==='live'&&!window.confirm('End Live and begin the recap workflow?'))return;
+    await post('/crew/adventures/transition',{adventure_id:current.adventure_id,status:next,reason});
+    await reload(next==='ended_early'?'Adventure ended early.':next==='recap_pending'?'Live ended; recap pending.':'Lifecycle updated.');
+  })};
+  recap.onsubmit=e=>{e.preventDefault();action(async()=>{await post('/crew/adventures/recap',{adventure_id:current.adventure_id,...fieldData(recap,['recap_status','recap_title','recap_body','crowd_report'])});await reload('Recap saved.','recap')})};
+  function resetUpdate(){update.reset();update.elements.namedItem('update_id').value='';$('updateHeading').textContent='New official update'}$('resetUpdate').onclick=resetUpdate;
+  $('updatesList').onclick=e=>{const btn=e.target.closest('button[data-update]');if(!btn)return;const u=detail.updates.find(x=>x.update_id===btn.dataset.update);if(!u)return;setFields(update,u,['update_id','title','body','status','pinned']);$('updateHeading').textContent='Edit official update';};
+  update.onsubmit=e=>{e.preventDefault();action(async()=>{await post('/crew/adventures/update',{adventure_id:current.adventure_id,...fieldData(update,['update_id','title','body','status']),pinned:update.elements.namedItem('pinned').checked});await reload('Official update saved.','updates')})};
+  $('relationshipForm').onsubmit=e=>{e.preventDefault();action(async()=>{await post('/crew/adventures/relationship',{adventure_id:current.adventure_id,...fieldData($('relationshipForm'),['related_adventure_id','relationship_type'])});await reload('Relationship saved.','relationships')})};
+  $('relationshipsList').onclick=e=>{const b=e.target.closest('button[data-remove]');if(!b)return;action(async()=>{await post('/crew/adventures/relationship',{adventure_id:current.adventure_id,related_adventure_id:b.dataset.remove,relationship_type:b.dataset.kind,remove:true});await reload('Relationship removed.','relationships')})};
+  $('editor').addEventListener('close',()=>{if(returnFocus?.isConnected)returnFocus.focus();returnFocus=null});
+  await list();
+  setInterval(syncOpen,15000);
+  const qs=new URLSearchParams(location.search);const direct=qs.get('id')||qs.get('adventure_id');if(direct)await open(direct,qs.get('tab')||'overview');
+});
