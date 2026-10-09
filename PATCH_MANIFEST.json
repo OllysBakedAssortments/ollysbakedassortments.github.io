@@ -1,0 +1,14 @@
+{
+  "patch": "1A",
+  "status": "offline implementation; requires D1 migration and live acceptance tests before deployment",
+  "files": {
+    "oba-checkout/worker.js": "REPLACE",
+    "crew/crew-access.html": "REPLACE",
+    "schema/migrations/0007_adventure_granular_permissions.sql": "NEW"
+  },
+  "limitations": [
+    "Assignment-based grants and Adventure Queue are Patch 1B/1C",
+    "Frontend legacy access flags remain coarse; field-level authorization and role migration require validation",
+    "No production D1 changes have been made"
+  ]
+}
