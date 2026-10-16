@@ -75,7 +75,7 @@ const CREW_RECOVERY_MAX_IP_ATTEMPTS = 12;
 const CREW_RECOVERY_ATTEMPT_RETENTION_DAYS = 7;
 
 const CREW_ALLOWED_ORIGIN =
-  'https://ollysbakedassortments.com';
+  'https://oba-checkout-staging.ollysbakedassortments.workers.dev';
 
 const CREW_ORIGIN_PROTECTED_PATHS =
   new Set([
@@ -1118,6 +1118,10 @@ async function getCrewEffectiveAccessDecision(env, crewSession, permissionKey, c
     return { allowed: false, source: 'unauthenticated', specificity: -1 };
   }
 
+  if (role === 'crew') {
+    const explicit = await env.OBA_DB.prepare('SELECT override_value FROM crew_permission_overrides WHERE crew_user_id=? AND permission_key=? LIMIT 1').bind(Number(crewSession.crewUserId),String(permissionKey)).first();
+    if (String(explicit?.override_value ?? '').toLowerCase() === 'deny' || explicit?.override_value === 0 || explicit?.override_value === '0') return {allowed:false,source:'account_explicit_deny',specificity:5};
+  }
   const rows = await env.OBA_DB.prepare(`
     SELECT assignment_id, permission_key, manager_key, record_type, record_id,
            section_key, action_key, effect, reason, granted_by_crew_user_id,
@@ -1148,6 +1152,21 @@ async function getCrewEffectiveAccessDecision(env, crewSession, permissionKey, c
       assignmentId: winner.assignment_id,
       effect: winner.effect
     };
+  }
+  // Assignment inheritance is scoped to the exact Adventure and never grants approvals or global authority.
+  if (!baseAllowed && role === 'crew' && context?.managerKey === 'adventures' && context?.recordType === 'adventure' && context?.recordId) {
+    const rolePermissions = {
+      setup:['adventures.setup.edit'],inventory:['adventures.inventory.manage'],chips:['adventures.chips.manage'],
+      media:['adventures.media.manage'],community:['adventures.community.manage'],relationships:['adventures.relationships.manage'],
+      checkin:['adventures.checkin.manage'],recap:['adventures.recap.edit','adventures.recap.submit'],
+      updates:['adventures.updates.edit'],lifecycle:['adventures.lifecycle.transition'],
+      adventure_lead:['adventures.setup.edit','adventures.inventory.manage','adventures.chips.manage','adventures.media.manage','adventures.community.manage','adventures.relationships.manage'],
+      operations_lead:['adventures.checkin.manage','adventures.recap.edit','adventures.recap.submit','adventures.updates.edit','adventures.lifecycle.transition']
+    };
+    const rows = await env.OBA_DB.prepare("SELECT assignment_type FROM adventure_crew_assignments WHERE adventure_id=? AND crew_user_id=? AND status='active' AND datetime(starts_at)<=CURRENT_TIMESTAMP AND (expires_at IS NULL OR datetime(expires_at)>CURRENT_TIMESTAMP)").bind(String(context.recordId),Number(crewSession.crewUserId)).all();
+    if ((rows.results||[]).some(row=>(rolePermissions[row.assignment_type]||[]).includes(permissionKey))) {
+      return {allowed:true,source:'adventure_assignment',specificity:2};
+    }
   }
   return { allowed: baseAllowed, source: 'base_permission', specificity: -1 };
 }
@@ -1690,7 +1709,7 @@ async function reviewDuplicateWarnings(env, input, excludeReviewId = null) {
 const LONGNECK_SESSION_COOKIE = 'oba_longneck_session';
 const LONGNECK_SESSION_TTL_SECONDS = 60 * 60 * 24 * 30;
 const LONGNECK_TOKEN_TTL_MINUTES = 30;
-const LONGNECK_ALLOWED_ORIGIN = 'https://ollysbakedassortments.com';
+const LONGNECK_ALLOWED_ORIGIN = 'https://oba-checkout-staging.ollysbakedassortments.workers.dev';
 
 function normalizeLongneckEmail(value) {
   return typeof value === 'string' ? value.trim().toLowerCase() : '';
@@ -1859,28 +1878,33 @@ const adventureCheckinOpen=(a,c)=>a?.lifecycle_status==='live'&&!Number(c?.pause
 
 export default {
   async scheduled(event, env, ctx) {
-    // Requires an hourly (or more frequent) Cloudflare Cron Trigger configured on this Worker.
-    const now=new Date();
-    const rows=await env.OBA_DB.prepare("SELECT adventure_id,lifecycle_status,starts_at FROM adventures WHERE lifecycle_status IN ('upcoming','event_day') ORDER BY starts_at ASC LIMIT 500").all();
-    const failures=[];
-    for(const row of rows.results||[]) {
-      try {
-        if(row.lifecycle_status==='upcoming' && adventureEventDayReached(row,now)) {
-          const changed=await advanceAdventureByClock(env,row,'event_day');
-          if(changed) row.lifecycle_status='event_day';
-        }
-        if(row.lifecycle_status==='event_day' && adventureLiveWindowReached(row,now)) {
-          await advanceAdventureByClock(env,row,'live');
-        }
-      } catch(error) {
-        console.error('Adventure lifecycle scheduler failed',row.adventure_id,String(error));
-        failures.push(row.adventure_id);
-      }
-    }
-    if(failures.length)throw new Error('Adventure lifecycle scheduler failed for '+failures.length+' record(s); check Worker logs.');
+    // Disabled in staging: no automatic lifecycle changes.
+    return;
   },
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    // PATCH 1B STAGING SAFETY GATE: no live checkout, email, or account-management routes.
+    // This Worker must be bound exclusively to oba-orders-staging.
+    const allowedPaths = new Set(['/crew/login', '/crew/session', '/crew/logout']);
+    const isAdventureRoute = url.pathname.startsWith('/crew/adventures');
+    const allowedOrigin = 'https://oba-checkout-staging.ollysbakedassortments.workers.dev';
+    const requestOrigin = request.headers.get('Origin');
+    const stagingHeaders = { 'Cache-Control': 'no-store', 'Vary': 'Origin' };
+    if (requestOrigin === allowedOrigin) {
+      stagingHeaders['Access-Control-Allow-Origin'] = allowedOrigin;
+      stagingHeaders['Access-Control-Allow-Credentials'] = 'true';
+      stagingHeaders['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS';
+      stagingHeaders['Access-Control-Allow-Headers'] = 'Content-Type';
+    }
+    if (!allowedPaths.has(url.pathname) && !isAdventureRoute) {
+      return Response.json({ok:false,error:'Endpoint disabled in Patch 1B staging'}, {status:404,headers:stagingHeaders});
+    }
+    if (requestOrigin !== allowedOrigin) {
+      return Response.json({ok:false,error:'Staging origin required'}, {status:403,headers:stagingHeaders});
+    }
+    if (!['GET','POST','OPTIONS'].includes(request.method)) {
+      return Response.json({ok:false,error:'Method not allowed'}, {status:405,headers:stagingHeaders});
+    }
 
     /* =========================================
        CORS
@@ -1888,7 +1912,7 @@ export default {
 
         const corsHeaders = {
       'Access-Control-Allow-Origin':
-        'https://ollysbakedassortments.com',
+        'https://oba-checkout-staging.ollysbakedassortments.workers.dev',
       'Access-Control-Allow-Methods':
         'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers':
@@ -1917,7 +1941,7 @@ export default {
       }
 
       const origin = request.headers.get('Origin');
-      if (origin && origin !== 'https://ollysbakedassortments.com') {
+      if (origin && origin !== 'https://oba-checkout-staging.ollysbakedassortments.workers.dev') {
         return Response.json(
           { ok: false, error: 'Request origin is not allowed.' },
           { status: 403, headers: { ...corsHeaders, 'Cache-Control': 'no-store' } }
@@ -2237,15 +2261,111 @@ export default {
       const send = (data,status=200) => Response.json(data,{status,headers});
       if(request.method==='OPTIONS') return new Response(null,{status:204,headers:corsHeaders});
       if(!['GET','POST'].includes(request.method)) return send({ok:false,error:'Method Not Allowed'},405);
-      if(request.method==='POST' && request.headers.get('Origin')!=='https://ollysbakedassortments.com') return send({ok:false,error:'Invalid request origin.'},403);
+      if(request.method==='POST' && request.headers.get('Origin')!=='https://oba-checkout-staging.ollysbakedassortments.workers.dev') return send({ok:false,error:'Invalid request origin.'},403);
       const actor=await getCrewSession(request,env);
       if(!actor)return send({ok:false,error:'Unauthorized'},401);
       const path=url.pathname, db=env.OBA_DB;
       const scope=(id=null,sectionKey=null,actionKey=null)=>({managerKey:'adventures',recordType:'adventure',recordId:id,sectionKey,actionKey});
       const permit=async(key,id=null,section=null,action=null)=>hasCrewPermission(env,actor,key,scope(id,section,action));
       const requirePermit=async(key,id=null,section=null,action=null)=>await permit(key,id,section,action)?null:send({ok:false,error:'You do not have permission to perform this action.'},403);
-      const viewDenied=await requirePermit('adventures.view');if(viewDenied)return viewDenied;
+      const body= request.method==='POST' ? await request.json().catch(()=>null):null;
+      if(request.method==='POST' && (!body || JSON.stringify(body).length>25000))return send({ok:false,error:'Invalid or oversized request.'},400);
+      // Phase 4B-SYNC 1B: Adventure-specific Operator/Lead assignments.
+      const ASSIGNMENT_ROLES = Object.freeze({
+        setup:['adventures.setup.edit'],inventory:['adventures.inventory.manage'],chips:['adventures.chips.manage'],
+        media:['adventures.media.manage'],community:['adventures.community.manage'],relationships:['adventures.relationships.manage'],
+        checkin:['adventures.checkin.manage'],recap:['adventures.recap.edit','adventures.recap.submit'],
+        updates:['adventures.updates.edit'],lifecycle:['adventures.lifecycle.transition'],
+        adventure_lead:['adventures.setup.edit','adventures.inventory.manage','adventures.chips.manage','adventures.media.manage','adventures.community.manage','adventures.relationships.manage'],
+        operations_lead:['adventures.checkin.manage','adventures.recap.edit','adventures.recap.submit','adventures.updates.edit','adventures.lifecycle.transition']
+      });
+      const assignmentType = value => String(value||'').trim().toLowerCase();
+      const assignmentManageKey = type => type.endsWith('_lead')?'adventures.assignments.manage_leads':'adventures.assignments.manage_operators';
+      if(path==='/crew/adventures/assignments' && request.method==='GET'){
+        const adventureId=String(url.searchParams.get('id')||'').trim();
+        if(!adventureId)return send({ok:false,error:'Adventure ID required.'},400);
+        const exists=await db.prepare('SELECT adventure_id FROM adventures WHERE adventure_id=?').bind(adventureId).first();
+        if(!exists)return send({ok:false,error:'Adventure not found.'},404);
+        const canManageOperators=await permit('adventures.assignments.manage_operators',adventureId,'crew','manage');
+        const canManageLeads=await permit('adventures.assignments.manage_leads',adventureId,'crew','manage');
+        const canView=String(actor.role).toLowerCase()!=='crew' && await permit('adventures.view',adventureId,'crew','view');
+        const own=await db.prepare("SELECT COUNT(*) AS n FROM adventure_crew_assignments WHERE adventure_id=? AND crew_user_id=? AND status='active' AND datetime(starts_at)<=CURRENT_TIMESTAMP AND (expires_at IS NULL OR datetime(expires_at)>CURRENT_TIMESTAMP)").bind(adventureId,Number(actor.crewUserId)).first();
+        if(!canView&&!canManageOperators&&!canManageLeads&&(!Number(own?.n)||!(await permit('adventures.view',adventureId,'crew','view'))))return send({ok:false,error:'Access denied.'},403);
+        const rows=await db.prepare('SELECT assignment_id,adventure_id,crew_user_id,assignment_type,status,starts_at,expires_at,granted_by_crew_user_id,revoked_by_crew_user_id,revoked_at,reason,created_at,updated_at FROM adventure_crew_assignments WHERE adventure_id=? ORDER BY created_at DESC LIMIT 300').bind(adventureId).all();
+        return send({ok:true,assignments:(rows.results||[]).filter(r=>canView||canManageOperators||canManageLeads||Number(r.crew_user_id)===Number(actor.crewUserId)),canManageOperators,canManageLeads,roles:Object.keys(ASSIGNMENT_ROLES)});
+      }
+      if(path==='/crew/adventures/assignments' && request.method==='POST'){
+        const adventureId=String(body.adventure_id||'').trim(),operation=String(body.operation||'grant').trim();
+        const adventure=await db.prepare('SELECT adventure_id,lifecycle_status FROM adventures WHERE adventure_id=?').bind(adventureId).first();
+        if(!adventure)return send({ok:false,error:'Adventure not found.'},404);
+        if(operation==='grant'){
+          const type=assignmentType(body.assignment_type),userId=Number(body.crew_user_id);
+          if(!Object.hasOwn(ASSIGNMENT_ROLES,type)||!Number.isSafeInteger(userId)||userId<=0)return send({ok:false,error:'Invalid assignment type or Crew member.'},400);
+          const denied=await requirePermit(assignmentManageKey(type),adventureId,'crew','manage');if(denied)return denied;
+          // A supervisor cannot delegate capabilities that their own account lacks.
+          // Adventure assignments are never a shortcut around Manager restrictions.
+          for (const capability of ASSIGNMENT_ROLES[type]) {
+            if (!(await permit(capability,adventureId,'crew','delegate'))) {
+              return send({ok:false,error:'You cannot assign a role containing a capability you do not hold.',capability},403);
+            }
+          }
+          const member=await db.prepare('SELECT crew_user_id,role,status FROM crew_users WHERE crew_user_id=?').bind(userId).first();
+          if(!member||String(member.role).toLowerCase()!=='crew')return send({ok:false,error:'Assignments may only be granted to Crew accounts.'},400);
+          if(String(member.status||'').toLowerCase()!=='active')return send({ok:false,error:'Crew account must be active.'},400);
+          if(userId===Number(actor.crewUserId))return send({ok:false,error:'You cannot assign yourself an Adventure role.'},403);
+          const rawExpiry=body.expires_at==null||body.expires_at===''?null:String(body.expires_at).trim();
+          if(rawExpiry&&!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,3})?)?(?:Z|[+-]\d{2}:\d{2})$/.test(rawExpiry))return send({ok:false,error:'Expiration must include a timezone.'},400);
+          const expiry=rawExpiry&&Number.isFinite(Date.parse(rawExpiry))?new Date(rawExpiry).toISOString():null;
+          if(rawExpiry&&(!expiry||Date.parse(expiry)<=Date.now()))return send({ok:false,error:'Expiration must be in the future.'},400);
+          if(['cancelled','past'].includes(String(adventure.lifecycle_status)))return send({ok:false,error:'Cannot create assignments for a closed Adventure.'},409);
+          // Expired rows must leave the partial unique index before a new grant can be issued.
+          // Audit the transition in the same D1 transaction as the status update.
+          await db.batch([
+            db.prepare("INSERT INTO adventure_assignment_events(event_id,assignment_id,adventure_id,actor_crew_user_id,event_type,details) SELECT lower(hex(randomblob(16))),assignment_id,adventure_id,?,'expired',json_object('assignment_type',assignment_type,'crew_user_id',crew_user_id) FROM adventure_crew_assignments WHERE adventure_id=? AND crew_user_id=? AND assignment_type=? AND status='active' AND expires_at IS NOT NULL AND datetime(expires_at)<=CURRENT_TIMESTAMP").bind(Number(actor.crewUserId),adventureId,userId,type),
+            db.prepare("UPDATE adventure_crew_assignments SET status='expired',updated_at=CURRENT_TIMESTAMP WHERE adventure_id=? AND crew_user_id=? AND assignment_type=? AND status='active' AND expires_at IS NOT NULL AND datetime(expires_at)<=CURRENT_TIMESTAMP").bind(adventureId,userId,type)
+          ]);
+          const existing=await db.prepare("SELECT assignment_id FROM adventure_crew_assignments WHERE adventure_id=? AND crew_user_id=? AND assignment_type=? AND status='active'").bind(adventureId,userId,type).first();
+          if(existing)return send({ok:false,error:'An active assignment already exists.',assignment_id:existing.assignment_id},409);
+          const assignmentId=crypto.randomUUID(),reason=String(body.reason||'').trim().slice(0,500);
+          try {
+            await db.batch([
+              db.prepare('INSERT INTO adventure_crew_assignments(assignment_id,adventure_id,crew_user_id,assignment_type,status,expires_at,granted_by_crew_user_id,reason) VALUES(?,?,?,?,?,?,?,?)').bind(assignmentId,adventureId,userId,type,'active',expiry,Number(actor.crewUserId),reason||null),
+              db.prepare('INSERT INTO adventure_assignment_events(event_id,assignment_id,adventure_id,actor_crew_user_id,event_type,details) VALUES(?,?,?,?,?,?)').bind(crypto.randomUUID(),assignmentId,adventureId,Number(actor.crewUserId),'granted',JSON.stringify({assignment_type:type,crew_user_id:userId,expires_at:expiry,reason}))
+            ]);
+          } catch (error) {
+            // A concurrent grant can win after the preflight duplicate check.
+            const raced=await db.prepare("SELECT assignment_id FROM adventure_crew_assignments WHERE adventure_id=? AND crew_user_id=? AND assignment_type=? AND status='active'").bind(adventureId,userId,type).first();
+            if(raced)return send({ok:false,error:'An active assignment already exists.',assignment_id:raced.assignment_id},409);
+            throw error;
+          }
+          return send({ok:true,assignment_id:assignmentId});
+        }
+        if(operation==='revoke'){
+          const assignmentId=String(body.assignment_id||'').trim(),reason=String(body.reason||'').trim().slice(0,500);
+          if(!reason)return send({ok:false,error:'A revocation reason is required.'},400);
+          const row=await db.prepare('SELECT * FROM adventure_crew_assignments WHERE assignment_id=? AND adventure_id=?').bind(assignmentId,adventureId).first();
+          if(!row)return send({ok:false,error:'Assignment not found.'},404);
+          const denied=await requirePermit(assignmentManageKey(row.assignment_type),adventureId,'crew','manage');if(denied)return denied;
+          if(row.status!=='active')return send({ok:false,error:'Assignment is no longer active.'},409);
+          const results=await db.batch([
+            db.prepare("UPDATE adventure_crew_assignments SET status='revoked',revoked_at=CURRENT_TIMESTAMP,revoked_by_crew_user_id=?,updated_at=CURRENT_TIMESTAMP WHERE assignment_id=? AND status='active' AND (expires_at IS NULL OR datetime(expires_at)>CURRENT_TIMESTAMP)").bind(Number(actor.crewUserId),assignmentId),
+            db.prepare("INSERT OR IGNORE INTO adventure_assignment_events(event_id,assignment_id,adventure_id,actor_crew_user_id,event_type,details) SELECT ?,assignment_id,adventure_id,?,'revoked',? FROM adventure_crew_assignments WHERE assignment_id=? AND status='revoked'").bind(crypto.randomUUID(),Number(actor.crewUserId),JSON.stringify({reason}),assignmentId)
+          ]);
+          if(!results[0]?.meta?.changes)return send({ok:false,error:'Assignment changed; reload.'},409);
+          return send({ok:true});
+        }
+        return send({ok:false,error:'Invalid operation.'},400);
+      }
       const id=String(url.searchParams.get('id')||'').trim();
+      // Crew's legacy role-level view permission must not expose unassigned Adventures.
+      const globalView=String(actor.role).toLowerCase()!=='crew' && await permit('adventures.view');
+      const activeAssignment=async(key)=>{
+        if(!key||String(actor.role).toLowerCase()!=='crew')return false;
+        const row=await db.prepare("SELECT 1 AS allowed FROM adventure_crew_assignments WHERE adventure_id=? AND crew_user_id=? AND status='active' AND datetime(starts_at)<=CURRENT_TIMESTAMP AND (expires_at IS NULL OR datetime(expires_at)>CURRENT_TIMESTAMP) LIMIT 1").bind(key,Number(actor.crewUserId)).first();
+        return !!row;
+      };
+      const canReadAdventure=async(key)=>globalView || ((await activeAssignment(key)) && (await permit('adventures.view',key,'crew','view')));
+      if(!globalView && path!=='/crew/adventures' && request.method==='GET' && !(await canReadAdventure(id)))return send({ok:false,error:'Access denied.'},403);
       const fetchOne=async(key)=>db.prepare('SELECT * FROM adventures WHERE adventure_id=?').bind(key).first();
       const history=async(key)=>db.prepare('SELECT * FROM adventure_status_history WHERE adventure_id=? ORDER BY created_at DESC LIMIT 100').bind(key).all();
       const actorId=Number(actor.crewUserId);
@@ -2255,22 +2375,26 @@ export default {
       const editable=['title','slug','event_type','summary','description','location_name','location_address','timezone','starts_at','ends_at'];
       const iso=(v)=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(v)&&!Number.isNaN(Date.parse(v))?new Date(v).toISOString():null;
       const recordAudit=async(key,action,before,after,reason=null)=>recordCanonicalAuditEvent(env,{objectType:'adventure',objectId:key,actorId,action,previousState:before,newState:after,reason});
-      const body= request.method==='POST' ? await request.json().catch(()=>null):null;
-      if(request.method==='POST' && (!body || JSON.stringify(body).length>25000))return send({ok:false,error:'Invalid or oversized request.'},400);
+
       if(path==='/crew/adventures' && request.method==='GET'){
         const q=clean(url.searchParams.get('q'),100),status=clean(url.searchParams.get('status'),30);
         const where=[],args=[];
         if(q){where.push('(title LIKE ? OR slug LIKE ? OR location_name LIKE ?)');args.push(...Array(3).fill('%'+q.replace(/[\%_]/g,'')+'%'));}
         if(status&&statuses.includes(status)){where.push('lifecycle_status=?');args.push(status);}
+        if(!globalView){
+          where.push("adventure_id IN (SELECT adventure_id FROM adventure_crew_assignments WHERE crew_user_id=? AND status='active' AND datetime(starts_at)<=CURRENT_TIMESTAMP AND (expires_at IS NULL OR datetime(expires_at)>CURRENT_TIMESTAMP))");
+          args.push(Number(actor.crewUserId));
+        }
         const result=await db.prepare('SELECT * FROM adventures '+(where.length?'WHERE '+where.join(' AND '):'')+' ORDER BY starts_at DESC LIMIT 200').bind(...args).all();
-        return send({ok:true,adventures:result.results||[],access:{create:await permit('adventures.create'),edit:await permit('adventures.edit'),publish:await permit('adventures.publish')}});
+        const visibleAdventures=globalView?(result.results||[]):(await Promise.all((result.results||[]).map(async a=>(await canReadAdventure(a.adventure_id))?a:null))).filter(Boolean);
+        return send({ok:true,adventures:visibleAdventures,access:{create:await permit('adventures.create'),edit:await permit('adventures.edit'),publish:await permit('adventures.publish')}});
       }
       // Phase 4A: scoped Crew attendance read, no manual attendance mutation.
 
       // Phase 4B Crew check-in station; publish permission is required for operational mutations.
       if(path==='/crew/adventures/checkin' && request.method==='GET'){
         const a=await fetchOne(id);if(!a)return send({ok:false,error:'Adventure not found.'},404);
-        const denied=await requirePermit('adventures.view',id,'attendance','view');if(denied)return denied;
+        if(!(await permit('adventures.checkin.manage',id,'attendance','manage')))return send({ok:false,error:'Check-in permission required.'},403);
         const control=await db.prepare('SELECT * FROM adventure_checkin_controls WHERE adventure_id=?').bind(id).first();
         const count=await db.prepare("SELECT COUNT(*) AS total FROM adventure_attendance WHERE adventure_id=? AND status='verified'").bind(id).first();
         return send({ok:true,adventure:{adventure_id:id,title:a.title,status:a.lifecycle_status},control:control||{paused:0,ended_at:null,extended_until:null},active:adventureCheckinOpen(a,control),verifiedCount:Number(count?.total||0),canManage:await permit('adventures.checkin.manage',id,'attendance','manage')});
@@ -2304,7 +2428,7 @@ export default {
       if(path==='/crew/adventures/attendance' && request.method==='GET'){
         if(!id)return send({ok:false,error:'Adventure ID required.'},400);
         const adventure=await fetchOne(id);if(!adventure)return send({ok:false,error:'Adventure not found.'},404);
-        const denied=await requirePermit('adventures.view',id,'attendance','view');if(denied)return denied;
+        if(!(await permit('adventures.checkin.manage',id,'attendance','manage')))return send({ok:false,error:'Check-in permission required.'},403);
         const result=await db.prepare(`SELECT aa.attendance_id,aa.adventure_id,aa.longneck_id,aa.checked_in_at,aa.method,aa.status,aa.reward_status,l.display_name,l.username FROM adventure_attendance aa JOIN longnecks l ON l.longneck_id=aa.longneck_id WHERE aa.adventure_id=? ORDER BY aa.checked_in_at DESC LIMIT 200`).bind(id).all();
         const count=await db.prepare("SELECT COUNT(*) AS total FROM adventure_attendance WHERE adventure_id=? AND status='verified'").bind(id).first();
         return send({ok:true,attendance:result.results||[],verifiedCount:Number(count?.total||0)});
@@ -2312,10 +2436,13 @@ export default {
       if(path==='/crew/adventures/detail' && request.method==='GET'){
         if(!id)return send({ok:false,error:'Adventure ID required.'},400);
         const row=await fetchOne(id);if(!row)return send({ok:false,error:'Adventure not found.'},404);
-        const updates=await db.prepare('SELECT * FROM adventure_updates WHERE adventure_id=? ORDER BY created_at DESC').bind(id).all();
-        const relations=await db.prepare('SELECT ar.*,a.title AS related_title FROM adventure_relationships ar JOIN adventures a ON a.adventure_id=ar.related_adventure_id WHERE ar.adventure_id=?').bind(id).all();
-        const audits=await db.prepare("SELECT ca.*, CASE WHEN ca.actor_type='crew' THEN NULLIF(TRIM(COALESCE(cu.first_name,'') || ' ' || COALESCE(cu.last_name,'')),'') ELSE NULL END AS actor_display_name FROM canonical_audit_events ca LEFT JOIN crew_users cu ON ca.actor_type='crew' AND cu.crew_user_id=CAST(ca.actor_id AS INTEGER) WHERE ca.object_type='adventure' AND ca.object_id=? ORDER BY ca.created_at DESC LIMIT 100").bind(id).all();
-        return send({ok:true,adventure:row,updates:updates.results||[],relationships:relations.results||[],statusHistory:(await history(id)).results||[],audit:audits.results||[],access:{edit:await permit('adventures.setup.edit',id),publish:await permit('adventures.lifecycle.transition',id),updates:await permit('adventures.updates.edit',id),recap:await permit('adventures.recap.edit',id),relationships:await permit('adventures.relationships.manage',id)}});
+        const canUpdates=globalView || await permit('adventures.updates.edit',id);
+        const canRelations=globalView || await permit('adventures.relationships.manage',id);
+        const canAudit=await permit('adventures.audit.view',id);
+        const updates=canUpdates?await db.prepare('SELECT * FROM adventure_updates WHERE adventure_id=? ORDER BY created_at DESC').bind(id).all():{results:[]};
+        const relations=canRelations?await db.prepare('SELECT ar.*,a.title AS related_title FROM adventure_relationships ar JOIN adventures a ON a.adventure_id=ar.related_adventure_id WHERE ar.adventure_id=?').bind(id).all():{results:[]};
+        const audits=canAudit?await db.prepare("SELECT ca.*, CASE WHEN ca.actor_type='crew' THEN NULLIF(TRIM(COALESCE(cu.first_name,'') || ' ' || COALESCE(cu.last_name,'')),'') ELSE NULL END AS actor_display_name FROM canonical_audit_events ca LEFT JOIN crew_users cu ON ca.actor_type='crew' AND cu.crew_user_id=CAST(ca.actor_id AS INTEGER) WHERE ca.object_type='adventure' AND ca.object_id=? ORDER BY ca.created_at DESC LIMIT 100").bind(id).all():{results:[]};
+        return send({ok:true,adventure:row,updates:updates.results||[],relationships:relations.results||[],statusHistory:canAudit?(await history(id)).results||[]:[],audit:audits.results||[],access:{edit:await permit('adventures.setup.edit',id),publish:await permit('adventures.lifecycle.transition',id),updates:await permit('adventures.updates.edit',id),recap:await permit('adventures.recap.edit',id),relationships:await permit('adventures.relationships.manage',id)}});
       }
       if(path==='/crew/adventures/save' && request.method==='POST'){
         const key=clean(body.adventure_id,100),old=key?await fetchOne(key):null;
