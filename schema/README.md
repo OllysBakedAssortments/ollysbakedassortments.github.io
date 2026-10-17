@@ -1,30 +1,15 @@
-# OBA Database Schema Management
+# OBA Phase 00E.1 — Staging Reservation Test Panel
 
-The current application predates a repository-backed migration system. From this point forward, every production database schema change must be represented by an ordered SQL migration in `schema/migrations/`.
+This is an **updated-file-only** package. Replace ONLY `oba-checkout-staging` Worker through Cloudflare browser's Edit Code. DO NOT replace production Worker or change D1 database bindings. Existing `oba-orders-staging` binding must be retained.
 
-The existing production schema is authoritative for legacy tables until it is explicitly baselined. Do not recreate or drop existing tables merely because their original CREATE statements are absent from this repository.
+Open `https://oba-checkout-staging.ollysbakedassortments.workers.dev/__reservation-test`.
 
-## Migration policy
+Safety: only `/cart-reservation`, `/cart-reservation/renew`, `/cart-reservation/release` are added to the Patch 1B allowed routes. Existing `/inventory`, Crew endpoints and test page remain. `/checkout`, `/square-webhook` and email remain disabled. The test page uses generated UUIDs and the existing Plain Jane product id.
 
-1. Migrations are append-only after deployment.
-2. Never edit an already-applied migration; add a new corrective migration.
-3. Prefer additive changes before destructive changes.
-4. Preserve existing IDs and historical rows when canonicalizing legacy systems.
-5. Backfills must be deterministic and restart-safe where practical.
-6. New uniqueness/integrity constraints must account for existing data before enforcement.
-7. Sensitive state transitions and reward/attendance integrity belong in server-side services in addition to database constraints.
-8. Production migration execution must be documented against the actual D1 binding/deployment configuration; this repository currently does not contain that deployment configuration.
+1. Verify the inventory JSON first. In current staging Online stock is 1 and a prior test reservation may still hold it. **Do not confuse a rejected Cart A due to old holds with a successful contention test**. Release or expire prior synthetic test holds separately using the established staging-only procedures before the contention test. No automated removal of prior reservations is performed.
+2. When at least 1 online cookie is available, set A to available count and B to 1, press Run competing-cart test. A should succeed; B should reject (normally 409). Confirm available stock is zero. There are no automatic retries.
+3. Press Release A, then press Reserve / update Cart B again. B should succeed if the stock remains available.
+4. Test Renew A/B separately on currently active holds. Expired holds must never be revived.
+5. The panel can only prove the serial contention scenario; simultaneous overlapping requests, expiry races, and multi-flavor Giraffe Packs still need dedicated tests before production.
 
-## Naming
-
-Use ordered names such as:
-
-`0001_schema_migrations.sql`
-`0002_scoped_crew_access.sql`
-`0003_adventures.sql`
-
-The exact numbering may change only before the first migration is applied.
-
-## Phase 2 deployment boundary
-
-`0002_crew_scoped_access_and_audit.sql` introduces the tables required by the scoped Crew authorization evaluator. The Phase 2B Worker must not be deployed before this migration is successfully applied to the target D1 database. Apply migrations in numeric order and record each successful version in `schema_migrations`.
+Keep the production storefront and Worker unchanged. This update does not turn on Square or notifications. No D1 migration.
