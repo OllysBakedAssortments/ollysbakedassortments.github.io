@@ -1911,6 +1911,16 @@ session();
 })();
 </script></body></html>`;
 
+const INVENTORY_TEST_DOCUMENT = String.raw`<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OBA · Inventory staging tests</title>
+<style nonce="__NONCE__">:root{font:15px system-ui,-apple-system,sans-serif;color:#442716;background:#f8f1e5}*{box-sizing:border-box}body{margin:0;padding:22px}main{max-width:960px;margin:auto}h1{font-size:30px}h2{font-size:19px;margin:0 0 12px}.card{background:#fff;border:1px solid #e6dacc;border-radius:16px;padding:20px;margin:15px 0}p{line-height:1.55}.note{color:#795d4e}label{display:block;font-weight:600;font-size:13px}input,select{display:block;width:100%;padding:10px;margin-top:5px;border-radius:8px;border:1px solid #c7b6a6;font:inherit;background:white}button{border:0;border-radius:9px;background:#613019;color:white;padding:11px 14px;font:inherit;cursor:pointer;margin:5px 5px 5px 0}button:disabled{opacity:.4;cursor:not-allowed}.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.caution{background:#fff2d6;border:1px solid #e5c989;border-radius:10px;padding:12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f5f0e9;padding:14px;border-radius:9px;max-height:340px;overflow:auto}a{color:#74391d}strong{font-weight:700}</style></head>
+<body><main><h1>OBA · Crew Inventory Test Panel</h1><p class="note">Staging only · Synthetic drop <strong>stage-00c-test</strong> · Plain Jane. This page never creates customer payments or sends messages.</p>
+<div class="card"><h2>1. Crew session and balances</h2><p id="session">Checking session…</p><button id="refresh" type="button">Refresh session and stock</button><p class="note">Sign in first on <a href="/__patch1b">Patch 1B test page</a> if needed. Both pages use the same staging-origin session.</p><pre id="balances">Loading…</pre></div>
+<div class="card"><h2>2. Transfer test</h2><p class="caution">These buttons make real changes to STAGING inventory if the API accepts them. Inspect balances and active holds first. There is no automatic rollback.</p><div class="fields"><label>Source location<select id="from"><option value="online">Online Orders</option><option value="kitchen">Kitchen</option></select></label><label>Destination location<select id="to"><option value="kitchen">Kitchen</option><option value="online">Online Orders</option></select></label><label>Quantity<input type="number" id="transferQty" min="1" max="10" value="1"></label></div><button id="transfer" type="button">Confirm and send transfer</button></div>
+<div class="card"><h2>3. Adjustment test</h2><div class="fields"><label>Location<select id="location"><option value="online">Online Orders</option><option value="kitchen">Kitchen</option></select></label><label>Type<select id="adjustType"><option value="waste">Waste</option><option value="correction_remove">Correction remove</option><option value="correction_add">Correction add</option></select></label><label>Quantity<input type="number" id="adjustQty" min="1" max="10" value="1"></label></div><button id="adjust" type="button">Confirm and send adjustment</button></div>
+<div class="card"><h2>4. API result and before/after snapshot</h2><pre id="result">No stock-changing request sent.</pre><p class="note">A rejected request should leave allocations and movement count unchanged. If active holds are zero, a small transfer may legitimately succeed. Never copy session tokens or passwords into reports.</p></div></main>
+<script nonce="__NONCE__">'use strict';(function(){const $=id=>document.getElementById(id);let itemId=null,ready=false;const endpoint='/__inventory-test/state';async function call(path,method,body){const response=await fetch(path,{method:method||'GET',credentials:'same-origin',cache:'no-store',headers:{'Accept':'application/json','Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});let data;try{data=await response.json()}catch(_){data={error:'Non-JSON response'}}return {http:response.status,...data}};async function refresh(){const sess=await call('/crew/session');$('session').textContent=sess.authenticated?'Signed in as '+(sess.user?.email||'Crew'):'Not signed in (HTTP '+sess.http+'). Open Patch 1B to sign in.';const state=await call(endpoint);ready=!!state.ok;itemId=ready?state.inventoryItemId:null;$('balances').textContent=JSON.stringify(state,null,2);$('transfer').disabled=!ready;$('adjust').disabled=!ready;return state}async function action(type){if(!ready||!itemId)return;const isTransfer=type==='transfer';let quantity=Number($(isTransfer?'transferQty':'adjustQty').value);if(!Number.isInteger(quantity)||quantity<1||quantity>10){alert('Choose a whole-number quantity from 1 to 10');return}const payload=isTransfer?{inventoryItemId:itemId,fromLocationId:$('from').value,toLocationId:$('to').value,quantity,reason:'Staging inventory acceptance panel'}:{inventoryItemId:itemId,locationId:$('location').value,adjustmentType:$('adjustType').value,quantity,reason:'Staging inventory acceptance panel'};if(isTransfer&&payload.fromLocationId===payload.toLocationId){alert('Source and destination must differ.');return}if(!confirm('Run '+type+' on STAGING inventory? This changes stock if accepted.\n'+JSON.stringify(payload,null,2)))return;const before=await call(endpoint);const response=await call('/inventory/'+type,'POST',payload);const after=await call(endpoint);$('result').textContent=JSON.stringify({before,request:payload,response,after},null,2);ready=!!after.ok;await refresh()}$('refresh').onclick=refresh;$('transfer').onclick=()=>action('transfer');$('adjust').onclick=()=>action('adjust');refresh().catch(e=>{$('balances').textContent=String(e)})})();</script></body></html>`;
+
 export default {
   async scheduled(event, env, ctx) {
     // Disabled in staging: no automatic lifecycle changes.
@@ -1927,6 +1937,13 @@ export default {
           'Content-Security-Policy':"default-src 'none'; script-src 'nonce-"+nonce+"'; style-src 'nonce-"+nonce+"'; connect-src 'self'; img-src 'none'; form-action 'none'; base-uri 'none'; frame-ancestors 'none'"}
       });
     }
+    if (url.pathname === '/__inventory-test' && request.method === 'GET') {
+      const nonce = Array.from(crypto.getRandomValues(new Uint8Array(16)),b=>b.toString(16).padStart(2,'0')).join('');
+      return new Response(INVENTORY_TEST_DOCUMENT.replaceAll('__NONCE__',nonce),{
+        status:200,headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','X-Content-Type-Options':'nosniff',
+        'Content-Security-Policy':"default-src 'none'; script-src 'nonce-"+nonce+"'; style-src 'nonce-"+nonce+"'; connect-src 'self'; img-src 'none'; form-action 'none'; base-uri 'none'; frame-ancestors 'none'"}
+      });
+    }
     // PATCH 1B STAGING SAFETY GATE: no live checkout, email, or account-management routes.
     // This Worker must be bound exclusively to oba-orders-staging.
     // Commerce 00C: keep GET /inventory available for staging inventory validation.
@@ -1935,7 +1952,7 @@ export default {
     // Existing session, permission, and strict same-origin checks remain enforced.
     const allowedPaths = new Set([
       '/crew/login', '/crew/session', '/crew/logout',
-      '/inventory/transfer', '/inventory/adjust'
+      '/inventory/transfer', '/inventory/adjust', '/__inventory-test/state'
     ]);
     if (url.pathname === '/inventory' && request.method === 'GET') {
       allowedPaths.add('/inventory');
@@ -9232,6 +9249,26 @@ if (url.pathname === '/inventory/baked') {
 /* =========================================
    INVENTORY ADJUSTMENT
 ========================================== */
+
+// Staging-only, authenticated and permission-scoped snapshot of synthetic test stock.
+if (url.pathname === '/__inventory-test/state') {
+  if (request.method !== 'GET') return Response.json({ok:false,error:'Method not allowed'},{status:405,headers:corsHeaders});
+  const crewSession = await getCrewSession(request,env);
+  if (!crewSession) return Response.json({ok:false,error:'Crew authentication required'},{status:401,headers:corsHeaders});
+  const transferDenied = await requireCrewPermission(env,crewSession,'inventory.transfer');
+  const adjustDenied = await requireCrewPermission(env,crewSession,'inventory.adjust');
+  if (transferDenied && adjustDenied) return Response.json({ok:false,error:'Crew inventory permission required'},{status:403,headers:corsHeaders});
+  const item = await env.OBA_DB.prepare("SELECT inventory_item_id,product_name,quantity_total,quantity_sold FROM inventory_items WHERE drop_id='stage-00c-test' AND product_id='plain-jane' LIMIT 1").first();
+  if (!item) return Response.json({ok:false,error:'Synthetic test item missing'},{status:404,headers:corsHeaders});
+  const [allocations,holds,movements] = await Promise.all([
+    env.OBA_DB.prepare("SELECT l.location_id,l.name,a.quantity_allocated,a.quantity_sold FROM inventory_allocations a JOIN inventory_locations l ON l.location_id=a.location_id WHERE a.inventory_item_id=? ORDER BY l.location_id").bind(item.inventory_item_id).all(),
+    env.OBA_DB.prepare("SELECT COALESCE(SUM(ri.quantity),0) AS active_holds FROM cart_reservation_items ri JOIN cart_reservations r ON r.reservation_id=ri.reservation_id WHERE ri.inventory_item_id=? AND r.status='active' AND julianday(r.expires_at)>julianday('now')").bind(item.inventory_item_id).first(),
+    env.OBA_DB.prepare("SELECT movement_id,movement_type,quantity,from_location_id,to_location_id,reference_type,reference_id FROM inventory_movements WHERE inventory_item_id=? ORDER BY movement_id DESC LIMIT 12").bind(item.inventory_item_id).all()
+  ]);
+  const online = (allocations.results||[]).find(a=>a.location_id==='online');
+  const activeHolds=Number(holds?.active_holds||0);
+  return Response.json({ok:true,dropId:'stage-00c-test',inventoryItemId:item.inventory_item_id,productName:item.product_name,total:item.quantity_total,sold:item.quantity_sold,allocations:allocations.results||[],activeHolds,onlineAvailable:Math.max(0,Number(online?.quantity_allocated||0)-activeHolds),recentMovements:movements.results||[],permissions:{transfer:!transferDenied,adjust:!adjustDenied}},{headers:{...corsHeaders,'Cache-Control':'no-store'}});
+}
 
 if (url.pathname === '/inventory/adjust') {
 
