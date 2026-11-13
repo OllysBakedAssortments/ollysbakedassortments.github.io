@@ -1,21 +1,18 @@
-# Phase 03D.0 — Giraffe Pack saved drafts (customer site)
+# OBA Cookies — Phase 03D.1A: Shared Batch Pack Preview
 
-Source: the latest user-uploaded `ollysbakedassortments.github.io-main.zip` (Nov 13, 2026).
+Source: user-uploaded `ollysbakedassortments.github.io-main.zip` (November 13, 2026).
 
-Replace the 3 included files in the corresponding GitHub repository paths.
+## Changed files
+- `js/cart.js` — adds a separately persisted pending Giraffe Pack preview to the shared cart drawer, with remove control; preserves existing cookie cart items and reservation payloads.
+- `js/giraffe-pack-builder.js` — adds an Add to Batch Preview action after a valid pack quote.
+- `order.html` — adds the button and a checkout guard against silently ignoring the pending pack.
+- `css/giraffe-pack-builder.css` — styles the pending pack preview.
 
-- `order.html`: Adds Save Pack Draft, saved-draft summary and Remove Saved Draft controls.
-- `js/giraffe-pack-builder.js`: Only enables saving after a successful server quote with `available: true`; restores valid selections when the same weekly drop is still offered; handles invalid/stale drafts fail-closed; never puts a draft into the shared cart.
-- `css/giraffe-pack-builder.css`: Styling for saved draft summary.
+## Important
+This is **not paid pack checkout**. Pack preview is intentionally excluded from subtotal, existing cookie reservation payloads and Square API requests. A pending preview blocks the individual-cookie checkout button until it is removed, so customers are not accidentally charged for a partial order. The pack still needs production Worker atomic reservations, server-authoritative pricing, order line model, payment capture mapping and fulfillment data before paid checkout may be enabled. Do not characterize this feature as ready for customers to purchase packs.
 
-No changes to Worker, D1, individual-cookie cart, or Square checkout. No schema migration.
+## Install
+Replace only the four changed website files in GitHub. No SQL migration, Worker deployment, or staging-test change. Existing CSS is loaded in `order.html`; the pack preview styling currently applies on that page.
 
-## Validation (locally)
-`node --check js/giraffe-pack-builder.js` passes.
-The new frontend depends on deployed production `/storefront/giraffe-packs/menu` and `/storefront/giraffe-packs/quote` routes from Phase 03C.1. No live API verification performed.
-
-## Checkout boundary
-This is NOT a purchasable pack. Saved selections use `localStorage` (key `oba-giraffe-pack-draft-v1`), and do not establish stock holds, prices, or fulfillment commitments. Price and inventory must be revalidated when a future real checkout integration is built.
-
-## Next substantial backend phase
-Update `/cart-reservation` and `/checkout` as one coordinated change to accept explicit pack-group composition, calculate pack prices server-side, reserve ingredients atomically alongside individual cookies, and use the same verified server total when creating Square orders. Current endpoints accept flat individual items and cannot safely charge pack prices.
+## Checks
+`node --check js/cart.js` and `node --check js/giraffe-pack-builder.js` passed. Not live-deployed or browser-tested.
