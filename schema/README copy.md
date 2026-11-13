@@ -1,22 +1,15 @@
-# OBA Cookies — Phase 03D.2B: Feature-gated Giraffe Pack Square checkout
+# Phase 03D.2C — Pack checkout activation boundary and reservation bridge
 
-## Source
-Based on the user-supplied latest `ollysbakedassortments.github.io-main.zip` from this conversation. Contains only a modified production Worker and docs.
+Source: latest uploaded GitHub repository ZIP, Nov 13 2026.
 
-## Changes
-- Reads immutable Giraffe Pack selection and price snapshot associated with the active cart reservation from production D1.
-- Fails closed for pack requests unless Worker env variable `ENABLE_GIRAFFE_PACK_CHECKOUT` equals the literal string `true`. The default/unset behavior keeps packs unpurchasable.
-- Verifies saved pack size, quantity and individual-item snapshot; verifies exact flavor totals against the held inventory rows.
-- Charges one Giraffe Pack Square order line at the stored server-authoritative pack price and individual-cookie lines separately.
-- Includes pack total in checkout subtotal, retry fingerprint, and cookie-count-based delivery minimum.
-- Preserves ordinary-cookie checkout path. Uses existing Square checkout, payment reconciliation, and reservation conversion; no new payment provider.
+## Changed files
+- oba-checkout/worker.js — GET /storefront/giraffe-packs/checkout-status exposes only an enablement boolean; POST /storefront/giraffe-packs/cart-hold refuses new holds unless ENABLE_GIRAFFE_PACK_CHECKOUT=true.
+- js/cart.js — exposes packCheckoutReady() and reservePendingPack() on OBA_CART. The method checks enablement, releases an old ordinary-cookie hold, creates the combined atomic hold, updates client reservation state, attempts to restore legacy hold on errors, and rejects changed-cart responses.
 
-## Deployment — do not turn payment on yet
-1. Ensure production `oba-orders` has the `giraffe_pack_reservation_details` table and planning index (confirmed in conversation). No migration is included here.
-2. Compare this Worker with the current Cloudflare `oba-checkout` deployment and merge any newer production edits. Preserve all secrets and bindings.
-3. Deploy with `ENABLE_GIRAFFE_PACK_CHECKOUT` **unset**. Verify existing individual-cookie checkout behavior and inspect Worker error logs.
-4. Separately validate pack transactions in an isolated safe environment with Square Sandbox, including: pack-only checkout; mixed pack+individual checkout; specialty surcharges; failed-payment retries; expired holds; duplicate checkout attempt; mismatched snapshot/reservation; inventory conversion; delivery fee and minimum; and Square total reconciliation.
-5. Only after acceptance testing, enable `ENABLE_GIRAFFE_PACK_CHECKOUT=true` in the production Worker and connect the customer frontend's pack hold/checkout lifecycle. Current frontend may still have a pending-pack checkout guard.
+## Deployment and limits
+Deploy Worker first, after comparing to current live Worker; then deploy js/cart.js via GitHub. Keep ENABLE_GIRAFFE_PACK_CHECKOUT unset/false. This package does **not** wire the new reservation bridge into order.html payment UI: no pack payment can occur via current frontend. A subsequent coordinated frontend change must render authoritative combined totals, invoke reservePendingPack() and protect the hold, avoid ordinary-cart resync, and only then activate the Worker flag after end-to-end testing. Do not switch the flag on based only on this package.
 
-## Important limitations
-This is a backend integration **not live enablement**. Pack payment stays blocked by default; the storefront must still be updated to request a pack hold and call /checkout with the held individual items. All live deployment and end-to-end payment test steps remain pending. No user payment data was processed in local validation. The existing Square endpoint and environment are unchanged.
+No D1 schema migration. The already-created giraffe_pack_reservation_details table remains required. Ordinary-cookie checkout unchanged.
+
+## Validation
+node --check worker.js and cart.js performed successfully. No Cloudflare or Square integration testing performed.
