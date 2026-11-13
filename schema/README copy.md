@@ -1,18 +1,27 @@
-# OBA Cookies — Phase 03D.1A: Shared Batch Pack Preview
+# OBA Phase 03D.1B — Combined Batch Server Preflight
 
-Source: user-uploaded `ollysbakedassortments.github.io-main.zip` (November 13, 2026).
+Source: the latest uploaded `ollysbakedassortments.github.io-main.zip` in this conversation.
 
-## Changed files
-- `js/cart.js` — adds a separately persisted pending Giraffe Pack preview to the shared cart drawer, with remove control; preserves existing cookie cart items and reservation payloads.
-- `js/giraffe-pack-builder.js` — adds an Add to Batch Preview action after a valid pack quote.
-- `order.html` — adds the button and a checkout guard against silently ignoring the pending pack.
-- `css/giraffe-pack-builder.css` — styles the pending pack preview.
+## Replace / merge
+- `oba-checkout/worker.js` — adds POST `/storefront/giraffe-packs/cart-plan`.
+- `js/cart.js` — adds a **Check full batch price & stock** control beneath a pending Giraffe Pack preview.
 
-## Important
-This is **not paid pack checkout**. Pack preview is intentionally excluded from subtotal, existing cookie reservation payloads and Square API requests. A pending preview blocks the individual-cookie checkout button until it is removed, so customers are not accidentally charged for a partial order. The pack still needs production Worker atomic reservations, server-authoritative pricing, order line model, payment capture mapping and fulfillment data before paid checkout may be enabled. Do not characterize this feature as ready for customers to purchase packs.
+## Scope
+- Validates one Giraffe Pack against saved weekly menu, eligible published/approved cookie flavors, active linked inventory drop.
+- Rejects physical drop mismatch with the legacy checkout's current active physical drop.
+- Merges individual-cookie quantities with pack quantities for a single available-stock calculation, avoiding double-counting flavors.
+- Excludes the current cart's existing cookie hold from active third-party holds when a valid cart ID is supplied.
+- Computes subtotal on Worker only; does not trust local prices, reserve new pack stock, create a payment, or authorize checkout.
+- Existing `/cart-reservation`, `/checkout`, Square hooks, and normal individual-cookie payment behavior are unchanged.
 
-## Install
-Replace only the four changed website files in GitHub. No SQL migration, Worker deployment, or staging-test change. Existing CSS is loaded in `order.html`; the pack preview styling currently applies on that page.
+## Deployment sequence
+1. Keep a copy of the active production Worker. Merge rather than overwrite if Cloudflare contains more recent changes than uploaded GitHub ZIP.
+2. Deploy the `worker.js` change to Cloudflare `oba-checkout` with existing bindings.
+3. Deploy `js/cart.js` in GitHub.
+4. Open ordering page with a pending pack; click **Check full batch price & stock**. A ready/approved/active weekly menu is required. If absent, expect a safe error.
+5. Confirm individual-cookie checkout and reservation still work unchanged.
 
-## Checks
-`node --check js/cart.js` and `node --check js/giraffe-pack-builder.js` passed. Not live-deployed or browser-tested.
+## Limitations
+This is a *preflight* step, not Phase 03D.2 paid integration. The actual checkout contract must add grouped pack lines, atomic reservation writes, server-authored Square line items, and payment reconciliation before enabling purchases. Do not remove existing pending-pack checkout guard.
+
+JavaScript parse checks: `node --check oba-checkout/worker.js` and `node --check js/cart.js` passed locally. No production deployments or live API calls were performed.
