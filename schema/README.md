@@ -1,5 +1,9 @@
-# Phase 03D.1B — Database
+# Phase 03D.2A database changes
 
-No D1 schema changes or SQL migrations. Existing tables used read-only: commerce_weekly_drops, commerce_weekly_inventory_links, commerce_weekly_drop_products, commerce_products, inventory_drops, inventory_items, inventory_allocations, inventory_locations, cart_reservations, cart_reservation_items.
+Requires ONE additive D1 migration before worker deployment: `phase-03d2a-pack-reservations.sql`.
 
-The new combined-cart route is read-only. No inventory ledger mutations, holds, payments, or order rows are created.
+`giraffe_pack_reservation_details` stores the server-calculated pack/individual totals and the exact selection JSON under the existing `cart_reservations.reservation_id`. Inventory itself stays in `cart_reservation_items` and is controlled by the existing D1 overreservation triggers. Do not populate the table manually or edit inventory counts directly.
+
+**Deployment order matters:** Running the new Worker before the migration will cause pre-existing flat-cookie checkout to fail closed when checking pack metadata. Run the SQL first. Existing reservations do not require backfill.
+
+No existing columns, trigger definitions, stock records, or Square objects are changed. Pack holds are NOT authorized for checkout in this phase.
