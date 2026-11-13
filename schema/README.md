@@ -1,23 +1,5 @@
-# Phase 02E — Inventory controls UI polish
+# Phase 03A — Giraffe Pack Studio
 
-## SQL migration
-None. Do not execute any SQL in production or staging for this phase.
+No SQL migration required. This phase reads existing `commerce_products`, `commerce_weekly_drops`, `commerce_weekly_drop_products`, `commerce_weekly_inventory_links`, `inventory_items`, `inventory_allocations`, `inventory_locations`, and active cart reservations. No D1 writes are added.
 
-## Target database
-No database changes. Current Crew Products page continues using the production `oba-checkout` API and existing inventory tables.
-
-## Deployment order
-1. Confirm the current repository version of `crew/products.html` still matches the Phase 02D baseline. Merge newer edits if necessary.
-2. Replace `crew/products.html` with this version in GitHub and publish the site.
-3. Refresh Crew > Products > Weekly Drops > November Test Drop.
-4. Verify baked receiving location defaults to Kitchen when Kitchen exists, and transfer defaults to two different locations when available.
-5. Verify identical From and To locations disable the Transfer button.
-
-## Safety and verification
-- No Worker code changes, schema changes or inventory updates are included in this ZIP.
-- Do not record fictitious stock quantities on production to test this UI.
-- Existing `/inventory/baked` and `/inventory/transfer` API authorization and server protections remain unchanged.
-- On a drop with only one location, Transfer is disabled until distinct locations exist.
-
-## Rollback
-Restore the previous committed `crew/products.html`. No database rollback is needed.
+Deploy the merged production Worker first, then `crew/products.html`. This is a Crew-only preview; it does not approve prices, publish products, reserve cookies, or change checkout.
