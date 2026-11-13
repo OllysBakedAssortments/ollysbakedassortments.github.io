@@ -1,32 +1,21 @@
-# OBA Phase 03C.2 — Customer-facing Giraffe Pack Builder (quote-only)
+# Phase 03D.0 — Giraffe Pack saved drafts (customer site)
 
-## Install sequence
-1. Back up the currently deployed `oba-checkout` Worker code in Cloudflare. **Merge** `oba-checkout/worker.js` with the current deployment; do not overwrite newer Cloudflare-only changes.
-2. Deploy the merged `oba-checkout/worker.js` to the **production** Worker `oba-checkout`, retaining current D1 binding, secrets, routes, and environment settings.
-3. Open `https://api.ollysbakedassortments.com/storefront/giraffe-packs/menu` and confirm JSON `ok: true`. An empty `products` list is expected until a ready menu has approved published flavors.
-4. Upload `order.html`, `js/giraffe-pack-builder.js`, and `css/giraffe-pack-builder.css` to the same paths in the GitHub Pages repository. Ensure all three land in the same deploy.
-5. Load the public `order.html`, inspect the builder, and confirm individual-cookie ordering and current Square checkout still work.
+Source: the latest user-uploaded `ollysbakedassortments.github.io-main.zip` (Nov 13, 2026).
 
-## What changed
-- Production Worker: GET `/storefront/giraffe-packs/menu` now auto-discovers the newest ready weekly menu linked to an active inventory drop when no `planningDropId` is provided. Only explicitly Online-enabled, published, approved, active full-size cookies are shown. An empty ready menu produces a safe empty result.
-- `order.html`: replaced the old outbound “Build A Pack” CTA with the in-page builder. Existing cart/checkout sections are unchanged.
-- New CSS/JS: pack size, flavors, increment/decrement, specialty pricing estimate, read-only server quote, empty/unavailable states, and mobile layout.
+Replace the 3 included files in the corresponding GitHub repository paths.
 
-## IMPORTANT: checkout intentionally NOT activated
-This phase performs **read-only quote previews**. The builder does not call `OBA_CART.add`, create a reservation, change inventory, create a Square payment, or offer a fake checkout action. A later phase must implement server-authoritative mixed-flavor holds and pack line items in both cart reservation and checkout, preserving the existing individual-cookie path.
+- `order.html`: Adds Save Pack Draft, saved-draft summary and Remove Saved Draft controls.
+- `js/giraffe-pack-builder.js`: Only enables saving after a successful server quote with `available: true`; restores valid selections when the same weekly drop is still offered; handles invalid/stale drafts fail-closed; never puts a draft into the shared cart.
+- `css/giraffe-pack-builder.css`: Styling for saved draft summary.
 
-## Readiness requirements
-A weekly planning menu must be `ready`, linked to an `active` physical inventory drop, and have Online-enabled full-size products with `published=1`, `unit_price_approved=1`, `status='active'`, `product_kind='cookie'`, and `classification` regular/specialty. No D1 mutations or SQL migrations occur in this package.
+No changes to Worker, D1, individual-cookie cart, or Square checkout. No schema migration.
 
-## Test checklist
-- Menu endpoint returns 200 JSON with `ok:true`; no menu => empty state
-- Order page shows no broken errors when no menu is approved
-- With approved menu: three pack sizes (3/$10, 6/$18, 13/$40)
-- Minus cannot go below zero, plus cannot exceed capacity, changing size clears selection
-- Specialty estimate adds $1 per specialty cookie
-- Quote button enabled only when exactly the pack capacity is selected
-- Quote uses Worker API; unavailable stock shown as unavailable, not added to checkout
-- Existing single-cookie cart, countdown, fulfillment, payment flow unaffected
+## Validation (locally)
+`node --check js/giraffe-pack-builder.js` passes.
+The new frontend depends on deployed production `/storefront/giraffe-packs/menu` and `/storefront/giraffe-packs/quote` routes from Phase 03C.1. No live API verification performed.
 
-## Files
-`oba-checkout/worker.js`, `order.html`, `js/giraffe-pack-builder.js`, `css/giraffe-pack-builder.css`, `schema/README.md`, `README.md`.
+## Checkout boundary
+This is NOT a purchasable pack. Saved selections use `localStorage` (key `oba-giraffe-pack-draft-v1`), and do not establish stock holds, prices, or fulfillment commitments. Price and inventory must be revalidated when a future real checkout integration is built.
+
+## Next substantial backend phase
+Update `/cart-reservation` and `/checkout` as one coordinated change to accept explicit pack-group composition, calculate pack prices server-side, reserve ingredients atomically alongside individual cookies, and use the same verified server total when creating Square orders. Current endpoints accept flat individual items and cannot safely charge pack prices.
