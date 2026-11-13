@@ -1,15 +1,11 @@
-# OBA Phase 03B — Shared Full-Sized Pack Reservation Acceptance
+# Phase 03B — staging reservation route gate fix
 
-**SQL migration required:** No.
+**Target:** Cloudflare Worker `oba-checkout-staging` only. Its existing D1 binding must remain `oba-orders-staging`.
 
-**Target database for this test:** `oba-orders-staging` only, bound as `OBA_DB` to `oba-checkout-staging`.
+**SQL migration:** None. Do not run SQL in production or staging for this fix.
 
-This phase reuses `inventory_drops`, `inventory_items`, `inventory_locations`, `inventory_allocations`, `cart_reservations`, and `cart_reservation_items`. It does not create a second pack-stock pool.
+**Change:** The existing Patch 1B allowed-paths set now includes only `/__giraffe-pack-reservation` in addition to its earlier entries. This permits requests to reach the already-implemented Phase 03B handler. All other Patch 1B blocked routes remain blocked. The Phase 03B handler still requires the staging hostname, same-origin POST, an authenticated Crew session, and `products.manage` permission.
 
-**Prerequisites:** Existing reservation triggers `oba_reservation_online_guard_insert` / `oba_reservation_online_guard_update` and Crew authentication. Ensure any staged catalog test product has a `regular` or `specialty` classification. The test inventory drop must be active and have sufficient Online allocation for a successful hold. No production records, credentials, or inventory are to be copied to staging.
+**Verification:** Sign in at `/__patch1b`, visit `/__giraffe-pack-test`, and use the built-in 3 Plain Jane hold test against `stage-00c-test`. A 409 inventory conflict is expected if the staging Online allocation remains below 3. For 409, verify no active reservation items were left by this failed attempt before continuing to successful-hold tests.
 
-**Validation:** Use the staging-only `/__giraffe-pack-test` browser page after deploying the supplied staging Worker. Verify a request exceeding Online allocation receives HTTP 409 and creates no hold. For a positive test with legitimate synthetic staging allocations, verify a two-minute hold, availability reduction in the ordinary reservation system, and release restoring availability.
-
-**Rollback:** Revert the staging Worker deployment; no schema changes or product data alterations are introduced by deployment. Test holds expire automatically; release active test holds with the browser interface before rolling back when possible.
-
-**Production migration:** None. Do not deploy this testing Worker to `oba-checkout` production.
+**Rollback:** Restore the prior version of `oba-checkout-staging`. No schema rollback is required.
