@@ -1,47 +1,22 @@
-# OBA Cookies — Phase 03D.2A: atomic Giraffe Pack reservations (main Worker)
+# OBA Cookies — Phase 03D.2B: Feature-gated Giraffe Pack Square checkout
 
-## Delivered
+## Source
+Based on the user-supplied latest `ollysbakedassortments.github.io-main.zip` from this conversation. Contains only a modified production Worker and docs.
 
-- New `POST /storefront/giraffe-packs/cart-hold` endpoint, reusing the exact validated composition, pricing, drop and availability checks of `/storefront/giraffe-packs/cart-plan`.
-- In one D1 batch, inserts a standard `cart_reservations` header, all aggregated `cart_reservation_items` for pack + individuals, and an immutable initial pack price/composition snapshot in `giraffe_pack_reservation_details`.
-- Any trigger or metadata insert failure rejects the batch; there is no intentional partial hold.
-- Rejects existing active reservations for the same cart; prevents legacy cart editing from rewriting an existing pack hold.
-- Explicit guard in `/checkout` rejects pack-backed reservations BEFORE Square processing; discounted packs cannot be silently charged as individual cookies.
-- Existing ordinary-cookie checkout stays unchanged once the additive schema migration is present.
+## Changes
+- Reads immutable Giraffe Pack selection and price snapshot associated with the active cart reservation from production D1.
+- Fails closed for pack requests unless Worker env variable `ENABLE_GIRAFFE_PACK_CHECKOUT` equals the literal string `true`. The default/unset behavior keeps packs unpurchasable.
+- Verifies saved pack size, quantity and individual-item snapshot; verifies exact flavor totals against the held inventory rows.
+- Charges one Giraffe Pack Square order line at the stored server-authoritative pack price and individual-cookie lines separately.
+- Includes pack total in checkout subtotal, retry fingerprint, and cookie-count-based delivery minimum.
+- Preserves ordinary-cookie checkout path. Uses existing Square checkout, payment reconciliation, and reservation conversion; no new payment provider.
 
-## Deployment steps
+## Deployment — do not turn payment on yet
+1. Ensure production `oba-orders` has the `giraffe_pack_reservation_details` table and planning index (confirmed in conversation). No migration is included here.
+2. Compare this Worker with the current Cloudflare `oba-checkout` deployment and merge any newer production edits. Preserve all secrets and bindings.
+3. Deploy with `ENABLE_GIRAFFE_PACK_CHECKOUT` **unset**. Verify existing individual-cookie checkout behavior and inspect Worker error logs.
+4. Separately validate pack transactions in an isolated safe environment with Square Sandbox, including: pack-only checkout; mixed pack+individual checkout; specialty surcharges; failed-payment retries; expired holds; duplicate checkout attempt; mismatched snapshot/reservation; inventory conversion; delivery fee and minimum; and Square total reconciliation.
+5. Only after acceptance testing, enable `ENABLE_GIRAFFE_PACK_CHECKOUT=true` in the production Worker and connect the customer frontend's pack hold/checkout lifecycle. Current frontend may still have a pending-pack checkout guard.
 
-1. Back up the deployed `oba-checkout` Worker and compare its version with `oba-checkout/worker.js` in this ZIP, merging any newer production changes.
-2. Run `schema/phase-03d2a-pack-reservations.sql` in **Cloudflare D1 → oba-orders → Console**. This step MUST occur first.
-3. Deploy the merged main `oba-checkout` Worker using existing environment bindings.
-4. Verify normal-cookie ordering and reservations still work. Do not test purchases with real cards just for validation.
-5. The customer-facing builder/cart remain in **preview mode** in this phase. Do not turn on Pack Checkout or expose the `cart-hold` action to customers yet.
-
-## New endpoint request
-
-`POST https://api.ollysbakedassortments.com/storefront/giraffe-packs/cart-hold`
-
-Body uses the same structure as `/storefront/giraffe-packs/cart-plan`:
-
-```json
-{
-  "cartId": "<valid-v4-UUID>",
-  "pack": {
-    "planningDropId": "<approved-ready-planning-drop-UUID-prefixed-wd->",
-    "size": "lil",
-    "items": [
-      {"productId":"plain-jane","quantity":2},
-      {"productId":"campfire-crunch","quantity":1}
-    ]
-  },
-  "individualItems": []
-}
-```
-
-The `Origin` header must be the storefront origin. Requires a ready weekly menu, active linked physical inventory drop, published/approved flavors, and actual Online stock. Returns `201` with `reservationId`, `expiresAt`, validated subtotal, `checkoutAuthorized:false` on success, or `409` on unavailable stock/existing holds.
-
-This release does NOT enable customer pack purchases. **Next phase 03D.2B** must implement persisted pack-price verification in checkout, pack-aware Square line items/order fingerprint and payment reconciliation before the frontend can enable paying for the pack. Do not claim end-to-end checkout is tested.
-
-## Verification
-
-JavaScript `node --check` passes. Not deployed or live-tested. Read-only `/cart-plan` remains intact.
+## Important limitations
+This is a backend integration **not live enablement**. Pack payment stays blocked by default; the storefront must still be updated to request a pack hold and call /checkout with the held individual items. All live deployment and end-to-end payment test steps remain pending. No user payment data was processed in local validation. The existing Square endpoint and environment are unchanged.
