@@ -1,11 +1,22 @@
-# Phase 03B — staging reservation route gate fix
+# Phase 03B.2 — staging acceptance
 
-**Target:** Cloudflare Worker `oba-checkout-staging` only. Its existing D1 binding must remain `oba-orders-staging`.
+No D1 migration is required. This package changes only the staging Worker acceptance test interface and adds a read-only stock inspection action to its existing staging-only `POST /__giraffe-pack-reservation` route.
 
-**SQL migration:** None. Do not run SQL in production or staging for this fix.
+**Database target:** `oba-orders-staging` only. Do not apply changes to `oba-orders`.
 
-**Change:** The existing Patch 1B allowed-paths set now includes only `/__giraffe-pack-reservation` in addition to its earlier entries. This permits requests to reach the already-implemented Phase 03B handler. All other Patch 1B blocked routes remain blocked. The Phase 03B handler still requires the staging hostname, same-origin POST, an authenticated Crew session, and `products.manage` permission.
+Staging must already contain `inventory_drops`, `inventory_items`, `inventory_locations`, `inventory_allocations`, `cart_reservations`, `cart_reservation_items`, `commerce_products` and the pre-existing Online allocation reservation triggers.
 
-**Verification:** Sign in at `/__patch1b`, visit `/__giraffe-pack-test`, and use the built-in 3 Plain Jane hold test against `stage-00c-test`. A 409 inventory conflict is expected if the staging Online allocation remains below 3. For 409, verify no active reservation items were left by this failed attempt before continuing to successful-hold tests.
+Optional read-only verification:
 
-**Rollback:** Restore the prior version of `oba-checkout-staging`. No schema rollback is required.
+```sql
+SELECT r.reservation_id,r.status,r.expires_at,i.product_id,ri.quantity
+FROM cart_reservations r
+JOIN cart_reservation_items ri ON ri.reservation_id=r.reservation_id
+JOIN inventory_items i ON i.inventory_item_id=ri.inventory_item_id
+WHERE r.drop_id='stage-00c-test'
+ORDER BY r.created_at DESC;
+```
+
+No staging stock is created by this release. Use only synthetic staging inventory for successful hold tests; never inflate stock in production. The runner will show 409 until the tested drop has sufficient Online stock for the selected composition.
+
+Rollback: restore the preceding `oba-checkout-staging` Worker version in Cloudflare Deployments. No D1 rollback required.
