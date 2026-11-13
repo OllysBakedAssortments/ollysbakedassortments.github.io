@@ -1,0 +1,14 @@
+/* Phase 03C.2 — read-only pack-builder preview; no checkout integration. */
+.oba-pack-builder{width:100%;background:#fff;border:2px solid rgba(88,55,42,.11);border-radius:20px;padding:22px;color:#4d3026}
+.oba-pack-builder-heading h3{margin:4px 0 6px}.oba-pack-builder-heading p{margin:0 0 16px;line-height:1.5}
+.oba-pack-status{background:#f9f2e6;border-radius:10px;padding:12px 14px;line-height:1.45}
+.oba-pack-sizes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:0;border:0;margin:16px 0}
+.oba-pack-sizes legend{font-weight:750;margin-bottom:8px}.oba-pack-sizes label{border:2px solid #e7dbcc;border-radius:12px;padding:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;cursor:pointer}
+.oba-pack-sizes label:has(input:checked){border-color:#96652f;background:#fff7e8}.oba-pack-sizes label strong{margin-left:auto;white-space:nowrap}
+.oba-pack-flavors-heading,.oba-pack-bottom{display:flex;justify-content:space-between;align-items:center;gap:14px}.oba-pack-flavors-heading h4{margin:10px 0}
+.oba-pack-flavors{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.oba-pack-flavor{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px;border:1px solid #e7dbcc;border-radius:12px}
+.oba-pack-flavor-name{font-weight:700}.oba-pack-flavor-type{display:block;font-size:.8rem;opacity:.78}
+.oba-pack-stepper{display:flex;align-items:center;gap:8px}.oba-pack-stepper output{min-width:20px;text-align:center;font-weight:750}.oba-pack-stepper button{width:33px;height:33px;border-radius:8px;border:1px solid #bc9a6b;background:#fffaf2;color:#432718;font-size:1.2rem;cursor:pointer}.oba-pack-stepper button:disabled{opacity:.35;cursor:not-allowed}
+.oba-pack-bottom{margin-top:18px;flex-wrap:wrap}.oba-pack-price{font-weight:800;margin:0}.oba-pack-disclaimer{font-size:.83rem;line-height:1.45;opacity:.8;margin:12px 0 0}.oba-pack-quote-result{margin-top:14px;padding:12px;background:#f9f2e6;border-radius:10px;line-height:1.5}
+@media(max-width:680px){.oba-pack-sizes{grid-template-columns:1fr}.oba-pack-bottom{align-items:stretch;flex-direction:column}.oba-pack-bottom button{width:100%}}
