@@ -1,3 +1,5 @@
-# Schema — Phase 03C
+# Phase 03C.1 — Schema
 
-No SQL migration. This phase adds a read-only production Worker route which uses the existing production D1 commerce, inventory and reservation tables. Do not seed synthetic staging data in production.
+No SQL migration required. Existing tables: commerce_weekly_drops, commerce_weekly_drop_products, commerce_weekly_inventory_links, commerce_products, inventory_drops, inventory_items, inventory_allocations, inventory_locations, cart_reservations, cart_reservation_items.
+
+No D1 changes. No staging database required for these read-only routes.
