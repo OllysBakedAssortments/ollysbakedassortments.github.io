@@ -1,18 +1,18 @@
-# OBA Phase 03D.4G — Payment versus inventory settlement tracking
+# Phase 03D.4H — Paid checkout reconciliation report
 
-## Changes
-- Square `COMPLETED` is now recorded as `payment_completed_inventory_pending` until the matching inventory reservation is verified `converted`.
-- On verified conversion (direct checkout or webhook), `checkout_status` is set to `completed`.
-- Known webhook reconciliation failures and direct-conversion failures set `checkout_status = inventory_reconciliation_failed` while preserving the `payment_status = COMPLETED` record. This is crucial: do **not** initiate a second payment.
-- Retry responses for already-paid attempts include inventoryReconciled/inventoryReviewRequired; checkout success response includes these flags as well.
+Only code change: `oba-checkout/worker.js` adds `GET /crew/checkout-reconciliation`.
+
+This endpoint requires an authenticated Crew session with `inventory.view`; it does not mutate D1 or contact Square. It accepts **exactly one** of `checkoutAttemptId` or `squareOrderId` as a query parameter, and returns stored checkout status, associated reservation status, per-flavor online availability, shortfalls and matching Square webhook processing results.
+
+Examples (after deployment, with an authenticated Crew session):
+`https://api.ollysbakedassortments.com/crew/checkout-reconciliation?checkoutAttemptId=09a1fbef-de8d-4ab1-8fa0-d9f0f6c9d910`
+
+The existing $23 Sandbox payment remains paid but unreconciled. This report is not a recovery action and does not establish stock available at the moment the payment was made. Inventory may have changed since then. Never run a second charge to repair it.
 
 ## Deployment
-1. Back up the currently deployed Worker. Diff/merge newer deployed edits; do not replace live code blindly.
-2. Confirm production D1 `oba-orders` already has Online INSERT and UPDATE reservation guards (verified in conversation).
-3. Deploy ONLY `oba-checkout/worker.js`; retain existing D1, Square secrets and feature flags.
-4. Keep `ENABLE_GIRAFFE_PACK_CHECKOUT` disabled.
-5. Verify a **new** insufficient Online inventory hold is rejected before attempting payment. Then verify a controlled eligible Sandbox purchase transitions checkout_attempts from payment pending to completed and converts the reservation.
-6. Review existing paid-but-unreconciled order independently. This patch deliberately does not alter historical orders or manufacture inventory.
+1. Compare this `worker.js` against Cloudflare's currently deployed `oba-checkout` code. Preserve any newer live edits.
+2. Deploy to the existing Worker with the same bindings. Keep `ENABLE_GIRAFFE_PACK_CHECKOUT` disabled.
+3. Sign in with a Crew account that has `inventory.view` and request the endpoint. An unauthenticated request must yield HTTP 401.
+4. Confirm the known checkout shows `paymentCompleted: true`, `inventoryConverted: false`, and `reviewRequired: true` (assuming the D1 state has not subsequently changed).
 
-## Caveat
-This is a payment state visibility / reconciliation integrity fix, not a repair for the historical $23 paid Sandbox order. The transaction remains a manual reconciliation case until stock movements and Square order state can be verified together. The existing live checkout and payment flow should be tested before expanding usage.
+No SQL migrations. No frontend files. No automatic retry or settlement of old payment. Future recovery must be tied to the existing Square payment ID and perform an idempotent, audited adjustment or refund workflow only after staff verifies the actual inventory state.
