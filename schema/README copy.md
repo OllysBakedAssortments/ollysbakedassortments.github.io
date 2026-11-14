@@ -1,24 +1,18 @@
-# OBA Phase 03D.4A — Square payment-readiness guard
+# Phase 03D.4B — Square location agreement safeguard
 
-Only changed files are included. This is a safety-focused installment, **not** live Square activation or a completed end-to-end payment test.
+Source: user's November 13, 2026 GitHub ZIP.
 
-## Deployment order
+Changes:
+- `oba-checkout/worker.js`: `/storefront/payment-readiness` optionally accepts the public `locationId` query parameter. It now returns `locationMatches` and refuses readiness (`ready:false`, `reason:square_location_mismatch`) if the requested Square location differs from the Worker `SQUARE_LOCATION_ID` binding.
+- `order.html`: uses the browser's actual `SQUARE_LOCATION_ID` in the readiness check, and requires `locationMatches === true` before card tokenization.
 
-1. Keep `ENABLE_GIRAFFE_PACK_CHECKOUT` disabled in the main `oba-checkout` Worker.
-2. Back up currently deployed Worker code and compare/merge any changes newer than the uploaded repository.
-3. Deploy `oba-checkout/worker.js` with existing D1 and Square bindings.
-4. Visit `https://oba-checkout.ollysbakedassortments.workers.dev/storefront/payment-readiness`. It should report `ok:true`, `environment:"sandbox"`, `ready:true` only when sandbox token and location ID are configured. This does not test that Square credentials are valid.
-5. Only after that, replace `order.html` on GitHub and verify the sandbox card form initializes. If the Worker has not been deployed, the new frontend intentionally blocks card initialization.
+## Deployment
+1. Compare/merge `oba-checkout/worker.js` with the *actual live* Cloudflare Worker (do not overwrite newer live edits); deploy the Worker first, preserving all bindings.
+2. Open `/storefront/payment-readiness?locationId=LAAH6E0FFSPV7`. Expect `ready:true` AND `locationMatches:true` if Cloudflare's `SQUARE_LOCATION_ID` matches the storefront value.
+3. Open `/storefront/payment-readiness?locationId=NOT_A_REAL_LOCATION`. Expect `ready:false`, `reason:square_location_mismatch`.
+4. Replace `order.html` in GitHub, and test that the Square Sandbox card fields still initialize.
+5. Keep `ENABLE_GIRAFFE_PACK_CHECKOUT` disabled pending sandbox end-to-end payment and reconciliation testing.
 
-## Changes
+This is **not** a proof that the access token works with Square or that a payment succeeds. To validate token connectivity, use the existing `/square-test` route and check that it returns the expected Square location. Avoid sharing Square credentials. A `ready:true` response without `locationId` keeps backward-compatible behavior.
 
-- New `GET /storefront/payment-readiness` returns non-secret sandbox readiness, reason, and pack flag status, with `Cache-Control: no-store` and the existing origin policy.
-- `/checkout` now fails with HTTP 503 before parsing a payment request if sandbox access token or location ID is missing, or `SQUARE_ENVIRONMENT` is set to a non-sandbox value.
-- Browser checks readiness **before** loading the Sandbox Square Web Payments SDK.
-- Default remains sandbox if `SQUARE_ENVIRONMENT` is unspecified; no production credentials, payment APIs, or live-activation behavior were introduced.
-
-## Caution
-
-- A configured token is not proof it is valid; verify with existing `/square-test` (be mindful that route returns Square errors).
-- This code does not reconcile payment callbacks, expire reservations, perform live payment tests, or switch to Square production. A real Square launch requires coordinated production SDK IDs, Worker endpoint and token configuration, webhook verification, and transaction testing.
-- No SQL migration required.
+No SQL migrations. The remaining payment code still targets Square Sandbox. No transaction was executed by this package.
