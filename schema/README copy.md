@@ -1,28 +1,18 @@
-# Phase 03D.4E — Production Online-stock payment safety gate
+# OBA Phase 03D.4G — Payment versus inventory settlement tracking
 
-Source: user-uploaded repository ZIP from November 13, 2026. **Not deployed.**
+## Changes
+- Square `COMPLETED` is now recorded as `payment_completed_inventory_pending` until the matching inventory reservation is verified `converted`.
+- On verified conversion (direct checkout or webhook), `checkout_status` is set to `completed`.
+- Known webhook reconciliation failures and direct-conversion failures set `checkout_status = inventory_reconciliation_failed` while preserving the `payment_status = COMPLETED` record. This is crucial: do **not** initiate a second payment.
+- Retry responses for already-paid attempts include inventoryReconciled/inventoryReviewRequired; checkout success response includes these flags as well.
 
-## Findings (grounded in user-provided production D1 evidence)
+## Deployment
+1. Back up the currently deployed Worker. Diff/merge newer deployed edits; do not replace live code blindly.
+2. Confirm production D1 `oba-orders` already has Online INSERT and UPDATE reservation guards (verified in conversation).
+3. Deploy ONLY `oba-checkout/worker.js`; retain existing D1, Square secrets and feature flags.
+4. Keep `ENABLE_GIRAFFE_PACK_CHECKOUT` disabled.
+5. Verify a **new** insufficient Online inventory hold is rejected before attempting payment. Then verify a controlled eligible Sandbox purchase transitions checkout_attempts from payment pending to completed and converts the reservation.
+6. Review existing paid-but-unreconciled order independently. This patch deliberately does not alter historical orders or manufacture inventory.
 
-- Square Sandbox payment COMPLETED for $23, checkout attempt completed.
-- Reservation `93954866-f639-4c42-b829-8e7556fd27dd` remained active.
-- Square webhook reconciliation failed twice; no corresponding sale movements.
-- The three reserved flavors required Online stock of 2 Plain Jane, 2 Peanut Campfire Crunch, 1 Campfire Crunch, but Online allocation showed 1, 0, 0.
-- Repository's `schema/migrations/0009_online_allocation_reservation_guard.sql` explicitly says **staging-only**. Verify whether equivalent triggers exist in production; do not assume they do.
-
-## Code change
-
-1. New individual-cookie reservations perform an explicit Online-stock and active-hold availability check before attempting their atomic D1 insert batch. This is defense-in-depth only, NOT race-proof without database triggers.
-2. Just before any Square payment request, checkout verifies exact reservation ingredients, remaining Online stock and total live active holds for those flavors. Shortages return HTTP 409; database read errors return HTTP 503. In both cases no `/v2/payments` request is made.
-3. Existing webhook conversion and Square payment code unchanged, Giraffe Pack flag remains off. Existing paid order is NOT silently modified.
-
-## IMPORTANT limits and next steps
-
-- Before production deployment, compare with currently deployed worker.js to avoid overwriting newer changes. Maintain a rollback version.
-- **Do not reprocess existing paid order through an arbitrary SQL UPDATE or replay webhooks** until stock discrepancy and accounting are resolved. Its original payment is still successful.
-- The patch does not fix concurrent reservation races, because the underlying production database Online-stock insertion/update guards are unverified. The guard migration supplied in earlier source was staging-only. Inspect production trigger names using:
-  SELECT name FROM sqlite_master WHERE type='trigger' AND name LIKE '%reservation%';
-- A real safe release requires production D1 reservation triggers (after staging validation), webhook reconciliation and idempotency acceptance tests, and a staff-alert/recovery procedure for paid-unreconciled orders.
-- No SQL migration included: do not apply staging-only migrations to production without reconciliation and validation.
-- Keep `ENABLE_GIRAFFE_PACK_CHECKOUT` disabled.
-- No Square transaction was executed during this code change. JavaScript syntax check passed; no live D1 or payment end-to-end test performed.
+## Caveat
+This is a payment state visibility / reconciliation integrity fix, not a repair for the historical $23 paid Sandbox order. The transaction remains a manual reconciliation case until stock movements and Square order state can be verified together. The existing live checkout and payment flow should be tested before expanding usage.
