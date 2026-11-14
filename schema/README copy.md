@@ -1,18 +1,32 @@
-# Phase 03D.4H — Paid checkout reconciliation report
+# Phase 03D.4I — Paid checkout exception journal
 
-Only code change: `oba-checkout/worker.js` adds `GET /crew/checkout-reconciliation`.
+## Changes
+- `oba-checkout/worker.js`: adds authenticated `/crew/checkout-recovery-journal` GET/POST.
+- `crew/orders.html`: makes Orders → Exceptions a working investigation and manual audit-note UI using the existing 03D.4H read-only report.
 
-This endpoint requires an authenticated Crew session with `inventory.view`; it does not mutate D1 or contact Square. It accepts **exactly one** of `checkoutAttemptId` or `squareOrderId` as a query parameter, and returns stored checkout status, associated reservation status, per-flavor online availability, shortfalls and matching Square webhook processing results.
-
-Examples (after deployment, with an authenticated Crew session):
-`https://api.ollysbakedassortments.com/crew/checkout-reconciliation?checkoutAttemptId=09a1fbef-de8d-4ab1-8fa0-d9f0f6c9d910`
-
-The existing $23 Sandbox payment remains paid but unreconciled. This report is not a recovery action and does not establish stock available at the moment the payment was made. Inventory may have changed since then. Never run a second charge to repair it.
+## Dependencies
+- Phase 03D.4H `/crew/checkout-reconciliation` already deployed.
+- Existing `crew_security_events` table and Crew authentication/permissions.
+- NO SQL migration.
 
 ## Deployment
-1. Compare this `worker.js` against Cloudflare's currently deployed `oba-checkout` code. Preserve any newer live edits.
-2. Deploy to the existing Worker with the same bindings. Keep `ENABLE_GIRAFFE_PACK_CHECKOUT` disabled.
-3. Sign in with a Crew account that has `inventory.view` and request the endpoint. An unauthenticated request must yield HTTP 401.
-4. Confirm the known checkout shows `paymentCompleted: true`, `inventoryConverted: false`, and `reviewRequired: true` (assuming the D1 state has not subsequently changed).
+1. Preserve the existing deployed Worker version, compare/merge newer edits, deploy updated Worker first with existing bindings unchanged.
+2. Update `crew/orders.html` on GitHub.
+3. Sign in to Crew and open `crew/orders.html` → Exceptions; enter the Checkout Attempt ID from the Sandbox test (`09a1fbef-de8d-4ab1-8fa0-d9f0f6c9d910`).
+4. Test read access; use a non-financial 'Investigation in progress' note. Confirm it persists on refresh.
+5. Confirm an unauthenticated POST is rejected and users without `inventory.adjust` cannot submit notes.
 
-No SQL migrations. No frontend files. No automatic retry or settlement of old payment. Future recovery must be tied to the existing Square payment ID and perform an idempotent, audited adjustment or refund workflow only after staff verifies the actual inventory state.
+## Safety boundary
+- This is an auditable manual exception journal, NOT automatic inventory reconciliation.
+- `GET` requires `inventory.view`; `POST` requires `inventory.adjust`, active Crew session, allowed origin, and valid note/action/request UUID.
+- POST only INSERT OR IGNORE into existing `crew_security_events` with idempotency key; no Square calls and no changes to checkout_attempts, cart_reservations, inventory or Square payments.
+- 'Refund verified externally' or 'Fulfillment verified externally' are **human attestations only**, not refund/fulfillment operations. They do not change payment/checkout/reservation statuses.
+- Keep `ENABLE_GIRAFFE_PACK_CHECKOUT` disabled.
+
+## Recovery of existing $23 Sandbox exception
+This code **does not** automatically fix the existing `payment COMPLETED / reservation expired / inventory not converted` order. Review and document the cause; any corrective stock movement must be separately authorized and ledger-safe, and any refund must be completed in Square then verified. The next phase can add a guarded reconciliation operation after financial outcome is decided.
+
+## Checks
+- `node --check oba-checkout/worker.js`
+- browser script syntax checked independently.
+- No live Cloudflare/Square testing performed by this package build.

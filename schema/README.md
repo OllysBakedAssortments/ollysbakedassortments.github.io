@@ -1,1 +1,2 @@
-Phase 03D.4H: No SQL migration. Existing `checkout_attempts`, `cart_reservations`, `cart_reservation_items`, `inventory_items`, `inventory_allocations`, `inventory_locations` and `square_webhook_events` are read only.
+# Schema
+No SQL migration for Phase 03D.4I. Existing `crew_security_events` is used as an append-only journal; no schema changes are included.
