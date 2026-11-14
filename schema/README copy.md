@@ -1,32 +1,37 @@
-# Phase 03D.4I — Paid checkout exception journal
+# OBA Cookies — Phase 03D.4J: Verified External Case Resolution
 
-## Changes
-- `oba-checkout/worker.js`: adds authenticated `/crew/checkout-recovery-journal` GET/POST.
-- `crew/orders.html`: makes Orders → Exceptions a working investigation and manual audit-note UI using the existing 03D.4H read-only report.
+## Scope
+Adds Owner-only case closure for already-paid, unreconciled checkouts. It does not call Square, refund, change checkout status, change reservation status, deduct or invent inventory, or solve stock settlement. Keep ENABLE_GIRAFFE_PACK_CHECKOUT disabled.
 
-## Dependencies
-- Phase 03D.4H `/crew/checkout-reconciliation` already deployed.
-- Existing `crew_security_events` table and Crew authentication/permissions.
-- NO SQL migration.
+## Files to upload
+- `oba-checkout/worker.js` — main production Worker, preserve any newer currently deployed changes when merging.
+- `crew/orders.html` — Crew Orders Exceptions tab.
+- `schema/README.md` — notes, not a migration.
 
-## Deployment
-1. Preserve the existing deployed Worker version, compare/merge newer edits, deploy updated Worker first with existing bindings unchanged.
-2. Update `crew/orders.html` on GitHub.
-3. Sign in to Crew and open `crew/orders.html` → Exceptions; enter the Checkout Attempt ID from the Sandbox test (`09a1fbef-de8d-4ab1-8fa0-d9f0f6c9d910`).
-4. Test read access; use a non-financial 'Investigation in progress' note. Confirm it persists on refresh.
-5. Confirm an unauthenticated POST is rejected and users without `inventory.adjust` cannot submit notes.
+Deploy Worker first, then the web page. No SQL migration.
 
-## Safety boundary
-- This is an auditable manual exception journal, NOT automatic inventory reconciliation.
-- `GET` requires `inventory.view`; `POST` requires `inventory.adjust`, active Crew session, allowed origin, and valid note/action/request UUID.
-- POST only INSERT OR IGNORE into existing `crew_security_events` with idempotency key; no Square calls and no changes to checkout_attempts, cart_reservations, inventory or Square payments.
-- 'Refund verified externally' or 'Fulfillment verified externally' are **human attestations only**, not refund/fulfillment operations. They do not change payment/checkout/reservation statuses.
-- Keep `ENABLE_GIRAFFE_PACK_CHECKOUT` disabled.
+## API
+- `GET /crew/checkout-resolution?checkoutAttemptId=<UUID>` — read-only; requires `inventory.view`.
+- `POST /crew/checkout-resolution` — requires Crew session, allowed website Origin, `inventory.adjust`, Owner role. JSON:
+  - `checkoutAttemptId` UUID
+  - `action`: `refund_verified_externally`, `fulfillment_verified_externally`, `sandbox_test_closed`
+  - `externalReference`: 4–180 characters, independently verified
+  - `evidence`: 20–1500 characters
+  - `confirmation`: literal `CLOSE WITHOUT INVENTORY CHANGES`
+- `sandbox_test_closed` is allowed only if Worker `SQUARE_ENVIRONMENT` is Sandbox.
+- One immutable resolution per checkout attempt is enforced by `crew_security_events.event_id` uniqueness. Audited crew identity and timestamp.
+- Duplicate attempts to close return 409. Other attempts cannot change an existing closure.
 
-## Recovery of existing $23 Sandbox exception
-This code **does not** automatically fix the existing `payment COMPLETED / reservation expired / inventory not converted` order. Review and document the cause; any corrective stock movement must be separately authorized and ledger-safe, and any refund must be completed in Square then verified. The next phase can add a guarded reconciliation operation after financial outcome is decided.
+## Verification
+1. Logged-out GET returns 401.
+2. Authenticated GET for existing Sandbox checkout `09a1fbef-de8d-4ab1-8fa0-d9f0f6c9d910` returns `resolved:false` (until closed).
+3. Only Owner can submit a verified Sandbox closure. Enter the actual Square payment ID as reference; never claim a refund or physical fulfillment that did not happen.
+4. GET reports closure with `inventoryConverted:false`; checkout/payment/stock stay untouched.
+5. Repeat POST must return 409; reload should show same resolution.
+6. Existing review journal remains independent of final resolution.
 
-## Checks
-- `node --check oba-checkout/worker.js`
-- browser script syntax checked independently.
-- No live Cloudflare/Square testing performed by this package build.
+## Operational limitation
+This is external-resolution recordkeeping ONLY. It is not a paid-inventory conversion path. The previously paid $23 Sandbox transaction remains without sold stock in D1; closing the Sandbox test can document that outcome but cannot fix quantities. The separate inventory-settlement path requires verified stock and conditional/idempotent conversion and has NOT been enabled here.
+
+## Checks performed
+`node --check` on Worker and extracted inline Crew scripts; ZIP integrity. No live endpoint, browser or Square transaction checks were performed.
