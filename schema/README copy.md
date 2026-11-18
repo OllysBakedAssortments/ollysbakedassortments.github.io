@@ -1,37 +1,13 @@
-# OBA Cookies — Phase 03D.4J: Verified External Case Resolution
+# Phase 03D.4K — Settlement eligibility (read-only)
 
-## Scope
-Adds Owner-only case closure for already-paid, unreconciled checkouts. It does not call Square, refund, change checkout status, change reservation status, deduct or invent inventory, or solve stock settlement. Keep ENABLE_GIRAFFE_PACK_CHECKOUT disabled.
+Updated files: `oba-checkout/worker.js`, `crew/orders.html`.
 
-## Files to upload
-- `oba-checkout/worker.js` — main production Worker, preserve any newer currently deployed changes when merging.
-- `crew/orders.html` — Crew Orders Exceptions tab.
-- `schema/README.md` — notes, not a migration.
+This is a controlled **preflight**, not automatic settlement. It prevents unsafe restoration of an expired paid reservation and checks payment, existing case closure, Online allocations, competing active holds, physical stock and original drop membership.
 
-Deploy Worker first, then the web page. No SQL migration.
+Deploy the Worker first, then the Crew Orders page. Preserve any newer deployed changes. Keep `ENABLE_GIRAFFE_PACK_CHECKOUT` disabled. No D1 migration is needed. There are **no recovery writes** in this release.
 
-## API
-- `GET /crew/checkout-resolution?checkoutAttemptId=<UUID>` — read-only; requires `inventory.view`.
-- `POST /crew/checkout-resolution` — requires Crew session, allowed website Origin, `inventory.adjust`, Owner role. JSON:
-  - `checkoutAttemptId` UUID
-  - `action`: `refund_verified_externally`, `fulfillment_verified_externally`, `sandbox_test_closed`
-  - `externalReference`: 4–180 characters, independently verified
-  - `evidence`: 20–1500 characters
-  - `confirmation`: literal `CLOSE WITHOUT INVENTORY CHANGES`
-- `sandbox_test_closed` is allowed only if Worker `SQUARE_ENVIRONMENT` is Sandbox.
-- One immutable resolution per checkout attempt is enforced by `crew_security_events.event_id` uniqueness. Audited crew identity and timestamp.
-- Duplicate attempts to close return 409. Other attempts cannot change an existing closure.
+Crew endpoint: `GET /crew/checkout-settlement-preflight?checkoutAttemptId=<UUID>` (authenticated; `inventory.view`).
 
-## Verification
-1. Logged-out GET returns 401.
-2. Authenticated GET for existing Sandbox checkout `09a1fbef-de8d-4ab1-8fa0-d9f0f6c9d910` returns `resolved:false` (until closed).
-3. Only Owner can submit a verified Sandbox closure. Enter the actual Square payment ID as reference; never claim a refund or physical fulfillment that did not happen.
-4. GET reports closure with `inventoryConverted:false`; checkout/payment/stock stay untouched.
-5. Repeat POST must return 409; reload should show same resolution.
-6. Existing review journal remains independent of final resolution.
+Expected for the November $23 Sandbox case: `paymentConfirmed=true`, `reservationStatus=expired`, `stockSufficient=false`, `automaticRecoveryEnabled=false`, `settlementExecuted=false`, and blockers.
 
-## Operational limitation
-This is external-resolution recordkeeping ONLY. It is not a paid-inventory conversion path. The previously paid $23 Sandbox transaction remains without sold stock in D1; closing the Sandbox test can document that outcome but cannot fix quantities. The separate inventory-settlement path requires verified stock and conditional/idempotent conversion and has NOT been enabled here.
-
-## Checks performed
-`node --check` on Worker and extracted inline Crew scripts; ZIP integrity. No live endpoint, browser or Square transaction checks were performed.
+**Next engineering gate:** inspect actual production trigger definitions that govern allocation underflow and paid reservation status conversion, and build/validate an explicitly authorized, idempotent transaction routine before allowing any settlement write. Never charge Square twice or force expired reservations back to active.
