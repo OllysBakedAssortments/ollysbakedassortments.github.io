@@ -1,45 +1,25 @@
-# Phase 03D.4M — Checkout status synchronization fix
+# OBA Cookies — Phase 03D.4N (settlement evidence)
 
-## Root cause and fix
+## Purpose
+Corrects false positive inventory shortfall in the read-only Crew reconciliation report after an order has already converted. A successful sale reduces Online allocation, so comparing the sold quantity to *remaining* stock is incorrect. The new check uses `inventory_movements` with `movement_type='sale'`, `reference_type='square_order'`, and the authoritative `square_order_id` to verify sold quantities.
 
-The Square `payment.updated` webhook wrote `payment_completed_inventory_pending` unconditionally for COMPLETED payments, even if the matching inventory reservation had already been converted. Concurrent or later webhook executions could therefore downgrade `checkout_attempts.checkout_status` from `completed` to pending.
+## Changed files
+- `oba-checkout/worker.js` — update `GET /crew/checkout-reconciliation` to verify sold movement quantities and checkout status.
+- `crew/orders.html` — show per-cookie settlement evidence and status consistency in Exceptions.
+- `schema/README.md` — migration note.
 
-The Worker patch changes only that webhook `UPDATE checkout_attempts` statement:
-- It never downgrades a `completed` checkout.
-- It reports `completed` for a completed Square payment when its matching reservation is already `converted`.
-- It preserves `inventory_reconciliation_failed` unless conversion is now verified.
-- It preserves `COMPLETED` payment status on later webhook messages.
-- It does not charge Square, convert reservations, or change inventory.
+## Deploy
+1. Preserve the current live Worker for rollback and merge this `worker.js` with any newer live edits. Deploy the Worker first.
+2. Upload `crew/orders.html` to GitHub.
+3. Log in to Crew > Orders > Exceptions. Load the $4 completed attempt `368786e8-66ad-4ed0-accf-086efeafb0b8` and the older $23 exception `09a1fbef-de8d-4ab1-8fa0-d9f0f6c9d910`.
+4. The $4 order should show **one matched Plain Jane sale movement** if the Worker logged it, a consistent checkout status, and no review required. The $23 case should remain unresolved and require review. If the movement doesn't exist, leave the case flagged; inspect why.
 
-## Deployment
-
-1. Back up the currently deployed Worker version for rollback.
-2. Compare `oba-checkout/worker.js` with the live Cloudflare `oba-checkout` Worker and merge newer live edits; do not blindly overwrite them.
-3. Deploy the merged Worker to the production environment while keeping `ENABLE_GIRAFFE_PACK_CHECKOUT` disabled.
-4. Review the checkout record of the November 19 $4 Sandbox payment before and after any separate one-time administrative status repair.
-
-No schema migration is needed.
-
-## One-time $4 Sandbox checkout status repair (optional; do NOT run as a migration)
-
-This conditional statement only updates the already-paid checkout to completed if its exact linked reservation is *already converted*. It does not touch Square or inventory. Run **only after** confirming the ID is correct, the existing sold counters, and the transaction's record in D1. The SQL is also provided directly in chat, as requested.
-
-```sql
-UPDATE checkout_attempts
-SET checkout_status = 'completed', updated_at = CURRENT_TIMESTAMP
-WHERE checkout_attempt_id = '368786e8-66ad-4ed0-accf-086efeafb0b8'
-  AND payment_status = 'COMPLETED'
-  AND checkout_status = 'payment_completed_inventory_pending'
-  AND EXISTS (
-    SELECT 1 FROM cart_reservations r
-    WHERE r.checkout_attempt_id = checkout_attempts.checkout_attempt_id
-      AND r.square_order_id = checkout_attempts.square_order_id
-      AND r.status = 'converted'
-  );
-```
-
-Then check the same checkout and reservation via SELECT. Never apply this to the $23 Sandbox exception, whose reservation expired and inventory reconciliation failed.
+## Safety
+- Read-only report and UI only. No stock mutations, no payments, no Square calls, no SQL migration.
+- Leave `ENABLE_GIRAFFE_PACK_CHECKOUT` disabled.
+- A matching sale movement and converted status establish strong evidence, but fully proving no historic duplicate payment still requires payment idempotency checks.
 
 ## Validation
-
-`node --check` passed. Five isolated SQLite transition tests passed: converted→completed; completed stays completed; active remains pending; failed remains failed; later noncompleted notification does not downgrade a completed payment. These are local checks, **not** live Cloudflare or Square tests.
+- `node --check` passed on Worker and Crew inline JavaScript.
+- Local SQLite settlement report checks covered converted success, stale checkout status, paid-but-unconverted failure, and duplicated sale-movement detection.
+- No remote deployment or live browser test has been performed.
