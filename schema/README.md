@@ -1,2 +1,1 @@
-# Phase 03D.4N database notes
-No migration. Reuses the existing production `inventory_movements`, `checkout_attempts`, `cart_reservations`, and `cart_reservation_items` tables. All added queries are SELECT-only.
+No SQL migration required for Phase 03D.4O. The existing Online inventory triggers and Giraffe Pack metadata table are unchanged.

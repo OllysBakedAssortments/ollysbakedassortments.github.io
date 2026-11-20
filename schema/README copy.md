@@ -1,25 +1,18 @@
-# OBA Cookies — Phase 03D.4N (settlement evidence)
+# Phase 03D.4O — Pack acceptance readiness (read-only)
 
-## Purpose
-Corrects false positive inventory shortfall in the read-only Crew reconciliation report after an order has already converted. A successful sale reduces Online allocation, so comparing the sold quantity to *remaining* stock is incorrect. The new check uses `inventory_movements` with `movement_type='sale'`, `reference_type='square_order'`, and the authoritative `square_order_id` to verify sold quantities.
-
-## Changed files
-- `oba-checkout/worker.js` — update `GET /crew/checkout-reconciliation` to verify sold movement quantities and checkout status.
-- `crew/orders.html` — show per-cookie settlement evidence and status consistency in Exceptions.
-- `schema/README.md` — migration note.
+Adds `GET /crew/giraffe-packs/acceptance-readiness` to the main Worker. Requires an authenticated Crew session with `inventory.view`. No D1 migration, stock changes, Square operations, payment attempts, or checkout activation.
 
 ## Deploy
-1. Preserve the current live Worker for rollback and merge this `worker.js` with any newer live edits. Deploy the Worker first.
-2. Upload `crew/orders.html` to GitHub.
-3. Log in to Crew > Orders > Exceptions. Load the $4 completed attempt `368786e8-66ad-4ed0-accf-086efeafb0b8` and the older $23 exception `09a1fbef-de8d-4ab1-8fa0-d9f0f6c9d910`.
-4. The $4 order should show **one matched Plain Jane sale movement** if the Worker logged it, a consistent checkout status, and no review required. The $23 case should remain unresolved and require review. If the movement doesn't exist, leave the case flagged; inspect why.
 
-## Safety
-- Read-only report and UI only. No stock mutations, no payments, no Square calls, no SQL migration.
-- Leave `ENABLE_GIRAFFE_PACK_CHECKOUT` disabled.
-- A matching sale movement and converted status establish strong evidence, but fully proving no historic duplicate payment still requires payment idempotency checks.
+Compare `oba-checkout/worker.js` against the **current deployed Worker** before merging. The uploaded repository may lag deployed edits; do not overwrite them. Deploy merged Worker only.
 
-## Validation
-- `node --check` passed on Worker and Crew inline JavaScript.
-- Local SQLite settlement report checks covered converted success, stale checkout status, paid-but-unconverted failure, and duplicated sale-movement detection.
-- No remote deployment or live browser test has been performed.
+## Test
+
+From an authorized Crew browser session, request:
+`https://api.ollysbakedassortments.com/crew/giraffe-packs/acceptance-readiness`
+
+An unauthenticated request should return 401. Authenticated Crew requests receive all weekly drop candidates, per-flavor stock, classification/publication blockers, and the active individual-cookie checkout drop. A draft weekly drop, unapproved flavor, or insufficient Online stock correctly fails the readiness conditions.
+
+**This does not permit Giraffe Pack payment.** Leave `ENABLE_GIRAFFE_PACK_CHECKOUT` disabled on production. Do not turn it on to run a publicly accessible Sandbox payment. Test true payment path only in a separate isolated Sandbox-bound deployment after the drop and pricing blockers are resolved.
+
+No SQL migration. Existing $23 paid-but-unreconciled Sandbox case remains separate.
